@@ -2,7 +2,7 @@
 package com.wmp.classtools.CTComponent;
 
 import com.wmp.io.IOStreamForInf;
-import com.wmp.classtools.duty.type.DutyDay;
+import com.wmp.panel.duty.type.DutyDay;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;

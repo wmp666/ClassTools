@@ -1,4 +1,4 @@
-package com.wmp.classtools.timeView.panel;
+package com.wmp.panel.timeView.panel;
 
 import com.wmp.classtools.CTComponent.CTPanel;
 

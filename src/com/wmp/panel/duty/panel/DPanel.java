@@ -1,10 +1,10 @@
-package com.wmp.classtools.duty.panel;
+package com.wmp.panel.duty.panel;
 
 import com.wmp.classtools.CTComponent.CTButton;
 import com.wmp.classtools.CTComponent.CTPanel;
 import com.wmp.classtools.CTComponent.InfSetDialog;
 import com.wmp.io.IOStreamForInf;
-import com.wmp.classtools.duty.type.DutyDay;
+import com.wmp.panel.duty.type.DutyDay;
 
 import javax.swing.*;
 import java.awt.*;
@@ -50,7 +50,7 @@ public class DPanel extends CTPanel {
         CLBBLabel.setFont(new Font("微软雅黑",Font.BOLD,20));
         CLBBLabel.setBounds(5,5,100,22);
         this.add(CLBBLabel);
-        DPanelMixY = DPanelMixY + CLBBLabel.getHeight() + 5;
+        DPanelMixY = DPanelMixY + CLBBLabel.getHeight() + 2;
 
         DutyDay now = DutyList.get(index);
 
@@ -61,7 +61,7 @@ public class DPanel extends CTPanel {
         CLFLabel.setFont(new Font("微软雅黑",Font.BOLD,20));
         CLFLabel.setBounds(5,DPanelMixY + 2,100,22);
         this.add(CLFLabel);
-        DPanelMixY = DPanelMixY + CLFLabel.getHeight() + 5;
+        DPanelMixY = DPanelMixY + CLFLabel.getHeight() + 2;
 
 
         DPanelMixY = initPeople(now.getClFloor(), DPanelMixY);
@@ -103,7 +103,7 @@ public class DPanel extends CTPanel {
                 }
             });
             //next.setFont(new Font("微软雅黑", -1, 10));
-            next.setLocation(215, 5);
+            next.setLocation(215, 0);
             this.add(next);
         }
 
@@ -125,7 +125,7 @@ public class DPanel extends CTPanel {
                     throw new RuntimeException(ex);
                 }
             });
-            last.setLocation(175, 5);
+            last.setLocation(175, 0);
             this.add(last);
         }
 
@@ -139,26 +139,32 @@ public class DPanel extends CTPanel {
         StringBuilder sb = new StringBuilder();
         sb.append("<html>");
 
-        int index = (array.size() + 1) / 2; // 修正索引计算
-        int count = 0;
+        int size = array.size();
+        int index = (size + 2) / 3;  // 修正组数计算逻辑
 
         for (int i = 0; i < index; i++) {
-            sb.append(array.get(count));
-            if (count + 1 < array.size()) { // 边界检查
-                sb.append(",").append(array.get(count + 1));
+            int base = i * 3;
+            sb.append(array.get(base));
+
+            if (base + 1 < size) {
+                sb.append(",").append(array.get(base + 1));
             }
-            if (i != index - 1) {
+            if (base + 2 < size) {
+                sb.append(",").append(array.get(base + 2));
+            }
+
+            if (i < index - 1) {  // 仅在非最后一组后添加换行
                 sb.append("<br>");
             }
-            count += 2;
         }
 
         sb.append("</html>");
 
+
         JLabel clbbPersonLabel = new JLabel(sb.toString());
-        clbbPersonLabel.setFont(new Font("微软雅黑", Font.BOLD, 30));
+        clbbPersonLabel.setFont(new Font("微软雅黑", Font.BOLD, 23));
         clbbPersonLabel.setForeground(new Color(0x0090FF));
-        clbbPersonLabel.setBounds(5, mixY + 5, 250, 35 * index);
+        clbbPersonLabel.setBounds(5, mixY + 3, 250, 30 * index);
 
         this.add(clbbPersonLabel);
 
@@ -241,11 +247,11 @@ public class DPanel extends CTPanel {
         this.removeAll();
         initDutyList(DutyListPath);
         initContainer(DutyListPath);
-        repaint();
-        revalidate();
+        //repaint();
+        //revalidate();
 
-        this.setSize(250,getMixY() + 5);
+        this.setSize(250,DPanelMixY + 5);
 
-        this.setVisible(true);
+        setMixY(DPanelMixY);
     }
 }

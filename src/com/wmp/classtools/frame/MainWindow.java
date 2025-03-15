@@ -1,22 +1,21 @@
 package com.wmp.classtools.frame;
 
-import com.wmp.classtools.attendance.panel.ATPanel;
-import com.wmp.classtools.duty.panel.DPanel;
-import com.wmp.classtools.timeView.panel.TimeViewPanel;
+import com.wmp.panel.attendance.panel.ATPanel;
+import com.wmp.panel.duty.panel.DPanel;
+import com.wmp.classtools.infSet.InfSetDialog;
+import com.wmp.panel.timeView.panel.TimeViewPanel;
 import com.wmp.io.IOStreamForInf;
 
 import javax.swing.*;
-import javax.swing.event.MenuKeyEvent;
-import javax.swing.event.MenuKeyListener;
 import java.awt.*;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.io.File;
 import java.io.IOException;
-import java.nio.charset.StandardCharsets;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.concurrent.atomic.AtomicInteger;
 
 public class MainWindow extends JWindow {
     private final Container contentPane = this.getContentPane();
@@ -27,7 +26,8 @@ public class MainWindow extends JWindow {
 
         File DutyListPath = new File( path + "Duty\\DutyList.txt");
         File indexPath = new File(path + "Duty\\index.txt");
-        File AllStuPath = new File(path + "AllStu\\AllStu.txt");
+        File AllStuPath = new File(path + "Att\\AllStu.txt");
+        File LeaveListPath = new File(path + "Att\\LeaveList.txt");
 
 
         //初始化
@@ -69,16 +69,43 @@ public class MainWindow extends JWindow {
         mixY = dPanel.getMixY();
         contentPane.add(dPanel);
 
-        ATPanel aTPanel = new ATPanel(mixY,AllStuPath);
-        aTPanel.setLocation(0,mixY);
+        ATPanel aTPanel = new ATPanel(mixY,AllStuPath,LeaveListPath);
+        aTPanel.setLocation(0,mixY + 5);
         mixY = aTPanel.getMixY();
         contentPane.add(aTPanel);
+
 
 
         //添加至系统托盘
         initTray();
 
         initFrame(mixY);
+
+        //刷新
+        AtomicInteger finalMixY = new AtomicInteger(mixY);
+        new Thread(() -> {
+
+            while (true) {
+                try {
+                    Thread.sleep(300);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+
+                //刷新窗口大小
+                int temp = timeViewPanel.getHeight() + dPanel.getHeight() + aTPanel.getHeight() ;
+                if (temp != finalMixY.get()){
+                    this.setSize(250, temp + 5);
+                    timeViewPanel.setLocation(0, 0);
+                    dPanel.setLocation(0, timeViewPanel.getHeight());
+                    aTPanel.setLocation(0, timeViewPanel.getHeight() + dPanel.getHeight());
+
+                    finalMixY.set(temp);
+                }
+
+                this.repaint();
+            }
+        }).start();
     }
 
     private void initFrame(int mixY) {

@@ -1,4 +1,4 @@
-import com.wmp.classtools.duty.panel.DPanel;
+import com.wmp.panel.duty.panel.DPanel;
 import com.wmp.classtools.frame.MainWindow;
 import com.wmp.io.IOStreamForInf;
 

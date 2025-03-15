@@ -1,4 +1,4 @@
-package com.wmp.classtools.duty.type;
+package com.wmp.panel.duty.type;
 
 import java.util.ArrayList;
 import java.util.Arrays;
