@@ -1,8 +1,0 @@
-<component name="ArtifactManager">
-  <artifact type="jar" name="dutyFrame:jar">
-    <output-path>$PROJECT_DIR$/out/artifacts/dutyFrame_jar</output-path>
-    <root id="archive" name="dutyFrame.jar">
-      <element id="module-output" name="ClassTools" />
-    </root>
-  </artifact>
-</component>
