@@ -1,8 +1,6 @@
 package com.wmp.panel.attendance.panel;
 
-import com.wmp.classtools.CTComponent.CTButton;
 import com.wmp.classtools.CTComponent.CTPanel;
-import com.wmp.classtools.infSet.InfSetDialog;
 import com.wmp.io.IOStreamForInf;
 
 import javax.swing.*;
@@ -37,7 +35,7 @@ public class ATPanel extends CTPanel {
         initStuList(AllStudentPath,LeaveListPath);
 
 
-        System.out.println(studentList);
+        //System.out.println(studentList);
 
         initContainer();
 
@@ -132,8 +130,8 @@ public class ATPanel extends CTPanel {
 
         // 重新加载数据
         initStuList(AllStudentPath, LeaveListPath);
-        System.out.println( studentList);
-        System.out.println("leave:" + leaveList);
+        //System.out.println( studentList);
+        //System.out.println("leave:" + leaveList);
 
         // 更新UI组件
 

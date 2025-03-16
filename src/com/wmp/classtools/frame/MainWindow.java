@@ -1,6 +1,6 @@
 package com.wmp.classtools.frame;
 
-import com.wmp.classtools.CTComponent.CTButton;
+import com.wmp.classtools.CTComponent.DuButton;
 import com.wmp.panel.attendance.panel.ATPanel;
 import com.wmp.panel.duty.panel.DPanel;
 import com.wmp.classtools.infSet.InfSetDialog;
@@ -78,12 +78,13 @@ public class MainWindow extends JWindow {
         ImageIcon imageIcon = new ImageIcon(getClass().getResource("/image/settings_0.png"));
         imageIcon.setImage(imageIcon.getImage().getScaledInstance(30, 30, Image.SCALE_DEFAULT));
         ImageIcon imageIcon2 = new ImageIcon(getClass().getResource("/image/settings_1.png"));
-        imageIcon.setImage(imageIcon.getImage().getScaledInstance(30, 30, Image.SCALE_DEFAULT));
-        CTButton settings = new CTButton(imageIcon,imageIcon2,30,() -> {
+        imageIcon2.setImage(imageIcon2.getImage().getScaledInstance(30, 30, Image.SCALE_DEFAULT));
+        DuButton settings = new DuButton(imageIcon,imageIcon2,30,() -> {
 
             try {
-                new InfSetDialog(this, AllStuPath, LeaveListPath, () -> {
+                new InfSetDialog(this, AllStuPath, LeaveListPath, DutyListPath, indexPath, () -> {
                     try {
+                        dPanel.refreshDisplay();
                         aTPanel.refreshAttendanceData(); // 自定义刷新方法
                     } catch (IOException ex) {
                         ex.printStackTrace();
@@ -222,7 +223,7 @@ public class MainWindow extends JWindow {
                 }
             });
             hideButton.setBackground(Color.WHITE);
-            hideButton.setBounds(80 - 25, 50, 20, 20);
+            hideButton.setBounds(80 - 25, 55, 20, 20);
             window.getContentPane().add(hideButton);
 
             window.getContentPane().add(exitButton);

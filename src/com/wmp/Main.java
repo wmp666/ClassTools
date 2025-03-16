@@ -1,11 +1,13 @@
-import com.wmp.panel.duty.panel.DPanel;
-import com.wmp.classtools.frame.MainWindow;
-import com.wmp.io.IOStreamForInf;
+package com.wmp;
 
-import java.io.File;
+import com.wmp.classtools.frame.MainWindow;
+
 import java.io.IOException;
 
 public class Main {
+
+    public static String version = "1.5.0";
+
     public static void main(String[] args) throws IOException {
         System.out.println("Hello, World!");
         String path = System.getenv ("LOCALAPPDATA");

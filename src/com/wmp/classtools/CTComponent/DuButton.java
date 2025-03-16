@@ -5,26 +5,29 @@ import java.awt.*;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 
-public class CTButton extends JButton implements MouseListener {
+public class DuButton extends JButton implements MouseListener {
     private Runnable callback;
     private Icon defaultIcon ;
     private Icon rolloverIcon ;
-    public CTButton(String text,int a,Runnable callback)
+    public DuButton(String text, int weight, int height, Runnable callback)
     {
-        super(text);
-        this.setBorderPainted(false);
-        this.setBackground(Color.WHITE);
-        this.setSize(a,a);
-        this.addActionListener(e -> callback.run());
+        this(text, null, null, weight, height, callback);
     }
 
-    public CTButton(Icon deaultIcon, Icon rolloverIcon,int a,Runnable callback)
+    public DuButton(Icon deaultIcon, Icon rolloverIcon, int a, Runnable callback)
     {
-        super(deaultIcon);
+        this("", deaultIcon, rolloverIcon, a, a, callback);
+
+
+    }
+
+    public DuButton(String text, Icon deaultIcon, Icon rolloverIcon, int weight, int height, Runnable callback)
+    {
+        super(text, deaultIcon);
         this.setBorderPainted(false);
         Color color = new Color(236, 236, 237);
         this.setBackground(color);
-        this.setSize(a,a);
+        this.setSize(weight, height);
         this.callback = callback;
         this.defaultIcon = deaultIcon;
         this.rolloverIcon = rolloverIcon;
@@ -48,10 +51,12 @@ public class CTButton extends JButton implements MouseListener {
 
     @Override
     public void mouseEntered(MouseEvent e) {
+        //System.out.println("鼠标移入");
         if(rolloverIcon != null)
         {
             this.setIcon(rolloverIcon);
         }
+        this.repaint();
     }
 
     @Override
@@ -60,5 +65,6 @@ public class CTButton extends JButton implements MouseListener {
         {
             this.setIcon(defaultIcon);
         }
+        this.repaint();
     }
 }

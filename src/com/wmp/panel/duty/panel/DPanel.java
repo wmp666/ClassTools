@@ -1,19 +1,16 @@
 package com.wmp.panel.duty.panel;
 
-import com.wmp.classtools.CTComponent.CTButton;
+import com.wmp.classtools.CTComponent.DuButton;
 import com.wmp.classtools.CTComponent.CTPanel;
-import com.wmp.classtools.CTComponent.InfSetDialog;
 import com.wmp.io.IOStreamForInf;
 import com.wmp.panel.duty.type.DutyDay;
+import com.wmp.tools.InfProcess;
 
 import javax.swing.*;
 import java.awt.*;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Set;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 public class DPanel extends CTPanel {
 
@@ -86,8 +83,8 @@ public class DPanel extends CTPanel {
             ImageIcon imageIcon = new ImageIcon(getClass().getResource("/image/next_0.png"));
             imageIcon.setImage(imageIcon.getImage().getScaledInstance(30, 30, Image.SCALE_DEFAULT));
             ImageIcon imageIcon2 = new ImageIcon(getClass().getResource("/image/next_1.png"));
-            imageIcon.setImage(imageIcon.getImage().getScaledInstance(30, 30, Image.SCALE_DEFAULT));
-            CTButton next = new CTButton(imageIcon,imageIcon2, 30, () -> {
+            imageIcon2.setImage(imageIcon2.getImage().getScaledInstance(30, 30, Image.SCALE_DEFAULT));
+            DuButton next = new DuButton(imageIcon,imageIcon2, 30, () -> {
 
                 int i = JOptionPane.showConfirmDialog(this, "确认切换至下一天", "询问", JOptionPane.YES_NO_OPTION);
                 if (i == 0) {
@@ -113,8 +110,8 @@ public class DPanel extends CTPanel {
             ImageIcon imageIcon = new ImageIcon(getClass().getResource("/image/last_0.png"));
             imageIcon.setImage(imageIcon.getImage().getScaledInstance(30, 30, Image.SCALE_DEFAULT));
             ImageIcon imageIcon2 = new ImageIcon(getClass().getResource("/image/last_1.png"));
-            imageIcon.setImage(imageIcon.getImage().getScaledInstance(30, 30, Image.SCALE_DEFAULT));
-            CTButton last = new CTButton(imageIcon, imageIcon2, 30, () -> {
+            imageIcon2.setImage(imageIcon2.getImage().getScaledInstance(30, 30, Image.SCALE_DEFAULT));
+            DuButton last = new DuButton(imageIcon, imageIcon2, 30, () -> {
                 int i = JOptionPane.showConfirmDialog(this, "确认切换至上一天", "询问", JOptionPane.YES_NO_OPTION);
                 if (i == 0) {
                     if (index > 0) index--;
@@ -218,7 +215,7 @@ public class DPanel extends CTPanel {
         DutyList.clear();
         String[] inftempList = inf.split("\n");
         for (String s : inftempList) {
-            ArrayList<String[]> strings = extractNames(s);
+            ArrayList<String[]> strings = InfProcess.RDExtractNames(s);
 
             DutyList.add(new DutyDay(DutyDay.setDutyPersonList(strings.get(0)),
                     DutyDay.setDutyPersonList(strings.get(1))));
@@ -227,29 +224,14 @@ public class DPanel extends CTPanel {
         System.out.println(DutyList);
     }
 
-    //处理原数据
-    public static ArrayList<String[]> extractNames(String input) {
-        ArrayList<String[]> result = new ArrayList<>();
-        // 正则表达式匹配大括号内的内容 {
-        Pattern pattern = Pattern.compile("\\[([^]]+)");
-        Matcher matcher = pattern.matcher(input);
-
-        while (matcher.find()) {
-            // 获取匹配到的内容（去掉大括号后的部分）
-            String group = matcher.group(1);
-            // 按逗号分割并添加到结果列表
-            String[] names = group.split(",");
-            result.add(names);
-        }
-        return result;
-    }
 
     // 刷新方法
-    private void refreshDisplay() throws IOException {
+    public void refreshDisplay() throws IOException {
 
         DPanelMixY = 0;
         this.removeAll();
         initDutyList(DutyListPath);
+        initIndex(indexPath);
         initContainer(DutyListPath);
         //repaint();
         //revalidate();
@@ -257,5 +239,13 @@ public class DPanel extends CTPanel {
         this.setSize(250,DPanelMixY + 5);
 
         setMixY(DPanelMixY);
+    }
+
+    public int getIndex() {
+        return index;
+    }
+
+    public void setIndex(int index) {
+        this.index = index;
     }
 }

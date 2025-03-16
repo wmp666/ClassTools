@@ -37,8 +37,8 @@ public class IOStreamForInf {
                  s = content.deleteCharAt(content.length()-1).toString().trim();
             }
 
-            System.out.println(file.getPath()+ ":"  + s);
-            System.out.println(s.isEmpty());
+            //System.out.println(file.getPath()+ ":"  + s);
+            //System.out.println(s.isEmpty());
             return !s.isEmpty() ? s : "";
         } catch (IOException e) {
             JOptionPane.showMessageDialog(null, file.getPath() + "文件读取失败", "世界拒绝了我", JOptionPane.ERROR_MESSAGE);
