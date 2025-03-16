@@ -24,4 +24,8 @@ public abstract class CTPanel extends JPanel{
     public void setMixY(int mixY) {
         this.mixY = mixY + this.mixY;
     }
+
+    public void resetMixY(int mixY) {
+        this.mixY = mixY;
+    }
 }

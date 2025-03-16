@@ -51,6 +51,6 @@ public class DutyDay {
         return "DutyDay{" +
                 "ClFloor=" + ClFloor +
                 ", ClBlackBroad=" + ClBlackBroad +
-                '}';
+                '}' + "\n";
     }
 }

@@ -1,5 +1,6 @@
 package com.wmp.panel.attendance.panel;
 
+import com.wmp.classtools.CTComponent.CTButton;
 import com.wmp.classtools.CTComponent.CTPanel;
 import com.wmp.classtools.infSet.InfSetDialog;
 import com.wmp.io.IOStreamForInf;
@@ -13,12 +14,12 @@ import java.util.Arrays;
 
 public class ATPanel extends CTPanel {
 
-    private JLabel LateStuLabel = new JLabel();
-    private JLabel AttendStuLabel = new JLabel();
-    private JLabel AllStuLabel = new JLabel();
-    private JLabel personLabel = new JLabel();
-    private File AllStudentPath;
-    private File LeaveListPath;
+    private final JLabel LateStuLabel = new JLabel();
+    private final JLabel AttendStuLabel = new JLabel();
+    private final JLabel AllStuLabel = new JLabel();
+    private final JLabel personLabel = new JLabel();
+    private final File AllStudentPath;
+    private final File LeaveListPath;
     private int ATPanelMixY;
     private int studentLength;
     private int studentLateLength;
@@ -70,9 +71,9 @@ public class ATPanel extends CTPanel {
 
         initLateList();
 
-        JButton settings = new JButton("设置");
-        settings.setLocation(5, ATPanelMixY + 3);
-        settings.addActionListener(e -> {
+        /*ImageIcon imageIcon = new ImageIcon(getClass().getResource("/image/settings.png"));
+        imageIcon.setImage(imageIcon.getImage().getScaledInstance(30, 30, Image.SCALE_DEFAULT));
+        CTButton settings = new CTButton(imageIcon,30,() -> {
 
 
             new InfSetDialog(this, LeaveListPath, () -> {
@@ -84,9 +85,9 @@ public class ATPanel extends CTPanel {
             }).setVisible(true);
         });
 
-        settings.setSize(80, 30);
-        ATPanelMixY = ATPanelMixY + settings.getHeight();
-        this.add(settings);
+        settings.setLocation(200, 0);
+
+        this.add(settings);*/
     }
 
     private void initLateList() {
@@ -137,6 +138,7 @@ public class ATPanel extends CTPanel {
         // 更新UI组件
 
         this.removeAll();
+        ATPanelMixY = 0;
         /*String NumColor = "style='color: #0090FF;'";
 
         AllStuLabel.setText("<html>应到：<span " + NumColor + ">" + studentLength + "人</html>");
@@ -145,6 +147,11 @@ public class ATPanel extends CTPanel {
 
         initLateList();*/
         initContainer();
+
+        resetMixY(ATPanelMixY);
+        this.setSize(250, ATPanelMixY + 5);
+
+
 
         // 强制重绘
         revalidate();

@@ -83,9 +83,11 @@ public class DPanel extends CTPanel {
 //        this.add(settings);
 
         {
-            ImageIcon imageIcon = new ImageIcon(getClass().getResource("/image/next.png"));
+            ImageIcon imageIcon = new ImageIcon(getClass().getResource("/image/next_0.png"));
             imageIcon.setImage(imageIcon.getImage().getScaledInstance(30, 30, Image.SCALE_DEFAULT));
-            CTButton next = new CTButton(imageIcon, 30, () -> {
+            ImageIcon imageIcon2 = new ImageIcon(getClass().getResource("/image/next_1.png"));
+            imageIcon.setImage(imageIcon.getImage().getScaledInstance(30, 30, Image.SCALE_DEFAULT));
+            CTButton next = new CTButton(imageIcon,imageIcon2, 30, () -> {
 
                 int i = JOptionPane.showConfirmDialog(this, "确认切换至下一天", "询问", JOptionPane.YES_NO_OPTION);
                 if (i == 0) {
@@ -108,9 +110,11 @@ public class DPanel extends CTPanel {
         }
 
         {
-            ImageIcon imageIcon = new ImageIcon(getClass().getResource("/image/last.png"));
+            ImageIcon imageIcon = new ImageIcon(getClass().getResource("/image/last_0.png"));
             imageIcon.setImage(imageIcon.getImage().getScaledInstance(30, 30, Image.SCALE_DEFAULT));
-            CTButton last = new CTButton(imageIcon, 30, () -> {
+            ImageIcon imageIcon2 = new ImageIcon(getClass().getResource("/image/last_1.png"));
+            imageIcon.setImage(imageIcon.getImage().getScaledInstance(30, 30, Image.SCALE_DEFAULT));
+            CTButton last = new CTButton(imageIcon, imageIcon2, 30, () -> {
                 int i = JOptionPane.showConfirmDialog(this, "确认切换至上一天", "询问", JOptionPane.YES_NO_OPTION);
                 if (i == 0) {
                     if (index > 0) index--;

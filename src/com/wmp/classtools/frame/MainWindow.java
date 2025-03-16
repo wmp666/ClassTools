@@ -1,5 +1,6 @@
 package com.wmp.classtools.frame;
 
+import com.wmp.classtools.CTComponent.CTButton;
 import com.wmp.panel.attendance.panel.ATPanel;
 import com.wmp.panel.duty.panel.DPanel;
 import com.wmp.classtools.infSet.InfSetDialog;
@@ -74,7 +75,29 @@ public class MainWindow extends JWindow {
         mixY = aTPanel.getMixY();
         contentPane.add(aTPanel);
 
+        ImageIcon imageIcon = new ImageIcon(getClass().getResource("/image/settings_0.png"));
+        imageIcon.setImage(imageIcon.getImage().getScaledInstance(30, 30, Image.SCALE_DEFAULT));
+        ImageIcon imageIcon2 = new ImageIcon(getClass().getResource("/image/settings_1.png"));
+        imageIcon.setImage(imageIcon.getImage().getScaledInstance(30, 30, Image.SCALE_DEFAULT));
+        CTButton settings = new CTButton(imageIcon,imageIcon2,30,() -> {
 
+            try {
+                new InfSetDialog(this, AllStuPath, LeaveListPath, () -> {
+                    try {
+                        aTPanel.refreshAttendanceData(); // 自定义刷新方法
+                    } catch (IOException ex) {
+                        ex.printStackTrace();
+                    }
+                }).setVisible(true);
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+
+        });
+
+        settings.setLocation(210, mixY);
+        mixY = settings.getHeight() + mixY;
+        contentPane.add(settings);
 
         //添加至系统托盘
         initTray();
@@ -93,13 +116,13 @@ public class MainWindow extends JWindow {
                 }
 
                 //刷新窗口大小
-                int temp = timeViewPanel.getHeight() + dPanel.getHeight() + aTPanel.getHeight() ;
+                int temp = timeViewPanel.getHeight() + dPanel.getHeight() + aTPanel.getHeight() + settings.getHeight();
                 if (temp != finalMixY.get()){
                     this.setSize(250, temp + 5);
                     timeViewPanel.setLocation(0, 0);
                     dPanel.setLocation(0, timeViewPanel.getHeight());
                     aTPanel.setLocation(0, timeViewPanel.getHeight() + dPanel.getHeight());
-
+                    settings.setLocation(210, temp - settings.getHeight());
                     finalMixY.set(temp);
                 }
 
@@ -121,7 +144,6 @@ public class MainWindow extends JWindow {
         this.setVisible(true);
     }
 
-    // 在MainWindow构造函数中添加以下代码（建议放在initFrame之后）
     private void initTray() {
     if (!SystemTray.isSupported()) return;
 
@@ -132,13 +154,14 @@ public class MainWindow extends JWindow {
 
         JWindow window = new JWindow();
 
-    JButton button = new JButton("关闭");
-    button.setSize(80, 30);
-    button.setLocation(0, 0);
-    button.setFont(new Font("微软雅黑", Font.BOLD, 20));
-    button.setBackground(Color.WHITE);
+    JButton exitButton = new JButton("关闭");
+    exitButton.setSize(80, 30);
+    exitButton.setLocation(0, 0);
+    exitButton.setFont(new Font("微软雅黑", Font.BOLD, 20));
+    exitButton.setBackground(Color.WHITE);
+    exitButton.setBorderPainted(false);
 
-    button.addActionListener(e1 ->{
+    exitButton.addActionListener(e1 ->{
             window.setVisible(false);
 
             int result = JOptionPane.showConfirmDialog(
@@ -160,17 +183,58 @@ public class MainWindow extends JWindow {
             //System.out.println("鼠标点击");
 
 
+            ImageIcon imageIcon = new ImageIcon(getClass().getResource("/image/hide_0.png"));
+            imageIcon.setImage(imageIcon.getImage().getScaledInstance(20, 20, Image.SCALE_DEFAULT));
+            JButton hideButton = new JButton(imageIcon);
 
-            window.getContentPane().add(button);
+            hideButton.setBorderPainted(false);
+            hideButton.addMouseListener(new MouseListener() {
+
+                @Override
+                public void mouseClicked(MouseEvent e) {
+                    window.setVisible(false);
+                }
+
+                @Override
+                public void mousePressed(MouseEvent e) {
+
+                }
+
+                @Override
+                public void mouseReleased(MouseEvent e) {
+
+                }
+
+                @Override
+                public void mouseEntered(MouseEvent e) {
+                    ImageIcon imageIcon = new ImageIcon(getClass().getResource("/image/hide_1.png"));
+                    imageIcon.setImage(imageIcon.getImage().getScaledInstance(20, 20, Image.SCALE_DEFAULT));
+
+                    hideButton.setIcon(imageIcon);
+                }
+
+                @Override
+                public void mouseExited(MouseEvent e) {
+                    ImageIcon imageIcon = new ImageIcon(getClass().getResource("/image/hide_0.png"));
+                    imageIcon.setImage(imageIcon.getImage().getScaledInstance(20, 20, Image.SCALE_DEFAULT));
+
+                    hideButton.setIcon(imageIcon);
+                }
+            });
+            hideButton.setBackground(Color.WHITE);
+            hideButton.setBounds(80 - 25, 50, 20, 20);
+            window.getContentPane().add(hideButton);
+
+            window.getContentPane().add(exitButton);
             //获取鼠标坐标
             int x = e.getX();
             int y = e.getY();
 
             window.setLayout(null);
-
+            window.getContentPane().setBackground(Color.WHITE);
             window.setAlwaysOnTop(true);
             //将大小设置为popup的大小
-            window.setSize(80 , 30);
+            window.setSize(80 , 80);
             window.setLocation(x - window.getWidth(), y - window.getHeight());
             window.setVisible(true);
 
@@ -191,12 +255,12 @@ public class MainWindow extends JWindow {
         // 鼠标进入
         @Override
         public void mouseEntered(MouseEvent e) {
-
+            System.out.println("鼠标移入");
         }
 
         @Override
         public void mouseExited(MouseEvent e) {
-
+            System.out.println("鼠标移出");
         }
     });
 
