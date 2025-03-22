@@ -1,10 +1,12 @@
 package com.wmp.classtools.frame;
 
-import com.wmp.classtools.CTComponent.DuButton;
+import com.wmp.CTColor;
+import com.wmp.classtools.CTComponent.CTButton;
+import com.wmp.classtools.panel.finalPanel.FinalPanel;
 import com.wmp.panel.attendance.panel.ATPanel;
 import com.wmp.panel.duty.panel.DPanel;
 import com.wmp.classtools.infSet.InfSetDialog;
-import com.wmp.panel.timeView.panel.TimeViewPanel;
+import com.wmp.classtools.panel.timeView.TimeViewPanel;
 import com.wmp.io.IOStreamForInf;
 
 import javax.swing.*;
@@ -23,6 +25,7 @@ public class MainWindow extends JWindow {
 
     public MainWindow(String path) throws IOException {
 
+        contentPane.setBackground(CTColor.backColor);
         contentPane.setLayout(null);
 
         File DutyListPath = new File( path + "Duty\\DutyList.txt");
@@ -41,8 +44,9 @@ public class MainWindow extends JWindow {
         //添加组件
         TimeViewPanel timeViewPanel = new TimeViewPanel(mixY);
         timeViewPanel.setLocation(0,mixY);
+        timeViewPanel.setBackground(CTColor.backColor);
         contentPane.add(timeViewPanel);
-        mixY = timeViewPanel.getMixY();
+        mixY = timeViewPanel.getNextPanelY();
 
         //时间刷新
         new Thread(() -> {
@@ -67,19 +71,19 @@ public class MainWindow extends JWindow {
 
         DPanel dPanel = new DPanel(mixY,DutyListPath,indexPath);
         dPanel.setLocation(0,mixY);
-        mixY = dPanel.getMixY();
+        dPanel.setBackground( CTColor.backColor);
+        mixY = dPanel.getNextPanelY();
         contentPane.add(dPanel);
 
         ATPanel aTPanel = new ATPanel(mixY,AllStuPath,LeaveListPath);
-        aTPanel.setLocation(0,mixY + 5);
-        mixY = aTPanel.getMixY();
+        aTPanel.setLocation(0,mixY);
+        aTPanel.setBackground(CTColor.backColor);
+        mixY = aTPanel.getNextPanelY();
         contentPane.add(aTPanel);
 
-        ImageIcon imageIcon = new ImageIcon(getClass().getResource("/image/settings_0.png"));
-        imageIcon.setImage(imageIcon.getImage().getScaledInstance(30, 30, Image.SCALE_DEFAULT));
-        ImageIcon imageIcon2 = new ImageIcon(getClass().getResource("/image/settings_1.png"));
-        imageIcon2.setImage(imageIcon2.getImage().getScaledInstance(30, 30, Image.SCALE_DEFAULT));
-        DuButton settings = new DuButton(imageIcon,imageIcon2,30,() -> {
+
+        /*CTButton settings = new CTButton(getClass().getResource("/image/settings_0.png"),
+                getClass().getResource("/image/settings_1.png"),30,() -> {
 
             try {
                 new InfSetDialog(this, AllStuPath, LeaveListPath, DutyListPath, indexPath, () -> {
@@ -98,7 +102,61 @@ public class MainWindow extends JWindow {
 
         settings.setLocation(210, mixY);
         mixY = settings.getHeight() + mixY;
-        contentPane.add(settings);
+        contentPane.add(settings);*/
+
+       /* FinalPanel finalPanel = new FinalPanel(mixY);
+        finalPanel.setLocation(0,mixY);
+        finalPanel.setBackground(CTColor.backColor);
+
+        CTButton settingsButton = finalPanel.getSettings();
+        settingsButton.setCallback(() -> {
+            try {
+                new InfSetDialog(this, AllStuPath, LeaveListPath, DutyListPath, indexPath, () -> {
+                    try {
+                        dPanel.refreshDisplay();
+                        aTPanel.refreshAttendanceData(); // 自定义刷新方法
+                    } catch (IOException ex) {
+                        ex.printStackTrace();
+                    }
+                }).setVisible(true);
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+        });
+        finalPanel.setSettings(settingsButton);
+
+        mixY = finalPanel.getNextPanelY();
+        contentPane.add(finalPanel);*/
+
+        JPanel finalPanel = new JPanel();
+        finalPanel.setBackground(CTColor.backColor);
+        finalPanel.setLayout(null);
+        finalPanel.setLocation(0, mixY);
+        finalPanel.setSize(300, 35);
+
+        CTButton settings = new CTButton(getClass().getResource("/image/settings_0.png"),
+                getClass().getResource("/image/settings_1.png"),30,() -> {
+
+            try {
+                new InfSetDialog(this, AllStuPath, LeaveListPath, DutyListPath, indexPath, () -> {
+                    try {
+                        dPanel.refreshDisplay();
+                        aTPanel.refreshAttendanceData(); // 自定义刷新方法
+                    } catch (IOException ex) {
+                        ex.printStackTrace();
+                    }
+                }).setVisible(true);
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+
+        });
+
+        settings.setLocation(210, 0);
+        finalPanel.add(settings);
+
+        mixY = finalPanel.getHeight() + mixY;
+        contentPane.add(finalPanel);
 
         //添加至系统托盘
         initTray();
@@ -107,7 +165,7 @@ public class MainWindow extends JWindow {
 
         //刷新
         AtomicInteger finalMixY = new AtomicInteger(mixY);
-        new Thread(() -> {
+        Thread repaint = new Thread(() -> {
 
             while (true) {
                 try {
@@ -117,19 +175,20 @@ public class MainWindow extends JWindow {
                 }
 
                 //刷新窗口大小
-                int temp = timeViewPanel.getHeight() + dPanel.getHeight() + aTPanel.getHeight() + settings.getHeight();
-                if (temp != finalMixY.get()){
+                int temp = timeViewPanel.getHeight() + dPanel.getHeight() + aTPanel.getHeight() + finalPanel.getHeight();
+                if (temp != finalMixY.get()) {
                     this.setSize(250, temp + 5);
                     timeViewPanel.setLocation(0, 0);
                     dPanel.setLocation(0, timeViewPanel.getHeight());
                     aTPanel.setLocation(0, timeViewPanel.getHeight() + dPanel.getHeight());
-                    settings.setLocation(210, temp - settings.getHeight());
+                    finalPanel.setLocation(0, temp - finalPanel.getHeight());
                     finalMixY.set(temp);
                 }
 
                 this.repaint();
             }
-        }).start();
+        });
+        repaint.start();
     }
 
     private void initFrame(int mixY) {

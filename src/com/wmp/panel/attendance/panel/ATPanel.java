@@ -1,5 +1,6 @@
 package com.wmp.panel.attendance.panel;
 
+import com.wmp.CTColor;
 import com.wmp.classtools.CTComponent.CTPanel;
 import com.wmp.io.IOStreamForInf;
 
@@ -24,8 +25,8 @@ public class ATPanel extends CTPanel {
     private final ArrayList<String> studentList = new ArrayList<>();
     private final ArrayList<String> leaveList = new ArrayList<>();//迟到人员
 
-    public ATPanel(int mixY, File AllStudentPath,File LeaveListPath) throws IOException {
-        super(mixY);
+    public ATPanel(int nextPanelY, File AllStudentPath,File LeaveListPath) throws IOException {
+        super(nextPanelY);
 
         this.AllStudentPath = AllStudentPath;
         this.LeaveListPath = LeaveListPath;
@@ -42,11 +43,13 @@ public class ATPanel extends CTPanel {
 
 
         this.setSize(250, ATPanelMixY + 5);
-        setMixY( ATPanelMixY + 5);
+        setNextPanelY( ATPanelMixY + 5);
 
     }
 
     private void initContainer() {
+        int color = CTColor.mainColor.getRGB();
+        System.out.println("MainColor:" + color);
         String NumColor = "style='color: #0090FF;'";
 
         AllStuLabel.setText("<html>应到：<span " + NumColor + ">" + studentLength + "人</html>");
@@ -61,7 +64,7 @@ public class ATPanel extends CTPanel {
         ATPanelMixY = ATPanelMixY + AttendStuLabel.getHeight();
         this.add(AttendStuLabel);
 
-        LateStuLabel.setText("<html>迟到：<span style='color: red;'>" + studentLateLength + "人</html>");
+        LateStuLabel.setText("<html>请假：<span style='color: red;'>" + studentLateLength + "人</html>");
         LateStuLabel.setFont(new Font("微软雅黑", Font.BOLD, 25));
         LateStuLabel.setBounds(5, ATPanelMixY, 250, 30);
         ATPanelMixY = ATPanelMixY + LateStuLabel.getHeight();
@@ -116,7 +119,7 @@ public class ATPanel extends CTPanel {
 
         personLabel.setText(sb.toString());
         personLabel.setFont(new Font("微软雅黑", Font.BOLD, 23));
-        personLabel.setForeground(new Color(0x0090FF));
+        personLabel.setForeground(CTColor.mainColor);
         personLabel.setBounds(5, ATPanelMixY, 250, 30 * index);
         ATPanelMixY = ATPanelMixY + personLabel.getHeight();
 
@@ -137,16 +140,11 @@ public class ATPanel extends CTPanel {
 
         this.removeAll();
         ATPanelMixY = 0;
-        /*String NumColor = "style='color: #0090FF;'";
 
-        AllStuLabel.setText("<html>应到：<span " + NumColor + ">" + studentLength + "人</html>");
-        AttendStuLabel.setText("<html>实到：<span " + NumColor + ">" + (studentLength - studentLateLength) + "人</html>");
-        LateStuLabel.setText("<html>迟到：<span style='color: red;'>" + studentLateLength + "人</html>");
-
-        initLateList();*/
+        //initStuList(AllStudentPath,LeaveListPath);
         initContainer();
 
-        resetMixY(ATPanelMixY);
+        nextPanelY(ATPanelMixY);
         this.setSize(250, ATPanelMixY + 5);
 
 
@@ -229,10 +227,13 @@ public class ATPanel extends CTPanel {
             IOStreamForInf ioStreamForInf = new IOStreamForInf(LeaveListPath);
             String inf = ioStreamForInf.GetInf();
             if (inf.isEmpty() || inf.equals("error")) {
-
+                ioStreamForInf.SetInf("");
+                studentLateLength = 0;
             }else{
+                //leaveList.clear();
                 leaveList.addAll(Arrays.asList(inf.split(",")));
                 studentLateLength = leaveList.size();
+                //System.out.println("leaveList.size():" + leaveList.size() + inf);
             }
         }
 

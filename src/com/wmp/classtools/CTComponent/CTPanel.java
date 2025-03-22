@@ -1,15 +1,18 @@
 package com.wmp.classtools.CTComponent;
 
+import com.wmp.CTColor;
+
 import javax.swing.*;
 
 public abstract class CTPanel extends JPanel{
 
-    private int mixY;
+    private int nextPanelY;
 
-    public CTPanel(int mixY)
+    public CTPanel(int nextPanelY)
     {
         super();
-        this.mixY = mixY;
+        this.nextPanelY = nextPanelY;
+        this.setBackground(CTColor.backColor);
     }
 
     public CTPanel()
@@ -17,15 +20,15 @@ public abstract class CTPanel extends JPanel{
         super();
     }
 
-    public int getMixY() {
-        return mixY;
+    public int getNextPanelY() {
+        return nextPanelY;
     }
 
-    public void setMixY(int mixY) {
-        this.mixY = mixY + this.mixY;
+    public void setNextPanelY(int nextPanelY) {
+        this.nextPanelY = nextPanelY + this.nextPanelY;
     }
 
-    public void resetMixY(int mixY) {
-        this.mixY = mixY;
+    public void nextPanelY(int nextPanelY) {
+        this.nextPanelY = nextPanelY;
     }
 }

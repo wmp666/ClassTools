@@ -1,71 +1,85 @@
 package com.wmp.classtools.infSet;
 
+import com.wmp.CTColor;
 import com.wmp.Main;
-import com.wmp.classtools.CTComponent.DuButton;
+import com.wmp.classtools.CTComponent.CTButton;
 import com.wmp.io.IOStreamForInf;
 import com.wmp.tools.InfProcess;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
+import java.awt.event.WindowEvent;
+import java.awt.event.WindowListener;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.concurrent.atomic.AtomicInteger;
 
-public class InfSetDialog extends JDialog {
+public class InfSetDialog extends JDialog implements WindowListener {
 
-    private Container c;
+    private final Container c;
+    private final File AllStuPath;
+    private final File leaveListPath;
+    private final File DutyListPath;
+    private final File indexPath;
+    private final Runnable refreshCallback;
+    private final ArrayList<JCheckBox> checkBoxList = new ArrayList<>();
+    private final AtomicInteger index = new AtomicInteger();
+    private final JTable table = new JTable();
+
 
     // 添加文件路径参数
     public InfSetDialog(Window owner, File AllStuPath, File leaveListPath, File DutyListPath, File indexPath, Runnable refreshCallback) throws IOException {
 
+        this.setBackground(CTColor.backColor);
         this.setTitle("设置");
         this.setSize(400, 500);
         this.setLocationRelativeTo(null);
         this.setModal(true);
-        this.setLayout(null);
+        //this.setLayout(null);
         this.setResizable(false);
         this.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+        this.addWindowListener(this);
         c = this.getContentPane();
+        this.AllStuPath = AllStuPath;
+        this.leaveListPath = leaveListPath;
+        this.DutyListPath = DutyListPath;
+        this.indexPath = indexPath;
+        this.refreshCallback = refreshCallback;
 
+        initMenuBar();
 
-        initMenuBar(AllStuPath, leaveListPath, DutyListPath, indexPath, refreshCallback);
+        c.add(initATSet());
 
-        initATSet(AllStuPath, leaveListPath, refreshCallback);
-
-
-        //initDuSet(DutyListPath);
+        initDuSet();
 
     }
 
-    private void initDuSet(File DutyListPath, File indexPath, Runnable refreshCallback) throws IOException {
+    private JPanel initDuSet() throws IOException {
 
-        AtomicInteger index = new AtomicInteger();
+        JPanel mainPanel = new JPanel();
+        mainPanel.setLayout(null);
 
         DefaultTableModel model = new DefaultTableModel(getDutyList(DutyListPath),
                 new String[]{"扫地","擦黑板"});
-        JTable table = new JTable(model);
-        //table.setEnabled(false);
-        //table.setBounds(0, 0, 340, 300);
-        //c.add(table);
+
+        table.setModel(model);
 
         JScrollPane scrollPane = new JScrollPane(table);
         scrollPane.setBounds(20, 30, 340, 300);
-        c.add(scrollPane);
+        mainPanel.add(scrollPane);
 
         // 保存按钮
-        {
+        /*{
 
 
 
 
-            ImageIcon imageIcon = new ImageIcon(getClass().getResource("/image/save_0.png"));
-            imageIcon.setImage(imageIcon.getImage().getScaledInstance(30, 30, Image.SCALE_DEFAULT));
-            ImageIcon imageIcon2 = new ImageIcon(getClass().getResource("/image/save_1.png"));
-            imageIcon2.setImage(imageIcon2.getImage().getScaledInstance(30, 30, Image.SCALE_DEFAULT));
-            DuButton saveBtn = new DuButton("保存", imageIcon, imageIcon2, 95, 35, () -> {
+
+            CTButton saveBtn = new CTButton("保存", getClass().getResource("/image/save_0.png"),
+                    getClass().getResource("/image/save_1.png"), 95, 35, () -> {
                 try {
 
                     //处理表格中的数据
@@ -105,15 +119,13 @@ public class InfSetDialog extends JDialog {
             saveBtn.setLocation(22, 340);
 
             c.add(saveBtn);
-        }
+        }*/
 
-        // 资源管理器按钮
+        /*// 资源管理器按钮
         {
-            ImageIcon imageIcon = new ImageIcon(getClass().getResource("/image/openExp_0.png"));
-            imageIcon.setImage(imageIcon.getImage().getScaledInstance(30, 30, Image.SCALE_DEFAULT));
-            ImageIcon imageIcon2 = new ImageIcon(getClass().getResource("/image/openExp_1.png"));
-            imageIcon2.setImage(imageIcon2.getImage().getScaledInstance(30, 30, Image.SCALE_DEFAULT));
-            DuButton explorerBtn = new DuButton("打开资源管理器", imageIcon, imageIcon2, 190, 35, () -> {});
+
+            CTButton explorerBtn = new CTButton("打开资源管理器", getClass().getResource("/image/openExp_0.png"),
+                    getClass().getResource("/image/openExp_1.png"), 190, 35, () -> {});
             explorerBtn.setLocation(5, 380);
             explorerBtn.addActionListener(e -> {
                 try {
@@ -123,31 +135,27 @@ public class InfSetDialog extends JDialog {
                 }
             });
             c.add(explorerBtn);
-        }
+        }*/
 
         //新建
         {
-            ImageIcon imageIcon = new ImageIcon(getClass().getResource("/image/new_0.png"));
-            imageIcon.setImage(imageIcon.getImage().getScaledInstance(30, 30, Image.SCALE_DEFAULT));
-            ImageIcon imageIcon2 = new ImageIcon(getClass().getResource("/image/new_1.png"));
-            imageIcon2.setImage(imageIcon2.getImage().getScaledInstance(30, 30, Image.SCALE_DEFAULT));
-            DuButton newBtn = new DuButton("新建",imageIcon, imageIcon2,95,35, () -> {
+
+            CTButton newBtn = new CTButton("新建",getClass().getResource("/image/new_0.png"),
+                    getClass().getResource("/image/new_1.png"),95,35, () -> {
                 String s1 = JOptionPane.showInputDialog(this, "请输入擦黑板人员", "新建", JOptionPane.PLAIN_MESSAGE);
                 String s2 = JOptionPane.showInputDialog(this, "请输入扫地人员", "新建", JOptionPane.PLAIN_MESSAGE);
                 model.addRow(new Object[]{s2,s1});
 
             });
             newBtn.setLocation(255, 340);
-            c.add(newBtn);
+            mainPanel.add(newBtn);
         }
 
         // 删除
         {
-            ImageIcon imageIcon = new ImageIcon(getClass().getResource("/image/delete_0.png"));
-            imageIcon.setImage(imageIcon.getImage().getScaledInstance(30, 30, Image.SCALE_DEFAULT));
-            ImageIcon imageIcon2 = new ImageIcon(getClass().getResource("/image/delete_1.png"));
-            imageIcon2.setImage(imageIcon2.getImage().getScaledInstance(30, 30, Image.SCALE_DEFAULT));
-            DuButton deleteBtn = new DuButton("删除", imageIcon, imageIcon2, 95, 35, () -> {
+
+            CTButton deleteBtn = new CTButton("删除",getClass().getResource("/image/delete_0.png"),
+                    getClass().getResource("/image/delete_1.png"), 95, 35, () -> {
 
 
                 try {
@@ -168,13 +176,55 @@ public class InfSetDialog extends JDialog {
                 }
             });
             deleteBtn.setLocation(255, 380);
-            c.add(deleteBtn);
+            mainPanel.add(deleteBtn);
         }
+
+        return mainPanel;
     }
 
-    private void initMenuBar(File AllStuPath, File leaveListPath, File DutyListPath, File indexPath, Runnable refreshCallback) {
+    private void initMenuBar() {
         JMenuBar menuBar = new JMenuBar();
         this.setJMenuBar(menuBar);
+
+        JMenu fileMenu = new JMenu("文件");
+
+        JMenu openFile = new JMenu("打开文件");
+
+        JMenuItem openStuList = new JMenuItem("人员名单");
+        openStuList.addActionListener(e -> {
+            try {
+                Runtime.getRuntime().exec("explorer.exe " + leaveListPath.getParent());
+            } catch (IOException ex) {
+                ex.printStackTrace();
+            }
+        });
+
+        JMenuItem openDutyList = new JMenuItem("值班人员");
+        openDutyList.addActionListener(e -> {
+            try {
+                Runtime.getRuntime().exec("explorer.exe " + DutyListPath.getParent());
+            } catch (IOException ex) {
+                ex.printStackTrace();
+            }
+        });
+
+        JMenuItem exitMenuItem = new JMenuItem("退出");
+        exitMenuItem.addActionListener(e -> {
+            save();
+            this.setVisible(false);
+        });
+
+
+        openFile.add(openStuList);
+        openFile.add(openDutyList);
+
+        fileMenu.add(openFile);
+        fileMenu.add(exitMenuItem);
+
+        menuBar.add(fileMenu);
+
+        //编辑
+        JMenu editMenu = new JMenu("编辑");
 
         JMenu setMenu = new JMenu("设置界面");
 
@@ -183,8 +233,8 @@ public class InfSetDialog extends JDialog {
         DutyMenuItem.addActionListener(e -> {
             try {
                 c.removeAll();
-                initMenuBar(AllStuPath, leaveListPath, DutyListPath, indexPath, refreshCallback);
-                initDuSet(DutyListPath,indexPath,refreshCallback);
+                initMenuBar();
+                c.add(initDuSet());
 
                 c.revalidate();
                 c.repaint();
@@ -198,8 +248,8 @@ public class InfSetDialog extends JDialog {
         AttMenuItem.addActionListener(e -> {
             try {
                 c.removeAll();
-                initMenuBar(AllStuPath, leaveListPath, DutyListPath, indexPath, refreshCallback);
-                initATSet(AllStuPath, leaveListPath, refreshCallback);
+                initMenuBar();
+                c.add(initATSet());
 
                 c.revalidate();
                 c.repaint();
@@ -208,11 +258,19 @@ public class InfSetDialog extends JDialog {
             }
         });
 
+        JMenuItem saveMenuItem = new JMenuItem("保存");
+        saveMenuItem.addActionListener(e -> {
+            save();
+            JOptionPane.showMessageDialog(this, "保存成功");
+        });
 
         setMenu.add(DutyMenuItem);
         setMenu.add(AttMenuItem);
 
-        menuBar.add(setMenu);
+        editMenu.add(setMenu);
+        editMenu.add(saveMenuItem);
+
+        menuBar.add(editMenu);
 
         JMenu helpMenu = new JMenu("关于");
 
@@ -224,15 +282,21 @@ public class InfSetDialog extends JDialog {
         helpMenu.add(appAbout);
 
         menuBar.add(helpMenu);
+
+
     }
 
-    private void initATSet(File AllStuPath, File leaveListPath, Runnable refreshCallback) throws IOException {
+    private JPanel initATSet() throws IOException {
+
+        JPanel mainPanel = new JPanel();
+        mainPanel.setLayout(null);
+
         // 请假人员设置组件
         JLabel leaveLabel = new JLabel("请假人员:");
         leaveLabel.setBounds(20, 0, 300, 25);
-        c.add(leaveLabel);
+        mainPanel.add(leaveLabel);
 
-        ArrayList<JCheckBox> checkBoxList = new ArrayList<>();
+        //ArrayList<JCheckBox> checkBoxList = new ArrayList<>();
         ArrayList<String> studentList = new ArrayList<>();
 
         //获取所有学生名单
@@ -259,7 +323,7 @@ public class InfSetDialog extends JDialog {
         //修改滚轮的灵敏度
         scrollPane.getVerticalScrollBar().setUnitIncrement(12);
         //scrollPane.setLayout(null);
-        c.add(scrollPane);
+        mainPanel.add(scrollPane);
 
 
         ArrayList<String> leaveList = new ArrayList<>();
@@ -290,13 +354,11 @@ public class InfSetDialog extends JDialog {
             leavePanel.add(checkBox);
         }
 
+        // 保存按钮
+        /*{
 
-        { // 保存按钮
-            ImageIcon imageIcon = new ImageIcon(getClass().getResource("/image/save_0.png"));
-            imageIcon.setImage(imageIcon.getImage().getScaledInstance(30, 30, Image.SCALE_DEFAULT));
-            ImageIcon imageIcon2 = new ImageIcon(getClass().getResource("/image/save_1.png"));
-            imageIcon2.setImage(imageIcon2.getImage().getScaledInstance(30, 30, Image.SCALE_DEFAULT));
-            DuButton saveBtn = new DuButton("保存", imageIcon, imageIcon2, 95, 35, () -> {
+            CTButton saveBtn = new CTButton("保存", getClass().getResource("/image/save_0.png")
+                    , getClass().getResource("/image/save_1.png"), 95, 35, () -> {
                 try {
                     StringBuilder sb = new StringBuilder();
                     for (JCheckBox checkBox : checkBoxList) {
@@ -320,27 +382,23 @@ public class InfSetDialog extends JDialog {
             saveBtn.setLocation(22, 340);
 
             c.add(saveBtn);
-        }
+        }*/
 
-        {// 原有资源管理器按钮调整位置
+        /*{// 原有资源管理器按钮调整位置
             ImageIcon imageIcon = new ImageIcon(getClass().getResource("/image/openExp_0.png"));
             imageIcon.setImage(imageIcon.getImage().getScaledInstance(30, 30, Image.SCALE_DEFAULT));
             ImageIcon imageIcon2 = new ImageIcon(getClass().getResource("/image/openExp_1.png"));
             imageIcon2.setImage(imageIcon2.getImage().getScaledInstance(30, 30, Image.SCALE_DEFAULT));
-            DuButton explorerBtn = new DuButton("打开资源管理器", imageIcon, imageIcon2, 190, 35, () -> {});
+            CTButton explorerBtn = new CTButton("打开资源管理器", imageIcon, imageIcon2, 190, 35, () -> {});
             explorerBtn.setLocation(5, 380);
             explorerBtn.addActionListener(e -> {
-                try {
-                    Runtime.getRuntime().exec("explorer.exe " + leaveListPath.getParent());
-                } catch (IOException ex) {
-                    ex.printStackTrace();
-                }
+
             });
             c.add(explorerBtn);
-        }
+        }*/
+
+        return mainPanel;
     }
-
-
 
     private String[][] getDutyList(File dutyPath) throws IOException {
         //获取inf
@@ -384,5 +442,107 @@ public class InfSetDialog extends JDialog {
             i++;
         }
         return list;
+    }
+
+    private void save(){
+        int result = JOptionPane.showConfirmDialog(this, "是否保存？", "提示", JOptionPane.YES_NO_OPTION);
+        if (result == JOptionPane.YES_OPTION){
+            try {
+
+                //保存数据
+                {
+
+                    //处理表格中的数据
+
+
+                    // 遍历表格中的每一行，将每一行的数据添加到tempList中
+                    //getRowCount()-行数
+                    StringBuilder sb = new StringBuilder();
+                    for (int i = 0; i < table.getRowCount(); i++) {
+
+                        //getColumnCount()-列数
+                        for (int j = 0; j < table.getColumnCount(); j++) {
+
+                            sb.append("[").append(table.getValueAt(i, j)).append("]");
+                        }
+                        sb.append("\n");
+                    }
+                    //System.out.println("表格数据:" + sb);
+                    //System.out.println("--index:" + index.get());
+
+                    new IOStreamForInf(DutyListPath).SetInf(sb.toString());
+                    new  IOStreamForInf(indexPath).SetInf(String.valueOf(index.get()));
+
+                    //System.out.println(new IOStreamForInf(indexPath).GetInf());
+
+                    //JOptionPane.showMessageDialog(this, "保存成功");
+
+                }
+
+                //保存数据
+                {
+                    StringBuilder sb = new StringBuilder();
+                    for (JCheckBox checkBox : checkBoxList) {
+                        if (checkBox.isSelected()) {
+                            sb.append(checkBox.getText()).append(",");
+                        }
+                    }
+                    String names = sb.toString();
+                    new IOStreamForInf(leaveListPath).SetInf(names);
+                    //JOptionPane.showMessageDialog(this, "保存成功");
+
+
+                }
+
+                // 保存成功后执行回调
+                refreshCallback.run();
+                //this.setVisible(false);
+
+            } catch (IOException ex) {
+                JOptionPane.showMessageDialog(this, "保存失败", "错误", JOptionPane.ERROR_MESSAGE);
+            }
+        }
+    }
+
+    @Override
+    public void windowOpened(WindowEvent e) {
+
+    }
+
+    //
+    @Override
+    public void windowClosing(WindowEvent e) {
+        save();
+        this.setVisible(false);
+    }
+
+    //窗口关闭
+    @Override
+    public void windowClosed(WindowEvent e) {
+
+    }
+
+    //窗口最小化
+    @Override
+    public void windowIconified(WindowEvent e) {
+
+    }
+
+    //窗口还原
+    @Override
+    public void windowDeiconified(WindowEvent e) {
+
+    }
+
+    //窗口获得焦点
+    @Override
+    public void windowActivated(WindowEvent e) {
+
+    }
+
+    //窗口失去焦点
+    @Override
+    public void windowDeactivated(WindowEvent e) {
+
     }
 }

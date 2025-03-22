@@ -1,6 +1,7 @@
 package com.wmp.panel.duty.panel;
 
-import com.wmp.classtools.CTComponent.DuButton;
+import com.wmp.CTColor;
+import com.wmp.classtools.CTComponent.CTButton;
 import com.wmp.classtools.CTComponent.CTPanel;
 import com.wmp.io.IOStreamForInf;
 import com.wmp.panel.duty.type.DutyDay;
@@ -25,7 +26,7 @@ public class DPanel extends CTPanel {
 
         this.DutyListPath = DutyListPath;
         this.indexPath = indexPath;
-        setMixY(mixY);
+        setNextPanelY(mixY);
 
         //设置容器布局- 绝对布局
         this.setLayout(null);
@@ -37,7 +38,7 @@ public class DPanel extends CTPanel {
         initContainer(DutyListPath);
 
         this.setSize(250,DPanelMixY + 5);
-        setMixY(DPanelMixY);
+        setNextPanelY(DPanelMixY);
 
     }
 
@@ -45,6 +46,7 @@ public class DPanel extends CTPanel {
         JLabel CLBBLabel = new JLabel();
         CLBBLabel.setText("擦黑板:");
         CLBBLabel.setFont(new Font("微软雅黑",Font.BOLD,20));
+        //CLBBLabel.setBackground(CTColor.backColor);
         CLBBLabel.setBounds(5,5,100,22);
         this.add(CLBBLabel);
         DPanelMixY = DPanelMixY + CLBBLabel.getHeight() + 2;
@@ -56,6 +58,7 @@ public class DPanel extends CTPanel {
         JLabel CLFLabel = new JLabel();
         CLFLabel.setText("扫地:");
         CLFLabel.setFont(new Font("微软雅黑",Font.BOLD,20));
+        //CLFLabel.setBackground(CTColor.backColor);
         CLFLabel.setBounds(5,DPanelMixY + 2,100,22);
         this.add(CLFLabel);
         DPanelMixY = DPanelMixY + CLFLabel.getHeight() + 2;
@@ -63,28 +66,10 @@ public class DPanel extends CTPanel {
 
         DPanelMixY = initPeople(now.getClFloor(), DPanelMixY);
 
-
-//        JButton settings = new JButton("设置");
-//        settings.setBounds(5,DPanelMixY + 5,100,32);
-//        // 在settings按钮事件处修改
-//        settings.addActionListener(e -> {
-//            DutyDay current = DutyList.get(index);
-//            new InfSetDialog(null, DutyListPath, current,index, () -> {
-//                try {
-//                    refreshDisplay();
-//                } catch (IOException ex) {
-//                    ex.printStackTrace();
-//                }
-//            }).setVisible(true);
-//        });
-//        this.add(settings);
-
         {
-            ImageIcon imageIcon = new ImageIcon(getClass().getResource("/image/next_0.png"));
-            imageIcon.setImage(imageIcon.getImage().getScaledInstance(30, 30, Image.SCALE_DEFAULT));
-            ImageIcon imageIcon2 = new ImageIcon(getClass().getResource("/image/next_1.png"));
-            imageIcon2.setImage(imageIcon2.getImage().getScaledInstance(30, 30, Image.SCALE_DEFAULT));
-            DuButton next = new DuButton(imageIcon,imageIcon2, 30, () -> {
+
+            CTButton next = new CTButton(getClass().getResource("/image/next_0.png")
+                    ,getClass().getResource("/image/next_1.png"), 30, () -> {
 
                 int i = JOptionPane.showConfirmDialog(this, "确认切换至下一天", "询问", JOptionPane.YES_NO_OPTION);
                 if (i == 0) {
@@ -107,11 +92,9 @@ public class DPanel extends CTPanel {
         }
 
         {
-            ImageIcon imageIcon = new ImageIcon(getClass().getResource("/image/last_0.png"));
-            imageIcon.setImage(imageIcon.getImage().getScaledInstance(30, 30, Image.SCALE_DEFAULT));
-            ImageIcon imageIcon2 = new ImageIcon(getClass().getResource("/image/last_1.png"));
-            imageIcon2.setImage(imageIcon2.getImage().getScaledInstance(30, 30, Image.SCALE_DEFAULT));
-            DuButton last = new DuButton(imageIcon, imageIcon2, 30, () -> {
+
+            CTButton last = new CTButton(getClass().getResource("/image/last_0.png")
+                    , getClass().getResource("/image/last_1.png"), 30, () -> {
                 int i = JOptionPane.showConfirmDialog(this, "确认切换至上一天", "询问", JOptionPane.YES_NO_OPTION);
                 if (i == 0) {
                     if (index > 0) index--;
@@ -164,7 +147,8 @@ public class DPanel extends CTPanel {
 
         JLabel clbbPersonLabel = new JLabel(sb.toString());
         clbbPersonLabel.setFont(new Font("微软雅黑", Font.BOLD, 23));
-        clbbPersonLabel.setForeground(new Color(0x0090FF));
+        clbbPersonLabel.setBackground(CTColor.backColor);
+        clbbPersonLabel.setForeground(CTColor.mainColor);
         clbbPersonLabel.setBounds(5, mixY + 3, 250, 30 * index);
 
         this.add(clbbPersonLabel);
@@ -199,15 +183,20 @@ public class DPanel extends CTPanel {
 
         String inf = ioStreamForInf.GetInf();
 
-        //System.out.println(inf);
-        if(inf.equals("null")){
+        System.out.println(inf);
+        if(inf.equals("error") || inf.equals("")){
             //将数据改为默认-空,需要用户自行输入数据
 
             ioStreamForInf.SetInf("""
         [请] [尽快,设置]
         [请] [尽快,设置,0]
         """);
-        } else if (inf.equals("error")) {
+
+            inf = """
+        [请] [尽快,设置]
+        [请] [尽快,设置,0]
+        """;
+        } else if (inf.equals("null")) {
             //总会有的
         }
 
@@ -217,8 +206,15 @@ public class DPanel extends CTPanel {
         for (String s : inftempList) {
             ArrayList<String[]> strings = InfProcess.RDExtractNames(s);
 
-            DutyList.add(new DutyDay(DutyDay.setDutyPersonList(strings.get(0)),
-                    DutyDay.setDutyPersonList(strings.get(1))));
+            try {
+                DutyList.add(new DutyDay(DutyDay.setDutyPersonList(strings.get(0)),
+                        DutyDay.setDutyPersonList(strings.get(1))));
+            } catch (Exception e) {
+                if (strings.size() <= 2){
+                    JOptionPane.showMessageDialog(this, "请检查数据格式是否正确", "错误", JOptionPane.ERROR_MESSAGE);
+                }
+                throw new RuntimeException(e);
+            }
         }
 
         System.out.println(DutyList);
@@ -238,7 +234,7 @@ public class DPanel extends CTPanel {
 
         this.setSize(250,DPanelMixY + 5);
 
-        setMixY(DPanelMixY);
+        setNextPanelY(DPanelMixY);
     }
 
     public int getIndex() {

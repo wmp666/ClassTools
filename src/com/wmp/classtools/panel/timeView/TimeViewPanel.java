@@ -1,14 +1,13 @@
-package com.wmp.panel.timeView.panel;
+package com.wmp.classtools.panel.timeView;
 
+import com.wmp.CTColor;
 import com.wmp.classtools.CTComponent.CTPanel;
 
 import javax.swing.*;
-import javax.xml.crypto.Data;
 import java.awt.*;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.Set;
 
 public class TimeViewPanel extends CTPanel {
 
@@ -16,7 +15,8 @@ public class TimeViewPanel extends CTPanel {
 
     public TimeViewPanel(int mixY) {
 
-        setMixY(mixY);
+
+        setNextPanelY(mixY);
 
 
 
@@ -28,13 +28,14 @@ public class TimeViewPanel extends CTPanel {
 
         timeView.setText(dateFormat.format(date));
         timeView.setFont(new Font("微软雅黑", Font.BOLD, 23));
-        timeView.setForeground(new Color(0x0090FF));
+        //timeView.setBackground(new Color(0x0ECECED, true));
+        timeView.setForeground(CTColor.mainColor);
         timeView.setBounds(5,3,250,25);
         this.add(timeView);
-        setMixY(25);
+        setNextPanelY(25);
 
         this.setLayout(null);
-        this.setSize(250,getMixY() + 5);
+        this.setSize(250, getNextPanelY() + 5);
     }
 
     public JLabel getTimeView() {
