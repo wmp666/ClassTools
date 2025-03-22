@@ -2,7 +2,6 @@ package com.wmp.classtools.frame;
 
 import com.wmp.CTColor;
 import com.wmp.classtools.CTComponent.CTButton;
-import com.wmp.classtools.panel.finalPanel.FinalPanel;
 import com.wmp.panel.attendance.panel.ATPanel;
 import com.wmp.panel.duty.panel.DPanel;
 import com.wmp.classtools.infSet.InfSetDialog;
@@ -15,9 +14,6 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.io.File;
 import java.io.IOException;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.concurrent.atomic.AtomicInteger;
 
 public class MainWindow extends JWindow {
@@ -49,7 +45,7 @@ public class MainWindow extends JWindow {
         mixY = timeViewPanel.getNextPanelY();
 
         //时间刷新
-        new Thread(() -> {
+        /*Thread timeThread = new Thread(() -> {
 
             while (true) {
                 //获取时间
@@ -64,7 +60,8 @@ public class MainWindow extends JWindow {
                 }
                 timeViewPanel.repaint();
             }
-        }).start();
+        });
+        timeThread.start();*/
 
 
         //System.out.println("mixY = " + mixY);
@@ -104,7 +101,7 @@ public class MainWindow extends JWindow {
         mixY = settings.getHeight() + mixY;
         contentPane.add(settings);*/
 
-       /* FinalPanel finalPanel = new FinalPanel(mixY);
+        /* FinalPanel finalPanel = new FinalPanel(mixY);
         finalPanel.setLocation(0,mixY);
         finalPanel.setBackground(CTColor.backColor);
 
@@ -129,10 +126,11 @@ public class MainWindow extends JWindow {
         contentPane.add(finalPanel);*/
 
         JPanel finalPanel = new JPanel();
+        finalPanel.setLayout(new GridLayout(1, 6));
         finalPanel.setBackground(CTColor.backColor);
-        finalPanel.setLayout(null);
+        //finalPanel.setLayout(null);
         finalPanel.setLocation(0, mixY);
-        finalPanel.setSize(300, 35);
+        finalPanel.setSize(250, 39);
 
         CTButton settings = new CTButton(getClass().getResource("/image/settings_0.png"),
                 getClass().getResource("/image/settings_1.png"),30,() -> {
@@ -140,8 +138,8 @@ public class MainWindow extends JWindow {
             try {
                 new InfSetDialog(this, AllStuPath, LeaveListPath, DutyListPath, indexPath, () -> {
                     try {
-                        dPanel.refreshDisplay();
-                        aTPanel.refreshAttendanceData(); // 自定义刷新方法
+                        dPanel.refresh();
+                        aTPanel.refresh(); // 自定义刷新方法
                     } catch (IOException ex) {
                         ex.printStackTrace();
                     }
@@ -152,14 +150,34 @@ public class MainWindow extends JWindow {
 
         });
 
-        settings.setLocation(210, 0);
+        //settings.setLocation(210, 0);
         finalPanel.add(settings);
+
+        CTButton about = new CTButton(getClass().getResource("/image/about_0.png"),
+                getClass().getResource("/image/about_1.png"),30,() -> {
+            new AboutDialog().setVisible(true);
+        });
+
+        //about.setLocation(210, 0);
+        finalPanel.add(about);
+        CTButton exit = new CTButton(getClass().getResource("/image/exit_0.png"),
+                getClass().getResource("/image/exit_1.png"),30,() -> {
+            int i = JOptionPane.showConfirmDialog(null, "确认退出?", "询问", JOptionPane.YES_NO_OPTION);
+            if (i == JOptionPane.YES_OPTION){
+                System.exit(0);
+            }
+
+        });
+
+        //exit.setLocation(210, 0);
+        finalPanel.add(exit);
+
 
         mixY = finalPanel.getHeight() + mixY;
         contentPane.add(finalPanel);
 
         //添加至系统托盘
-        initTray();
+        //initTray();
 
         initFrame(mixY);
 

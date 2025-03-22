@@ -6,6 +6,7 @@ import com.wmp.classtools.CTComponent.CTPanel;
 import com.wmp.io.IOStreamForInf;
 import com.wmp.panel.duty.type.DutyDay;
 import com.wmp.tools.InfProcess;
+import com.wmp.tools.PeoPanelProcess;
 
 import javax.swing.*;
 import java.awt.*;
@@ -81,7 +82,7 @@ public class DPanel extends CTPanel {
 
                 try {
                     new IOStreamForInf(indexPath).SetInf(String.valueOf(index));
-                    refreshDisplay();
+                    refresh();
                 } catch (IOException ex) {
                     throw new RuntimeException(ex);
                 }
@@ -104,7 +105,7 @@ public class DPanel extends CTPanel {
 
                 try {
                     new IOStreamForInf(indexPath).SetInf(String.valueOf(index));
-                    refreshDisplay();
+                    refresh();
                 } catch (IOException ex) {
                     throw new RuntimeException(ex);
                 }
@@ -120,7 +121,7 @@ public class DPanel extends CTPanel {
             return mixY; // 空集合直接返回基准值（根据业务需求调整）
         }
 
-        StringBuilder sb = new StringBuilder();
+        /*StringBuilder sb = new StringBuilder();
         sb.append("<html>");
 
         int size = array.size();
@@ -142,18 +143,19 @@ public class DPanel extends CTPanel {
             }
         }
 
-        sb.append("</html>");
+        sb.append("</html>");*/
 
+        Object[] o = PeoPanelProcess.getPeopleName(array);
 
-        JLabel clbbPersonLabel = new JLabel(sb.toString());
-        clbbPersonLabel.setFont(new Font("微软雅黑", Font.BOLD, 23));
-        clbbPersonLabel.setBackground(CTColor.backColor);
-        clbbPersonLabel.setForeground(CTColor.mainColor);
-        clbbPersonLabel.setBounds(5, mixY + 3, 250, 30 * index);
+        JLabel personLabel = new JLabel(String.valueOf(o[0]));
+        personLabel.setFont(new Font("微软雅黑", Font.BOLD, 23));
+        personLabel.setBackground(CTColor.backColor);
+        personLabel.setForeground(CTColor.mainColor);
+        personLabel.setBounds(5, mixY + 3, 250, 30 * Integer.parseInt(String.valueOf(o[1])));
 
-        this.add(clbbPersonLabel);
+        this.add(personLabel);
 
-        return clbbPersonLabel.getY() + clbbPersonLabel.getHeight(); // 可替换为常量提升可读性
+        return personLabel.getY() + personLabel.getHeight(); // 可替换为常量提升可读性
     }
 
 
@@ -161,15 +163,15 @@ public class DPanel extends CTPanel {
     private void initIndex(File indexPath) throws IOException {
         IOStreamForInf ioStreamForInf = new IOStreamForInf(indexPath);
 
-        String inf = ioStreamForInf.GetInf();
+        String[] inf = ioStreamForInf.GetInf();
 
         //System.out.println(inf);
-        if(inf.isEmpty() || inf.equals("error")){
+        if(inf[0].equals("error")){
             //将数据改为默认-空,需要用户自行输入数据
             index = 0;
             ioStreamForInf.SetInf("0");
         }else{
-            index = Integer.parseInt(inf);
+            index = Integer.parseInt(inf[0]);
         }
         System.out.println("index:" + index);
     }
@@ -181,28 +183,24 @@ public class DPanel extends CTPanel {
 
         //System.out.println("DutyPath:" + dutyPath);
 
-        String inf = ioStreamForInf.GetInf();
+        String[] inf = ioStreamForInf.GetInf();
 
         System.out.println(inf);
-        if(inf.equals("error") || inf.equals("")){
+        if(inf[0].equals("error")){
             //将数据改为默认-空,需要用户自行输入数据
 
-            ioStreamForInf.SetInf("""
-        [请] [尽快,设置]
-        [请] [尽快,设置,0]
-        """);
+            ioStreamForInf.SetInf("[尽快,设置] [请]",
+                    "[尽快,设置,0] [请]");
 
-            inf = """
-        [请] [尽快,设置]
-        [请] [尽快,设置,0]
-        """;
-        } else if (inf.equals("null")) {
+            inf = new String[]{"[尽快,设置] [请]",
+                    "[尽快,设置,0] [请]"};
+        } else if (inf[0].equals("null")) {
             //总会有的
         }
 
         //处理inf
         DutyList.clear();
-        String[] inftempList = inf.split("\n");
+        String[] inftempList = inf;
         for (String s : inftempList) {
             ArrayList<String[]> strings = InfProcess.RDExtractNames(s);
 
@@ -222,7 +220,8 @@ public class DPanel extends CTPanel {
 
 
     // 刷新方法
-    public void refreshDisplay() throws IOException {
+    @Override
+    public void refresh() throws IOException {
 
         DPanelMixY = 0;
         this.removeAll();

@@ -12,11 +12,11 @@ public class IOStreamForInf {
         this.file = file;
     }
 
-    public String GetInf() throws IOException {
+    public String[] GetInf() throws IOException {
         if (!file.exists()) {
             if (!creativeFile(file)) {
                 JOptionPane.showMessageDialog(null, file.getPath() + "文件无法创建", "世界拒绝了我", JOptionPane.ERROR_MESSAGE);
-                return "error";
+                return new String[]{"error"};
             }
         }
 
@@ -32,22 +32,23 @@ public class IOStreamForInf {
             }
 
             String s = "";
-            if (content.length()!=0){
+            if (!content.isEmpty()){
                 //去除文字中的空格
                  s = content.deleteCharAt(content.length()-1).toString().trim();
             }
 
             //System.out.println(file.getPath()+ ":"  + s);
             //System.out.println(s.isEmpty());
-            return !s.isEmpty() ? s : "";
+
+            return !s.isEmpty() ? s.split("\n") : new String[]{"error"};
         } catch (IOException e) {
             JOptionPane.showMessageDialog(null, file.getPath() + "文件读取失败", "世界拒绝了我", JOptionPane.ERROR_MESSAGE);
-            return "error";
+            return new String[]{"error"};
         }
     }
 
 
-    public boolean SetInf(String inf) throws IOException {
+    public boolean SetInf(String... infs) throws IOException {
         if (!file.exists()) {
             if (!creativeFile(file)) {
                 JOptionPane.showMessageDialog(null, file.getPath() + "文件无法创建", "世界拒绝了我", JOptionPane.ERROR_MESSAGE);
@@ -56,7 +57,8 @@ public class IOStreamForInf {
         }
 
         try (Writer writer = new OutputStreamWriter(
-                new FileOutputStream(file), StandardCharsets.UTF_8)) { // 明确指定编码
+                new FileOutputStream(file), StandardCharsets.UTF_8)) {// 明确指定编码
+            String inf = String.join("\n", infs);
             writer.write(inf);
             writer.flush();
 
@@ -69,7 +71,7 @@ public class IOStreamForInf {
                 while ((line = reader.readLine()) != null) {
                     content.append(line);
                 }
-                return content.toString().equals(inf);
+                return false;
             }
         } catch (IOException e) {
             JOptionPane.showMessageDialog(null, "文件写入失败", "世界拒绝了我", JOptionPane.ERROR_MESSAGE);

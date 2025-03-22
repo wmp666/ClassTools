@@ -26,7 +26,7 @@ public class CTButton extends JButton implements MouseListener {
 
 
 
-        this("", defaultIconPath, rolloverIconPath, a, a, callback);
+        this(null, defaultIconPath, rolloverIconPath, a, a, callback);
 
 
     }
@@ -46,8 +46,8 @@ public class CTButton extends JButton implements MouseListener {
             this.rolloverIcon = rolloverIcon;
         }
 
-        this.setToolTipText(text);
-
+        // 设置按钮边框为透明
+        this.setFocusPainted(false);
         this.setBorderPainted(false);
 
         this.setBackground(CTColor.backColor);

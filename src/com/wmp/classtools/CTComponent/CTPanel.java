@@ -3,6 +3,7 @@ package com.wmp.classtools.CTComponent;
 import com.wmp.CTColor;
 
 import javax.swing.*;
+import java.io.IOException;
 
 public abstract class CTPanel extends JPanel{
 
@@ -31,4 +32,6 @@ public abstract class CTPanel extends JPanel{
     public void nextPanelY(int nextPanelY) {
         this.nextPanelY = nextPanelY;
     }
+
+    public abstract void refresh() throws IOException;
 }

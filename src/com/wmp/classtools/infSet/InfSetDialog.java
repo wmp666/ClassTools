@@ -51,6 +51,7 @@ public class InfSetDialog extends JDialog implements WindowListener {
 
         initMenuBar();
 
+
         c.add(initATSet());
 
         initDuSet();
@@ -60,6 +61,7 @@ public class InfSetDialog extends JDialog implements WindowListener {
     private JPanel initDuSet() throws IOException {
 
         JPanel mainPanel = new JPanel();
+        mainPanel.setBackground(CTColor.backColor);
         mainPanel.setLayout(null);
 
         DefaultTableModel model = new DefaultTableModel(getDutyList(DutyListPath),
@@ -69,6 +71,7 @@ public class InfSetDialog extends JDialog implements WindowListener {
 
         JScrollPane scrollPane = new JScrollPane(table);
         scrollPane.setBounds(20, 30, 340, 300);
+        scrollPane.setBackground(CTColor.backColor);
         mainPanel.add(scrollPane);
 
         // 保存按钮
@@ -121,29 +124,31 @@ public class InfSetDialog extends JDialog implements WindowListener {
             c.add(saveBtn);
         }*/
 
-        /*// 资源管理器按钮
-        {
-
-            CTButton explorerBtn = new CTButton("打开资源管理器", getClass().getResource("/image/openExp_0.png"),
-                    getClass().getResource("/image/openExp_1.png"), 190, 35, () -> {});
-            explorerBtn.setLocation(5, 380);
-            explorerBtn.addActionListener(e -> {
-                try {
-                    Runtime.getRuntime().exec("explorer.exe " + DutyListPath.getParent());
-                } catch (IOException ex) {
-                    ex.printStackTrace();
-                }
-            });
-            c.add(explorerBtn);
-        }*/
 
         //新建
         {
 
             CTButton newBtn = new CTButton("新建",getClass().getResource("/image/new_0.png"),
                     getClass().getResource("/image/new_1.png"),95,35, () -> {
-                String s1 = JOptionPane.showInputDialog(this, "请输入擦黑板人员", "新建", JOptionPane.PLAIN_MESSAGE);
-                String s2 = JOptionPane.showInputDialog(this, "请输入扫地人员", "新建", JOptionPane.PLAIN_MESSAGE);
+                //检测内容是否为空
+                boolean b = true;
+                String s1 = "null";
+                String s2 = "null";
+                while (b){
+                    s1 = JOptionPane.showInputDialog(this, "请输入擦黑板人员", "新建", JOptionPane.PLAIN_MESSAGE);
+                    if (s2 != null && !s1.trim().isEmpty() && s1.indexOf('[') != -1 && s1.indexOf(']') != -1){
+                        b = false;
+                    }
+                }
+
+                b = true;
+                while (b){
+                    s2 = JOptionPane.showInputDialog(this, "请输入扫地人员", "新建", JOptionPane.PLAIN_MESSAGE);
+                    if (s2 != null && !s2.trim().isEmpty()  && s2.indexOf('[') != -1 && s2.indexOf(']') != -1){
+                        b = false;
+                    }
+                }
+
                 model.addRow(new Object[]{s2,s1});
 
             });
@@ -159,7 +164,7 @@ public class InfSetDialog extends JDialog implements WindowListener {
 
 
                 try {
-                    index.set(Integer.parseInt(new IOStreamForInf(indexPath).GetInf()));
+                    index.set(Integer.parseInt(new IOStreamForInf(indexPath).GetInf()[0]));
                 } catch (IOException e) {
                     throw new RuntimeException(e);
                 }
@@ -184,11 +189,35 @@ public class InfSetDialog extends JDialog implements WindowListener {
 
     private void initMenuBar() {
         JMenuBar menuBar = new JMenuBar();
+        menuBar.setBackground(CTColor.backColor);
         this.setJMenuBar(menuBar);
 
         JMenu fileMenu = new JMenu("文件");
 
         JMenu openFile = new JMenu("打开文件");
+
+        JMenuItem openAppList = new JMenuItem("软件位置");
+        openAppList.addActionListener(e -> {
+            try {
+                // 获取可靠的项目工作目录
+                String currentDir = System.getProperty("user.dir");
+                File targetDir = new File(currentDir).getParentFile();
+
+                // 校验父目录有效性
+                if (targetDir == null || !targetDir.exists()) {
+                    throw new IOException("Parent directory does not exist");
+                }
+                // 使用跨平台方式打开文件管理器
+                if (Desktop.isDesktopSupported()) {
+                    Desktop.getDesktop().open(targetDir);
+                } else {
+                    // 兼容回退方案
+                    Runtime.getRuntime().exec(new String[]{"cmd", "/c", "start", targetDir.getAbsolutePath()});
+                }
+            } catch (IOException ex) {
+                ex.printStackTrace();
+            }
+        });
 
         JMenuItem openStuList = new JMenuItem("人员名单");
         openStuList.addActionListener(e -> {
@@ -214,7 +243,7 @@ public class InfSetDialog extends JDialog implements WindowListener {
             this.setVisible(false);
         });
 
-
+        openFile.add(openAppList);
         openFile.add(openStuList);
         openFile.add(openDutyList);
 
@@ -272,23 +301,13 @@ public class InfSetDialog extends JDialog implements WindowListener {
 
         menuBar.add(editMenu);
 
-        JMenu helpMenu = new JMenu("关于");
-
-        JMenuItem appAbout = new JMenuItem("软件");
-        appAbout.addActionListener(e -> {
-            JOptionPane.showMessageDialog(this, "软件版本："+ Main.version +"\n开发者：WMP\n版权所有：WMP\n");
-        });
-
-        helpMenu.add(appAbout);
-
-        menuBar.add(helpMenu);
-
 
     }
 
     private JPanel initATSet() throws IOException {
 
         JPanel mainPanel = new JPanel();
+        mainPanel.setBackground(CTColor.backColor);
         mainPanel.setLayout(null);
 
         // 请假人员设置组件
@@ -303,16 +322,17 @@ public class InfSetDialog extends JDialog implements WindowListener {
         {
             IOStreamForInf ioStreamForInf = new IOStreamForInf(AllStuPath);
 
-            String inf = ioStreamForInf.GetInf();
+            String[] inf = ioStreamForInf.GetInf();
 
             //System.out.println(inf);
-            if (!(inf.isEmpty() || inf.equals("error"))) {
-                studentList.addAll(Arrays.asList(inf.split("\n")));
+            if (!inf[0].equals("error")) {
+                studentList.addAll(Arrays.asList(inf));
             }
         }
 
         JPanel leavePanel = new JPanel();
         leavePanel.setBounds(20, 0, 340, 300);
+        leavePanel.setBackground(CTColor.backColor);
         leavePanel.setLayout(new GridLayout(studentList.size() / 4 + 1, 4, 10, 10));
         //leavePanel.setBackground(Color.WHITE);
 
@@ -320,6 +340,7 @@ public class InfSetDialog extends JDialog implements WindowListener {
         //JTextArea leaveArea = new JTextArea();
         JScrollPane scrollPane = new JScrollPane(leavePanel);
         scrollPane.setBounds(20, 30, 340, 300);
+        scrollPane.setBackground(CTColor.backColor);
         //修改滚轮的灵敏度
         scrollPane.getVerticalScrollBar().setUnitIncrement(12);
         //scrollPane.setLayout(null);
@@ -330,8 +351,8 @@ public class InfSetDialog extends JDialog implements WindowListener {
         // 初始化现有数据
         try {
             if (leaveListPath.exists()) {
-                String content = new IOStreamForInf(leaveListPath).GetInf();
-                leaveList.addAll(Arrays.asList(content.split(",")));
+                String[] content = new IOStreamForInf(leaveListPath).GetInf();
+                leaveList.addAll(Arrays.asList(content));
 
                 //leaveArea.setText(content.replace(",", "\n"));
             }
@@ -344,7 +365,7 @@ public class InfSetDialog extends JDialog implements WindowListener {
         System.out.println("leaveList:" + leaveList);
         for (String student : studentList) {
             JCheckBox checkBox = new JCheckBox(student);
-            //checkBox.setBackground(Color.WHITE);
+            checkBox.setBackground(CTColor.backColor);
 
 
             if (leaveList.contains(student.trim())) {
@@ -384,19 +405,6 @@ public class InfSetDialog extends JDialog implements WindowListener {
             c.add(saveBtn);
         }*/
 
-        /*{// 原有资源管理器按钮调整位置
-            ImageIcon imageIcon = new ImageIcon(getClass().getResource("/image/openExp_0.png"));
-            imageIcon.setImage(imageIcon.getImage().getScaledInstance(30, 30, Image.SCALE_DEFAULT));
-            ImageIcon imageIcon2 = new ImageIcon(getClass().getResource("/image/openExp_1.png"));
-            imageIcon2.setImage(imageIcon2.getImage().getScaledInstance(30, 30, Image.SCALE_DEFAULT));
-            CTButton explorerBtn = new CTButton("打开资源管理器", imageIcon, imageIcon2, 190, 35, () -> {});
-            explorerBtn.setLocation(5, 380);
-            explorerBtn.addActionListener(e -> {
-
-            });
-            c.add(explorerBtn);
-        }*/
-
         return mainPanel;
     }
 
@@ -404,27 +412,21 @@ public class InfSetDialog extends JDialog implements WindowListener {
         //获取inf
         IOStreamForInf ioStreamForInf = new IOStreamForInf(dutyPath);
 
-        String inf = ioStreamForInf.GetInf();
+        String[] inf = ioStreamForInf.GetInf();
 
         //System.out.println(inf);
-        if(inf.equals("null")){
-            //将数据改为默认-空,需要用户自行输入数据
-
-            ioStreamForInf.SetInf("""
-        [请] [尽快,设置]
-        [请] [尽快,设置]
-        """);
-        } else if (inf.equals("error")) {
+        if (inf[0].equals("error")) {
             //总会有的
-            return new String[][]{{"error"},{"null"}};
+            ioStreamForInf.SetInf("[尽快,设置] [请]",
+                               "[尽快,设置,1] [请]");
+            return new String[][]{{"error"}, {"null"}};
         }
-
 
 
         //处理inf
 
         //初级数据-[0]"[xxx][xxx,xxx]" [1]...
-        String[] inftempList = inf.split("\n");
+        String[] inftempList = inf;
 
         String[][] list = new String[inftempList.length][2];
         ArrayList<String[]> tempList = new ArrayList<>();
@@ -449,7 +451,7 @@ public class InfSetDialog extends JDialog implements WindowListener {
         if (result == JOptionPane.YES_OPTION){
             try {
 
-                //保存数据
+                //保存数据-dutyList
                 {
 
                     //处理表格中的数据
@@ -479,12 +481,12 @@ public class InfSetDialog extends JDialog implements WindowListener {
 
                 }
 
-                //保存数据
+                //保存数据-请假信息
                 {
                     StringBuilder sb = new StringBuilder();
                     for (JCheckBox checkBox : checkBoxList) {
                         if (checkBox.isSelected()) {
-                            sb.append(checkBox.getText()).append(",");
+                            sb.append(checkBox.getText()).append("\n");
                         }
                     }
                     String names = sb.toString();

@@ -18,8 +18,6 @@ public class TimeViewPanel extends CTPanel {
 
         setNextPanelY(mixY);
 
-
-
         //获取时间
         Date date = new Date();
         //格式化 11.22 23:05
@@ -36,9 +34,31 @@ public class TimeViewPanel extends CTPanel {
 
         this.setLayout(null);
         this.setSize(250, getNextPanelY() + 5);
+
+        //时间刷新
+        Thread timeThread = new Thread(() -> {
+
+            while (true) {
+                //获取时间
+                Date date02 = new Date();
+                //格式化 11.22 23:05
+                DateFormat dateFormat02 = new SimpleDateFormat("MM.dd HH:mm:ss");
+                timeView.setText(dateFormat02.format(date02));
+                try {
+                    Thread.sleep(300);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+                repaint();
+            }
+        });
+
+        timeThread.start();
     }
 
-    public JLabel getTimeView() {
-        return timeView;
+    @Override
+    public void refresh() {
+
     }
+
 }

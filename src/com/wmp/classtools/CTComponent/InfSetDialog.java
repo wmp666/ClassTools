@@ -136,15 +136,15 @@ public class InfSetDialog extends JDialog {
             {
                 IOStreamForInf ioStreamForInf = new IOStreamForInf(new File("index.txt"));
 
-                String inf = ioStreamForInf.GetInf();
+                String[] inf = ioStreamForInf.GetInf();
 
                 //System.out.println(inf);
-                if(inf.equals("error")){
+                if(inf[0].equals("error")){
                     //将数据改为默认-空,需要用户自行输入数据
                     index = 0;
                     ioStreamForInf.SetInf("0");
                 }else{
-                    index = Integer.parseInt(inf);
+                    index = Integer.parseInt(inf[0]);
                 }
                 System.out.println("index:" + index);
             }
