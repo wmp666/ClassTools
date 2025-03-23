@@ -137,7 +137,7 @@ public class GetNewerVersion {
 
             try {
                 // 创建目标目录
-                File appDir = new File("app");
+                File appDir = new File("update");
                 if (!appDir.exists()) appDir.mkdirs();
 
                 // 设置进度对话框
@@ -178,9 +178,6 @@ public class GetNewerVersion {
                 try (InputStream in = conn.getInputStream();
                      FileOutputStream out = new FileOutputStream("app/ClassTools.jar")) {
 
-
-
-
                     byte[] buffer = new byte[8192];
                     int read;
                     long total = 0;
@@ -196,7 +193,7 @@ public class GetNewerVersion {
 
                     SwingUtilities.invokeLater(() -> {
                         progressDialog.dispose();
-                        JOptionPane.showMessageDialog(parent, "下载完成！请重启应用");
+                        JOptionPane.showMessageDialog(parent, "下载完成！请重启应用\n并将应用目录下update\\中的ClassTools.jar移至app\\");
                     });
                 }
             } catch (Exception ex) {
