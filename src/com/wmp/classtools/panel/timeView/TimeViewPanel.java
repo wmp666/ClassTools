@@ -1,6 +1,7 @@
 package com.wmp.classtools.panel.timeView;
 
 import com.wmp.CTColor;
+import com.wmp.classtools.CTComponent.CTButton;
 import com.wmp.classtools.CTComponent.CTPanel;
 
 import javax.swing.*;
@@ -28,9 +29,45 @@ public class TimeViewPanel extends CTPanel {
         timeView.setFont(new Font("微软雅黑", Font.BOLD, 23));
         //timeView.setBackground(new Color(0x0ECECED, true));
         timeView.setForeground(CTColor.mainColor);
-        timeView.setBounds(5,3,250,25);
+        timeView.setBounds(5,3,250,32);
         this.add(timeView);
-        setNextPanelY(25);
+        setNextPanelY(32);
+
+        CTButton viewTimeButton = new CTButton(getClass().getResource("/image/view_0.png"),
+                    getClass().getResource("/image/view_1.png"), 30, () -> {
+            //设置屏幕大小
+            Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+            int screenWidth = (int) screenSize.getWidth();
+            int screenHeight = (int) screenSize.getHeight();
+            JWindow window = new JWindow();
+            window.setIconImage(new ImageIcon(getClass().getResource("/image/icon.png")).getImage());
+            window.setSize(screenWidth, screenHeight);
+            window.setLocation(0, 0);
+            window.setAlwaysOnTop(true);
+
+            Container c = window.getContentPane();
+            c.setLayout(new BorderLayout());
+
+            timeView.setFont(new Font("微软雅黑", Font.BOLD, 50));
+
+            c.add(timeView, BorderLayout.CENTER);
+
+            CTButton exitButton = new CTButton(getClass().getResource("/image/exit_0.png"),
+                    getClass().getResource("/image/exit_1.png"), 1, () -> {
+                window.setVisible(false);
+
+                timeView.setFont(new Font("微软雅黑", Font.BOLD, 23));
+                timeView.setBounds(5,3,250,32);
+                this.add(timeView);
+            });
+
+            c.add(exitButton, BorderLayout.WEST);
+
+            window.setVisible(true);
+        });
+
+        viewTimeButton.setLocation(210, 5 );
+        this.add(viewTimeButton);
 
         this.setLayout(null);
         this.setSize(250, getNextPanelY() + 5);

@@ -1,10 +1,20 @@
 package com.wmp.classtools.frame;
 
 import com.wmp.Main;
+import com.wmp.tools.GetNewerVersion;
+import com.wmp.tools.SslUtils;
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
+import org.jsoup.nodes.Element;
+import org.jsoup.select.Elements;
 
 import javax.swing.*;
 import java.awt.*;
 import java.io.File;
+import java.io.IOException;
+import java.net.URI;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class AboutDialog extends JDialog {
 
@@ -41,6 +51,11 @@ public class AboutDialog extends JDialog {
         this.add(version);
         this.add(author);
 
+        initMenuBar();
+
+    }
+
+    private void initMenuBar() {
         JMenuBar menuBar = new JMenuBar();
         this.setJMenuBar(menuBar);
 
@@ -49,7 +64,7 @@ public class AboutDialog extends JDialog {
         JMenuItem github = new JMenuItem("Github");
         github.addActionListener(e -> {
             try {
-                Desktop.getDesktop().browse(new java.net.URI("https://github.com/wmp666/ClassTools"));
+                Desktop.getDesktop().browse(new URI("https://github.com/wmp666/ClassTools"));
             } catch (Exception ex) {
                 ex.printStackTrace();
             }
@@ -68,6 +83,18 @@ public class AboutDialog extends JDialog {
         menu.add(github);
 
         menuBar.add(menu);
-        //this.setVisible(true);
+
+        // 在现有菜单中添加
+
+        JMenu updateMenu = new JMenu("更新");
+
+        JMenuItem checkUpdate = new JMenuItem("检查更新");
+        checkUpdate.addActionListener(e -> GetNewerVersion.checkForUpdate(this));
+
+        updateMenu.add(checkUpdate);
+
+        menuBar.add(updateMenu);
     }
+
+
 }
