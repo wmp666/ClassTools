@@ -95,7 +95,7 @@ public class GetNewerVersion {
 
                     if (result == JOptionPane.YES_OPTION) {
                         downloadUpdate(dialog, "https://github.com/wmp666/ClassTools/releases/latest");
-                        openGithubRelease();
+                        //openGithubRelease();
                     }
                 } else {
                     JOptionPane.showMessageDialog(dialog,
