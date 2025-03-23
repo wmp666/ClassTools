@@ -8,6 +8,7 @@ import com.wmp.panel.duty.panel.DPanel;
 import com.wmp.classtools.infSet.InfSetDialog;
 import com.wmp.classtools.panel.timeView.TimeViewPanel;
 import com.wmp.io.IOStreamForInf;
+import com.wmp.tools.GetNewerVersion;
 
 import javax.swing.*;
 import java.awt.*;
@@ -118,6 +119,14 @@ public class MainWindow extends JDialog {
         //about.setLocation(210, 0);
         about.setToolTipText("版本：" + Main.version);
         finalPanel.add(about);
+
+        CTButton update = new CTButton("检查更新", getClass().getResource("/image/update_0.png"),
+                getClass().getResource("/image/update_1.png"),30,() -> {
+            GetNewerVersion.checkForUpdate(null);
+
+        });
+        update.setToolTipText("获取更新");
+        finalPanel.add(update);
 
         CTButton exit = new CTButton("关闭", getClass().getResource("/image/exit_0.png"),
                 getClass().getResource("/image/exit_1.png"),30,() -> {
