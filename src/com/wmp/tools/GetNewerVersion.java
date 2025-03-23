@@ -142,7 +142,7 @@ public class GetNewerVersion {
 
                 // 设置进度对话框
                 JProgressBar progressBar = new JProgressBar(0, 100);
-                progressBar.setBackground(CTColor.mainColor);
+                progressBar.setForeground(CTColor.mainColor);
                 progressDialog.add(progressBar);
                 progressDialog.setSize(300, 75);
                 progressDialog.setLocationRelativeTo(parent);
