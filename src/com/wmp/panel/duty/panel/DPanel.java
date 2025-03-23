@@ -69,7 +69,7 @@ public class DPanel extends CTPanel {
 
         {
 
-            CTButton next = new CTButton(getClass().getResource("/image/next_0.png")
+            CTButton next = new CTButton("下一天", getClass().getResource("/image/next_0.png")
                     ,getClass().getResource("/image/next_1.png"), 30, () -> {
 
                 int i = JOptionPane.showConfirmDialog(this, "确认切换至下一天", "询问", JOptionPane.YES_NO_OPTION);
@@ -94,7 +94,7 @@ public class DPanel extends CTPanel {
 
         {
 
-            CTButton last = new CTButton(getClass().getResource("/image/last_0.png")
+            CTButton last = new CTButton("上一天", getClass().getResource("/image/last_0.png")
                     , getClass().getResource("/image/last_1.png"), 30, () -> {
                 int i = JOptionPane.showConfirmDialog(this, "确认切换至上一天", "询问", JOptionPane.YES_NO_OPTION);
                 if (i == 0) {

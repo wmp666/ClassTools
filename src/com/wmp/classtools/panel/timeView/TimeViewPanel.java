@@ -33,7 +33,7 @@ public class TimeViewPanel extends CTPanel {
         this.add(timeView);
         setNextPanelY(32);
 
-        CTButton viewTimeButton = new CTButton(getClass().getResource("/image/view_0.png"),
+        CTButton viewTimeButton = new CTButton("全屏显示时间", getClass().getResource("/image/view_0.png"),
                     getClass().getResource("/image/view_1.png"), 30, () -> {
             //设置屏幕大小
             Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();

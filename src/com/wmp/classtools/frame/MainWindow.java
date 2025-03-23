@@ -1,6 +1,7 @@
 package com.wmp.classtools.frame;
 
 import com.wmp.CTColor;
+import com.wmp.Main;
 import com.wmp.classtools.CTComponent.CTButton;
 import com.wmp.panel.attendance.panel.ATPanel;
 import com.wmp.panel.duty.panel.DPanel;
@@ -16,10 +17,13 @@ import java.io.File;
 import java.io.IOException;
 import java.util.concurrent.atomic.AtomicInteger;
 
-public class MainWindow extends JWindow {
+public class MainWindow extends JDialog {
     private final Container contentPane = this.getContentPane();
 
     public MainWindow(String path) throws IOException {
+
+        //删除边框
+        this.setUndecorated(true);
 
         contentPane.setBackground(CTColor.backColor);
         contentPane.setLayout(null);
@@ -78,53 +82,6 @@ public class MainWindow extends JWindow {
         mixY = aTPanel.getNextPanelY();
         contentPane.add(aTPanel);
 
-
-        /*CTButton settings = new CTButton(getClass().getResource("/image/settings_0.png"),
-                getClass().getResource("/image/settings_1.png"),30,() -> {
-
-            try {
-                new InfSetDialog(this, AllStuPath, LeaveListPath, DutyListPath, indexPath, () -> {
-                    try {
-                        dPanel.refreshDisplay();
-                        aTPanel.refreshAttendanceData(); // 自定义刷新方法
-                    } catch (IOException ex) {
-                        ex.printStackTrace();
-                    }
-                }).setVisible(true);
-            } catch (IOException e) {
-                throw new RuntimeException(e);
-            }
-
-        });
-
-        settings.setLocation(210, mixY);
-        mixY = settings.getHeight() + mixY;
-        contentPane.add(settings);*/
-
-        /* FinalPanel finalPanel = new FinalPanel(mixY);
-        finalPanel.setLocation(0,mixY);
-        finalPanel.setBackground(CTColor.backColor);
-
-        CTButton settingsButton = finalPanel.getSettings();
-        settingsButton.setCallback(() -> {
-            try {
-                new InfSetDialog(this, AllStuPath, LeaveListPath, DutyListPath, indexPath, () -> {
-                    try {
-                        dPanel.refreshDisplay();
-                        aTPanel.refreshAttendanceData(); // 自定义刷新方法
-                    } catch (IOException ex) {
-                        ex.printStackTrace();
-                    }
-                }).setVisible(true);
-            } catch (IOException e) {
-                throw new RuntimeException(e);
-            }
-        });
-        finalPanel.setSettings(settingsButton);
-
-        mixY = finalPanel.getNextPanelY();
-        contentPane.add(finalPanel);*/
-
         JPanel finalPanel = new JPanel();
         finalPanel.setLayout(new GridLayout(1, 6));
         finalPanel.setBackground(CTColor.backColor);
@@ -132,7 +89,7 @@ public class MainWindow extends JWindow {
         finalPanel.setLocation(0, mixY);
         finalPanel.setSize(250, 39);
 
-        CTButton settings = new CTButton(getClass().getResource("/image/settings_0.png"),
+        CTButton settings = new CTButton("设置数据", getClass().getResource("/image/settings_0.png"),
                 getClass().getResource("/image/settings_1.png"),30,() -> {
 
             try {
@@ -153,14 +110,16 @@ public class MainWindow extends JWindow {
         //settings.setLocation(210, 0);
         finalPanel.add(settings);
 
-        CTButton about = new CTButton(getClass().getResource("/image/about_0.png"),
+        CTButton about = new CTButton("软件信息", getClass().getResource("/image/about_0.png"),
                 getClass().getResource("/image/about_1.png"),30,() -> {
             new AboutDialog().setVisible(true);
         });
 
         //about.setLocation(210, 0);
+        about.setToolTipText("版本：" + Main.version);
         finalPanel.add(about);
-        CTButton exit = new CTButton(getClass().getResource("/image/exit_0.png"),
+
+        CTButton exit = new CTButton("关闭", getClass().getResource("/image/exit_0.png"),
                 getClass().getResource("/image/exit_1.png"),30,() -> {
             int i = JOptionPane.showConfirmDialog(null, "确认退出?", "询问", JOptionPane.YES_NO_OPTION);
             if (i == JOptionPane.YES_OPTION){

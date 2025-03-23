@@ -56,6 +56,8 @@ public class InfSetDialog extends JDialog implements WindowListener {
 
         initDuSet();
 
+        initAllStuSet();
+
     }
 
     private JPanel initDuSet() throws IOException {
@@ -74,93 +76,52 @@ public class InfSetDialog extends JDialog implements WindowListener {
         scrollPane.setBackground(CTColor.backColor);
         mainPanel.add(scrollPane);
 
-        // 保存按钮
-        /*{
-
-
-
-
-
-            CTButton saveBtn = new CTButton("保存", getClass().getResource("/image/save_0.png"),
-                    getClass().getResource("/image/save_1.png"), 95, 35, () -> {
-                try {
-
-                    //处理表格中的数据
-
-
-                    // 遍历表格中的每一行，将每一行的数据添加到tempList中
-                    //getRowCount()-行数
-                    StringBuilder sb = new StringBuilder();
-                    for (int i = 0; i < table.getRowCount(); i++) {
-
-                        //getColumnCount()-列数
-                        for (int j = 0; j < table.getColumnCount(); j++) {
-
-                            sb.append("[").append(table.getValueAt(i, j)).append("]");
-                        }
-                        sb.append("\n");
-                    }
-                    System.out.println("表格数据:" + sb);
-                    System.out.println("--index:" + index.get());
-
-                    new IOStreamForInf(DutyListPath).SetInf(sb.toString());
-                    new  IOStreamForInf(indexPath).SetInf(String.valueOf(index.get()));
-
-                    System.out.println(new IOStreamForInf(indexPath).GetInf());
-
-                    JOptionPane.showMessageDialog(this, "保存成功");
-
-                    refreshCallback.run(); // 保存成功后执行回调
-
-                    this.setVisible(false);
-
-                } catch (IOException ex) {
-                    JOptionPane.showMessageDialog(this, "保存失败", "错误", JOptionPane.ERROR_MESSAGE);
-                }
-            });
-            //JButton saveBtn = new JButton("保存");
-            saveBtn.setLocation(22, 340);
-
-            c.add(saveBtn);
-        }*/
-
+        JPanel buttonPanel = new JPanel();
+        buttonPanel.setBackground(CTColor.backColor);
+        buttonPanel.setLayout(new FlowLayout( FlowLayout.LEFT, 5, 5));
+        buttonPanel.setBounds(0, 340, 400, 45);
 
         //新建
         {
 
-            CTButton newBtn = new CTButton("新建",getClass().getResource("/image/new_0.png"),
-                    getClass().getResource("/image/new_1.png"),95,35, () -> {
+            CTButton newBtn = new CTButton("添加新的值日生记录",getClass().getResource("/image/new_0.png"),
+                    getClass().getResource("/image/new_1.png"),30, () -> {
                 //检测内容是否为空
                 boolean b = true;
                 String s1 = "null";
                 String s2 = "null";
                 while (b){
                     s1 = JOptionPane.showInputDialog(this, "请输入擦黑板人员", "新建", JOptionPane.PLAIN_MESSAGE);
-                    if (s2 != null && !s1.trim().isEmpty() && s1.indexOf('[') != -1 && s1.indexOf(']') != -1){
+                    if (s1 != null && !s1.trim().isEmpty() && !(s1.indexOf('[') != -1 || s1.indexOf(']') != -1)){
                         b = false;
+                    }else if (s1 == null) {
+                        return;
                     }
                 }
 
                 b = true;
                 while (b){
                     s2 = JOptionPane.showInputDialog(this, "请输入扫地人员", "新建", JOptionPane.PLAIN_MESSAGE);
-                    if (s2 != null && !s2.trim().isEmpty()  && s2.indexOf('[') != -1 && s2.indexOf(']') != -1){
+                    if (s2 != null && !s2.trim().isEmpty()  && !(s2.indexOf('[') != -1 || s2.indexOf(']') != -1)){
                         b = false;
+                    }else if (s2 == null) {
+                        return;
                     }
                 }
 
                 model.addRow(new Object[]{s2,s1});
 
             });
-            newBtn.setLocation(255, 340);
-            mainPanel.add(newBtn);
+            //newBtn.setToolTipText("添加新的值日生记录");
+            //newBtn.setLocation(255, 340);
+            buttonPanel.add(newBtn);
         }
 
         // 删除
         {
 
-            CTButton deleteBtn = new CTButton("删除",getClass().getResource("/image/delete_0.png"),
-                    getClass().getResource("/image/delete_1.png"), 95, 35, () -> {
+            CTButton deleteBtn = new CTButton("删除选中的值日生记录",getClass().getResource("/image/delete_0.png"),
+                    getClass().getResource("/image/delete_1.png"), 35, () -> {
 
 
                 try {
@@ -180,9 +141,110 @@ public class InfSetDialog extends JDialog implements WindowListener {
                     }
                 }
             });
-            deleteBtn.setLocation(255, 380);
-            mainPanel.add(deleteBtn);
+            //deleteBtn.setToolTipText("删除选中的值日生记录");
+            //deleteBtn.setLocation(255, 380);
+            buttonPanel.add(deleteBtn);
         }
+
+        mainPanel.add(buttonPanel);
+
+        return mainPanel;
+    }
+
+    private JPanel initAllStuSet() throws IOException {
+
+        JPanel mainPanel = new JPanel();
+        mainPanel.setBackground(CTColor.backColor);
+        mainPanel.setLayout(null);
+
+        ArrayList<String> studentList = new ArrayList<>();
+
+        {
+            IOStreamForInf ioStreamForInf = new IOStreamForInf(AllStuPath);
+
+            String[] inf = ioStreamForInf.GetInf();
+
+            //System.out.println(inf);
+            if (!inf[0].equals("error")) {
+                studentList.addAll(Arrays.asList(inf));
+            }
+        }
+
+        String[][] studentListTemp = new String[studentList.size()][2];
+        for (int i = 0; i < studentList.size(); i++) {
+            studentListTemp[i][0] = String.valueOf(i + 1);
+            studentListTemp[i][1] = studentList.get(i);
+        }
+
+        DefaultTableModel model = new DefaultTableModel(studentListTemp,
+                new String[]{"序号","姓名"});
+
+        table.setModel(model);
+
+        JScrollPane scrollPane = new JScrollPane(table);
+        scrollPane.setBounds(20, 30, 340, 300);
+        scrollPane.setBackground(CTColor.backColor);
+        mainPanel.add(scrollPane);
+
+        JPanel buttonPanel = new JPanel();
+        buttonPanel.setBackground(CTColor.backColor);
+        buttonPanel.setLayout(new FlowLayout( FlowLayout.LEFT, 5, 5));
+        buttonPanel.setBounds(0, 340, 400, 45);
+
+
+        //新建
+        {
+
+            CTButton newBtn = new CTButton("添加新的项",getClass().getResource("/image/new_0.png"),
+                    getClass().getResource("/image/new_1.png"),30, () -> {
+                //检测内容是否为空
+                boolean b = true;
+                String s1 = "null";
+                while (b){
+                    s1 = JOptionPane.showInputDialog(this, "请输入姓名", "新建", JOptionPane.PLAIN_MESSAGE);
+                    if (s1 != null && !s1.trim().isEmpty()){
+                        b = false;
+                    } else if (s1 == null) {
+                        return;
+                    }
+                }
+
+                model.addRow(new Object[]{ String.valueOf(model.getRowCount() + 1),s1});
+
+            });
+            buttonPanel.add(newBtn);
+        }
+
+        // 删除
+        {
+
+            CTButton deleteBtn = new CTButton("删除选中的项",getClass().getResource("/image/delete_0.png"),
+                    getClass().getResource("/image/delete_1.png"), 35, () -> {
+
+
+                try {
+                    index.set(Integer.parseInt(new IOStreamForInf(indexPath).GetInf()[0]));
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
+                }
+
+                int selectedRow = table.getSelectedRow();
+                if (selectedRow != -1) {
+                    model.removeRow(selectedRow);
+                    if (selectedRow < index.get()){
+                        index.getAndDecrement();
+                    }
+                    if (table.getRowCount() == index.get()) {
+                        index.set(0);
+                    }
+                }
+            });
+            //deleteBtn.setToolTipText("删除选中的值日生记录");
+            //deleteBtn.setLocation(255, 380);
+            buttonPanel.add(deleteBtn);
+        }
+
+        mainPanel.add(buttonPanel);
 
         return mainPanel;
     }
@@ -219,6 +281,7 @@ public class InfSetDialog extends JDialog implements WindowListener {
             }
         });
 
+
         JMenuItem openStuList = new JMenuItem("人员名单");
         openStuList.addActionListener(e -> {
             try {
@@ -243,12 +306,13 @@ public class InfSetDialog extends JDialog implements WindowListener {
             this.setVisible(false);
         });
 
+
         openFile.add(openAppList);
         openFile.add(openStuList);
-        openFile.add(openDutyList);
 
         fileMenu.add(openFile);
         fileMenu.add(exitMenuItem);
+
 
         menuBar.add(fileMenu);
 
@@ -273,12 +337,25 @@ public class InfSetDialog extends JDialog implements WindowListener {
         });
 
         JMenuItem AttMenuItem = new JMenuItem("迟到人数");
-
         AttMenuItem.addActionListener(e -> {
             try {
                 c.removeAll();
                 initMenuBar();
                 c.add(initATSet());
+
+                c.revalidate();
+                c.repaint();
+            } catch (IOException ex) {
+                throw new RuntimeException(ex);
+            }
+        });
+
+        JMenuItem AllStuMenuItem = new JMenuItem("全体人员");
+        AllStuMenuItem.addActionListener(e -> {
+            try {
+                c.removeAll();
+                initMenuBar();
+                c.add(initAllStuSet());
 
                 c.revalidate();
                 c.repaint();
@@ -293,8 +370,10 @@ public class InfSetDialog extends JDialog implements WindowListener {
             JOptionPane.showMessageDialog(this, "保存成功");
         });
 
+
         setMenu.add(DutyMenuItem);
         setMenu.add(AttMenuItem);
+        setMenu.add(AllStuMenuItem);
 
         editMenu.add(setMenu);
         editMenu.add(saveMenuItem);

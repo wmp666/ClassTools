@@ -34,13 +34,13 @@ public class GetNewerVersion {
             String title = doc.title();
             System.out.println("网页标题: " + title);
 
-            // 3. 提取所有链接
+            /*// 3. 提取所有链接
             Elements links = doc.select("a[href]");
             for (Element link : links) {
                 String absUrl = link.attr("abs:href");
                 System.out.println("发现链接: " + absUrl);
             }
-
+*/
             Element body = doc.body();
 
             // 正则表达式匹配大括号内的内容

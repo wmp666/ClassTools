@@ -61,14 +61,37 @@ public class AboutDialog extends JDialog {
 
         JMenu menu = new JMenu("转到");
 
-        JMenuItem github = new JMenuItem("Github");
-        github.addActionListener(e -> {
+        JMenuItem bilibili = new JMenuItem("哔哩哔哩");
+        bilibili.addActionListener(e -> {
+            try {
+                Desktop.getDesktop().browse(new URI("https://space.bilibili.com/1075810224/"));
+            } catch (Exception ex) {
+                ex.printStackTrace();
+            }
+        });
+
+        JMenu github = new JMenu("Github");
+
+        JMenuItem authorGithub = new JMenuItem("作者");
+        authorGithub.addActionListener(e -> {
+            try {
+                Desktop.getDesktop().browse(new URI("https://github.com/wmp666"));
+            } catch (Exception ex) {
+                ex.printStackTrace();
+            }
+        });
+
+        JMenuItem repo = new JMenuItem("仓库");
+        repo.addActionListener(e -> {
             try {
                 Desktop.getDesktop().browse(new URI("https://github.com/wmp666/ClassTools"));
             } catch (Exception ex) {
                 ex.printStackTrace();
             }
         });
+
+        github.add(authorGithub);
+        github.add(repo);
 
         JMenuItem appPath = new JMenuItem("程序路径");
         appPath.addActionListener(e -> {
@@ -79,8 +102,9 @@ public class AboutDialog extends JDialog {
             }
         });
 
-        menu.add(appPath);
+        menu.add(bilibili);
         menu.add(github);
+        menu.add(appPath);
 
         menuBar.add(menu);
 

@@ -31,9 +31,20 @@ public class CTButton extends JButton implements MouseListener {
 
     }
 
+    public CTButton(String text, URL defaultIconPath, URL rolloverIconPath, int a, Runnable callback)
+    {
+
+
+        this(text, defaultIconPath, rolloverIconPath, a, a, callback);
+
+
+    }
+
     public CTButton(String text, URL defaultIconPath, URL rolloverIconPath, int weight, int height, Runnable callback)
     {
-        super(text);
+        this.setToolTipText(text);
+
+        //super(text);
 
         if (defaultIconPath != null){
             ImageIcon defaultIcon = new ImageIcon(defaultIconPath);
