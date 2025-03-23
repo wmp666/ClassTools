@@ -2,12 +2,13 @@ package com.wmp;
 
 import com.wmp.classtools.frame.LoadingWindow;
 import com.wmp.classtools.frame.MainWindow;
+import com.wmp.tools.GetNewerVersion;
 
 import java.io.IOException;
 
 public class Main {
 
-    public static String version = "1.6.3";
+    public static String version = "1.6.4";
 
     public static void main(String[] args) throws IOException {
         System.out.println("Hello, World!");
@@ -20,6 +21,9 @@ public class Main {
         LoadingWindow loadingWindow = new LoadingWindow();
 
         loadingWindow.setVisible(true);
+
+        GetNewerVersion.checkForUpdate(loadingWindow);
+
         new MainWindow(sb.toString());
         loadingWindow.setVisible(false);
     }

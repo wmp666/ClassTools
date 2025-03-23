@@ -72,7 +72,7 @@ public class GetNewerVersion {
         return null;
     }
 
-    public static void checkForUpdate(JDialog dialog) {
+    public static void checkForUpdate(Window dialog) {
         new SwingWorker<Void, Void>() {
             String latestVersion;
 
@@ -130,10 +130,10 @@ public class GetNewerVersion {
         }
     }
 
-    public static void downloadUpdate(JDialog parent, String downloadUrl) {
+    public static void downloadUpdate(Window parent, String downloadUrl) {
         new Thread(() -> {
 
-            JDialog progressDialog = new JDialog(parent, "下载中...", true);
+            JDialog progressDialog = new JDialog((Dialog) parent, "下载中...", true);
 
             try {
                 // 创建目标目录

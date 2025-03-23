@@ -1,7 +1,6 @@
 package com.wmp.classtools.infSet;
 
 import com.wmp.CTColor;
-import com.wmp.Main;
 import com.wmp.classtools.CTComponent.CTButton;
 import com.wmp.io.IOStreamForInf;
 import com.wmp.tools.InfProcess;
@@ -27,7 +26,8 @@ public class InfSetDialog extends JDialog implements WindowListener {
     private final Runnable refreshCallback;
     private final ArrayList<JCheckBox> checkBoxList = new ArrayList<>();
     private final AtomicInteger index = new AtomicInteger();
-    private final JTable table = new JTable();
+    private final JTable DutyTable = new JTable();
+    private final JTable allStuTable = new JTable();
 
 
     // 添加文件路径参数
@@ -67,49 +67,49 @@ public class InfSetDialog extends JDialog implements WindowListener {
         mainPanel.setLayout(null);
 
         DefaultTableModel model = new DefaultTableModel(getDutyList(DutyListPath),
-                new String[]{"扫地","擦黑板"});
+                new String[]{"扫地", "擦黑板"});
 
-        table.setModel(model);
+        DutyTable.setModel(model);
 
-        JScrollPane scrollPane = new JScrollPane(table);
+        JScrollPane scrollPane = new JScrollPane(DutyTable);
         scrollPane.setBounds(20, 30, 340, 300);
         scrollPane.setBackground(CTColor.backColor);
         mainPanel.add(scrollPane);
 
         JPanel buttonPanel = new JPanel();
         buttonPanel.setBackground(CTColor.backColor);
-        buttonPanel.setLayout(new FlowLayout( FlowLayout.LEFT, 5, 5));
+        buttonPanel.setLayout(new FlowLayout(FlowLayout.LEFT, 5, 5));
         buttonPanel.setBounds(0, 340, 400, 45);
 
         //新建
         {
 
-            CTButton newBtn = new CTButton("添加新的值日生记录",getClass().getResource("/image/new_0.png"),
-                    getClass().getResource("/image/new_1.png"),30, () -> {
+            CTButton newBtn = new CTButton("添加新的值日生记录", getClass().getResource("/image/new_0.png"),
+                    getClass().getResource("/image/new_1.png"), 30, () -> {
                 //检测内容是否为空
                 boolean b = true;
                 String s1 = "null";
                 String s2 = "null";
-                while (b){
+                while (b) {
                     s1 = JOptionPane.showInputDialog(this, "请输入擦黑板人员", "新建", JOptionPane.PLAIN_MESSAGE);
-                    if (s1 != null && !s1.trim().isEmpty() && !(s1.indexOf('[') != -1 || s1.indexOf(']') != -1)){
+                    if (s1 != null && !s1.trim().isEmpty() && !(s1.indexOf('[') != -1 || s1.indexOf(']') != -1)) {
                         b = false;
-                    }else if (s1 == null) {
+                    } else if (s1 == null) {
                         return;
                     }
                 }
 
                 b = true;
-                while (b){
+                while (b) {
                     s2 = JOptionPane.showInputDialog(this, "请输入扫地人员", "新建", JOptionPane.PLAIN_MESSAGE);
-                    if (s2 != null && !s2.trim().isEmpty()  && !(s2.indexOf('[') != -1 || s2.indexOf(']') != -1)){
+                    if (s2 != null && !s2.trim().isEmpty() && !(s2.indexOf('[') != -1 || s2.indexOf(']') != -1)) {
                         b = false;
-                    }else if (s2 == null) {
+                    } else if (s2 == null) {
                         return;
                     }
                 }
 
-                model.addRow(new Object[]{s2,s1});
+                model.addRow(new Object[]{s2, s1});
 
             });
             //newBtn.setToolTipText("添加新的值日生记录");
@@ -120,7 +120,7 @@ public class InfSetDialog extends JDialog implements WindowListener {
         // 删除
         {
 
-            CTButton deleteBtn = new CTButton("删除选中的值日生记录",getClass().getResource("/image/delete_0.png"),
+            CTButton deleteBtn = new CTButton("删除选中的值日生记录", getClass().getResource("/image/delete_0.png"),
                     getClass().getResource("/image/delete_1.png"), 35, () -> {
 
 
@@ -130,13 +130,13 @@ public class InfSetDialog extends JDialog implements WindowListener {
                     throw new RuntimeException(e);
                 }
 
-                int selectedRow = table.getSelectedRow();
+                int selectedRow = DutyTable.getSelectedRow();
                 if (selectedRow != -1) {
                     model.removeRow(selectedRow);
-                    if (selectedRow < index.get()){
+                    if (selectedRow < index.get()) {
                         index.getAndDecrement();
                     }
-                    if (table.getRowCount() == index.get()) {
+                    if (DutyTable.getRowCount() == index.get()) {
                         index.set(0);
                     }
                 }
@@ -177,39 +177,39 @@ public class InfSetDialog extends JDialog implements WindowListener {
         }
 
         DefaultTableModel model = new DefaultTableModel(studentListTemp,
-                new String[]{"序号","姓名"});
+                new String[]{"序号", "姓名"});
 
-        table.setModel(model);
+        allStuTable.setModel(model);
 
-        JScrollPane scrollPane = new JScrollPane(table);
+        JScrollPane scrollPane = new JScrollPane(allStuTable);
         scrollPane.setBounds(20, 30, 340, 300);
         scrollPane.setBackground(CTColor.backColor);
         mainPanel.add(scrollPane);
 
         JPanel buttonPanel = new JPanel();
         buttonPanel.setBackground(CTColor.backColor);
-        buttonPanel.setLayout(new FlowLayout( FlowLayout.LEFT, 5, 5));
+        buttonPanel.setLayout(new FlowLayout(FlowLayout.LEFT, 5, 5));
         buttonPanel.setBounds(0, 340, 400, 45);
 
 
         //新建
         {
 
-            CTButton newBtn = new CTButton("添加新的项",getClass().getResource("/image/new_0.png"),
-                    getClass().getResource("/image/new_1.png"),30, () -> {
+            CTButton newBtn = new CTButton("添加新的项", getClass().getResource("/image/new_0.png"),
+                    getClass().getResource("/image/new_1.png"), 30, () -> {
                 //检测内容是否为空
                 boolean b = true;
                 String s1 = "null";
-                while (b){
+                while (b) {
                     s1 = JOptionPane.showInputDialog(this, "请输入姓名", "新建", JOptionPane.PLAIN_MESSAGE);
-                    if (s1 != null && !s1.trim().isEmpty()){
+                    if (s1 != null && !s1.trim().isEmpty()) {
                         b = false;
                     } else if (s1 == null) {
                         return;
                     }
                 }
 
-                model.addRow(new Object[]{ String.valueOf(model.getRowCount() + 1),s1});
+                model.addRow(new Object[]{String.valueOf(model.getRowCount() + 1), s1});
 
             });
             buttonPanel.add(newBtn);
@@ -218,7 +218,7 @@ public class InfSetDialog extends JDialog implements WindowListener {
         // 删除
         {
 
-            CTButton deleteBtn = new CTButton("删除选中的项",getClass().getResource("/image/delete_0.png"),
+            CTButton deleteBtn = new CTButton("删除选中的项", getClass().getResource("/image/delete_0.png"),
                     getClass().getResource("/image/delete_1.png"), 35, () -> {
 
 
@@ -228,13 +228,13 @@ public class InfSetDialog extends JDialog implements WindowListener {
                     throw new RuntimeException(e);
                 }
 
-                int selectedRow = table.getSelectedRow();
+                int selectedRow = allStuTable.getSelectedRow();
                 if (selectedRow != -1) {
                     model.removeRow(selectedRow);
-                    if (selectedRow < index.get()){
+                    if (selectedRow < index.get()) {
                         index.getAndDecrement();
                     }
-                    if (table.getRowCount() == index.get()) {
+                    if (allStuTable.getRowCount() == index.get()) {
                         index.set(0);
                     }
                 }
@@ -307,6 +307,7 @@ public class InfSetDialog extends JDialog implements WindowListener {
         });
 
 
+        openFile.add(openDutyList);
         openFile.add(openAppList);
         openFile.add(openStuList);
 
@@ -497,7 +498,7 @@ public class InfSetDialog extends JDialog implements WindowListener {
         if (inf[0].equals("error")) {
             //总会有的
             ioStreamForInf.SetInf("[尽快,设置] [请]",
-                               "[尽快,设置,1] [请]");
+                    "[尽快,设置,1] [请]");
             return new String[][]{{"error"}, {"null"}};
         }
 
@@ -525,9 +526,9 @@ public class InfSetDialog extends JDialog implements WindowListener {
         return list;
     }
 
-    private void save(){
+    private void save() {
         int result = JOptionPane.showConfirmDialog(this, "是否保存？", "提示", JOptionPane.YES_NO_OPTION);
-        if (result == JOptionPane.YES_OPTION){
+        if (result == JOptionPane.YES_OPTION) {
             try {
 
                 //保存数据-dutyList
@@ -539,12 +540,12 @@ public class InfSetDialog extends JDialog implements WindowListener {
                     // 遍历表格中的每一行，将每一行的数据添加到tempList中
                     //getRowCount()-行数
                     StringBuilder sb = new StringBuilder();
-                    for (int i = 0; i < table.getRowCount(); i++) {
+                    for (int i = 0; i < DutyTable.getRowCount(); i++) {
 
                         //getColumnCount()-列数
-                        for (int j = 0; j < table.getColumnCount(); j++) {
+                        for (int j = 0; j < DutyTable.getColumnCount(); j++) {
 
-                            sb.append("[").append(table.getValueAt(i, j)).append("]");
+                            sb.append("[").append(DutyTable.getValueAt(i, j)).append("]");
                         }
                         sb.append("\n");
                     }
@@ -552,7 +553,7 @@ public class InfSetDialog extends JDialog implements WindowListener {
                     //System.out.println("--index:" + index.get());
 
                     new IOStreamForInf(DutyListPath).SetInf(sb.toString());
-                    new  IOStreamForInf(indexPath).SetInf(String.valueOf(index.get()));
+                    new IOStreamForInf(indexPath).SetInf(String.valueOf(index.get()));
 
                     //System.out.println(new IOStreamForInf(indexPath).GetInf());
 
@@ -571,6 +572,26 @@ public class InfSetDialog extends JDialog implements WindowListener {
                     String names = sb.toString();
                     new IOStreamForInf(leaveListPath).SetInf(names);
                     //JOptionPane.showMessageDialog(this, "保存成功");
+
+
+                }
+
+                //保存数据-人员名单
+                {
+                    //处理表格中的数据
+
+
+                    // 遍历表格中的每一行，将每一行的数据添加到tempList中
+                    //getRowCount()-行数
+                    StringBuilder sb = new StringBuilder();
+                    for (int i = 0; i < allStuTable.getRowCount(); i++) {
+
+
+                        sb.append(allStuTable.getValueAt(i, 1));
+                        sb.append("\n");
+                    }
+
+                    new IOStreamForInf(AllStuPath).SetInf(sb.toString());
 
 
                 }
