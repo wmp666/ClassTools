@@ -155,6 +155,7 @@ public class GetNewerVersion {
             progressDialog.setLocationRelativeTo(parent);
             progressDialog.setModal(true);
             progressDialog.setLayout(null);
+            progressDialog.setDefaultCloseOperation(JDialog.DO_NOTHING_ON_CLOSE);
 
             JLabel label = new JLabel("正在下载更新，请稍候...");
             label.setBounds(10, 10, 300, 20);
@@ -219,7 +220,7 @@ public class GetNewerVersion {
                 try (InputStream in = conn.getInputStream();
                     FileOutputStream out = new FileOutputStream( appDir.getAbsolutePath() + "/ClassTools.jar")) {
                     System.out.println(out);
-                    byte[] buffer = new byte[8192];
+                    byte[] buffer = new byte[1024 * 512];
                     int read;
                     long total = 0;
                     long fileSize = conn.getContentLength();
@@ -236,8 +237,8 @@ public class GetNewerVersion {
                         total += read;
                         int progress = (int) (total * 100 / fileSize);
                         //显示下载速度
-                        String v = (total / 1024) + "KB/" + (fileSize / 1024) + "KB";
-                        System.out.println(v);
+                        String v = (total / 1024) + "KB/" + (fileSize / 1024) + "KB" + " 速度:" + (read / 1024) + "KB";
+                        System.out.println(v + " " + buffer.length / 1024);
                         label.setText("正在下载更新文件 " + v);
 
                         SwingUtilities.invokeLater(() -> progressBar.setValue(progress));
@@ -263,7 +264,7 @@ public class GetNewerVersion {
 
                         progressDialog.dispose();
                         JOptionPane.showMessageDialog(parent, "下载完成！请重启应用");
-                        System.exit(0);
+                        //System.exit(0);
                     });
                 }
             } catch (Exception ex) {

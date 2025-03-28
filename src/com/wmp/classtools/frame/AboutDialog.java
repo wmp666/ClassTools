@@ -19,11 +19,14 @@ import java.util.regex.Pattern;
 public class AboutDialog extends JDialog {
 
     public AboutDialog() {
+
+        GetNewerVersion.checkForUpdate(this);
+
         this.setTitle("关于");
         this.setSize(300, 400);
         this.setLayout(null);
         this.setLocationRelativeTo(null);
-        this.setAlwaysOnTop(true);
+        //this.setAlwaysOnTop(true);
         this.setModal(true);
         this.setResizable(false);
         //this.setUndecorated(true);// 去掉边框
