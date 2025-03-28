@@ -39,7 +39,7 @@ public class GetNewerVersion {
             // 1. 获取网页内容
             Document doc = Jsoup.connect(url)
                     .userAgent("Mozilla/5.0") // 设置UA
-                    .timeout(3000)  // 超时设置
+                    .timeout(10000)  // 超时设置
                     .ignoreContentType(true) // 忽略内容类型
                     .get();
 
@@ -56,7 +56,7 @@ public class GetNewerVersion {
 */
             String result = getTest(doc, "tag_name");
 
-            downloadUrl = getTest(doc, "browser_download_url").replace("github", "kkgithub");
+            downloadUrl = "https://kkgithub.com/wmp666/ClassTools/releases/download/"+ result +"/ClassTools.jar";
 
             versionContent = getTest(doc, "body").replace("\\r\\n", "\n");
             //System.out.println(doc.body());
@@ -150,20 +150,37 @@ public class GetNewerVersion {
         new Thread(() -> {
             
             JDialog progressDialog = new JDialog();
+            progressDialog.setSize(320, 175);
             progressDialog.setTitle("下载中...");
+            progressDialog.setLocationRelativeTo(parent);
             progressDialog.setModal(true);
+            progressDialog.setLayout(null);
+
+            JLabel label = new JLabel("正在下载更新，请稍候...");
+            label.setBounds(10, 10, 300, 20);
+            progressDialog.add(label);
+
+            // 设置进度对话框
+            JProgressBar progressBar = new JProgressBar(0, 100);
+            progressBar.setForeground(CTColor.mainColor);
+            progressBar.setBounds(10, 35, 280, 30);
+            // 进度条自适应 作用: 进度条自动滚动
+            progressBar.setAutoscrolls(true);
+            progressDialog.add(progressBar);
+
+            //progressDialog.setLocationRelativeTo(parent);
+
+            new Thread(() -> progressDialog.setVisible(true)).start();
 
             try {
+                label.setText("正在创建目标目录，请稍候...");
+                //设置为不确定
+                progressBar.setEnabled(false);
+                progressDialog.repaint();
+
                 // 创建目标目录
                 File appDir = new File("UpdateTemp");
                 if (!appDir.exists()) appDir.mkdirs();
-
-                // 设置进度对话框
-                JProgressBar progressBar = new JProgressBar(0, 100);
-                progressBar.setForeground(CTColor.mainColor);
-                progressDialog.add(progressBar);
-                progressDialog.setSize(300, 75);
-                progressDialog.setLocationRelativeTo(parent);
 
                 /*// 通过API获取准确下载链接（推荐）：
                 String apiUrl = "https://api.github.com/repos/wmp666/ClassTools/releases/latest";
@@ -174,23 +191,29 @@ public class GetNewerVersion {
                 Element jarAsset = apiDoc.selectFirst("a[href$=.jar]");
                 String fileUrl = jarAsset.attr("abs:href");*/
 
-                new Thread(() -> {
-                    progressDialog.setVisible(true);
-                }).start();
-
                 // 替换原有的页面解析逻辑为直接获取最新JAR
                 String fileUrl = downloadUrl;
+
+                label.setText("正在初始化更新数据，请稍候...");
+                //progressBar.setEnabled(true);
+                progressDialog.repaint();
 
                 // 开始下载
                 URL url = new URL(fileUrl);
                 HttpURLConnection conn = (HttpURLConnection) url.openConnection();
 
+                progressBar.setValue(25);
+
                 conn.setRequestProperty("Accept", "application/octet-stream"); // 获取二进制文件
                 conn.setInstanceFollowRedirects(true); // 启用自动重定向
+
+                progressBar.setValue(50);
 
                 // 添加超时设置
                 conn.setConnectTimeout(10000);
                 conn.setReadTimeout(30000);
+
+                progressBar.setValue(75);
 
 
                 try (InputStream in = conn.getInputStream();
@@ -201,31 +224,45 @@ public class GetNewerVersion {
                     long total = 0;
                     long fileSize = conn.getContentLength();
 
+                    progressBar.setValue(100);
+
+                    label.setText("正在下载更新文件 0KB/0KB");
+                    progressBar.setValue(0);
+                    progressDialog.repaint();
+
                     while ((read = in.read(buffer)) > 0) {
                         //System.out.println("write" + Arrays.toString(buffer));
                         out.write(buffer, 0, read);
                         total += read;
                         int progress = (int) (total * 100 / fileSize);
                         //显示下载速度
-                        System.out.println("下载速度：" + (total / 1024) + "KB/" + (fileSize / 1024) + "KB");
+                        String v = (total / 1024) + "KB/" + (fileSize / 1024) + "KB";
+                        System.out.println(v);
+                        label.setText("正在下载更新文件 " + v);
+
                         SwingUtilities.invokeLater(() -> progressBar.setValue(progress));
                     }
 
                     SwingUtilities.invokeLater(() -> {
+
+                        label.setText("正在更新，请稍候...");
+                        progressBar.setValue(0);
                         //将文件移至app
                         try {
-                            new File("app").mkdirs();
                             File sourceFile = new File(appDir.getAbsolutePath() + "/ClassTools.jar");
                             File targetFile = new File("app/ClassTools.jar");
+                            targetFile.mkdirs();
                             // 使用Files.copy方法进行文件复制 StandardCopyOption.REPLACE_EXISTING - 替换目标文件
                             Files.copy(sourceFile.toPath(), targetFile.toPath(), StandardCopyOption.REPLACE_EXISTING);
+
+                            progressBar.setValue(100);
                         } catch (IOException e) {
                             throw new RuntimeException(e);
                         }
 
 
                         progressDialog.dispose();
-                        JOptionPane.showMessageDialog(parent, "下载完成！即将重启应用");
+                        JOptionPane.showMessageDialog(parent, "下载完成！请重启应用");
                         System.exit(0);
                     });
                 }
