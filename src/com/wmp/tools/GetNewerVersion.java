@@ -10,10 +10,7 @@ import org.jsoup.select.Elements;
 
 import javax.swing.*;
 import java.awt.*;
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
+import java.io.*;
 import java.net.HttpURLConnection;
 import java.net.URI;
 import java.net.URL;
@@ -218,7 +215,7 @@ public class GetNewerVersion {
 
 
                 try (InputStream in = conn.getInputStream();
-                    FileOutputStream out = new FileOutputStream( appDir.getAbsolutePath() + "/ClassTools.jar")) {
+                     FileOutputStream out = new FileOutputStream( appDir.getAbsolutePath() + "/ClassTools.jar")) {
                     System.out.println(out);
                     byte[] buffer = new byte[1024 * 512];
                     int read;
@@ -244,6 +241,8 @@ public class GetNewerVersion {
                         SwingUtilities.invokeLater(() -> progressBar.setValue(progress));
                     }
 
+                    in.close();
+
                     SwingUtilities.invokeLater(() -> {
 
                         label.setText("正在更新，请稍候...");
@@ -251,12 +250,29 @@ public class GetNewerVersion {
                         //将文件移至app
                         try {
                             File sourceFile = new File(appDir.getAbsolutePath() + "/ClassTools.jar");
+
                             File targetFile = new File("app/ClassTools.jar");
                             targetFile.mkdirs();
-                            // 使用Files.copy方法进行文件复制 StandardCopyOption.REPLACE_EXISTING - 替换目标文件
-                            Files.copy(sourceFile.toPath(), targetFile.toPath(), StandardCopyOption.REPLACE_EXISTING);
 
-                            progressBar.setValue(100);
+                            FileOutputStream targetOut = new FileOutputStream(targetFile);
+                            FileInputStream sourceIn = new FileInputStream(sourceFile);
+
+                            byte[] temp = new byte[1024 * 10];
+                            int total2 = 0;
+
+                            while (true) {
+                                int i = sourceIn.read(temp);
+                                if (i == -1) break;
+                                targetOut.write(temp,0 , i);
+                                total2 += i;
+                                // 更新进度条
+                                int finalTotal = total2;
+                                SwingUtilities.invokeLater(() -> progressBar.setValue(finalTotal));
+                            }
+
+                            //Files.copy(sourceFile.toPath(), targetFile.toPath(), StandardCopyOption.REPLACE_EXISTING);
+
+                            //progressBar.setValue(100);
                         } catch (IOException e) {
                             throw new RuntimeException(e);
                         }
