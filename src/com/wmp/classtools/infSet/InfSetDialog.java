@@ -4,6 +4,7 @@ import com.wmp.CTColor;
 import com.wmp.classtools.CTComponent.CTButton;
 import com.wmp.io.IOStreamForInf;
 import com.wmp.tools.InfProcess;
+import com.wmp.tools.OpenInExp;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
@@ -29,6 +30,10 @@ public class InfSetDialog extends JDialog implements WindowListener {
     private final JTable DutyTable = new JTable();
     private final JTable allStuTable = new JTable();
 
+    private final ArrayList<String> leaveList;
+    private final ArrayList<String> studentList;
+    private final String[][] dutyList;
+
 
     // 添加文件路径参数
     public InfSetDialog(Window owner, File AllStuPath, File leaveListPath, File DutyListPath, File indexPath, Runnable refreshCallback) throws IOException {
@@ -51,24 +56,30 @@ public class InfSetDialog extends JDialog implements WindowListener {
 
         initMenuBar();
 
+        this.leaveList = getLeaveList();
+        this.studentList = getStudentList();
+        this.dutyList = getDutyList(DutyListPath);
 
-        c.add(initATSet());
+        index.set(Integer.parseInt(new IOStreamForInf(indexPath).GetInf()[0]));
 
-        initDuSet();
+        c.add(initATSet(this.studentList, this.leaveList));
 
-        initAllStuSet();
+        initDuSet(this.dutyList);
+
+        initAllStuSet(this.studentList);
 
     }
 
-    private JPanel initDuSet() throws IOException {
+    private JPanel initDuSet(String [][] dutyList) throws IOException {
 
         JPanel mainPanel = new JPanel();
         mainPanel.setBackground(CTColor.backColor);
         mainPanel.setLayout(null);
 
-        DefaultTableModel model = new DefaultTableModel(getDutyList(DutyListPath),
+        DefaultTableModel model = new DefaultTableModel(dutyList,
                 new String[]{"扫地", "擦黑板"});
-
+        //设置表格的两列不可以修改顺序
+        DutyTable.setColumnSelectionAllowed(false);
         DutyTable.setModel(model);
 
         JScrollPane scrollPane = new JScrollPane(DutyTable);
@@ -123,13 +134,6 @@ public class InfSetDialog extends JDialog implements WindowListener {
             CTButton deleteBtn = new CTButton("删除选中的值日生记录", getClass().getResource("/image/delete_0.png"),
                     getClass().getResource("/image/delete_1.png"), 35, () -> {
 
-
-                try {
-                    index.set(Integer.parseInt(new IOStreamForInf(indexPath).GetInf()[0]));
-                } catch (IOException e) {
-                    throw new RuntimeException(e);
-                }
-
                 int selectedRow = DutyTable.getSelectedRow();
                 if (selectedRow != -1) {
                     model.removeRow(selectedRow);
@@ -151,24 +155,11 @@ public class InfSetDialog extends JDialog implements WindowListener {
         return mainPanel;
     }
 
-    private JPanel initAllStuSet() throws IOException {
+    private JPanel initAllStuSet(ArrayList<String> studentList) throws IOException {
 
         JPanel mainPanel = new JPanel();
         mainPanel.setBackground(CTColor.backColor);
         mainPanel.setLayout(null);
-
-        ArrayList<String> studentList = new ArrayList<>();
-
-        {
-            IOStreamForInf ioStreamForInf = new IOStreamForInf(AllStuPath);
-
-            String[] inf = ioStreamForInf.GetInf();
-
-            //System.out.println(inf);
-            if (!inf[0].equals("error")) {
-                studentList.addAll(Arrays.asList(inf));
-            }
-        }
 
         String[][] studentListTemp = new String[studentList.size()][2];
         for (int i = 0; i < studentList.size(); i++) {
@@ -260,44 +251,18 @@ public class InfSetDialog extends JDialog implements WindowListener {
 
         JMenuItem openAppList = new JMenuItem("软件位置");
         openAppList.addActionListener(e -> {
-            try {
-                // 获取可靠的项目工作目录
-                String currentDir = System.getProperty("user.dir");
-                File targetDir = new File(currentDir).getParentFile();
-
-                // 校验父目录有效性
-                if (targetDir == null || !targetDir.exists()) {
-                    throw new IOException("Parent directory does not exist");
-                }
-                // 使用跨平台方式打开文件管理器
-                if (Desktop.isDesktopSupported()) {
-                    Desktop.getDesktop().open(targetDir);
-                } else {
-                    // 兼容回退方案
-                    Runtime.getRuntime().exec(new String[]{"cmd", "/c", "start", targetDir.getAbsolutePath()});
-                }
-            } catch (IOException ex) {
-                ex.printStackTrace();
-            }
+            OpenInExp.open("user.dir");
         });
 
 
         JMenuItem openStuList = new JMenuItem("人员名单");
         openStuList.addActionListener(e -> {
-            try {
-                Runtime.getRuntime().exec("explorer.exe " + leaveListPath.getParent());
-            } catch (IOException ex) {
-                ex.printStackTrace();
-            }
+            OpenInExp.open(AllStuPath.getParent());
         });
 
         JMenuItem openDutyList = new JMenuItem("值班人员");
         openDutyList.addActionListener(e -> {
-            try {
-                Runtime.getRuntime().exec("explorer.exe " + DutyListPath.getParent());
-            } catch (IOException ex) {
-                ex.printStackTrace();
-            }
+            OpenInExp.open(DutyListPath.getParent());
         });
 
         JMenuItem exitMenuItem = new JMenuItem("退出");
@@ -326,12 +291,7 @@ public class InfSetDialog extends JDialog implements WindowListener {
         JMenuItem DutyMenuItem = new JMenuItem("值日生");
         DutyMenuItem.addActionListener(e -> {
             try {
-                c.removeAll();
-                initMenuBar();
-                c.add(initDuSet());
-
-                c.revalidate();
-                c.repaint();
+                repaintSetsPanel(initDuSet(this.dutyList));
             } catch (IOException ex) {
                 throw new RuntimeException(ex);
             }
@@ -340,12 +300,7 @@ public class InfSetDialog extends JDialog implements WindowListener {
         JMenuItem AttMenuItem = new JMenuItem("迟到人数");
         AttMenuItem.addActionListener(e -> {
             try {
-                c.removeAll();
-                initMenuBar();
-                c.add(initATSet());
-
-                c.revalidate();
-                c.repaint();
+                repaintSetsPanel(initATSet(this.studentList, this.leaveList));
             } catch (IOException ex) {
                 throw new RuntimeException(ex);
             }
@@ -354,12 +309,7 @@ public class InfSetDialog extends JDialog implements WindowListener {
         JMenuItem AllStuMenuItem = new JMenuItem("全体人员");
         AllStuMenuItem.addActionListener(e -> {
             try {
-                c.removeAll();
-                initMenuBar();
-                c.add(initAllStuSet());
-
-                c.revalidate();
-                c.repaint();
+                repaintSetsPanel(initAllStuSet(this.studentList));
             } catch (IOException ex) {
                 throw new RuntimeException(ex);
             }
@@ -384,7 +334,18 @@ public class InfSetDialog extends JDialog implements WindowListener {
 
     }
 
-    private JPanel initATSet() throws IOException {
+    private void repaintSetsPanel(JPanel dutyList) {
+
+            c.removeAll();
+            initMenuBar();
+            c.add(dutyList);
+
+            c.revalidate();
+            c.repaint();
+
+    }
+
+    private JPanel initATSet(ArrayList<String> studentList, ArrayList<String> leaveList) throws IOException {
 
         JPanel mainPanel = new JPanel();
         mainPanel.setBackground(CTColor.backColor);
@@ -394,21 +355,6 @@ public class InfSetDialog extends JDialog implements WindowListener {
         JLabel leaveLabel = new JLabel("请假人员:");
         leaveLabel.setBounds(20, 0, 300, 25);
         mainPanel.add(leaveLabel);
-
-        //ArrayList<JCheckBox> checkBoxList = new ArrayList<>();
-        ArrayList<String> studentList = new ArrayList<>();
-
-        //获取所有学生名单
-        {
-            IOStreamForInf ioStreamForInf = new IOStreamForInf(AllStuPath);
-
-            String[] inf = ioStreamForInf.GetInf();
-
-            //System.out.println(inf);
-            if (!inf[0].equals("error")) {
-                studentList.addAll(Arrays.asList(inf));
-            }
-        }
 
         JPanel leavePanel = new JPanel();
         leavePanel.setBounds(20, 0, 340, 300);
@@ -425,21 +371,6 @@ public class InfSetDialog extends JDialog implements WindowListener {
         scrollPane.getVerticalScrollBar().setUnitIncrement(12);
         //scrollPane.setLayout(null);
         mainPanel.add(scrollPane);
-
-
-        ArrayList<String> leaveList = new ArrayList<>();
-        // 初始化现有数据
-        try {
-            if (leaveListPath.exists()) {
-                String[] content = new IOStreamForInf(leaveListPath).GetInf();
-                leaveList.addAll(Arrays.asList(content));
-
-                //leaveArea.setText(content.replace(",", "\n"));
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
 
         System.out.println("studentList:" + studentList);
         System.out.println("leaveList:" + leaveList);
@@ -486,6 +417,40 @@ public class InfSetDialog extends JDialog implements WindowListener {
         }*/
 
         return mainPanel;
+    }
+
+    private ArrayList<String> getLeaveList() {
+        ArrayList<String> leaveList = new ArrayList<>();
+        // 初始化现有数据
+        try {
+            if (leaveListPath.exists()) {
+                String[] content = new IOStreamForInf(leaveListPath).GetInf();
+                leaveList.addAll(Arrays.asList(content));
+
+                //leaveArea.setText(content.replace(",", "\n"));
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return leaveList;
+    }
+
+    private ArrayList<String> getStudentList() throws IOException {
+        //ArrayList<JCheckBox> checkBoxList = new ArrayList<>();
+        ArrayList<String> studentList = new ArrayList<>();
+
+        //获取所有学生名单
+        {
+            IOStreamForInf ioStreamForInf = new IOStreamForInf(AllStuPath);
+
+            String[] inf = ioStreamForInf.GetInf();
+
+            //System.out.println(inf);
+            if (!inf[0].equals("error")) {
+                studentList.addAll(Arrays.asList(inf));
+            }
+        }
+        return studentList;
     }
 
     private String[][] getDutyList(File dutyPath) throws IOException {
@@ -601,7 +566,7 @@ public class InfSetDialog extends JDialog implements WindowListener {
                 //this.setVisible(false);
 
             } catch (IOException ex) {
-                JOptionPane.showMessageDialog(this, "保存失败", "错误", JOptionPane.ERROR_MESSAGE);
+                JOptionPane.showMessageDialog(this, "保存失败", "世界拒绝了我", JOptionPane.ERROR_MESSAGE);
             }
         }
     }
@@ -611,7 +576,7 @@ public class InfSetDialog extends JDialog implements WindowListener {
 
     }
 
-    //
+    //窗口准备关闭
     @Override
     public void windowClosing(WindowEvent e) {
         save();

@@ -17,6 +17,8 @@ import java.io.InputStream;
 import java.net.HttpURLConnection;
 import java.net.URI;
 import java.net.URL;
+import java.nio.file.Files;
+import java.nio.file.StandardCopyOption;
 import java.util.Arrays;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -24,10 +26,14 @@ import java.util.regex.Pattern;
 public class GetNewerVersion {
 
     //private static JDialog dialog;
+    private static String versionContent = "";
+    private static String apiUrl = "https://api.kkgithub.com/repos/wmp666/ClassTools/releases/latest";
+    private static String downloadUrl = "null";
+    //https://kkgithub.com/wmp666/ClassTools/releases/download/1.6.4/ClassTools.jar
 
     public static String getLatestVersion() throws Exception {
         SslUtils.ignoreSsl();
-        String url = "https://api.github.com/repos/wmp666/ClassTools/releases/latest";
+        String url = apiUrl;
 
         try {
             // 1. 获取网页内容
@@ -48,21 +54,11 @@ public class GetNewerVersion {
                 System.out.println("发现链接: " + absUrl);
             }
 */
-            Element body = doc.body();
+            String result = getTest(doc, "tag_name");
 
-            // 正则表达式匹配大括号内的内容
-            //"tag_name":"1.5.2"
-            Pattern pattern = Pattern.compile("\"tag_name\":\"([^\"]+)");
-            Matcher matcher = pattern.matcher(body.html());
+            downloadUrl = getTest(doc, "browser_download_url").replace("github", "kkgithub");
 
-            String result = "";
-            while (matcher.find()) {
-                result = matcher.group(1);
-                //System.out.println("find");
-            }
-            System.out.println(result);
-
-            System.out.println(body);
+            versionContent = getTest(doc, "body").replace("\\r\\n", "\n");
             //System.out.println(doc.body());
 
             return result;
@@ -70,6 +66,25 @@ public class GetNewerVersion {
             e.printStackTrace();
         }
         return null;
+    }
+
+    private static String getTest(Document doc, String test) {
+        Element body = doc.body();
+
+        // 正则表达式匹配大括号内的内容
+        //"tag_name":"1.5.2"
+        Pattern pattern = Pattern.compile("\"" + test + "\":\"([^\"]+)");
+        Matcher matcher = pattern.matcher(body.html());
+
+        String result = "";
+        while (matcher.find()) {
+            result = matcher.group(1);
+            //System.out.println("find");
+        }
+        System.out.println(result);
+
+        System.out.println(body);
+        return result;
     }
 
     public static void checkForUpdate(Window dialog) {
@@ -84,17 +99,17 @@ public class GetNewerVersion {
             protected void done() {
                 if (latestVersion == null) {
                     JOptionPane.showMessageDialog(dialog,
-                            "无法检查更新", "错误", JOptionPane.ERROR_MESSAGE);
+                            "无法检查更新", "世界拒绝了我", JOptionPane.ERROR_MESSAGE);
                     return;
                 }
 
                 if (isNewerVersion(latestVersion, Main.version)) {
                     int result = JOptionPane.showConfirmDialog(dialog,
-                            "发现新版本 " + latestVersion + "，是否前往下载？",
+                            "发现新版本 " + latestVersion + "，是否下载？\n" + versionContent ,
                             "发现更新", JOptionPane.YES_NO_OPTION);
 
                     if (result == JOptionPane.YES_OPTION) {
-                        downloadUpdate(dialog, "https://github.com/wmp666/ClassTools/releases/latest");
+                        downloadUpdate(dialog, downloadUrl);
                         //openGithubRelease();
                     }
                 } else {
@@ -122,6 +137,7 @@ public class GetNewerVersion {
         return remote.compareTo(local) > 0;
     }
 
+    
     private static void openGithubRelease() {
         try {
             Desktop.getDesktop().browse(new URI("https://github.com/wmp666/ClassTools/releases/latest"));
@@ -132,12 +148,14 @@ public class GetNewerVersion {
 
     public static void downloadUpdate(Window parent, String downloadUrl) {
         new Thread(() -> {
-
-            JDialog progressDialog = new JDialog((Dialog) parent, "下载中...", true);
+            
+            JDialog progressDialog = new JDialog();
+            progressDialog.setTitle("下载中...");
+            progressDialog.setModal(true);
 
             try {
                 // 创建目标目录
-                File appDir = new File("app");
+                File appDir = new File("UpdateTemp");
                 if (!appDir.exists()) appDir.mkdirs();
 
                 // 设置进度对话框
@@ -161,7 +179,7 @@ public class GetNewerVersion {
                 }).start();
 
                 // 替换原有的页面解析逻辑为直接获取最新JAR
-                String fileUrl = "https://github.com/wmp666/ClassTools/releases/latest/download/ClassTools.jar";
+                String fileUrl = downloadUrl;
 
                 // 开始下载
                 URL url = new URL(fileUrl);
@@ -176,8 +194,8 @@ public class GetNewerVersion {
 
 
                 try (InputStream in = conn.getInputStream();
-                     FileOutputStream out = new FileOutputStream("app/ClassTools.jar")) {
-
+                    FileOutputStream out = new FileOutputStream( appDir.getAbsolutePath() + "/ClassTools.jar")) {
+                    System.out.println(out);
                     byte[] buffer = new byte[8192];
                     int read;
                     long total = 0;
@@ -188,10 +206,24 @@ public class GetNewerVersion {
                         out.write(buffer, 0, read);
                         total += read;
                         int progress = (int) (total * 100 / fileSize);
+                        //显示下载速度
+                        System.out.println("下载速度：" + (total / 1024) + "KB/" + (fileSize / 1024) + "KB");
                         SwingUtilities.invokeLater(() -> progressBar.setValue(progress));
                     }
 
                     SwingUtilities.invokeLater(() -> {
+                        //将文件移至app
+                        try {
+                            new File("app").mkdirs();
+                            File sourceFile = new File(appDir.getAbsolutePath() + "/ClassTools.jar");
+                            File targetFile = new File("app/ClassTools.jar");
+                            // 使用Files.copy方法进行文件复制 StandardCopyOption.REPLACE_EXISTING - 替换目标文件
+                            Files.copy(sourceFile.toPath(), targetFile.toPath(), StandardCopyOption.REPLACE_EXISTING);
+                        } catch (IOException e) {
+                            throw new RuntimeException(e);
+                        }
+
+
                         progressDialog.dispose();
                         JOptionPane.showMessageDialog(parent, "下载完成！即将重启应用");
                         System.exit(0);

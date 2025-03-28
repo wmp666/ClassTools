@@ -29,7 +29,7 @@ public class TimeViewPanel extends CTPanel {
         timeView.setFont(new Font("微软雅黑", Font.BOLD, 23));
         //timeView.setBackground(new Color(0x0ECECED, true));
         timeView.setForeground(CTColor.mainColor);
-        timeView.setBounds(5,3,250,32);
+        timeView.setBounds(5,3,180,32);
         this.add(timeView);
         setNextPanelY(32);
 
@@ -48,6 +48,8 @@ public class TimeViewPanel extends CTPanel {
             Container c = window.getContentPane();
             c.setLayout(new BorderLayout());
 
+            //让时间在组件中央显示
+            timeView.setHorizontalAlignment(JLabel.CENTER);
             timeView.setFont(new Font("微软雅黑", Font.BOLD, 50));
 
             c.add(timeView, BorderLayout.CENTER);
@@ -80,6 +82,8 @@ public class TimeViewPanel extends CTPanel {
                 Date date02 = new Date();
                 //格式化 11.22 23:05
                 DateFormat dateFormat02 = new SimpleDateFormat("MM.dd HH:mm:ss");
+                //让时间在组件左侧显示
+                timeView.setHorizontalAlignment(JLabel.CENTER);
                 timeView.setText(dateFormat02.format(date02));
                 try {
                     Thread.sleep(300);

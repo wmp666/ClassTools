@@ -61,6 +61,18 @@ public class AboutDialog extends JDialog {
 
         JMenu menu = new JMenu("转到");
 
+        JMenu chat = new JMenu("社交");
+
+        JMenuItem weChat = new JMenuItem("微信");
+        weChat.addActionListener(e -> {
+            JOptionPane.showMessageDialog(this, "微信: w13607088913");
+        });
+
+        JMenuItem qq = new JMenuItem("QQ");
+        qq.addActionListener(e -> {
+            JOptionPane.showMessageDialog(this, "QQ: 2134868121");
+        });
+
         JMenuItem bilibili = new JMenuItem("哔哩哔哩");
         bilibili.addActionListener(e -> {
             try {
@@ -69,6 +81,10 @@ public class AboutDialog extends JDialog {
                 ex.printStackTrace();
             }
         });
+
+        chat.add(weChat);
+        chat.add(qq);
+        chat.add(bilibili);
 
         JMenu github = new JMenu("Github");
 
@@ -96,13 +112,14 @@ public class AboutDialog extends JDialog {
         JMenuItem appPath = new JMenuItem("程序路径");
         appPath.addActionListener(e -> {
             try {
+                //打开程序路径
                 Desktop.getDesktop().open(new File(System.getProperty("user.dir")));
             } catch (Exception ex) {
                 ex.printStackTrace();
             }
         });
 
-        menu.add(bilibili);
+        menu.add(chat);
         menu.add(github);
         menu.add(appPath);
 

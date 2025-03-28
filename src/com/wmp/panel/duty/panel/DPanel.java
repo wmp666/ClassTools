@@ -43,7 +43,7 @@ public class DPanel extends CTPanel {
 
     }
 
-    private void initContainer(File DutyListPath) {
+    private void initContainer(File DutyListPath) throws IOException {
         JLabel CLBBLabel = new JLabel();
         CLBBLabel.setText("擦黑板:");
         CLBBLabel.setFont(new Font("微软雅黑",Font.BOLD,20));
@@ -52,7 +52,14 @@ public class DPanel extends CTPanel {
         this.add(CLBBLabel);
         DPanelMixY = DPanelMixY + CLBBLabel.getHeight() + 2;
 
-        DutyDay now = DutyList.get(index);
+        DutyDay now = new DutyDay(DutyDay.setDutyPersonList("数据异常"), DutyDay.setDutyPersonList("数据异常"));
+        try {
+            now = DutyList.get(index);
+        } catch (Exception e) {
+            new IOStreamForInf(indexPath).SetInf("0");
+            JOptionPane.showMessageDialog(null, "数据异常,请检查数据文件\n问题:" + e.getMessage(), "世界拒绝了我", JOptionPane.ERROR_MESSAGE);
+            //throw new RuntimeException(e);
+        }
 
         DPanelMixY = initPeople(now.getClBlackBroad(), DPanelMixY);
 
@@ -121,30 +128,6 @@ public class DPanel extends CTPanel {
             return mixY; // 空集合直接返回基准值（根据业务需求调整）
         }
 
-        /*StringBuilder sb = new StringBuilder();
-        sb.append("<html>");
-
-        int size = array.size();
-        int index = (size + 2) / 3;  // 修正组数计算逻辑
-
-        for (int i = 0; i < index; i++) {
-            int base = i * 3;
-            sb.append(array.get(base));
-
-            if (base + 1 < size) {
-                sb.append(",").append(array.get(base + 1));
-            }
-            if (base + 2 < size) {
-                sb.append(",").append(array.get(base + 2));
-            }
-
-            if (i < index - 1) {  // 仅在非最后一组后添加换行
-                sb.append("<br>");
-            }
-        }
-
-        sb.append("</html>");*/
-
         Object[] o = PeoPanelProcess.getPeopleName(array);
 
         JLabel personLabel = new JLabel(String.valueOf(o[0]));
@@ -209,7 +192,7 @@ public class DPanel extends CTPanel {
                         DutyDay.setDutyPersonList(strings.get(1))));
             } catch (Exception e) {
                 if (strings.size() <= 2){
-                    JOptionPane.showMessageDialog(this, "请检查数据格式是否正确", "错误", JOptionPane.ERROR_MESSAGE);
+                    JOptionPane.showMessageDialog(this, "请检查数据格式是否正确", "世界拒绝了我", JOptionPane.ERROR_MESSAGE);
                 }
                 throw new RuntimeException(e);
             }
