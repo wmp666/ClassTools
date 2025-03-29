@@ -87,14 +87,12 @@ public class AboutDialog extends JDialog {
         JMenu chat = new JMenu("社交");
 
         JMenuItem weChat = new JMenuItem("微信");
-        weChat.addActionListener(e -> {
-            JOptionPane.showMessageDialog(this, "微信: w13607088913");
-        });
+        weChat.addActionListener(e ->
+                JOptionPane.showMessageDialog(this, "微信: w13607088913"));
 
         JMenuItem qq = new JMenuItem("QQ");
-        qq.addActionListener(e -> {
-            JOptionPane.showMessageDialog(this, "QQ: 2134868121");
-        });
+        qq.addActionListener(e ->
+            JOptionPane.showMessageDialog(this, "QQ: 2134868121"));
 
         JMenuItem bilibili = new JMenuItem("哔哩哔哩");
         bilibili.addActionListener(e -> {
@@ -163,6 +161,22 @@ public class AboutDialog extends JDialog {
         downloadMenu.add(checkUpdate);
 
         menuBar.add(downloadMenu);
+
+        JMenu helpMenu = new JMenu("帮助");
+
+        JMenuItem helpDoc = new JMenuItem("帮助文档");
+        helpDoc.addActionListener(e -> {
+            JOptionPane.showMessageDialog(this, "正在加急制作...", "帮助文档(前面的区域，以后再来探索吧)", JOptionPane.INFORMATION_MESSAGE);
+        });
+
+        JMenuItem easterEgg = new JMenuItem("■■");
+        easterEgg.addActionListener(e ->
+            EasterEgg.getPin());
+
+        helpMenu.add(helpDoc);
+        helpMenu.add(easterEgg);
+
+        menuBar.add(helpMenu);
     }
 
 
