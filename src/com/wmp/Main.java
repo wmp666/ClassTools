@@ -8,7 +8,7 @@ import java.io.IOException;
 
 public class Main {
 
-    public static String version = "1.7.0";
+    public static String version = "1.7.1";
 
     public static void main(String[] args) throws IOException {
         System.out.println("Hello, World!");

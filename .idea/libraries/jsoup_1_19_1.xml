@@ -4,6 +4,8 @@
       <root url="jar://$PROJECT_DIR$/lib/jsoup-1.19.1.jar!/" />
     </CLASSES>
     <JAVADOC />
-    <SOURCES />
+    <SOURCES>
+      <root url="jar://$PROJECT_DIR$/lib/jsoup-1.19.1-sources.jar!/" />
+    </SOURCES>
   </library>
 </component>

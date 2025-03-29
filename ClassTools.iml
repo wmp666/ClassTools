@@ -10,5 +10,6 @@
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="library" exported="" name="jsoup-1.19.1" level="project" />
+    <orderEntry type="library" name="json-20210307" level="project" />
   </component>
 </module>
