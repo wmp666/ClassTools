@@ -59,7 +59,7 @@ public class TimeViewPanel extends CTPanel {
                 window.setVisible(false);
 
                 timeView.setFont(new Font("微软雅黑", Font.BOLD, 23));
-                timeView.setBounds(5,3,250,32);
+                timeView.setBounds(5,3,180,32);
                 this.add(timeView);
             });
 
