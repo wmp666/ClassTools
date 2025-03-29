@@ -23,6 +23,7 @@ public class MainWindow extends JDialog {
 
     public MainWindow(String path) throws IOException {
 
+        this.setTitle("ClassTools-V" + Main.version);
         //删除边框
         this.setUndecorated(true);
 

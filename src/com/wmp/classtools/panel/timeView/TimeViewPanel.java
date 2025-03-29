@@ -10,6 +10,9 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
+import static com.wmp.Main.allArgs;
+import static com.wmp.Main.list;
+
 public class TimeViewPanel extends CTPanel {
 
     private final JLabel timeView = new JLabel();
@@ -34,42 +37,16 @@ public class TimeViewPanel extends CTPanel {
         setNextPanelY(32);
 
         CTButton viewTimeButton = new CTButton("全屏显示时间", getClass().getResource("/image/view_0.png"),
-                    getClass().getResource("/image/view_1.png"), 30, () -> {
-            //设置屏幕大小
-            Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
-            int screenWidth = (int) screenSize.getWidth();
-            int screenHeight = (int) screenSize.getHeight();
-            JWindow window = new JWindow();
-            window.setIconImage(new ImageIcon(getClass().getResource("/image/icon.png")).getImage());
-            window.setSize(screenWidth, screenHeight);
-            window.setLocation(0, 0);
-            window.setAlwaysOnTop(true);
-
-            Container c = window.getContentPane();
-            c.setLayout(new BorderLayout());
-
-            //让时间在组件中央显示
-            timeView.setHorizontalAlignment(JLabel.CENTER);
-            timeView.setFont(new Font("微软雅黑", Font.BOLD, 50));
-
-            c.add(timeView, BorderLayout.CENTER);
-
-            CTButton exitButton = new CTButton(getClass().getResource("/image/exit_0.png"),
-                    getClass().getResource("/image/exit_1.png"), 1, () -> {
-                window.setVisible(false);
-
-                timeView.setFont(new Font("微软雅黑", Font.BOLD, 23));
-                timeView.setBounds(5,3,180,32);
-                this.add(timeView);
-            });
-
-            c.add(exitButton, BorderLayout.WEST);
-
-            window.setVisible(true);
-        });
+                    getClass().getResource("/image/view_1.png"), 30, () -> viewTimeInDeskTop() );
 
         viewTimeButton.setLocation(210, 5 );
         this.add(viewTimeButton);
+
+        if (list.contains(allArgs.get(0))) {
+            //执行你的代码
+            viewTimeInDeskTop();
+            System.out.println("-TimeView:screen");
+        }
 
         this.setLayout(null);
         this.setSize(250, getNextPanelY() + 5);
@@ -95,6 +72,40 @@ public class TimeViewPanel extends CTPanel {
         });
 
         timeThread.start();
+    }
+
+    private void viewTimeInDeskTop() {
+        //设置屏幕大小
+        Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+        int screenWidth = (int) screenSize.getWidth();
+        int screenHeight = (int) screenSize.getHeight();
+        JWindow window = new JWindow();
+        window.setIconImage(new ImageIcon(getClass().getResource("/image/icon.png")).getImage());
+        window.setSize(screenWidth, screenHeight);
+        window.setLocation(0, 0);
+        window.setAlwaysOnTop(true);
+
+        Container c = window.getContentPane();
+        c.setLayout(new BorderLayout());
+
+        //让时间在组件中央显示
+        timeView.setHorizontalAlignment(JLabel.CENTER);
+        timeView.setFont(new Font("微软雅黑", Font.BOLD, 50));
+
+        c.add(timeView, BorderLayout.CENTER);
+
+        CTButton exitButton = new CTButton(getClass().getResource("/image/exit_0.png"),
+                getClass().getResource("/image/exit_1.png"), 1, () -> {
+            window.setVisible(false);
+
+            timeView.setFont(new Font("微软雅黑", Font.BOLD, 23));
+            timeView.setBounds(5,3,180,32);
+            this.add(timeView);
+        });
+
+        c.add(exitButton, BorderLayout.WEST);
+
+        window.setVisible(true);
     }
 
     @Override
