@@ -17,10 +17,13 @@ import java.net.URL;
 import java.nio.file.Files;
 import java.nio.file.StandardCopyOption;
 import java.util.Arrays;
+import java.util.Objects;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class GetNewerVersion {
+
+    private static JPanel view;
 
     //private static JDialog dialog;
     private static String versionContent = "";
@@ -84,7 +87,15 @@ public class GetNewerVersion {
         return result;
     }
 
-    public static void checkForUpdate(Window dialog) {
+    public static void checkForUpdate(Window dialog, JPanel panel) {
+
+        if (panel != null){
+            view = panel;
+            view.removeAll();
+        }
+
+
+
         new SwingWorker<Void, Void>() {
             String latestVersion;
 
@@ -106,7 +117,7 @@ public class GetNewerVersion {
                             "发现更新", JOptionPane.YES_NO_OPTION);
 
                     if (result == JOptionPane.YES_OPTION) {
-                        downloadUpdate(dialog, downloadUrl);
+                        downloadUpdate(dialog, view, downloadUrl);
                         //openGithubRelease();
                     }
                 } else {
@@ -143,41 +154,53 @@ public class GetNewerVersion {
         }
     }
 
-    public static void downloadUpdate(Window parent, String downloadUrl) {
+    public static void downloadUpdate(Window parent, JPanel panel, String downloadUrl) {
         new Thread(() -> {
-            
-            JDialog progressDialog = new JDialog();
-            progressDialog.setSize(320, 175);
-            progressDialog.setTitle("下载中...");
-            progressDialog.setLocationRelativeTo(parent);
-            progressDialog.setModal(true);
-            progressDialog.setLayout(null);
-            progressDialog.setDefaultCloseOperation(JDialog.DO_NOTHING_ON_CLOSE);
 
+            JDialog progressDialog = new JDialog();
             JLabel label = new JLabel("正在下载更新，请稍候...");
+            JProgressBar progressBar = new JProgressBar(0, 100);
+
+            if (panel == null){
+                progressDialog.setSize(300, 175);
+                progressDialog.setTitle("下载中...");
+                progressDialog.setLocationRelativeTo(parent);
+                progressDialog.setModal(true);
+                progressDialog.setLayout(null);
+                progressDialog.setDefaultCloseOperation(JDialog.DO_NOTHING_ON_CLOSE);
+            }
+
+
             label.setBounds(10, 10, 300, 20);
-            progressDialog.add(label);
+
+
 
             // 设置进度对话框
-            JProgressBar progressBar = new JProgressBar(0, 100);
             progressBar.setForeground(CTColor.mainColor);
-            progressBar.setBounds(10, 35, 280, 30);
+            progressBar.setBounds(10, 35, 260, 30);
             // 进度条自适应 作用: 进度条自动滚动
             progressBar.setAutoscrolls(true);
-            progressDialog.add(progressBar);
 
-            //progressDialog.setLocationRelativeTo(parent);
 
-            new Thread(() -> progressDialog.setVisible(true)).start();
+            if (panel == null){
+                progressDialog.add(label);
+                progressDialog.add(progressBar);
+                new Thread(() -> progressDialog.setVisible(true)).start();
+            }else{
+                panel.add(label);
+                panel.add(progressBar);
+                panel.setVisible(true);
+            }
+
 
             try {
                 label.setText("正在创建目标目录，请稍候...");
                 //设置为不确定
-                progressBar.setEnabled(false);
-                progressDialog.repaint();
+                Objects.requireNonNullElse(panel, progressDialog).repaint();
+
 
                 // 创建目标目录
-                File appDir = new File("UpdateTemp");
+                File appDir = new File(System.getenv ("LOCALAPPDATA") + "/ClassTools/UpdateTemp");
                 if (!appDir.exists()) appDir.mkdirs();
 
                 /*// 通过API获取准确下载链接（推荐）：
@@ -193,8 +216,7 @@ public class GetNewerVersion {
                 String fileUrl = downloadUrl;
 
                 label.setText("正在初始化更新数据，请稍候...");
-                //progressBar.setEnabled(true);
-                progressDialog.repaint();
+                Objects.requireNonNullElse(panel, progressDialog).repaint();
 
                 // 开始下载
                 URL url = new URL(fileUrl);
@@ -226,7 +248,7 @@ public class GetNewerVersion {
 
                     label.setText("正在下载更新文件 0KB/0KB");
                     progressBar.setValue(0);
-                    progressDialog.repaint();
+                    Objects.requireNonNullElse(panel, progressDialog).repaint();
 
                     while ((read = in.read(buffer)) > 0) {
                         //System.out.println("write" + Arrays.toString(buffer));
@@ -247,6 +269,7 @@ public class GetNewerVersion {
 
                         label.setText("正在更新，请稍候...");
                         progressBar.setValue(0);
+                        Objects.requireNonNullElse(panel, progressDialog).repaint();
                         //将文件移至app
                         try {
                             File sourceFile = new File(appDir.getAbsolutePath() + "/ClassTools.jar");
@@ -277,8 +300,7 @@ public class GetNewerVersion {
                             throw new RuntimeException(e);
                         }
 
-
-                        progressDialog.dispose();
+                        Objects.requireNonNullElse( panel, progressDialog).setVisible(false);
                         JOptionPane.showMessageDialog(parent, "下载完成！请重启应用");
                         //System.exit(0);
                     });

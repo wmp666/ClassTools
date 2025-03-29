@@ -5,12 +5,12 @@ import java.awt.*;
 
 public class LoadingWindow extends JWindow {
     public LoadingWindow() {
-        this.setSize(300, 200);
+        this.setSize(350, 200);
         this.setLocationRelativeTo(null);
         //this.setAlwaysOnTop(true);
 
         ImageIcon defaultIcon = new ImageIcon( getClass().getResource("/image/icon.png"));
-        defaultIcon.setImage(defaultIcon.getImage().getScaledInstance(100, 100, Image.SCALE_DEFAULT));
+        defaultIcon.setImage(defaultIcon.getImage().getScaledInstance(180, 180, Image.SCALE_DEFAULT));
 
 
 

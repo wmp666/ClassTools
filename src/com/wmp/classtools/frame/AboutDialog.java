@@ -1,6 +1,8 @@
 package com.wmp.classtools.frame;
 
+import com.wmp.CTColor;
 import com.wmp.Main;
+import com.wmp.classtools.CTComponent.CTButton;
 import com.wmp.tools.GetNewerVersion;
 import com.wmp.tools.SslUtils;
 import org.jsoup.Jsoup;
@@ -18,19 +20,21 @@ import java.util.regex.Pattern;
 
 public class AboutDialog extends JDialog {
 
+    private JPanel view = new JPanel();
+
+
     public AboutDialog() {
 
-        GetNewerVersion.checkForUpdate(this);
+        view.setLayout(null);
 
         this.setTitle("关于");
         this.setSize(300, 400);
         this.setLayout(null);
         this.setLocationRelativeTo(null);
-        //this.setAlwaysOnTop(true);
         this.setModal(true);
         this.setResizable(false);
-        //this.setUndecorated(true);// 去掉边框
         this.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
+        this.getContentPane().setBackground(CTColor.backColor);
 
         ImageIcon defaultIcon = new ImageIcon( getClass().getResource("/image/icon.png"));
         defaultIcon.setImage(defaultIcon.getImage().getScaledInstance(100, 100, Image.SCALE_DEFAULT));
@@ -49,12 +53,28 @@ public class AboutDialog extends JDialog {
         JLabel author = new JLabel("作者: WMP");
         author.setBounds(120, 70, 200, 20);
 
+        this.view = new JPanel();
+        view.setBounds(0, 120, 300, 120);
+        view.setBackground(CTColor.backColor);
+        view.setLayout(null);
+
+        CTButton getNew = new CTButton(CTButton.ButtonText, "检查更新",
+                getClass().getResource("/image/update_0.png"),
+                getClass().getResource("/image/update_1.png"), 150, 35,
+                () -> GetNewerVersion.checkForUpdate(this, view));
+        getNew.setBackground(CTColor.backColor);
+        getNew.setLocation(60, 240);
+
+        this.add(this.view);
+        this.add(getNew);
         this.add(icon);
         this.add(title);
         this.add(version);
         this.add(author);
 
         initMenuBar();
+
+        GetNewerVersion.checkForUpdate(this, this.view);
 
     }
 
@@ -133,7 +153,7 @@ public class AboutDialog extends JDialog {
         JMenu updateMenu = new JMenu("更新");
 
         JMenuItem checkUpdate = new JMenuItem("检查更新");
-        checkUpdate.addActionListener(e -> GetNewerVersion.checkForUpdate(this));
+        checkUpdate.addActionListener(e -> GetNewerVersion.checkForUpdate(this, this.view));
 
         updateMenu.add(checkUpdate);
 

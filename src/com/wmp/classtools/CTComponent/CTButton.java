@@ -10,6 +10,10 @@ import java.net.MalformedURLException;
 import java.net.URL;
 
 public class CTButton extends JButton implements MouseListener {
+
+    public static int ToolTipText = 0;
+    public static int ButtonText = 1;
+
     private Runnable callback;
     private Icon defaultIcon ;
     private Icon rolloverIcon ;
@@ -17,32 +21,35 @@ public class CTButton extends JButton implements MouseListener {
     public CTButton() {
     }
 
+    //文字
     public CTButton(String text, int weight, int height, Runnable callback) throws MalformedURLException {
-        this(text, null, null, weight, height, callback);
+        this(ButtonText, text, null, null, weight, height, callback);
     }
 
+    //图标 正方形
     public CTButton(URL defaultIconPath, URL rolloverIconPath, int a, Runnable callback)
     {
 
-
-
-        this(null, defaultIconPath, rolloverIconPath, a, a, callback);
-
+        this(ToolTipText, null, defaultIconPath, rolloverIconPath, a, a, callback);
 
     }
 
+    //文字 图标 正方形
     public CTButton(String text, URL defaultIconPath, URL rolloverIconPath, int a, Runnable callback)
     {
 
-
-        this(text, defaultIconPath, rolloverIconPath, a, a, callback);
-
+        this(ToolTipText, text, defaultIconPath, rolloverIconPath, a, a, callback);
 
     }
 
-    public CTButton(String text, URL defaultIconPath, URL rolloverIconPath, int weight, int height, Runnable callback)
+    public CTButton(int textType, String text, URL defaultIconPath, URL rolloverIconPath, int weight, int height, Runnable callback)
     {
-        this.setToolTipText(text);
+        if (textType == ToolTipText) {
+            this.setToolTipText(text);
+        }
+        else if (textType == ButtonText) {
+            this.setText(text);
+        }
 
         //super(text);
 
