@@ -150,14 +150,19 @@ public class AboutDialog extends JDialog {
 
         // 在现有菜单中添加
 
-        JMenu updateMenu = new JMenu("更新");
+        JMenu downloadMenu = new JMenu("下载");
+
+        //获取源代码
+        JMenuItem getSource = new JMenuItem("获取源代码");
+        getSource.addActionListener(e -> GetNewerVersion.getSource(this, this.view));
 
         JMenuItem checkUpdate = new JMenuItem("检查更新");
         checkUpdate.addActionListener(e -> GetNewerVersion.checkForUpdate(this, this.view));
 
-        updateMenu.add(checkUpdate);
+        downloadMenu.add(getSource);
+        downloadMenu.add(checkUpdate);
 
-        menuBar.add(updateMenu);
+        menuBar.add(downloadMenu);
     }
 
 
