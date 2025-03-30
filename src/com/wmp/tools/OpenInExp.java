@@ -8,7 +8,7 @@ public class OpenInExp {
     public static void open(String path) {
         try {
             // 获取可靠的项目工作目录
-            File targetDir = new File(path).getParentFile();
+            File targetDir = new File(path);
 
             // 校验父目录有效性
             if (targetDir == null || !targetDir.exists()) {

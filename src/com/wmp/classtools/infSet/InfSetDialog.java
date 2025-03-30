@@ -61,8 +61,10 @@ public class InfSetDialog extends JDialog implements WindowListener {
         this.dutyList = getDutyList(DutyListPath);
 
         index.set(Integer.parseInt(new IOStreamForInf(indexPath).GetInf()[0]));
+        c.setLayout(new BorderLayout());// 设置布局为边界布局
 
-        c.add(initATSet(this.studentList, this.leaveList));
+        initSaveButton();
+        c.add(initATSet(this.studentList, this.leaveList), BorderLayout.CENTER);
 
         initDuSet(this.dutyList);
 
@@ -251,7 +253,7 @@ public class InfSetDialog extends JDialog implements WindowListener {
 
         JMenuItem openAppList = new JMenuItem("软件位置");
         openAppList.addActionListener(e -> {
-            OpenInExp.open("user.dir");
+            OpenInExp.open(System.getProperty("user.dir"));
         });
 
 
@@ -334,11 +336,22 @@ public class InfSetDialog extends JDialog implements WindowListener {
 
     }
 
-    private void repaintSetsPanel(JPanel dutyList) {
+    private void initSaveButton() {
+        CTButton saveButton = new CTButton(CTButton.ButtonText, "保存数据", getClass().getResource("/image/save_0.png"),
+                getClass().getResource("/image/save_1.png"), 200, 50, () -> {
+            save();
+            JOptionPane.showMessageDialog(this, "保存成功");
+        });
+        c.add(saveButton, BorderLayout.SOUTH);
+
+    }
+
+    private void repaintSetsPanel(JPanel panel) {
 
             c.removeAll();
             initMenuBar();
-            c.add(dutyList);
+            initSaveButton();
+            c.add(panel, BorderLayout.CENTER);
 
             c.revalidate();
             c.repaint();
