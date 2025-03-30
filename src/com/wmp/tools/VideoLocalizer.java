@@ -17,7 +17,7 @@ public class VideoLocalizer {
             
             Files.createDirectories(Paths.get(targetDir, "video"));
             Files.copy(is, 
-                Paths.get(targetDir, "video/01.mp4"),
+                Paths.get(targetDir, "video/"+ videoName),
                 StandardCopyOption.REPLACE_EXISTING);
         } catch (IOException e) {
             System.err.println("视频本地化失败: " + e.getMessage());

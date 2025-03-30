@@ -13,7 +13,7 @@ import java.util.Arrays;
 
 public class Main {
 
-    public static String version = "1.8.3";
+    public static String version = "1.8.4";
 
     public static ArrayList<String> list = new ArrayList<>();
 
@@ -26,6 +26,7 @@ public class Main {
         allArgs.add(StartupParameters.creative("-EasterEgg-pin:nj01", "/EasterEgg-pin:nj01"));
         allArgs.add(StartupParameters.creative("/s", "-s"));
         allArgs.add(StartupParameters.creative("/p", "-p"));
+        allArgs.add(StartupParameters.creative("-EasterEgg-pin:nj02", "/EasterEgg-pin:nj02"));
     }
     public static void main(String[] args) throws IOException, URISyntaxException {
 
@@ -60,6 +61,11 @@ public class Main {
             System.out.println("-EasterEgg-pin:nj01");
             //System.out.println();
             EasterEgg.show("nj01");
+        }
+
+        if (allArgs.get(5).contains(list)){
+            System.out.println("-EasterEgg-pin:nj02");
+            EasterEgg.show("nj02");
         }
 
 

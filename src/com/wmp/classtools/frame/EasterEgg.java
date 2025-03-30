@@ -34,6 +34,15 @@ public class EasterEgg {
             }
 
             VideoPlayer.playVideo(videoPath);
+        }else if (pin.equals("nj02")){
+            String localDataPath = System.getenv("LOCALAPPDATA") + "\\ClassTools\\";
+            String videoPath = localDataPath + "video\\02.mp4";
+            File file = new File(videoPath);
+            if (!file.exists()){
+                VideoLocalizer.copyEmbeddedVideo(localDataPath, "02.mp4");
+            }
+
+            VideoPlayer.playVideo(videoPath);
         }
     }
 }
