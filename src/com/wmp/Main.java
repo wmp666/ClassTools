@@ -13,7 +13,7 @@ import java.util.Arrays;
 
 public class Main {
 
-    public static String version = "1.8.2";
+    public static String version = "1.8.3";
 
     public static ArrayList<String> list = new ArrayList<>();
 
