@@ -37,15 +37,17 @@ public class TimeViewPanel extends CTPanel {
         setNextPanelY(32);
 
         CTButton viewTimeButton = new CTButton("全屏显示时间", getClass().getResource("/image/view_0.png"),
-                    getClass().getResource("/image/view_1.png"), 30, () -> viewTimeInDeskTop() );
+                    getClass().getResource("/image/view_1.png"), 30, () -> viewTimeInDeskTop(0) );
 
         viewTimeButton.setLocation(210, 5 );
         this.add(viewTimeButton);
 
-        if (list.contains(allArgs.get(0))) {
+        if (allArgs.get(0).contains(list)) {
             //执行你的代码
-            viewTimeInDeskTop();
+            viewTimeInDeskTop(0);
             System.out.println("-TimeView:screen");
+        }else if(allArgs.get(3).contains(list)){
+            viewTimeInDeskTop(1);
         }
 
         this.setLayout(null);
@@ -74,7 +76,7 @@ public class TimeViewPanel extends CTPanel {
         timeThread.start();
     }
 
-    private void viewTimeInDeskTop() {
+    private void viewTimeInDeskTop(int i) {
         //设置屏幕大小
         Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
         int screenWidth = (int) screenSize.getWidth();
@@ -96,11 +98,15 @@ public class TimeViewPanel extends CTPanel {
 
         CTButton exitButton = new CTButton(getClass().getResource("/image/exit_0.png"),
                 getClass().getResource("/image/exit_1.png"), 1, () -> {
-            window.setVisible(false);
+            if (i == 0) {
+                window.setVisible(false);
 
-            timeView.setFont(new Font("微软雅黑", Font.BOLD, 23));
-            timeView.setBounds(5,3,180,32);
-            this.add(timeView);
+                timeView.setFont(new Font("微软雅黑", Font.BOLD, 23));
+                timeView.setBounds(5,3,180,32);
+                this.add(timeView);
+            } else if (i == 1) {
+                System.exit(0);
+            }
         });
 
         c.add(exitButton, BorderLayout.WEST);

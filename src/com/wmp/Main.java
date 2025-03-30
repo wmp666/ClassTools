@@ -4,8 +4,7 @@ import com.wmp.classtools.frame.EasterEgg;
 import com.wmp.classtools.frame.LoadingWindow;
 import com.wmp.classtools.frame.MainWindow;
 import com.wmp.tools.GetNewerVersion;
-import com.wmp.tools.VideoPlayer;
-import org.jsoup.select.Evaluator;
+import com.wmp.tools.StartupParameters;
 
 import java.io.IOException;
 import java.net.URISyntaxException;
@@ -14,16 +13,19 @@ import java.util.Arrays;
 
 public class Main {
 
-    public static String version = "1.8.1";
+    public static String version = "1.8.2";
 
     public static ArrayList<String> list = new ArrayList<>();
 
-    public static final ArrayList<String> allArgs = new ArrayList<>();
+    public static final ArrayList<StartupParameters> allArgs = new ArrayList<>();
 
     static {
-        allArgs.add("-TimeView:screen");
-        allArgs.add("-StartUpdate:false");
-        allArgs.add("-EasterEgg-pin:nj01");
+
+        allArgs.add(StartupParameters.creative("-TimeView:screen", "/TimeView:screen"));
+        allArgs.add(StartupParameters.creative("-StartUpdate:false", "/StartUpdate:false"));
+        allArgs.add(StartupParameters.creative("-EasterEgg-pin:nj01", "/EasterEgg-pin:nj01"));
+        allArgs.add(StartupParameters.creative("/s", "-s"));
+        allArgs.add(StartupParameters.creative("/p", "-p"));
     }
     public static void main(String[] args) throws IOException, URISyntaxException {
 
@@ -45,14 +47,16 @@ public class Main {
 
         loadingWindow.setVisible(true);
 
-        if (!list.contains(allArgs.get(1))) {
+        if (!(allArgs.get(1).contains(list) ||
+                allArgs.get(3).contains(list) ||
+                allArgs.get(4).contains(list))) {
             //执行你的代码
             GetNewerVersion.checkForUpdate(
                            loadingWindow, null);
             java.lang.System.out.println("-StartUpdate:true");
         }
 
-        if (list.contains(allArgs.get(2))) {
+        if (allArgs.get(2).contains(list)) {
             System.out.println("-EasterEgg-pin:nj01");
             //System.out.println();
             EasterEgg.show("nj01");

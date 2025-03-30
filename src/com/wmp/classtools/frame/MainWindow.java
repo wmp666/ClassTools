@@ -14,9 +14,14 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.awt.event.WindowEvent;
+import java.awt.event.WindowListener;
 import java.io.File;
 import java.io.IOException;
 import java.util.concurrent.atomic.AtomicInteger;
+
+import static com.wmp.Main.allArgs;
+import static com.wmp.Main.list;
 
 public class MainWindow extends JDialog {
     private final Container contentPane = this.getContentPane();
@@ -150,32 +155,85 @@ public class MainWindow extends JDialog {
 
         initFrame(mixY);
 
-        //刷新
-        AtomicInteger finalMixY = new AtomicInteger(mixY);
-        Thread repaint = new Thread(() -> {
+        if (allArgs.get(4).contains(list)){
+            JDialog view = new JDialog();
+            view.setSize(timeViewPanel.getWidth() + 20, timeViewPanel.getHeight() + 40);
+            view.setLocationRelativeTo(null);
+            view.setLayout(null);
 
-            while (true) {
-                try {
-                    Thread.sleep(300);
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
+            view.addWindowListener(new WindowListener() {
+                @Override
+                public void windowOpened(WindowEvent e) {
+
                 }
 
-                //刷新窗口大小
-                int temp = timeViewPanel.getHeight() + dPanel.getHeight() + aTPanel.getHeight() + finalPanel.getHeight();
-                if (temp != finalMixY.get()) {
-                    this.setSize(250, temp + 5);
-                    timeViewPanel.setLocation(0, 0);
-                    dPanel.setLocation(0, timeViewPanel.getHeight());
-                    aTPanel.setLocation(0, timeViewPanel.getHeight() + dPanel.getHeight());
-                    finalPanel.setLocation(0, temp - finalPanel.getHeight());
-                    finalMixY.set(temp);
+                @Override
+                public void windowClosing(WindowEvent e) {
+                    System.exit(0);
                 }
 
-                this.repaint();
-            }
-        });
-        repaint.start();
+                @Override
+                public void windowClosed(WindowEvent e) {
+                    System.exit(0);
+                }
+
+                @Override
+                public void windowIconified(WindowEvent e) {
+
+                }
+
+                @Override
+                public void windowDeiconified(WindowEvent e) {
+
+                }
+
+                @Override
+                public void windowActivated(WindowEvent e) {
+
+                }
+
+                @Override
+                public void windowDeactivated(WindowEvent e) {
+
+                }
+            });
+
+            view.add(timeViewPanel);
+
+            view.setVisible(true);
+
+        }else {
+            this.setVisible(true);
+            //刷新
+            AtomicInteger finalMixY = new AtomicInteger(mixY);
+            Thread repaint = new Thread(() -> {
+
+                while (true) {
+                    try {
+                        Thread.sleep(300);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+
+                    //刷新窗口大小
+                    int temp = timeViewPanel.getHeight() + dPanel.getHeight() + aTPanel.getHeight() + finalPanel.getHeight();
+                    if (temp != finalMixY.get()) {
+                        this.setSize(250, temp + 5);
+                        timeViewPanel.setLocation(0, 0);
+                        dPanel.setLocation(0, timeViewPanel.getHeight());
+                        aTPanel.setLocation(0, timeViewPanel.getHeight() + dPanel.getHeight());
+                        finalPanel.setLocation(0, temp - finalPanel.getHeight());
+                        finalMixY.set(temp);
+                    }
+
+                    this.repaint();
+                }
+            });
+            repaint.start();
+        }
+
+
+
     }
 
     private void initFrame(int mixY) {
@@ -188,7 +246,8 @@ public class MainWindow extends JDialog {
         this.setIconImage(new ImageIcon(getClass().getResource("/image/icon.png")).getImage());
         this.setSize(250, mixY + 5);
         this.setLocation(screenWidth - this.getWidth(), 0);
-        this.setVisible(true);
+
+
     }
 
     private void initTray() {
