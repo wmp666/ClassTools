@@ -1,14 +1,14 @@
-package com.wmp.classtools.frame;
+package com.wmp.classTools.frame;
 
 import com.wmp.CTColor;
 import com.wmp.Main;
-import com.wmp.classtools.CTComponent.CTButton;
-import com.wmp.panel.attendance.panel.ATPanel;
-import com.wmp.panel.duty.panel.DPanel;
-import com.wmp.classtools.infSet.InfSetDialog;
-import com.wmp.classtools.panel.timeView.TimeViewPanel;
-import com.wmp.io.IOStreamForInf;
-import com.wmp.tools.GetNewerVersion;
+import com.wmp.classTools.CTComponent.CTButton;
+import com.wmp.classTools.importPanel.timeView.TimeViewPanel;
+import com.wmp.classTools.infSet.InfSetDialog;
+import com.wmp.extraPanel.attendance.panel.ATPanel;
+import com.wmp.extraPanel.duty.panel.DPanel;
+import com.wmp.tools.io.IOStreamForInf;
+import com.wmp.tools.update.GetNewerVersion;
 
 import javax.swing.*;
 import java.awt.*;
@@ -155,7 +155,7 @@ public class MainWindow extends JDialog {
 
         initFrame(mixY);
 
-        if (allArgs.get(4).contains(list)){
+        if (allArgs.get("screenProduct:show").contains(list)){
             JDialog view = new JDialog();
             view.setSize(timeViewPanel.getWidth() + 20, timeViewPanel.getHeight() + 40);
             view.setLocationRelativeTo(null);

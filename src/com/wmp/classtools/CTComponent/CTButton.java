@@ -1,9 +1,9 @@
-package com.wmp.classtools.CTComponent;
+package com.wmp.classTools.CTComponent;
 
 import com.wmp.CTColor;
+import com.wmp.tools.GetIcon;
 
 import javax.swing.*;
-import java.awt.*;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.net.MalformedURLException;
@@ -54,14 +54,12 @@ public class CTButton extends JButton implements MouseListener {
         //super(text);
 
         if (defaultIconPath != null){
-            ImageIcon defaultIcon = new ImageIcon(defaultIconPath);
-            defaultIcon.setImage(defaultIcon.getImage().getScaledInstance(30, 30, Image.SCALE_DEFAULT));
-            ImageIcon rolloverIcon = new ImageIcon(rolloverIconPath);
-            rolloverIcon.setImage(rolloverIcon.getImage().getScaledInstance(30, 30, Image.SCALE_DEFAULT));
+
+
+            this.defaultIcon = GetIcon.getIcon(defaultIconPath, 30, 30);
+            this.rolloverIcon = GetIcon.getIcon(rolloverIconPath, 30, 30);
 
             this.setIcon(defaultIcon);
-            this.defaultIcon = defaultIcon;
-            this.rolloverIcon = rolloverIcon;
         }
 
         // 设置按钮边框为透明

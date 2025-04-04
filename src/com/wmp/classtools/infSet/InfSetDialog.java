@@ -1,10 +1,11 @@
-package com.wmp.classtools.infSet;
+package com.wmp.classTools.infSet;
 
 import com.wmp.CTColor;
-import com.wmp.classtools.CTComponent.CTButton;
-import com.wmp.io.IOStreamForInf;
+import com.wmp.classTools.CTComponent.CTButton;
+import com.wmp.tools.GetIcon;
 import com.wmp.tools.InfProcess;
 import com.wmp.tools.OpenInExp;
+import com.wmp.tools.io.IOStreamForInf;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
@@ -248,10 +249,13 @@ public class InfSetDialog extends JDialog implements WindowListener {
         this.setJMenuBar(menuBar);
 
         JMenu fileMenu = new JMenu("文件");
+        //fileMenu.setIcon(getClass().getResource("/image/file.png"));
 
         JMenu openFile = new JMenu("打开文件");
+        openFile.setIcon(GetIcon.getIcon(getClass().getResource("/image/openExp_0.png"), 16, 16));
 
         JMenuItem openAppList = new JMenuItem("软件位置");
+        openAppList.setIcon(GetIcon.getIcon(getClass().getResource("/image/openExp_0.png"), 16, 16));
         openAppList.addActionListener(e -> {
             OpenInExp.open(System.getProperty("user.dir"));
         });
@@ -268,6 +272,7 @@ public class InfSetDialog extends JDialog implements WindowListener {
         });
 
         JMenuItem exitMenuItem = new JMenuItem("退出");
+        exitMenuItem.setIcon(GetIcon.getIcon(getClass().getResource("/image/exit_0.png"), 16, 16));
         exitMenuItem.addActionListener(e -> {
             save();
             this.setVisible(false);
@@ -318,6 +323,7 @@ public class InfSetDialog extends JDialog implements WindowListener {
         });
 
         JMenuItem saveMenuItem = new JMenuItem("保存");
+        saveMenuItem.setIcon(GetIcon.getIcon(getClass().getResource("/image/save_0.png"), 16, 16));
         saveMenuItem.addActionListener(e -> {
             save();
             JOptionPane.showMessageDialog(this, "保存成功");

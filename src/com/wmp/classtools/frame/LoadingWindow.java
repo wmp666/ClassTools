@@ -1,4 +1,4 @@
-package com.wmp.classtools.frame;
+package com.wmp.classTools.frame;
 
 import javax.swing.*;
 import java.awt.*;

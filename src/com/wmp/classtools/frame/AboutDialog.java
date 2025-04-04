@@ -1,22 +1,15 @@
-package com.wmp.classtools.frame;
+package com.wmp.classTools.frame;
 
 import com.wmp.CTColor;
 import com.wmp.Main;
-import com.wmp.classtools.CTComponent.CTButton;
-import com.wmp.tools.GetNewerVersion;
-import com.wmp.tools.SslUtils;
-import org.jsoup.Jsoup;
-import org.jsoup.nodes.Document;
-import org.jsoup.nodes.Element;
-import org.jsoup.select.Elements;
+import com.wmp.classTools.CTComponent.CTButton;
+import com.wmp.tools.GetIcon;
+import com.wmp.tools.update.GetNewerVersion;
 
 import javax.swing.*;
 import java.awt.*;
 import java.io.File;
-import java.io.IOException;
 import java.net.URI;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 public class AboutDialog extends JDialog {
 
@@ -87,14 +80,17 @@ public class AboutDialog extends JDialog {
         JMenu chat = new JMenu("社交");
 
         JMenuItem weChat = new JMenuItem("微信");
+        weChat.setIcon(GetIcon.getIcon(getClass().getResource("/image/wechat.png"), 23, 20));
         weChat.addActionListener(e ->
                 JOptionPane.showMessageDialog(this, "微信: w13607088913"));
 
         JMenuItem qq = new JMenuItem("QQ");
+        qq.setIcon(GetIcon.getIcon(getClass().getResource("/image/qq.png"), 20, 20));
         qq.addActionListener(e ->
             JOptionPane.showMessageDialog(this, "QQ: 2134868121"));
 
         JMenuItem bilibili = new JMenuItem("哔哩哔哩");
+        bilibili.setIcon(GetIcon.getIcon(getClass().getResource("/image/bilibili.png"), 20, 20));
         bilibili.addActionListener(e -> {
             try {
                 Desktop.getDesktop().browse(new URI("https://space.bilibili.com/1075810224/"));
@@ -108,8 +104,10 @@ public class AboutDialog extends JDialog {
         chat.add(bilibili);
 
         JMenu github = new JMenu("Github");
+        github.setIcon(GetIcon.getIcon(getClass().getResource("/image/github.png"), 20, 20));
 
         JMenuItem authorGithub = new JMenuItem("作者");
+        authorGithub.setIcon(GetIcon.getIcon(getClass().getResource("/image/github.png"), 20, 20));
         authorGithub.addActionListener(e -> {
             try {
                 Desktop.getDesktop().browse(new URI("https://github.com/wmp666"));
@@ -119,6 +117,7 @@ public class AboutDialog extends JDialog {
         });
 
         JMenuItem repo = new JMenuItem("仓库");
+        repo.setIcon(GetIcon.getIcon(getClass().getResource("/image/github.png"), 20, 20));
         repo.addActionListener(e -> {
             try {
                 Desktop.getDesktop().browse(new URI("https://github.com/wmp666/ClassTools"));
@@ -131,6 +130,7 @@ public class AboutDialog extends JDialog {
         github.add(repo);
 
         JMenuItem appPath = new JMenuItem("程序路径");
+        appPath.setIcon(GetIcon.getIcon(getClass().getResource("/image/openExp_0.png"), 20, 20));
         appPath.addActionListener(e -> {
             try {
                 //打开程序路径
@@ -155,6 +155,7 @@ public class AboutDialog extends JDialog {
         getSource.addActionListener(e -> GetNewerVersion.getSource(this, this.view));
 
         JMenuItem checkUpdate = new JMenuItem("检查更新");
+        checkUpdate.setIcon(GetIcon.getIcon(getClass().getResource("/image/update_0.png"), 20, 20));
         checkUpdate.addActionListener(e -> GetNewerVersion.checkForUpdate(this, this.view));
 
         downloadMenu.add(getSource);
@@ -170,6 +171,7 @@ public class AboutDialog extends JDialog {
         });
 
         JMenuItem easterEgg = new JMenuItem("■■");
+        easterEgg.setIcon(GetIcon.getIcon(getClass().getResource("/image/wish.png"), 20, 20));
         easterEgg.addActionListener(e ->
             EasterEgg.getPin());
 

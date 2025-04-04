@@ -1,4 +1,4 @@
-package com.wmp.classtools.CTComponent;
+package com.wmp.classTools.CTComponent;
 
 import com.wmp.CTColor;
 
