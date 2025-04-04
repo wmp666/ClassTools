@@ -1,40 +1,29 @@
 package com.wmp.tools.videoView;
 
-import javafx.application.Platform;
-import javafx.beans.value.ChangeListener;
-import javafx.scene.Scene;
-import javafx.scene.control.Alert;
-import javafx.scene.layout.StackPane;
-import javafx.scene.media.Media;
-import javafx.scene.media.MediaException;
-import javafx.scene.media.MediaPlayer;
-import javafx.scene.media.MediaView;
-import javafx.stage.Stage;
-
 import java.awt.*;
 import java.io.File;
 import java.io.IOException;
 
 public class VideoPlayer {
 
-    static {
+    /*static {
         try {
             Platform.startup(() -> {});
         } catch (IllegalStateException ignored) {}
-    }
+    }*/
 
     public static void playVideo(String filePath) throws IOException {
         File videoFile = new File(filePath);
-        if (!videoFile.exists()) {
+        /*if (!videoFile.exists()) {
             showAlert("错误", "文件不存在: " + filePath);
             return;
-        }
+        }*/
 
         //newStyleToShowVideo(videoFile);
         Desktop.getDesktop().open(videoFile);
     }
 
-    private static void newStyleToShowVideo(File videoFile) {
+    /*private static void newStyleToShowVideo(File videoFile) {
         Platform.runLater(() -> {
             Stage stage = new Stage();
             Media media = new Media(videoFile.toURI().toString());
@@ -144,5 +133,5 @@ public class VideoPlayer {
             alert.setContentText(message);
             alert.showAndWait();
         });
-    }
+    }*/
 }

@@ -5,8 +5,6 @@ import com.wmp.classTools.frame.LoadingWindow;
 import com.wmp.classTools.frame.MainWindow;
 import com.wmp.tools.StartupParameters;
 import com.wmp.tools.update.GetNewerVersion;
-import javafx.application.Application;
-import javafx.stage.Stage;
 
 import javax.swing.*;
 import java.io.IOException;
@@ -15,7 +13,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.TreeMap;
 
-public class Main extends Application {
+public class Main{
 
     public static String version = "1.9.0";
 
@@ -55,14 +53,8 @@ public class Main extends Application {
         }
 
         System.out.println("Hello, World!");
-        launch(args);
-    }
 
-
-    @Override
-    public void start(Stage primaryStage) throws Exception {
-
-        String path = System.getenv ("LOCALAPPDATA");
+        String path = System.getenv("LOCALAPPDATA");
 
         StringBuilder sb = new StringBuilder();
         sb.append(path).append("\\ClassTools\\");
@@ -98,5 +90,6 @@ public class Main extends Application {
 
         new MainWindow(sb.toString());
         loadingWindow.setVisible(false);
+
     }
 }
