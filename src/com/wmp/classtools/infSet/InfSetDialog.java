@@ -1,13 +1,16 @@
 package com.wmp.classTools.infSet;
 
 import com.wmp.CTColor;
+import com.wmp.Main;
 import com.wmp.classTools.CTComponent.CTButton;
 import com.wmp.tools.GetIcon;
 import com.wmp.tools.InfProcess;
 import com.wmp.tools.OpenInExp;
 import com.wmp.tools.io.IOStreamForInf;
+import com.wmp.tools.io.ZipPack;
 
 import javax.swing.*;
+import javax.swing.filechooser.FileFilter;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 import java.awt.event.WindowEvent;
@@ -271,6 +274,49 @@ public class InfSetDialog extends JDialog implements WindowListener {
             OpenInExp.open(DutyListPath.getParent());
         });
 
+        JMenu InfSets = new JMenu("数据设置");
+
+        JMenu getInf = new JMenu("导入数据");
+        getInf.setIcon(GetIcon.getIcon(getClass().getResource("/image/input.png"), 16, 16));
+
+        JMenuItem getDutyList = new JMenuItem("导入值日表(.xlsx)");
+        getDutyList.setIcon(GetIcon.getIcon(getClass().getResource("/image/input.png"), 16, 16));
+        getDutyList.addActionListener(e -> {
+            String filePath = getFilePath("请选择值日表", ".xlsx");
+        });
+
+        JMenuItem getAllStuList = new JMenuItem("导入人员表(.xlsx)");
+        getAllStuList.setIcon(GetIcon.getIcon(getClass().getResource("/image/input.png"), 16, 16));
+        getAllStuList.addActionListener(e -> {
+            String filePath = getFilePath("请选择人员表", ".xlsx");
+        });
+
+        JMenuItem getAllInf = new JMenuItem("导入所有数据(.ctdatas)");
+        getAllInf.setIcon(GetIcon.getIcon(getClass().getResource("/image/input.png"), 16, 16));
+        getAllInf.addActionListener(e -> {
+            String filePath = getFilePath("请选择所有数据", ".ctdatas");
+            ZipPack.unzip(filePath, Main.DataPath);
+            //刷新数据
+            this.setVisible(false);
+            refreshCallback.run();
+        });
+
+        JMenu inputInf = new JMenu("导出数据");
+        inputInf.setIcon(GetIcon.getIcon(getClass().getResource("/image/update_0.png"), 16, 16));
+
+        JMenuItem inputAllInf = new JMenuItem("导出所有数据(.ctdatas)");
+        inputAllInf.setIcon(GetIcon.getIcon(getClass().getResource("/image/update_0.png"), 16, 16));
+        inputAllInf.addActionListener(e -> {
+            String path = getDirectoryPath("请选择导出目录");
+            //将ClassTools文件夹中的文件打包为.zip
+            boolean b = ZipPack.createZip(path, Main.DataPath, "ClassTools.ctdatas");
+            if (!b){
+                JOptionPane.showMessageDialog(this, "数据导出异常", "世界拒绝了我", JOptionPane.ERROR_MESSAGE);
+            }
+            //JOptionPane.showMessageDialog(this, "加急制作中...", "导出所有数据", JOptionPane.INFORMATION_MESSAGE);
+        });
+
+
         JMenuItem exitMenuItem = new JMenuItem("退出");
         exitMenuItem.setIcon(GetIcon.getIcon(getClass().getResource("/image/exit_0.png"), 16, 16));
         exitMenuItem.addActionListener(e -> {
@@ -283,7 +329,17 @@ public class InfSetDialog extends JDialog implements WindowListener {
         openFile.add(openAppList);
         openFile.add(openStuList);
 
+        getInf.add(getDutyList);
+        getInf.add(getAllStuList);
+        getInf.add(getAllInf);
+
+        inputInf.add(inputAllInf);
+
+        InfSets.add(getInf);
+        InfSets.add(inputInf);
+
         fileMenu.add(openFile);
+        fileMenu.add(InfSets);
         fileMenu.add(exitMenuItem);
 
 
@@ -340,6 +396,65 @@ public class InfSetDialog extends JDialog implements WindowListener {
         menuBar.add(editMenu);
 
 
+    }
+
+    private String getFilePath(String title , String fileType) {
+        JFileChooser chooser = new JFileChooser();
+        chooser.setDialogTitle(title);
+
+        //将文件过滤器设置为只显示.xlsx 或 文件夹
+        chooser.setFileFilter(new FileFilter() {
+            @Override
+            public boolean accept(File f) {
+                if (f.isDirectory()) {
+                    return true;
+                } else {
+                    String fileName = f.getName();
+                    String fileSuffix = fileName.substring(fileName.lastIndexOf("."));
+                    return fileSuffix.equals(fileType);
+                }
+            }
+            @Override
+            public String getDescription() {
+                return "Excel文件(*"+ fileType +")";
+            }
+        });
+
+        //获取文件路径
+        if (chooser.showOpenDialog(this) == JFileChooser.APPROVE_OPTION) {
+            try {
+                String filePath = chooser.getSelectedFile().getAbsolutePath();
+                //获取文件名
+                String fileName = chooser.getSelectedFile().getName();
+                //获取文件名后缀
+                String fileSuffix = fileName.substring(fileName.lastIndexOf("."));
+                //获取文件名前缀
+                String filePrefix = fileName.substring(0, fileName.lastIndexOf("."));
+
+                System.out.println("文件路径：" + filePath + "|文件名: " + fileName + "|文件后缀: " + fileSuffix + "|文件前缀: " + filePrefix);
+                return filePath;
+            } catch (Exception ex) {
+                throw new RuntimeException(ex);
+            }
+        }
+        return null;
+    }
+
+    private String getDirectoryPath(String title) {
+        JFileChooser chooser = new JFileChooser();
+        chooser.setDialogTitle(title);
+        chooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
+        //返回文件路径
+        if(chooser.showOpenDialog(this) == JFileChooser.APPROVE_OPTION){// 如果点击了"确定"按钮
+            try {
+                String filePath = chooser.getSelectedFile().getAbsolutePath();
+                System.out.println("文件路径：" + filePath);
+                return filePath;
+            } catch (Exception ex) {
+                throw new RuntimeException(ex);
+            }
+        }
+        return null;
     }
 
     private void initSaveButton() {

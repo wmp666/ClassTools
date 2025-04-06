@@ -107,5 +107,6 @@
         <SOURCES />
       </library>
     </orderEntry>
+    <orderEntry type="library" name="alibaba.easyexcel" level="project" />
   </component>
 </module>

@@ -15,7 +15,11 @@ import java.util.TreeMap;
 
 public class Main{
 
-    public static String version = "1.9.0";
+    public static String DataPath = "null";
+
+    public static String TempPath = "null";
+
+    public static String version = "1.10.0";
 
     public static ArrayList<String> list = new ArrayList<>();
 
@@ -57,7 +61,11 @@ public class Main{
         String path = System.getenv("LOCALAPPDATA");
 
         StringBuilder sb = new StringBuilder();
-        sb.append(path).append("\\ClassTools\\");
+        DataPath = sb.append(path).append("\\ClassTools\\").toString();
+
+        StringBuilder sb2 = new StringBuilder();
+
+        TempPath = sb2.append(path).append("\\ClassToolsTemp\\").toString();
 
         //System.out.println(sb);
         LoadingWindow loadingWindow = new LoadingWindow();
@@ -86,9 +94,9 @@ public class Main{
             EasterEgg.show("nj02");
         }
 */
+        DataPath = sb.toString();
 
-
-        new MainWindow(sb.toString());
+        new MainWindow(DataPath);
         loadingWindow.setVisible(false);
 
     }
