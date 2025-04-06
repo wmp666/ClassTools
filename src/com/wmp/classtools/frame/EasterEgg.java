@@ -1,5 +1,6 @@
 package com.wmp.classTools.frame;
 
+import com.wmp.Main;
 import com.wmp.tools.videoView.VideoLocalizer;
 import com.wmp.tools.videoView.VideoPlayer;
 
@@ -28,32 +29,32 @@ public class EasterEgg {
         ArrayList<String> pin = new ArrayList<>(List.of(pins.split(";")));
         if (pin.contains("nj01")) {
 
-            String localDataPath = System.getenv("LOCALAPPDATA") + "\\ClassTools\\";
-            String videoPath = localDataPath + "video\\01.mp4";
+            //String localDataPath = System.getenv("LOCALAPPDATA") + "\\ClassTools\\";
+            String videoPath = Main.TempPath + "video\\01.mp4";
 
             File file = new File(videoPath);
             if (!file.exists()){
-                VideoLocalizer.copyEmbeddedVideo(localDataPath, "01.mp4");
+                VideoLocalizer.copyEmbeddedVideo(Main.TempPath, "01.mp4");
             }
 
             VideoPlayer.playVideo(videoPath);
         }
         if (pin.contains("nj02")){
-            String localDataPath = System.getenv("LOCALAPPDATA") + "\\ClassTools\\";
-            String videoPath = localDataPath + "video\\02.mp4";
+            //String localDataPath = System.getenv("LOCALAPPDATA") + "\\ClassTools\\";
+            String videoPath = Main.TempPath + "video\\02.mp4";
             File file = new File(videoPath);
             if (!file.exists()){
-                VideoLocalizer.copyEmbeddedVideo(localDataPath, "02.mp4");
+                VideoLocalizer.copyEmbeddedVideo(Main.TempPath, "02.mp4");
             }
 
             VideoPlayer.playVideo(videoPath);
         }
         if (pin.contains("nj03")){
-            String localDataPath = System.getenv("LOCALAPPDATA") + "\\ClassTools\\";
-            String videoPath = localDataPath + "video\\03.mp4";
+            //String localDataPath = System.getenv("LOCALAPPDATA") + "\\ClassTools\\";
+            String videoPath = Main.TempPath + "video\\03.mp4";
             File file = new File(videoPath);
             if (!file.exists()){
-                VideoLocalizer.copyEmbeddedVideo(localDataPath, "03.mp4");
+                VideoLocalizer.copyEmbeddedVideo(Main.TempPath, "03.mp4");
             }
 
             VideoPlayer.playVideo(videoPath);

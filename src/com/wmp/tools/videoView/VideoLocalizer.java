@@ -10,7 +10,7 @@ public class VideoLocalizer {
     private static String EMBEDDED_VIDEO_PATH = "/video";
     
     public static void copyEmbeddedVideo(String targetDir, String videoName) {
-        try (InputStream is = VideoLocalizer.class.getResourceAsStream(EMBEDDED_VIDEO_PATH + "/" + videoName)) {
+        try (InputStream is = VideoLocalizer.class.getResourceAsStream(EMBEDDED_VIDEO_PATH + "/" + videoName)) {// 获取资源流
             if (is == null) {
                 throw new IOException("内置视频文件未找到");
             }

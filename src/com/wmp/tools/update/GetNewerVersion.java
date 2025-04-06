@@ -16,6 +16,8 @@ import java.util.Objects;
 
 public class GetNewerVersion {
 
+    private static int newerVersion =  1;
+    private static int importUpdate = 2;
     private static JPanel view;
 
     //private static JDialog dialog;
@@ -147,7 +149,8 @@ public class GetNewerVersion {
                     return;
                 }
 
-                if (isNewerVersion(latestVersion, Main.version)) {
+                int i = isNewerVersion(latestVersion, Main.version);
+                if (i == 1) {
                     int result = JOptionPane.showConfirmDialog(dialog,
                             "发现新版本 " + latestVersion + "，是否下载？\n" + versionContent,
                             "发现更新", JOptionPane.YES_NO_OPTION);
@@ -156,6 +159,12 @@ public class GetNewerVersion {
                         downloadUpdate(dialog, view, downloadUrl);
                         //openGithubRelease();
                     }
+                } else if (i == 2) {
+                    JOptionPane.showMessageDialog(dialog,
+                            "发现新版本 " + latestVersion + "!\n" + versionContent,
+                            "发现更新", JOptionPane.YES_NO_OPTION);
+
+                    downloadUpdate(dialog, view, downloadUrl);
                 } else {
                     JOptionPane.showMessageDialog(dialog,
                             "当前已是最新版本", "提示", JOptionPane.INFORMATION_MESSAGE);
@@ -164,7 +173,7 @@ public class GetNewerVersion {
         }.execute();
     }
 
-    private static boolean isNewerVersion(String remote, String local) {
+    private static int isNewerVersion(String remote, String local) {
         // 实现版本号比较逻辑（需根据你的版本号格式调整）
         String[] remoteParts = remote.split("\\.");
         String[] localParts = local.split("\\.");
@@ -172,13 +181,22 @@ public class GetNewerVersion {
             int remotePart = Integer.parseInt(remoteParts[i]);
             int localPart = Integer.parseInt(localParts[i]);
             if (remotePart > localPart) {
-                return true;
+                if (i == 0 || i == 1){
+                    return importUpdate;
+                }else{
+                    return newerVersion;
+                }
+
             } else if (remotePart < localPart) {
-                return false;
+                return 0;
             }
         }
         // 如果版本号相同，则比较长度
-        return remote.compareTo(local) > 0;
+        if (remoteParts.length > localParts.length) {
+            return newerVersion;
+        }else {
+            return 0;
+        }
     }
 
 
@@ -261,7 +279,7 @@ public class GetNewerVersion {
 
 
                 // 创建目标目录
-                File appDir = new File(System.getenv("LOCALAPPDATA") + "/ClassTools/UpdateTemp");
+                File appDir = new File(Main.TempPath);
                 if (!appDir.exists()) appDir.mkdirs();
 
                 /*// 通过API获取准确下载链接（推荐）：
