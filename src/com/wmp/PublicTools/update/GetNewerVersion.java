@@ -1,8 +1,7 @@
-package com.wmp.tools.update;
+package com.wmp.PublicTools.update;
 
 import com.wmp.CTColor;
 import com.wmp.Main;
-import com.wmp.tools.SslUtils;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import org.jsoup.Jsoup;
@@ -370,7 +369,11 @@ public class GetNewerVersion {
                         throw new RuntimeException(e);
                     }
 
-                    Objects.requireNonNullElse(panel, progressDialog).setVisible(false);
+                    if (panel != null){
+                        panel.removeAll();
+                    } else if (progressDialog != null) {
+                        progressDialog.setVisible(false);
+                    }
                     JOptionPane.showMessageDialog(parent, "下载完成！请重启应用");
                     //System.exit(0);
                     SwingUtilities.invokeLater(() -> {

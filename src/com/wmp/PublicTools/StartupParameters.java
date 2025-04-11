@@ -1,4 +1,4 @@
-package com.wmp.tools;
+package com.wmp.PublicTools;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -41,7 +41,7 @@ public class StartupParameters {
     @Override
     public String toString() {
         return "StartupParameters{" +
-                "parameterList=" + parameterList +
+                "启动参数=" + parameterList +
                 '}';
     }
 

@@ -93,9 +93,16 @@ public class TimeViewPanel extends CTPanel {
 
         //让时间在组件中央显示
         timeView.setHorizontalAlignment(JLabel.CENTER);
-        timeView.setFont(new Font("微软雅黑", Font.BOLD, 50));
+        timeView.setFont(new Font("微软雅黑", Font.BOLD, 100));
 
         c.add(timeView, BorderLayout.CENTER);
+
+         if (i == 1) {
+            timeView.setForeground(Color.WHITE);
+            c.setBackground(Color.BLACK);
+
+        }
+
 
         CTButton exitButton = new CTButton(getClass().getResource("/image/exit_0.png"),
                 getClass().getResource("/image/exit_1.png"), 1, () -> {
@@ -106,11 +113,13 @@ public class TimeViewPanel extends CTPanel {
                 timeView.setBounds(5,3,180,32);
                 this.add(timeView);
             } else if (i == 1) {
-                timeView.setForeground(Color.WHITE);
-                c.setBackground(Color.BLACK);
                 System.exit(0);
             }
         });
+
+         if (i == 1){
+             exitButton.setBackground(Color.BLACK);
+         }
 
         c.add(exitButton, BorderLayout.WEST);
 

@@ -1,8 +1,8 @@
 package com.wmp.classTools.frame;
 
 import com.wmp.Main;
-import com.wmp.tools.videoView.VideoLocalizer;
-import com.wmp.tools.videoView.VideoPlayer;
+import com.wmp.PublicTools.videoView.VideoLocalizer;
+import com.wmp.PublicTools.videoView.VideoPlayer;
 
 import javax.swing.*;
 import java.io.File;

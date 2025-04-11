@@ -2,8 +2,8 @@ package com.wmp.extraPanel.attendance.panel;
 
 import com.wmp.CTColor;
 import com.wmp.classTools.CTComponent.CTPanel;
-import com.wmp.tools.PeoPanelProcess;
-import com.wmp.tools.io.IOStreamForInf;
+import com.wmp.PublicTools.PeoPanelProcess;
+import com.wmp.PublicTools.io.IOStreamForInf;
 
 import javax.swing.*;
 import java.awt.*;

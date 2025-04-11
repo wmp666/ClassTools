@@ -1,7 +1,7 @@
 package com.wmp.classTools.CTComponent;
 
 import com.wmp.CTColor;
-import com.wmp.tools.GetIcon;
+import com.wmp.PublicTools.GetIcon;
 
 import javax.swing.*;
 import java.awt.event.MouseEvent;

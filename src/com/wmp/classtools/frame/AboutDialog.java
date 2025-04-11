@@ -2,18 +2,18 @@ package com.wmp.classTools.frame;
 
 import com.wmp.CTColor;
 import com.wmp.Main;
+import com.wmp.PublicTools.GetIcon;
+import com.wmp.PublicTools.OpenInExp;
+import com.wmp.PublicTools.update.GetNewerVersion;
 import com.wmp.classTools.CTComponent.CTButton;
-import com.wmp.tools.GetIcon;
-import com.wmp.tools.update.GetNewerVersion;
 
 import javax.swing.*;
 import java.awt.*;
-import java.io.File;
 import java.net.URI;
 
 public class AboutDialog extends JDialog {
 
-    private JPanel view = new JPanel();
+    private static final JPanel view = new JPanel();
 
 
     public AboutDialog() {
@@ -46,7 +46,7 @@ public class AboutDialog extends JDialog {
         JLabel author = new JLabel("作者: WMP");
         author.setBounds(120, 70, 200, 20);
 
-        this.view = new JPanel();
+        //view = new JPanel();
         view.setBounds(0, 120, 300, 120);
         view.setBackground(CTColor.backColor);
         view.setLayout(null);
@@ -132,12 +132,7 @@ public class AboutDialog extends JDialog {
         JMenuItem appPath = new JMenuItem("程序路径");
         appPath.setIcon(GetIcon.getIcon(getClass().getResource("/image/openExp_0.png"), 20, 20));
         appPath.addActionListener(e -> {
-            try {
-                //打开程序路径
-                Desktop.getDesktop().open(new File(System.getProperty("user.dir")));
-            } catch (Exception ex) {
-                ex.printStackTrace();
-            }
+            OpenInExp.open(System.getProperty("user.dir"));
         });
 
         menu.add(chat);

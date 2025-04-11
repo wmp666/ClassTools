@@ -3,8 +3,8 @@ package com.wmp;
 import com.wmp.classTools.frame.EasterEgg;
 import com.wmp.classTools.frame.LoadingWindow;
 import com.wmp.classTools.frame.MainWindow;
-import com.wmp.tools.StartupParameters;
-import com.wmp.tools.update.GetNewerVersion;
+import com.wmp.PublicTools.StartupParameters;
+import com.wmp.PublicTools.update.GetNewerVersion;
 
 import javax.swing.*;
 import java.io.IOException;
@@ -19,7 +19,7 @@ public class Main{
 
     public static String TempPath = "null";
 
-    public static String version = "1.10.0";
+    public static String version = "1.10.1";
 
     public static ArrayList<String> list = new ArrayList<>();
 
@@ -30,8 +30,8 @@ public class Main{
         allArgs.put("TimeView:screen", StartupParameters.creative("-TimeView:screen", "/TimeView:screen"));
         allArgs.put("StartUpdate:false", StartupParameters.creative("-StartUpdate:false", "/StartUpdate:false"));
         allArgs.put("EasterEgg:", StartupParameters.creative("-EasterEgg:", "/EasterEgg:"));
-        allArgs.put("screenProduct:set", StartupParameters.creative("/s", "-s"));
-        allArgs.put("screenProduct:show", StartupParameters.creative("/p", "-p"));
+        allArgs.put("screenProduct:show", StartupParameters.creative("/s", "-s"));
+        allArgs.put("screenProduct:view", StartupParameters.creative("/p", "-p"));
         //allArgs.put("", StartupParameters.creative("-EasterEgg-pin:nj02", "/EasterEgg-pin:nj02"));
     }
     public static void main(String[] args) throws IOException, URISyntaxException {
@@ -74,7 +74,7 @@ public class Main{
 
         if (!(allArgs.get("StartUpdate:false").contains(list) ||
                 allArgs.get("screenProduct:show").contains(list) ||
-                allArgs.get("screenProduct:set").contains(list))) {
+                allArgs.get("screenProduct:view").contains(list))) {
             //执行你的代码
             GetNewerVersion.checkForUpdate(
                     loadingWindow, null);

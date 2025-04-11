@@ -3,11 +3,11 @@ package com.wmp.classTools.infSet;
 import com.wmp.CTColor;
 import com.wmp.Main;
 import com.wmp.classTools.CTComponent.CTButton;
-import com.wmp.tools.GetIcon;
-import com.wmp.tools.InfProcess;
-import com.wmp.tools.OpenInExp;
-import com.wmp.tools.io.IOStreamForInf;
-import com.wmp.tools.io.ZipPack;
+import com.wmp.PublicTools.GetIcon;
+import com.wmp.PublicTools.InfProcess;
+import com.wmp.PublicTools.OpenInExp;
+import com.wmp.PublicTools.io.IOStreamForInf;
+import com.wmp.PublicTools.io.ZipPack;
 
 import javax.swing.*;
 import javax.swing.filechooser.FileFilter;
@@ -382,7 +382,7 @@ public class InfSetDialog extends JDialog implements WindowListener {
         saveMenuItem.setIcon(GetIcon.getIcon(getClass().getResource("/image/save_0.png"), 16, 16));
         saveMenuItem.addActionListener(e -> {
             save();
-            JOptionPane.showMessageDialog(this, "保存成功");
+            //JOptionPane.showMessageDialog(this, "保存成功");
         });
 
 

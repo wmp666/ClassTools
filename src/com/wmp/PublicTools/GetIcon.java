@@ -1,4 +1,4 @@
-package com.wmp.tools;
+package com.wmp.PublicTools;
 
 import javax.swing.*;
 import java.awt.*;

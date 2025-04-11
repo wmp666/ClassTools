@@ -1,4 +1,4 @@
-package com.wmp.tools.videoView;
+package com.wmp.PublicTools.videoView;
 
 import java.awt.*;
 import java.io.File;

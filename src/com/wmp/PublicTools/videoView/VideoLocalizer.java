@@ -1,4 +1,4 @@
-package com.wmp.tools.videoView;
+package com.wmp.PublicTools.videoView;
 
 import java.io.IOException;
 import java.io.InputStream;

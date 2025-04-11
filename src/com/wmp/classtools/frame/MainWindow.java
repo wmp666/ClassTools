@@ -7,8 +7,8 @@ import com.wmp.classTools.importPanel.timeView.TimeViewPanel;
 import com.wmp.classTools.infSet.InfSetDialog;
 import com.wmp.extraPanel.attendance.panel.ATPanel;
 import com.wmp.extraPanel.duty.panel.DPanel;
-import com.wmp.tools.io.IOStreamForInf;
-import com.wmp.tools.update.GetNewerVersion;
+import com.wmp.PublicTools.io.IOStreamForInf;
+import com.wmp.PublicTools.update.GetNewerVersion;
 
 import javax.swing.*;
 import java.awt.*;
@@ -28,6 +28,7 @@ public class MainWindow extends JDialog {
 
     public MainWindow(String path) throws IOException {
 
+        this.setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
         this.setTitle("ClassTools-V" + Main.version);
         //删除边框
         this.setUndecorated(true);
@@ -54,25 +55,6 @@ public class MainWindow extends JDialog {
         timeViewPanel.setBackground(CTColor.backColor);
         contentPane.add(timeViewPanel);
         mixY = timeViewPanel.getNextPanelY();
-
-        //时间刷新
-        /*Thread timeThread = new Thread(() -> {
-
-            while (true) {
-                //获取时间
-                Date date = new Date();
-                //格式化 11.22 23:05
-                DateFormat dateFormat = new SimpleDateFormat("MM.dd HH:mm:ss");
-                timeViewPanel.getTimeView().setText(dateFormat.format(date));
-                try {
-                    Thread.sleep(300);
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
-                timeViewPanel.repaint();
-            }
-        });
-        timeThread.start();*/
 
 
         //System.out.println("mixY = " + mixY);
@@ -155,7 +137,7 @@ public class MainWindow extends JDialog {
 
         initFrame(mixY);
 
-        if (allArgs.get("screenProduct:show").contains(list)){
+        if (allArgs.get("screenProduct:view").contains(list)){
             JDialog view = new JDialog();
             view.setSize(timeViewPanel.getWidth() + 20, timeViewPanel.getHeight() + 40);
             view.setLocationRelativeTo(null);
