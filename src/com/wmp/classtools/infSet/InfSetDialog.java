@@ -17,6 +17,7 @@ import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
 import java.io.File;
 import java.io.IOException;
+import java.net.MalformedURLException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -85,7 +86,8 @@ public class InfSetDialog extends JDialog implements WindowListener {
         DefaultTableModel model = new DefaultTableModel(dutyList,
                 new String[]{"扫地", "擦黑板"});
         //设置表格的两列不可以修改顺序
-        DutyTable.setColumnSelectionAllowed(false);
+        DutyTable.getTableHeader().setReorderingAllowed(false);
+        DutyTable.setFont(new Font("微软雅黑", -1, 15));
         DutyTable.setModel(model);
 
         JScrollPane scrollPane = new JScrollPane(DutyTable);
@@ -101,8 +103,9 @@ public class InfSetDialog extends JDialog implements WindowListener {
         //新建
         {
 
-            CTButton newBtn = new CTButton("添加新的值日生记录", getClass().getResource("/image/new_0.png"),
-                    getClass().getResource("/image/new_1.png"), 30, () -> {
+            CTButton newBtn = new CTButton("添加新的值日生记录",
+                    "/image/%s/new_0.png",
+                    "/image/%s/new_1.png", 30, () -> {
                 //检测内容是否为空
                 boolean b = true;
                 String s1 = "null";
@@ -137,8 +140,9 @@ public class InfSetDialog extends JDialog implements WindowListener {
         // 删除
         {
 
-            CTButton deleteBtn = new CTButton("删除选中的值日生记录", getClass().getResource("/image/delete_0.png"),
-                    getClass().getResource("/image/delete_1.png"), 35, () -> {
+            CTButton deleteBtn = new CTButton("删除选中的值日生记录",
+                    "/image/%s/delete_0.png",
+                    "/image/%s/delete_1.png", 35, () -> {
 
                 int selectedRow = DutyTable.getSelectedRow();
                 if (selectedRow != -1) {
@@ -176,6 +180,8 @@ public class InfSetDialog extends JDialog implements WindowListener {
         DefaultTableModel model = new DefaultTableModel(studentListTemp,
                 new String[]{"序号", "姓名"});
 
+        allStuTable.getTableHeader().setReorderingAllowed(false);
+        allStuTable.setFont(new Font("微软雅黑", -1, 12));
         allStuTable.setModel(model);
 
         JScrollPane scrollPane = new JScrollPane(allStuTable);
@@ -192,8 +198,9 @@ public class InfSetDialog extends JDialog implements WindowListener {
         //新建
         {
 
-            CTButton newBtn = new CTButton("添加新的项", getClass().getResource("/image/new_0.png"),
-                    getClass().getResource("/image/new_1.png"), 30, () -> {
+            CTButton newBtn = new CTButton("添加新的项",
+                    "/image/%s/new_0.png",
+                    "/image/%s/new_1.png", 30, () -> {
                 //检测内容是否为空
                 boolean b = true;
                 String s1 = "null";
@@ -215,8 +222,9 @@ public class InfSetDialog extends JDialog implements WindowListener {
         // 删除
         {
 
-            CTButton deleteBtn = new CTButton("删除选中的项", getClass().getResource("/image/delete_0.png"),
-                    getClass().getResource("/image/delete_1.png"), 35, () -> {
+            CTButton deleteBtn = new CTButton("删除选中的项",
+                    "/image/%s/delete_0.png",
+                    "/image/%s/delete_1.png", 35, () -> {
 
 
                 try {
@@ -255,10 +263,10 @@ public class InfSetDialog extends JDialog implements WindowListener {
         //fileMenu.setIcon(getClass().getResource("/image/file.png"));
 
         JMenu openFile = new JMenu("打开文件");
-        openFile.setIcon(GetIcon.getIcon(getClass().getResource("/image/openExp_0.png"), 16, 16));
+        openFile.setIcon(GetIcon.getIcon(getClass().getResource("/image/openExp.png"), 16, 16));
 
         JMenuItem openAppList = new JMenuItem("软件位置");
-        openAppList.setIcon(GetIcon.getIcon(getClass().getResource("/image/openExp_0.png"), 16, 16));
+        openAppList.setIcon(GetIcon.getIcon(getClass().getResource("/image/openExp.png"), 16, 16));
         openAppList.addActionListener(e -> {
             OpenInExp.open(System.getProperty("user.dir"));
         });
@@ -302,10 +310,10 @@ public class InfSetDialog extends JDialog implements WindowListener {
         });
 
         JMenu inputInf = new JMenu("导出数据");
-        inputInf.setIcon(GetIcon.getIcon(getClass().getResource("/image/update_0.png"), 16, 16));
+        inputInf.setIcon(GetIcon.getIcon(getClass().getResource("/image/light/update_0.png"), 16, 16));
 
         JMenuItem inputAllInf = new JMenuItem("导出所有数据(.ctdatas)");
-        inputAllInf.setIcon(GetIcon.getIcon(getClass().getResource("/image/update_0.png"), 16, 16));
+        inputAllInf.setIcon(GetIcon.getIcon(getClass().getResource("/image/light/update_0.png"), 16, 16));
         inputAllInf.addActionListener(e -> {
             String path = getDirectoryPath("请选择导出目录");
             //将ClassTools文件夹中的文件打包为.zip
@@ -318,7 +326,7 @@ public class InfSetDialog extends JDialog implements WindowListener {
 
 
         JMenuItem exitMenuItem = new JMenuItem("退出");
-        exitMenuItem.setIcon(GetIcon.getIcon(getClass().getResource("/image/exit_0.png"), 16, 16));
+        exitMenuItem.setIcon(GetIcon.getIcon(getClass().getResource("/image/light/exit_0.png"), 16, 16));
         exitMenuItem.addActionListener(e -> {
             save();
             this.setVisible(false);
@@ -379,7 +387,7 @@ public class InfSetDialog extends JDialog implements WindowListener {
         });
 
         JMenuItem saveMenuItem = new JMenuItem("保存");
-        saveMenuItem.setIcon(GetIcon.getIcon(getClass().getResource("/image/save_0.png"), 16, 16));
+        saveMenuItem.setIcon(GetIcon.getIcon(getClass().getResource("/image/light/save_0.png"), 16, 16));
         saveMenuItem.addActionListener(e -> {
             save();
             //JOptionPane.showMessageDialog(this, "保存成功");
@@ -457,9 +465,10 @@ public class InfSetDialog extends JDialog implements WindowListener {
         return null;
     }
 
-    private void initSaveButton() {
-        CTButton saveButton = new CTButton(CTButton.ButtonText, "保存数据", getClass().getResource("/image/save_0.png"),
-                getClass().getResource("/image/save_1.png"), 200, 50, () -> {
+    private void initSaveButton() throws MalformedURLException {
+        CTButton saveButton = new CTButton(CTButton.ButtonText, "保存数据",
+                "/image/%s/save_0.png",
+                "/image/%s/save_1.png", 200, 50, () -> {
             save();
             JOptionPane.showMessageDialog(this, "保存成功");
         });
@@ -467,7 +476,7 @@ public class InfSetDialog extends JDialog implements WindowListener {
 
     }
 
-    private void repaintSetsPanel(JPanel panel) {
+    private void repaintSetsPanel(JPanel panel) throws MalformedURLException {
 
             c.removeAll();
             initMenuBar();
@@ -488,6 +497,7 @@ public class InfSetDialog extends JDialog implements WindowListener {
         // 请假人员设置组件
         JLabel leaveLabel = new JLabel("请假人员:");
         leaveLabel.setBounds(20, 0, 300, 25);
+        leaveLabel.setForeground(CTColor.textColor);
         mainPanel.add(leaveLabel);
 
         JPanel leavePanel = new JPanel();
@@ -511,6 +521,7 @@ public class InfSetDialog extends JDialog implements WindowListener {
         for (String student : studentList) {
             JCheckBox checkBox = new JCheckBox(student);
             checkBox.setBackground(CTColor.backColor);
+            checkBox.setForeground(CTColor.textColor);
 
 
             if (leaveList.contains(student.trim())) {

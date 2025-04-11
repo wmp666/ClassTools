@@ -18,6 +18,7 @@ import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
 import java.io.File;
 import java.io.IOException;
+import java.net.MalformedURLException;
 import java.util.concurrent.atomic.AtomicInteger;
 
 import static com.wmp.Main.allArgs;
@@ -78,8 +79,9 @@ public class MainWindow extends JDialog {
         finalPanel.setLocation(0, mixY);
         finalPanel.setSize(250, 39);
 
-        CTButton settings = new CTButton("设置数据", getClass().getResource("/image/settings_0.png"),
-                getClass().getResource("/image/settings_1.png"),30,() -> {
+        CTButton settings = new CTButton("设置数据",
+                "/image/%s/settings_0.png",
+                "/image/%s/settings_1.png",30,() -> {
 
             try {
                 new InfSetDialog(this, AllStuPath, LeaveListPath, DutyListPath, indexPath, () -> {
@@ -99,25 +101,32 @@ public class MainWindow extends JDialog {
         //settings.setLocation(210, 0);
         finalPanel.add(settings);
 
-        CTButton about = new CTButton("软件信息", getClass().getResource("/image/about_0.png"),
-                getClass().getResource("/image/about_1.png"),30,() -> {
-            new AboutDialog().setVisible(true);
+        CTButton about = new CTButton("软件信息",
+                "/image/%s/about_0.png",
+                "/image/%s/about_1.png",30,() -> {
+            try {
+                new AboutDialog().setVisible(true);
+            } catch (MalformedURLException e) {
+                throw new RuntimeException(e);
+            }
         });
 
         //about.setLocation(210, 0);
         about.setToolTipText("版本：" + Main.version);
         finalPanel.add(about);
 
-        CTButton update = new CTButton("检查更新", getClass().getResource("/image/update_0.png"),
-                getClass().getResource("/image/update_1.png"),30,() -> {
+        CTButton update = new CTButton("检查更新",
+                "/image/%s/update_0.png",
+                "/image/%s/update_1.png",30,() -> {
             GetNewerVersion.checkForUpdate(null, null);
 
         });
         update.setToolTipText("获取更新");
         finalPanel.add(update);
 
-        CTButton exit = new CTButton("关闭", getClass().getResource("/image/exit_0.png"),
-                getClass().getResource("/image/exit_1.png"),30,() -> {
+        CTButton exit = new CTButton("关闭",
+                "/image/%s/exit_0.png",
+                "/image/%s/exit_1.png",30,() -> {
             int i = JOptionPane.showConfirmDialog(null, "确认退出?", "询问", JOptionPane.YES_NO_OPTION);
             if (i == JOptionPane.YES_OPTION){
                 System.exit(0);
