@@ -18,10 +18,14 @@ public class CTColor {
     public static Color textColor = Color.WHITE;
     public static Color backColor = Color.WHITE;
 
-    public static void setColor(String mainColorStr, String tempStyle){
-        // = new Color(0x0090FF)
-        // = Color.BLACK;
-        // = new Color(0xFFFFFF)
+    public static void setAllColor(String mainColorStr, String tempStyle){
+
+        setMainColorColor(mainColorStr);
+        setMainTheme(tempStyle);
+
+    }
+
+    public static void setMainColorColor(String mainColorStr){
         switch (mainColorStr){
             case MAIN_COLOR_WHITE->{
                 mainColor = Color.WHITE;
@@ -41,6 +45,10 @@ public class CTColor {
                 mainColor = Color.BLACK;
             }
         }
+        System.out.println("mainColor:" + String.format("#%06x", mainColor.getRGB()));
+    }
+
+    public static void setMainTheme(String tempStyle){
         style = tempStyle;
         switch (tempStyle){
             case STYLE_DARK->{
@@ -54,5 +62,10 @@ public class CTColor {
         }
     }
 
-
+    @Override
+    public String toString() {
+        return "CTColor{ mainColor:" + String.format("#%06x", mainColor.getRGB()) +
+                " textColor:" + String.format("#%06x", textColor.getRGB()) +
+                " backColor:" + String.format("#%06x", backColor.getRGB()) + "}";
+    }
 }

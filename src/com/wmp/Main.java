@@ -1,12 +1,15 @@
 package com.wmp;
 
 import com.wmp.PublicTools.StartupParameters;
+import com.wmp.PublicTools.io.IOStreamForInf;
 import com.wmp.PublicTools.update.GetNewerVersion;
 import com.wmp.classTools.frame.EasterEgg;
 import com.wmp.classTools.frame.LoadingWindow;
 import com.wmp.classTools.frame.MainWindow;
+import org.json.JSONObject;
 
 import javax.swing.*;
+import java.io.File;
 import java.io.IOException;
 import java.net.URISyntaxException;
 import java.time.LocalDate;
@@ -29,16 +32,26 @@ public class Main{
     * d:修复c版的问题(仅限)
     * e:测试版本号
      */
-    public static String version = "1.10.1";
-
-    public static String buttonIconStyle = "light";
+    public static String version = "1.11.0";
 
     public static ArrayList<String> list = new ArrayList<>();
 
     public static final TreeMap<String, StartupParameters> allArgs = new TreeMap<>();
 
-    static {
+    public static boolean canExit = true;
 
+    static {
+        //加载基础目录
+        String path = System.getenv("LOCALAPPDATA");
+
+        StringBuilder sb = new StringBuilder();
+        DataPath = sb.append(path).append("\\ClassTools\\").toString();
+
+        StringBuilder sb2 = new StringBuilder();
+
+        TempPath = sb2.append(path).append("\\ClassToolsTemp\\").toString();
+
+        DataPath = sb.toString();
 
         allArgs.put("TimeView:screen", StartupParameters.creative("-TimeView:screen", "/TimeView:screen"));
         allArgs.put("StartUpdate:false", StartupParameters.creative("-StartUpdate:false", "/StartUpdate:false"));
@@ -49,7 +62,33 @@ public class Main{
     }
     public static void main(String[] args) throws IOException, URISyntaxException {
 
+        boolean exists = new File(Main.DataPath + "setUp.json").exists();
 
+        if (exists) {
+            IOStreamForInf sets = new IOStreamForInf(new File(Main.DataPath + "setUp.json"));
+            System.out.println(sets);
+            JSONObject jsonObject = new JSONObject(sets.GetInf()[0]);
+            if (jsonObject.has("mainColor")) {
+                switch (jsonObject.getString("mainColor")) {
+                    case "black" -> CTColor.setMainColorColor(CTColor.MAIN_COLOR_BLACK);
+                    case "white" -> CTColor.setMainColorColor(CTColor.MAIN_COLOR_WHITE);
+                    case "green" -> CTColor.setMainColorColor(CTColor.MAIN_COLOR_GREEN);
+                    case "red" -> CTColor.setMainColorColor(CTColor.MAIN_COLOR_RED);
+                    default -> CTColor.setMainColorColor(CTColor.MAIN_COLOR_BLUE);
+                }
+            }
+            if (jsonObject.has("mainTheme")) {
+                switch (jsonObject.getString("mainTheme")) {
+                    case "dark" -> CTColor.setMainTheme(CTColor.STYLE_DARK);
+                    default -> CTColor.setMainTheme(CTColor.STYLE_LIGHT);
+                }
+            }
+            if (jsonObject.has("canExit")) {
+
+                    canExit = jsonObject.getBoolean("canExit");
+
+            }
+        }
 
         //加载颜色(CTColor)数据
         //判断当前时间是否是4月1日
@@ -58,12 +97,10 @@ public class Main{
         boolean b = currentDate.getMonth() == Month.APRIL
                 && currentDate.getDayOfMonth() == 1;
         if (b){
-            CTColor.setColor(CTColor.MAIN_COLOR_GREEN, CTColor.STYLE_LIGHT);
-        }else{
-            CTColor.setColor(CTColor.MAIN_COLOR_BLUE, CTColor.STYLE_LIGHT);
+            CTColor.setAllColor(CTColor.MAIN_COLOR_GREEN, CTColor.STYLE_LIGHT);
         }
 
-
+        System.out.println(new CTColor());
         try {
             //使用系统UI
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
@@ -91,14 +128,6 @@ public class Main{
     private static void show() throws URISyntaxException, IOException {
         System.out.println("Hello, World!");
 
-        String path = System.getenv("LOCALAPPDATA");
-
-        StringBuilder sb = new StringBuilder();
-        DataPath = sb.append(path).append("\\ClassTools\\").toString();
-
-        StringBuilder sb2 = new StringBuilder();
-
-        TempPath = sb2.append(path).append("\\ClassToolsTemp\\").toString();
 
         //System.out.println(sb);
         LoadingWindow loadingWindow = new LoadingWindow();
@@ -127,7 +156,7 @@ public class Main{
             EasterEgg.show("nj02");
         }
 */
-        DataPath = sb.toString();
+
 
         new MainWindow(DataPath);
         loadingWindow.setVisible(false);

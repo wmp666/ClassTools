@@ -3,6 +3,7 @@ package com.wmp.PublicTools.io;
 import javax.swing.*;
 import java.io.*;
 import java.nio.charset.StandardCharsets;
+import java.util.Arrays;
 
 public class IOStreamForInf {
 
@@ -82,5 +83,18 @@ public class IOStreamForInf {
     private boolean creativeFile(File file) throws IOException {
         file.getParentFile().mkdirs();
         return file.createNewFile();
+    }
+
+    @Override
+    public String toString() {
+
+        try {
+            return "IOStreamForInf{" +
+                    "file=" + file +
+                    " Inf=" + Arrays.toString(GetInf()) +
+                    '}';
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
     }
 }

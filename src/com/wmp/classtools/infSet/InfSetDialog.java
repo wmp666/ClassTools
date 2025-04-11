@@ -8,6 +8,7 @@ import com.wmp.PublicTools.InfProcess;
 import com.wmp.PublicTools.OpenInExp;
 import com.wmp.PublicTools.io.IOStreamForInf;
 import com.wmp.PublicTools.io.ZipPack;
+import org.json.JSONObject;
 
 import javax.swing.*;
 import javax.swing.filechooser.FileFilter;
@@ -20,6 +21,7 @@ import java.io.IOException;
 import java.net.MalformedURLException;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Objects;
 import java.util.concurrent.atomic.AtomicInteger;
 
 public class InfSetDialog extends JDialog implements WindowListener {
@@ -30,10 +32,16 @@ public class InfSetDialog extends JDialog implements WindowListener {
     private final File DutyListPath;
     private final File indexPath;
     private final Runnable refreshCallback;
+
     private final ArrayList<JCheckBox> checkBoxList = new ArrayList<>();
     private final AtomicInteger index = new AtomicInteger();
     private final JTable DutyTable = new JTable();
     private final JTable allStuTable = new JTable();
+
+    private final JComboBox<String> mainColorComboBox = new JComboBox<>();
+    private final JComboBox<String> mainThemeComboBox = new JComboBox<>();
+    private final JCheckBox canExit = new JCheckBox("防止被意外关闭");
+    private final JCheckBox startUp = new JCheckBox("开机自启动");
 
     private final ArrayList<String> leaveList;
     private final ArrayList<String> studentList;
@@ -75,8 +83,138 @@ public class InfSetDialog extends JDialog implements WindowListener {
 
         initAllStuSet(this.studentList);
 
+        initPersonalization();
+
     }
 
+    private JPanel initPersonalization() throws IOException {
+        JPanel SetsPanel = new JPanel();
+        JScrollPane mainPanelScroll = new JScrollPane(SetsPanel);
+        mainPanelScroll.setSize(400, 400);
+
+        SetsPanel.setBackground(CTColor.backColor);
+        SetsPanel.setLayout(new GridLayout(2,1));
+
+        JPanel ColorPanel = new JPanel();
+        ColorPanel.setBackground(CTColor.backColor);
+        ColorPanel.setLayout(new GridLayout(2,1));
+        //颜色设置
+        {
+            //主题色设置
+            JPanel MainColorSets = new JPanel();
+            {
+
+                MainColorSets.setLayout(new FlowLayout(FlowLayout.LEFT));
+                MainColorSets.setBackground(CTColor.backColor);
+
+                JLabel mainColorLabel = new JLabel("主题色:");
+                mainColorLabel.setFont(new Font("微软雅黑", -1, 15));
+                mainColorLabel.setForeground(CTColor.textColor);
+                //mainColorLabel.setSize(50, 30);
+
+
+                mainColorComboBox.setFont(new Font("微软雅黑", -1, 15));
+                mainColorComboBox.setForeground(CTColor.textColor);
+                mainColorComboBox.setBackground(CTColor.backColor);
+
+                //添加颜色项目
+                mainColorComboBox.removeAllItems();
+                mainColorComboBox.addItem("蓝色");
+                mainColorComboBox.addItem("红色");
+                mainColorComboBox.addItem("绿色");
+                mainColorComboBox.addItem("白色");
+                mainColorComboBox.addItem("黑色");
+
+                MainColorSets.add(mainColorLabel);
+                MainColorSets.add(mainColorComboBox);
+            }
+
+            //主题设置
+            JPanel MainThemeSets = new JPanel();
+            {
+
+                MainThemeSets.setLayout(new FlowLayout(FlowLayout.LEFT));
+                MainThemeSets.setBackground(CTColor.backColor);
+
+                JLabel mainThemeLabel = new JLabel("主题:");
+                mainThemeLabel.setFont(new Font("微软雅黑", -1, 15));
+                mainThemeLabel.setForeground(CTColor.textColor);
+                //mainThemeLabel.setSize(50, 30);
+
+                mainThemeComboBox.setFont(new Font("微软雅黑", -1, 15));
+                mainThemeComboBox.setForeground(CTColor.textColor);
+                mainThemeComboBox.setBackground(CTColor.backColor);
+
+                //添加主题项目
+                mainThemeComboBox.removeAllItems();
+                mainThemeComboBox.addItem("浅色");
+                mainThemeComboBox.addItem("深色");
+
+                MainThemeSets.add(mainThemeLabel);
+                MainThemeSets.add(mainThemeComboBox);
+            }
+
+            ColorPanel.add(MainColorSets);
+            ColorPanel.add(MainThemeSets);
+
+        }
+
+        JPanel otherPanel = new JPanel();
+        otherPanel.setBackground(CTColor.backColor);
+
+        //其他设置
+        {
+            startUp.setFont(new Font("微软雅黑", -1, 15));
+            startUp.setForeground(CTColor.textColor);
+            startUp.setBackground(CTColor.backColor);
+
+            canExit.setFont(new Font("微软雅黑", -1, 15));
+            canExit.setForeground(CTColor.textColor);
+            canExit.setBackground(CTColor.backColor);
+
+
+            otherPanel.add(startUp);
+            otherPanel.add(canExit);
+
+
+        }
+        otherPanel.setLayout(new GridLayout(3,2));
+
+        SetsPanel.add(ColorPanel);
+        SetsPanel.add(otherPanel);
+
+        JPanel tempPanel = new JPanel();
+        tempPanel.setLayout(new BorderLayout());
+        tempPanel.setBackground(CTColor.backColor);
+        tempPanel.add(mainPanelScroll, BorderLayout.NORTH);
+
+        //显示数据
+        {
+            IOStreamForInf io = new IOStreamForInf(new File(Main.DataPath + "setUp.json"));
+            JSONObject jsonObject = new JSONObject(io.GetInf()[0]);
+            if (jsonObject.has("mainColor")) {
+                switch (jsonObject.getString("mainColor")) {
+                    case "black" -> mainColorComboBox.setSelectedIndex(4);
+                    case "white" -> mainColorComboBox.setSelectedIndex(3);
+                    case "green" -> mainColorComboBox.setSelectedIndex(2);
+                    case "red" -> mainColorComboBox.setSelectedIndex(1);
+                    default -> mainColorComboBox.setSelectedIndex(0);
+                }
+            }
+            if (jsonObject.has("mainTheme")) {
+                switch (jsonObject.getString("mainTheme")) {
+                    case "dark" -> mainThemeComboBox.setSelectedIndex(1);
+                    default -> mainThemeComboBox.setSelectedIndex(0);
+                }
+            }
+            if (jsonObject.has("canExit")) {
+                canExit.setSelected(!jsonObject.getBoolean("canExit"));
+
+            }
+        }
+
+        return tempPanel;
+    }
     private JPanel initDuSet(String [][] dutyList) throws IOException {
 
         JPanel mainPanel = new JPanel();
@@ -271,6 +409,10 @@ public class InfSetDialog extends JDialog implements WindowListener {
             OpenInExp.open(System.getProperty("user.dir"));
         });
 
+        JMenuItem openSetsList = new JMenuItem("个性化文件");
+        openSetsList.addActionListener(e -> {
+            OpenInExp.open(Main.DataPath);
+        });
 
         JMenuItem openStuList = new JMenuItem("人员名单");
         openStuList.addActionListener(e -> {
@@ -332,9 +474,9 @@ public class InfSetDialog extends JDialog implements WindowListener {
             this.setVisible(false);
         });
 
-
-        openFile.add(openDutyList);
         openFile.add(openAppList);
+        openFile.add(openSetsList);
+        openFile.add(openDutyList);
         openFile.add(openStuList);
 
         getInf.add(getDutyList);
@@ -357,6 +499,15 @@ public class InfSetDialog extends JDialog implements WindowListener {
         JMenu editMenu = new JMenu("编辑");
 
         JMenu setMenu = new JMenu("设置界面");
+
+        JMenuItem PersonalizationMenuItem = new JMenuItem("个性化");
+        PersonalizationMenuItem.addActionListener(e -> {
+            try {
+                repaintSetsPanel(initPersonalization());
+            } catch (IOException ex) {
+                throw new RuntimeException(ex);
+            }
+        });
 
 
         JMenuItem DutyMenuItem = new JMenuItem("值日生");
@@ -394,6 +545,7 @@ public class InfSetDialog extends JDialog implements WindowListener {
         });
 
 
+        setMenu.add(PersonalizationMenuItem);
         setMenu.add(DutyMenuItem);
         setMenu.add(AttMenuItem);
         setMenu.add(AllStuMenuItem);
@@ -468,10 +620,7 @@ public class InfSetDialog extends JDialog implements WindowListener {
     private void initSaveButton() throws MalformedURLException {
         CTButton saveButton = new CTButton(CTButton.ButtonText, "保存数据",
                 "/image/%s/save_0.png",
-                "/image/%s/save_1.png", 200, 50, () -> {
-            save();
-            JOptionPane.showMessageDialog(this, "保存成功");
-        });
+                "/image/%s/save_1.png", 200, 50, this::save);
         c.add(saveButton, BorderLayout.SOUTH);
 
     }
@@ -704,6 +853,32 @@ public class InfSetDialog extends JDialog implements WindowListener {
                     new IOStreamForInf(AllStuPath).SetInf(sb.toString());
 
 
+                }
+
+                //保存数据-个性化
+                {
+                    IOStreamForInf io = new IOStreamForInf(new File(Main.DataPath + "setUp.json"));
+
+                    JSONObject jsonObject = new JSONObject();
+                    String tempMainColor = switch (Objects.requireNonNull(mainColorComboBox.getSelectedItem()).toString()) {
+                        case "黑色" -> "black";
+                        case "白色" -> "white";
+                        case "绿色" -> "green";
+                        case "红色" -> "red";
+                        default -> "blue";
+                    };
+                    jsonObject.put("mainColor", tempMainColor);
+
+                    String tempMainThemeColor = switch (Objects.requireNonNull(mainThemeComboBox.getSelectedItem()).toString()) {
+                        case "深色" -> "dark";
+                        default -> "light";
+                    };
+                    jsonObject.put("mainTheme", tempMainThemeColor);
+
+                    jsonObject.put("canExit", !canExit.isSelected());
+
+                    System.out.println(jsonObject);
+                    io.SetInf(jsonObject.toString());
                 }
 
                 // 保存成功后执行回调

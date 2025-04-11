@@ -21,9 +21,9 @@ public class GetNewerVersion {
 
     //private static JDialog dialog;
     private static String versionContent = "";
-    private static String apiUrl = "https://api.kkgithub.com/repos/wmp666/ClassTools/releases/latest";
+    private static String apiUrl = "https://api.github.com/repos/wmp666/ClassTools/releases/latest";
     private static String downloadUrl = "null";
-    //https://kkgithub.com/wmp666/ClassTools/releases/download/1.6.4/ClassTools.jar
+    //https://github.com/wmp666/ClassTools/releases/download/1.6.4/ClassTools.jar
 
     public static void getSource(Window dialog, JPanel panel){
         if (panel != null) {

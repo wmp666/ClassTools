@@ -124,18 +124,20 @@ public class MainWindow extends JDialog {
         update.setToolTipText("获取更新");
         finalPanel.add(update);
 
-        CTButton exit = new CTButton("关闭",
-                "/image/%s/exit_0.png",
-                "/image/%s/exit_1.png",30,() -> {
-            int i = JOptionPane.showConfirmDialog(null, "确认退出?", "询问", JOptionPane.YES_NO_OPTION);
-            if (i == JOptionPane.YES_OPTION){
-                System.exit(0);
-            }
+        if (Main.canExit) {
+            CTButton exit = new CTButton("关闭",
+                    "/image/%s/exit_0.png",
+                    "/image/%s/exit_1.png",30,() -> {
+                int i = JOptionPane.showConfirmDialog(null, "确认退出?", "询问", JOptionPane.YES_NO_OPTION);
+                if (i == JOptionPane.YES_OPTION){
+                    System.exit(0);
+                }
 
-        });
+            });
 
-        //exit.setLocation(210, 0);
-        finalPanel.add(exit);
+            //exit.setLocation(210, 0);
+            finalPanel.add(exit);
+        }
 
 
         mixY = finalPanel.getHeight() + mixY;
