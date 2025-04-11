@@ -1,14 +1,17 @@
 package com.wmp;
 
+import com.wmp.PublicTools.StartupParameters;
+import com.wmp.PublicTools.update.GetNewerVersion;
 import com.wmp.classTools.frame.EasterEgg;
 import com.wmp.classTools.frame.LoadingWindow;
 import com.wmp.classTools.frame.MainWindow;
-import com.wmp.PublicTools.StartupParameters;
-import com.wmp.PublicTools.update.GetNewerVersion;
 
 import javax.swing.*;
 import java.io.IOException;
 import java.net.URISyntaxException;
+import java.time.LocalDate;
+import java.time.Month;
+import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.TreeMap;
@@ -27,6 +30,7 @@ public class Main{
 
     static {
 
+
         allArgs.put("TimeView:screen", StartupParameters.creative("-TimeView:screen", "/TimeView:screen"));
         allArgs.put("StartUpdate:false", StartupParameters.creative("-StartUpdate:false", "/StartUpdate:false"));
         allArgs.put("EasterEgg:", StartupParameters.creative("-EasterEgg:", "/EasterEgg:"));
@@ -35,6 +39,18 @@ public class Main{
         //allArgs.put("", StartupParameters.creative("-EasterEgg-pin:nj02", "/EasterEgg-pin:nj02"));
     }
     public static void main(String[] args) throws IOException, URISyntaxException {
+
+
+        //加载颜色(CTColor)数据
+        //判断当前时间是否是4月1日
+        // 明确指定时区
+        LocalDate currentDate = LocalDate.now(ZoneId.of("Asia/Shanghai"));
+        boolean b = currentDate.getMonth() == Month.APRIL
+                && currentDate.getDayOfMonth() == 1;
+        if (b){
+
+        }
+
 
         try {
             //使用系统UI

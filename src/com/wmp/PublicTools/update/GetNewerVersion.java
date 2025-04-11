@@ -161,7 +161,7 @@ public class GetNewerVersion {
                 } else if (i == 2) {
                     JOptionPane.showMessageDialog(dialog,
                             "发现新版本 " + latestVersion + "!\n" + versionContent,
-                            "发现更新", JOptionPane.YES_NO_OPTION);
+                            "发现更新", JOptionPane.INFORMATION_MESSAGE);
 
                     downloadUpdate(dialog, view, downloadUrl);
                 } else {
@@ -347,7 +347,11 @@ public class GetNewerVersion {
                         File sourceFile = new File(appDir.getPath() + "/" + fileNameFromUrl);
 
                         File targetFile = new File("app/ClassTools.jar");
-                        targetFile.mkdirs();
+                        if (!targetFile.exists()){
+                            targetFile.getParentFile().mkdirs();
+                            targetFile.createNewFile();
+                        }
+
 
                         FileOutputStream targetOut = new FileOutputStream(targetFile);
                         FileInputStream sourceIn = new FileInputStream(sourceFile);
@@ -383,7 +387,7 @@ public class GetNewerVersion {
             } catch (Exception ex) {
                 SwingUtilities.invokeLater(() -> {
                     progressDialog.dispose();
-                    JOptionPane.showMessageDialog(parent, "下载失败: " + ex.getMessage());
+                    JOptionPane.showMessageDialog(parent, "下载失败: " + ex.getMessage(), "世界拒绝了我", JOptionPane.ERROR_MESSAGE);
                 });
             }
         }).start();
