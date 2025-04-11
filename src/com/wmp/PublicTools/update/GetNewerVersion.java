@@ -323,16 +323,41 @@ public class GetNewerVersion {
                     progressBar.setValue(0);
                     Objects.requireNonNullElse(panel, progressDialog).repaint();
 
+                    long startTime = System.currentTimeMillis();
                     while ((read = in.read(buffer)) > 0) {
-                        //System.out.println("write" + Arrays.toString(buffer));
                         out.write(buffer, 0, read);
                         total += read;
-                        int progress = (int) (total * 100 / fileSize);
-                        //显示下载速度
-                        String v = (total / 1024) + "KB/" + (fileSize / 1024) + "KB" + " 速度:" + (read / 1024) + "KB";
-                        System.out.println(v + " " + buffer.length / 1024);
-                        label.setText("正在下载更新文件 " + v);
 
+                        // 计算已用时间（秒）
+                        long elapsedTime = System.currentTimeMillis() - startTime;
+                        double speed = (total / 1024.0) / (elapsedTime / 1000.0); // KB/s
+
+                        int progress = (int) ((total / (double) fileSize) * 100);
+                        // 格式化显示
+                        String v;
+                        //判断total fileSize 是否大于1024KB
+                        if (fileSize > 1024*1024) {
+                            if (total > 1024*1024){
+                                v = String.format("%.2fMB/%.2fMB 速度: %.2fKB/s",
+                                        total/1024.0/1024.0,
+                                        fileSize/1024.0/1024.0,
+                                        speed);
+                            }else{
+                                v = String.format("%.2fKB/%.2fMB 速度: %.2fKB/s",
+                                        total/1024.0,
+                                        fileSize/1024.0/1024.0,
+                                        speed);
+                            }
+
+                        }else {
+                            v = String.format("%.2fKB/%.2fKB 速度: %.2fKB/s",
+                                    total/1024.0,
+                                    fileSize/1024.0,
+                                    speed);
+                        }
+
+
+                        label.setText("下载文件 " + v);
                         SwingUtilities.invokeLater(() -> progressBar.setValue(progress));
                     }
 
