@@ -291,7 +291,7 @@ public class GetNewerVersion {
                 String fileUrl = jarAsset.attr("abs:href");*/
 
                 // 替换原有的页面解析逻辑为直接获取最新JAR
-                String fileUrl = downloadUrl;
+                String fileUrl = downloadUrl.replace("github", "kkgithub");
 
                 label.setText("正在初始化更新数据，请稍候...");
                 Objects.requireNonNullElse(panel, progressDialog).repaint();
