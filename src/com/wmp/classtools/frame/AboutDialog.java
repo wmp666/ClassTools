@@ -9,16 +9,20 @@ import com.wmp.classTools.CTComponent.CTButton;
 
 import javax.swing.*;
 import java.awt.*;
+import java.net.MalformedURLException;
 import java.net.URI;
 
 public class AboutDialog extends JDialog {
 
     private static final JPanel view = new JPanel();
 
-
-    public AboutDialog() {
-
+    static {
+        view.setBounds(0, 120, 300, 120);
+        view.setBackground(CTColor.backColor);
         view.setLayout(null);
+    }
+
+    public AboutDialog() throws MalformedURLException {
 
         this.setTitle("关于");
         this.setSize(300, 400);
@@ -38,27 +42,31 @@ public class AboutDialog extends JDialog {
 
         JLabel title = new JLabel("程序名: ClassTools");
         title.setBounds(120, 10, 200, 20);
+        title.setFont(new Font("微软雅黑", Font.BOLD, 15));
+        title.setForeground(CTColor.textColor);
 
         //将图标显示在文字上方
         JLabel version = new JLabel("版本: " + Main.version);
         version.setBounds(120, 40, 200, 20);
+        version.setFont(new Font("微软雅黑", Font.BOLD, 15));
+        version.setForeground(CTColor.textColor);
 
         JLabel author = new JLabel("作者: WMP");
         author.setBounds(120, 70, 200, 20);
+        author.setFont(new Font("微软雅黑", Font.BOLD, 15));
+        author.setForeground(CTColor.textColor);
 
         //view = new JPanel();
-        view.setBounds(0, 120, 300, 120);
-        view.setBackground(CTColor.backColor);
-        view.setLayout(null);
+
 
         CTButton getNew = new CTButton(CTButton.ButtonText, "检查更新",
-                getClass().getResource("/image/update_0.png"),
-                getClass().getResource("/image/update_1.png"), 150, 35,
+                "/image/%s/update_0.png",
+                "/image/%s/update_1.png", 150, 35,
                 () -> GetNewerVersion.checkForUpdate(this, view));
         getNew.setBackground(CTColor.backColor);
         getNew.setLocation(60, 240);
 
-        this.add(this.view);
+        this.add(view);
         this.add(getNew);
         this.add(icon);
         this.add(title);
@@ -67,7 +75,7 @@ public class AboutDialog extends JDialog {
 
         initMenuBar();
 
-        GetNewerVersion.checkForUpdate(this, this.view);
+        GetNewerVersion.checkForUpdate(this, view);
 
     }
 
@@ -130,7 +138,7 @@ public class AboutDialog extends JDialog {
         github.add(repo);
 
         JMenuItem appPath = new JMenuItem("程序路径");
-        appPath.setIcon(GetIcon.getIcon(getClass().getResource("/image/openExp_0.png"), 20, 20));
+        appPath.setIcon(GetIcon.getIcon(getClass().getResource("/image/openExp.png"), 20, 20));
         appPath.addActionListener(e -> {
             OpenInExp.open(System.getProperty("user.dir"));
         });
@@ -147,11 +155,11 @@ public class AboutDialog extends JDialog {
 
         //获取源代码
         JMenuItem getSource = new JMenuItem("获取源代码");
-        getSource.addActionListener(e -> GetNewerVersion.getSource(this, this.view));
+        getSource.addActionListener(e -> GetNewerVersion.getSource(this, view));
 
         JMenuItem checkUpdate = new JMenuItem("检查更新");
-        checkUpdate.setIcon(GetIcon.getIcon(getClass().getResource("/image/update_0.png"), 20, 20));
-        checkUpdate.addActionListener(e -> GetNewerVersion.checkForUpdate(this, this.view));
+        checkUpdate.setIcon(GetIcon.getIcon(getClass().getResource("/image/light/update_0.png"), 20, 20));
+        checkUpdate.addActionListener(e -> GetNewerVersion.checkForUpdate(this, view));
 
         downloadMenu.add(getSource);
         downloadMenu.add(checkUpdate);

@@ -6,6 +6,7 @@ import com.wmp.classTools.CTComponent.CTPanel;
 
 import javax.swing.*;
 import java.awt.*;
+import java.net.MalformedURLException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -17,7 +18,7 @@ public class TimeViewPanel extends CTPanel {
 
     private final JLabel timeView = new JLabel();
 
-    public TimeViewPanel(int mixY) {
+    public TimeViewPanel(int mixY) throws MalformedURLException {
 
 
         setNextPanelY(mixY);
@@ -36,8 +37,15 @@ public class TimeViewPanel extends CTPanel {
         this.add(timeView);
         setNextPanelY(32);
 
-        CTButton viewTimeButton = new CTButton("全屏显示时间", getClass().getResource("/image/view_0.png"),
-                    getClass().getResource("/image/view_1.png"), 30, () -> viewTimeInDeskTop(0) );
+        CTButton viewTimeButton = new CTButton("全屏显示时间",
+                "/image/%s/view_0.png",
+                "/image/%s/view_1.png", 30, () -> {
+            try {
+                viewTimeInDeskTop(0);
+            } catch (MalformedURLException e) {
+                throw new RuntimeException(e);
+            }
+        });
 
         viewTimeButton.setLocation(210, 5 );
         this.add(viewTimeButton);
@@ -77,7 +85,7 @@ public class TimeViewPanel extends CTPanel {
         timeThread.start();
     }
 
-    private void viewTimeInDeskTop(int i) {
+    private void viewTimeInDeskTop(int i) throws MalformedURLException {
         //设置屏幕大小
         Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
         int screenWidth = (int) screenSize.getWidth();
@@ -94,6 +102,7 @@ public class TimeViewPanel extends CTPanel {
         //让时间在组件中央显示
         timeView.setHorizontalAlignment(JLabel.CENTER);
         timeView.setFont(new Font("微软雅黑", Font.BOLD, 100));
+        c.setBackground(CTColor.backColor);
 
         c.add(timeView, BorderLayout.CENTER);
 
@@ -104,8 +113,9 @@ public class TimeViewPanel extends CTPanel {
         }
 
 
-        CTButton exitButton = new CTButton(getClass().getResource("/image/exit_0.png"),
-                getClass().getResource("/image/exit_1.png"), 1, () -> {
+        CTButton exitButton = new CTButton(
+                "/image/%s/exit_0.png",
+                "/image/%s/exit_1.png", 1, () -> {
             if (i == 0) {
                 window.setVisible(false);
 

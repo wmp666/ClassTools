@@ -50,23 +50,31 @@ public class ATPanel extends CTPanel {
     }
 
     private void initContainer() {
-        int color = CTColor.mainColor.getRGB();
-        System.out.println("MainColor:" + color);
-        String NumColor = "style='color: #0090FF;'";
+        //将CTColor.mainColor解析为16进制颜色
 
-        AllStuLabel.setText("<html>应到：<span " + NumColor + ">" + studentLength + "人</html>");
+        String StrMainColor = String.format("#%06x", CTColor.mainColor.getRGB());
+        StrMainColor = StrMainColor.substring(2, 9);
+        System.out.println("MainColor:" + StrMainColor);
+        String NumColor = "style='color: " + StrMainColor + ";'";
+
+        String StrTextColor = String.format("#%06x", CTColor.textColor.getRGB());
+        StrTextColor = StrTextColor.substring(2, 9);
+        System.out.println("TextColor:" + StrTextColor);
+        String TextColor = "style='color: " + StrTextColor + ";'";
+
+        AllStuLabel.setText("<html><span " + TextColor + ">" + "应到：<span " + NumColor + ">" + studentLength + "人</html>");
         AllStuLabel.setFont(new Font("微软雅黑", Font.BOLD, 25));
         AllStuLabel.setBounds(5, 0, 250, 30);
         ATPanelMixY = AllStuLabel.getHeight();
         this.add(AllStuLabel);
 
-        AttendStuLabel.setText("<html>实到：<span " + NumColor + ">" + (studentLength - studentLateLength) + "人</html>");
+        AttendStuLabel.setText("<html><span " + TextColor + ">" + "实到：<span " + NumColor + ">" + (studentLength - studentLateLength) + "人</html>");
         AttendStuLabel.setFont(new Font("微软雅黑", Font.BOLD, 25));
         AttendStuLabel.setBounds(5, ATPanelMixY, 250, 30);
         ATPanelMixY = ATPanelMixY + AttendStuLabel.getHeight();
         this.add(AttendStuLabel);
 
-        LateStuLabel.setText("<html>请假：<span style='color: red;'>" + studentLateLength + "人</html>");
+        LateStuLabel.setText("<html><span " + TextColor + ">" + "请假：<span style='color: red;'>" + studentLateLength + "人</html>");
         LateStuLabel.setFont(new Font("微软雅黑", Font.BOLD, 25));
         LateStuLabel.setBounds(5, ATPanelMixY, 250, 30);
         ATPanelMixY = ATPanelMixY + LateStuLabel.getHeight();
@@ -78,29 +86,7 @@ public class ATPanel extends CTPanel {
     }
 
     private void initLateList() {
-        /*StringBuilder sb = new StringBuilder();
-        sb.append("<html>");
 
-        int size = leaveList.size();
-        int index = (size + 2) / 3;  // 修正组数计算逻辑
-
-        for (int i = 0; i < index; i++) {
-            int base = i * 3;
-            sb.append(leaveList.get(base));
-
-            if (base + 1 < size) {
-                sb.append(",").append(leaveList.get(base + 1));
-            }
-            if (base + 2 < size) {
-                sb.append(",").append(leaveList.get(base + 2));
-            }
-
-            if (i < index - 1) {  // 仅在非最后一组后添加换行
-                sb.append("<br>");
-            }
-        }
-
-        sb.append("</html>");*/
 
         if (leaveList.isEmpty()) {
             personLabel.setText("<html>无请假人员</html>");

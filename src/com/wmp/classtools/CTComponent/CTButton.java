@@ -27,23 +27,20 @@ public class CTButton extends JButton implements MouseListener {
     }
 
     //图标 正方形
-    public CTButton(URL defaultIconPath, URL rolloverIconPath, int a, Runnable callback)
-    {
+    public CTButton(String defaultIconPath, String rolloverIconPath, int a, Runnable callback) throws MalformedURLException {
 
         this(ToolTipText, null, defaultIconPath, rolloverIconPath, a, a, callback);
 
     }
 
     //文字 图标 正方形
-    public CTButton(String text, URL defaultIconPath, URL rolloverIconPath, int a, Runnable callback)
-    {
+    public CTButton(String text, String defaultIconPath, String rolloverIconPath, int a, Runnable callback) throws MalformedURLException {
 
         this(ToolTipText, text, defaultIconPath, rolloverIconPath, a, a, callback);
 
     }
 
-    public CTButton(int textType, String text, URL defaultIconPath, URL rolloverIconPath, int weight, int height, Runnable callback)
-    {
+    public CTButton(int textType, String text, String defaultIconPath, String rolloverIconPath, int weight, int height, Runnable callback) throws MalformedURLException {
         if (textType == ToolTipText) {
             this.setToolTipText(text);
         }
@@ -55,9 +52,21 @@ public class CTButton extends JButton implements MouseListener {
 
         if (defaultIconPath != null){
 
+            //将defaultIconPath中的%s替换为CTColor.mainColor
 
-            this.defaultIcon = GetIcon.getIcon(defaultIconPath, 30, 30);
-            this.rolloverIcon = GetIcon.getIcon(rolloverIconPath, 30, 30);
+            String modifiedPath = defaultIconPath.replace("%s", CTColor.style);
+            String rolloverPath = rolloverIconPath.replace("%s", CTColor.style);
+
+            System.out.println(text +"->modifiedPath:" + modifiedPath);
+            System.out.println(text +"->rolloverPath:" + rolloverPath);
+
+            URL tempPath = getClass().getResource(modifiedPath);
+            URL tempPath2 = getClass().getResource(rolloverPath);
+            if (tempPath != null)
+                this.defaultIcon = GetIcon.getIcon(getClass().getResource(modifiedPath), 30, 30);
+            if (tempPath2 != null)
+                this.rolloverIcon = GetIcon.getIcon(getClass().getResource(rolloverPath), 30, 30);
+
 
             this.setIcon(defaultIcon);
         }
@@ -67,6 +76,7 @@ public class CTButton extends JButton implements MouseListener {
         this.setBorderPainted(false);
 
         this.setBackground(CTColor.backColor);
+        this.setForeground(CTColor.textColor);
         this.setSize(weight, height);
         this.callback = callback;
 

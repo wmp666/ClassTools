@@ -22,7 +22,16 @@ public class Main{
 
     public static String TempPath = "null";
 
+    /**a.b.c.d.e
+    * a:主版本号
+    * b:功能更新版本号
+    * c:修订版本号/小功能更新
+    * d:修复c版的问题(仅限)
+    * e:测试版本号
+     */
     public static String version = "1.10.1";
+
+    public static String buttonIconStyle = "light";
 
     public static ArrayList<String> list = new ArrayList<>();
 
@@ -41,6 +50,7 @@ public class Main{
     public static void main(String[] args) throws IOException, URISyntaxException {
 
 
+
         //加载颜色(CTColor)数据
         //判断当前时间是否是4月1日
         // 明确指定时区
@@ -48,7 +58,9 @@ public class Main{
         boolean b = currentDate.getMonth() == Month.APRIL
                 && currentDate.getDayOfMonth() == 1;
         if (b){
-
+            CTColor.setColor(CTColor.MAIN_COLOR_GREEN, CTColor.STYLE_LIGHT);
+        }else{
+            CTColor.setColor(CTColor.MAIN_COLOR_BLUE, CTColor.STYLE_LIGHT);
         }
 
 
@@ -72,6 +84,11 @@ public class Main{
             System.out.println(list);
         }
 
+        show();
+
+    }
+
+    private static void show() throws URISyntaxException, IOException {
         System.out.println("Hello, World!");
 
         String path = System.getenv("LOCALAPPDATA");
@@ -114,6 +131,5 @@ public class Main{
 
         new MainWindow(DataPath);
         loadingWindow.setVisible(false);
-
     }
 }

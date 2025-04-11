@@ -47,7 +47,7 @@ public class DPanel extends CTPanel {
         JLabel CLBBLabel = new JLabel();
         CLBBLabel.setText("擦黑板:");
         CLBBLabel.setFont(new Font("微软雅黑",Font.BOLD,20));
-        //CLBBLabel.setBackground(CTColor.backColor);
+        CLBBLabel.setForeground(CTColor.textColor);
         CLBBLabel.setBounds(5,5,100,22);
         this.add(CLBBLabel);
         DPanelMixY = DPanelMixY + CLBBLabel.getHeight() + 2;
@@ -66,7 +66,7 @@ public class DPanel extends CTPanel {
         JLabel CLFLabel = new JLabel();
         CLFLabel.setText("扫地:");
         CLFLabel.setFont(new Font("微软雅黑",Font.BOLD,20));
-        //CLFLabel.setBackground(CTColor.backColor);
+        CLFLabel.setForeground(CTColor.textColor);
         CLFLabel.setBounds(5,DPanelMixY + 2,100,22);
         this.add(CLFLabel);
         DPanelMixY = DPanelMixY + CLFLabel.getHeight() + 2;
@@ -76,8 +76,9 @@ public class DPanel extends CTPanel {
 
         {
 
-            CTButton next = new CTButton("下一天", getClass().getResource("/image/next_0.png")
-                    ,getClass().getResource("/image/next_1.png"), 30, () -> {
+            CTButton next = new CTButton("下一天",
+                    "/image/%s/next_0.png",
+                    "/image/%s/next_1.png", 30, () -> {
 
                 int i = JOptionPane.showConfirmDialog(this, "确认切换至下一天", "询问", JOptionPane.YES_NO_OPTION);
                 if (i == 0) {
@@ -101,8 +102,9 @@ public class DPanel extends CTPanel {
 
         {
 
-            CTButton last = new CTButton("上一天", getClass().getResource("/image/last_0.png")
-                    , getClass().getResource("/image/last_1.png"), 30, () -> {
+            CTButton last = new CTButton("上一天",
+                    "/image/%s/last_0.png",
+                    "/image/%s/last_1.png", 30, () -> {
                 int i = JOptionPane.showConfirmDialog(this, "确认切换至上一天", "询问", JOptionPane.YES_NO_OPTION);
                 if (i == 0) {
                     if (index > 0) index--;
