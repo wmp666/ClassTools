@@ -61,7 +61,7 @@ public class DPanel extends CTPanel {
             //throw new RuntimeException(e);
         }
 
-        DPanelMixY = initPeople(now.getClBlackBroad(), DPanelMixY);
+        DPanelMixY = initPeople(now.getClBlackBroadList(), DPanelMixY);
 
         JLabel CLFLabel = new JLabel();
         CLFLabel.setText("扫地:");
@@ -72,7 +72,7 @@ public class DPanel extends CTPanel {
         DPanelMixY = DPanelMixY + CLFLabel.getHeight() + 2;
 
 
-        DPanelMixY = initPeople(now.getClFloor(), DPanelMixY);
+        DPanelMixY = initPeople(now.getClFloorList(), DPanelMixY);
 
         {
 

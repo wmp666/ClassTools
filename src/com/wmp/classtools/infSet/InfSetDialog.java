@@ -2,12 +2,15 @@ package com.wmp.classTools.infSet;
 
 import com.wmp.CTColor;
 import com.wmp.Main;
-import com.wmp.classTools.CTComponent.CTButton;
 import com.wmp.PublicTools.GetIcon;
 import com.wmp.PublicTools.InfProcess;
 import com.wmp.PublicTools.OpenInExp;
 import com.wmp.PublicTools.io.IOStreamForInf;
 import com.wmp.PublicTools.io.ZipPack;
+import com.wmp.classTools.CTComponent.CTButton;
+import com.wmp.classTools.infSet.DataStyle.AllStu;
+import com.wmp.classTools.infSet.DataStyle.Duty;
+import com.wmp.classTools.infSet.tools.GetExcelData;
 import org.json.JSONObject;
 
 import javax.swing.*;
@@ -433,12 +436,17 @@ public class InfSetDialog extends JDialog implements WindowListener {
         getDutyList.setIcon(GetIcon.getIcon(getClass().getResource("/image/input.png"), 16, 16));
         getDutyList.addActionListener(e -> {
             String filePath = getFilePath("请选择值日表", ".xlsx");
+            new GetExcelData<Duty>().getExcelData(filePath, DutyListPath, Duty.class );
         });
 
         JMenuItem getAllStuList = new JMenuItem("导入人员表(.xlsx)");
         getAllStuList.setIcon(GetIcon.getIcon(getClass().getResource("/image/input.png"), 16, 16));
         getAllStuList.addActionListener(e -> {
             String filePath = getFilePath("请选择人员表", ".xlsx");
+            new GetExcelData<AllStu>().getExcelData(filePath, AllStuPath, AllStu.class );
+            JOptionPane.showConfirmDialog(this, "导入成功", "", JOptionPane.DEFAULT_OPTION, JOptionPane.INFORMATION_MESSAGE);
+            this.setVisible(false);
+            refreshCallback.run();
         });
 
         JMenuItem getAllInf = new JMenuItem("导入所有数据(.ctdatas)");
@@ -557,6 +565,8 @@ public class InfSetDialog extends JDialog implements WindowListener {
 
 
     }
+
+
 
     private String getFilePath(String title , String fileType) {
         JFileChooser chooser = new JFileChooser();

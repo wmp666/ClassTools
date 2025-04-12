@@ -57,9 +57,6 @@ public class CTButton extends JButton implements MouseListener {
             String modifiedPath = defaultIconPath.replace("%s", CTColor.style);
             String rolloverPath = rolloverIconPath.replace("%s", CTColor.style);
 
-            System.out.println(text +"->modifiedPath:" + modifiedPath);
-            System.out.println(text +"->rolloverPath:" + rolloverPath);
-
             URL tempPath = getClass().getResource(modifiedPath);
             URL tempPath2 = getClass().getResource(rolloverPath);
             if (tempPath != null)
