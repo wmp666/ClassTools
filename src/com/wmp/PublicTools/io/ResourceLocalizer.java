@@ -17,6 +17,7 @@ public class ResourceLocalizer {
         }
         try (InputStream is = VideoLocalizer.class.getResourceAsStream(inputPath + fileName)) {// 获取资源流
             if (is == null) {
+                System.out.println("内置文件:" + ResourceLocalizer.class.getResource(inputPath + fileName));
                 throw new IOException("内置文件[" + fileName + "]未找到");
             }
 
