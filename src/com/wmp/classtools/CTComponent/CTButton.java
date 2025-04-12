@@ -87,7 +87,10 @@ public class CTButton extends JButton implements MouseListener {
 
     @Override
     public void mouseClicked(MouseEvent e) {
-        callback.run();
+        if (this.isEnabled() && callback != null){
+            callback.run();
+        }
+
     }
 
     @Override

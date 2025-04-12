@@ -10,9 +10,10 @@ import java.util.TreeMap;
 public class GetCookie {
 
     private static final String CookiePath = Main.DataPath + "\\Cookie\\";
-    private TreeMap<String, String> nameList = new TreeMap<>();
-    // 插件名 -> 文件位置
-    private static TreeMap<String, File> cookieMap = new TreeMap<>();
+    // pin -> name
+    //private final TreeMap<String, String> nameList = new TreeMap<>();
+    // pin -> 文件位置
+    private static final TreeMap<String, Cookie> cookieMap = new TreeMap<>();
 
     public GetCookie() throws IOException {
         File basic = new File(CookiePath);
@@ -23,11 +24,11 @@ public class GetCookie {
         File[] cookies = basic.listFiles();
         if (cookies != null) {
             //循环判断每一个文件夹
-            for (File cookie : cookies) {
-                System.out.println(cookie);
-                if (cookie.isDirectory()) {
+            for (File cookieFile : cookies) {
+                System.out.println(cookieFile);
+                if (cookieFile.isDirectory()) {
                     //获取相关数据
-                    File cookieSets = new File(cookie + "\\setUp.json");
+                    File cookieSets = new File(cookieFile + "\\setUp.json");
                     if (cookieSets.exists()) {
                         //读取文件
                         BufferedReader reader = new BufferedReader(
@@ -43,14 +44,23 @@ public class GetCookie {
                         if (JSONCookieSets.has("pin") && JSONCookieSets.has("run")) {
 
                             String exec = JSONCookieSets.getString("run");
-                            exec = exec.replace("%CookiePath", cookie.getPath());
+                            exec = exec.replace("%CookiePath", cookieFile.getPath());
 
-                            nameList.put(JSONCookieSets.getString("pin"), JSONCookieSets.getString("pin"));
-                            cookieMap.put(JSONCookieSets.getString("pin"), new File(exec));
+                            Cookie cookie;
+                            String name = JSONCookieSets.getString("pin");
+                            String style = "other";
+                            if (JSONCookieSets.has("style")){
+                                style = JSONCookieSets.getString("style");
+                            }
+                            if (JSONCookieSets.has("name")){
+                                name = JSONCookieSets.getString("name");
+                            }
+                            cookie =  new Cookie(name, style, new File(exec));
+
+
+                            cookieMap.put(JSONCookieSets.getString("pin"), cookie);
                         }
-                        if (JSONCookieSets.has("name"))
-                            //已UTF-8编码加载
-                            nameList.put(JSONCookieSets.getString("pin"), JSONCookieSets.getString("name"));
+
 
                     }
 
@@ -61,10 +71,10 @@ public class GetCookie {
     }
 
     public String getName(String key) {
-        return nameList.get(key);
+        return cookieMap.get(key).getName();
     }
 
-    public TreeMap<String, File> getCookieMap() {
+    public TreeMap<String, Cookie> getCookieMap() {
         return cookieMap;
     }
 
