@@ -12,5 +12,6 @@
     <orderEntry type="library" exported="" name="jsoup-1.19.1" level="project" />
     <orderEntry type="library" exported="" name="json-20210307" level="project" />
     <orderEntry type="library" exported="" name="alibaba.easyexcel" level="project" />
+    <orderEntry type="library" name="atlassian.commonmark" level="project" />
   </component>
 </module>

@@ -1,0 +1,12 @@
+<component name="libraryTable">
+  <library name="atlassian.commonmark" type="repository">
+    <properties maven-id="com.atlassian.commonmark:commonmark:0.17.0" />
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/lib/commonmark/commonmark-0.17.0.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES>
+      <root url="jar://$PROJECT_DIR$/lib/commonmark/commonmark-0.17.0-sources.jar!/" />
+    </SOURCES>
+  </library>
+</component>

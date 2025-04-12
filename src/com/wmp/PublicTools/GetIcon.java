@@ -11,4 +11,8 @@ public class GetIcon {
         return icon;
 
     }
+
+    public static ImageIcon getImageIcon(URL path, int width, int height){
+        return (ImageIcon) getIcon(path, width, height);
+    }
 }
