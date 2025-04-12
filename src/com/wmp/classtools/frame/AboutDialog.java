@@ -6,11 +6,14 @@ import com.wmp.PublicTools.GetIcon;
 import com.wmp.PublicTools.OpenInExp;
 import com.wmp.PublicTools.update.GetNewerVersion;
 import com.wmp.classTools.CTComponent.CTButton;
+import com.wmp.classTools.frame.tools.about.ShowHelpDoc;
 
 import javax.swing.*;
 import java.awt.*;
+import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URI;
+import java.net.URISyntaxException;
 
 public class AboutDialog extends JDialog {
 
@@ -170,7 +173,12 @@ public class AboutDialog extends JDialog {
 
         JMenuItem helpDoc = new JMenuItem("帮助文档");
         helpDoc.addActionListener(e -> {
-            JOptionPane.showMessageDialog(this, "正在加急制作...", "帮助文档(前面的区域，以后再来探索吧)", JOptionPane.INFORMATION_MESSAGE);
+            try {
+                new ShowHelpDoc();
+            } catch (URISyntaxException | IOException ex) {
+                throw new RuntimeException(ex);
+            }
+            //JOptionPane.showMessageDialog(this, "正在加急制作...", "帮助文档(前面的区域，以后再来探索吧)", JOptionPane.INFORMATION_MESSAGE);
         });
 
         JMenuItem easterEgg = new JMenuItem("■■");
