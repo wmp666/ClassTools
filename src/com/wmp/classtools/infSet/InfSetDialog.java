@@ -437,6 +437,9 @@ public class InfSetDialog extends JDialog implements WindowListener {
         getDutyList.addActionListener(e -> {
             String filePath = getFilePath("请选择值日表", ".xlsx");
             new GetExcelData<Duty>().getExcelData(filePath, DutyListPath, Duty.class );
+            JOptionPane.showConfirmDialog(this, "导入成功", "", JOptionPane.DEFAULT_OPTION, JOptionPane.INFORMATION_MESSAGE);
+            this.setVisible(false);
+            refreshCallback.run();
         });
 
         JMenuItem getAllStuList = new JMenuItem("导入人员表(.xlsx)");
