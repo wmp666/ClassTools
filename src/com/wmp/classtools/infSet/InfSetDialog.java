@@ -12,6 +12,7 @@ import com.wmp.classTools.CTComponent.CTButton;
 import com.wmp.classTools.infSet.DataStyle.AllStu;
 import com.wmp.classTools.infSet.DataStyle.Duty;
 import com.wmp.classTools.infSet.tools.GetExcelData;
+import com.wmp.classTools.infSet.tools.SetStartUp;
 import org.json.JSONObject;
 
 import javax.swing.*;
@@ -201,6 +202,7 @@ public class InfSetDialog extends JDialog implements WindowListener {
         {
             IOStreamForInf io = new IOStreamForInf(new File(Main.DataPath + "setUp.json"));
             JSONObject jsonObject = new JSONObject(io.GetInf()[0]);
+            //主题色设置
             if (jsonObject.has("mainColor")) {
                 switch (jsonObject.getString("mainColor")) {
                     case "black" -> mainColorComboBox.setSelectedIndex(4);
@@ -210,18 +212,25 @@ public class InfSetDialog extends JDialog implements WindowListener {
                     default -> mainColorComboBox.setSelectedIndex(0);
                 }
             }
+            //主题设置
             if (jsonObject.has("mainTheme")) {
                 switch (jsonObject.getString("mainTheme")) {
                     case "dark" -> mainThemeComboBox.setSelectedIndex(1);
                     default -> mainThemeComboBox.setSelectedIndex(0);
                 }
             }
+            //是否可关闭
             if (jsonObject.has("canExit")) {
                 canExit.setSelected(!jsonObject.getBoolean("canExit"));
 
             }
+            //是否自动更新
             if (jsonObject.has("StartUpdate")) {
                 StartUpdate.setSelected(jsonObject.getBoolean("StartUpdate"));
+            }
+            //是否自动启动
+            if (jsonObject.has("isAutoStart")){
+                startUp.setSelected(jsonObject.getBoolean("isAutoStart"));
             }
         }
 
@@ -824,6 +833,7 @@ public class InfSetDialog extends JDialog implements WindowListener {
                 {
                     IOStreamForInf io = new IOStreamForInf(new File(Main.DataPath + "setUp.json"));
 
+                    //设置主题色
                     JSONObject jsonObject = new JSONObject();
                     String tempMainColor = switch (Objects.requireNonNull(mainColorComboBox.getSelectedItem()).toString()) {
                         case "黑色" -> "black";
@@ -834,15 +844,34 @@ public class InfSetDialog extends JDialog implements WindowListener {
                     };
                     jsonObject.put("mainColor", tempMainColor);
 
+                    //设置主题
                     String tempMainThemeColor = switch (Objects.requireNonNull(mainThemeComboBox.getSelectedItem()).toString()) {
                         case "深色" -> "dark";
                         default -> "light";
                     };
                     jsonObject.put("mainTheme", tempMainThemeColor);
 
+                    //设置是否可退出
                     jsonObject.put("canExit", !canExit.isSelected());
 
+                    //设置启动时是否更新
                     jsonObject.put("StartUpdate", StartUpdate.isSelected());
+
+                    //设置是否自动启动
+                    jsonObject.put("isAutoStart", startUp.isSelected());
+                    String Path = SetStartUp.getFilePath();
+                    if (!startUp.isSelected()) {
+                        SetStartUp.disableAutoStart();// 移除自启动
+                    } else {
+                        if (Path != null){
+                            if (Path.endsWith(".jar")){
+                                SetStartUp.enableAutoStart("javaw -jar " + Path); // 使用javaw避免黑窗口
+                            } else if (Path.endsWith(".exe")) {
+                                SetStartUp.enableAutoStart("\"" + Path + "\"");
+                            }
+                        }
+
+                    }
 
                     System.out.println(jsonObject);
                     io.SetInf(jsonObject.toString());
