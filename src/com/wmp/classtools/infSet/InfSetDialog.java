@@ -43,6 +43,7 @@ public class InfSetDialog extends JDialog implements WindowListener {
 
     private final JComboBox<String> mainColorComboBox = new JComboBox<>();
     private final JComboBox<String> mainThemeComboBox = new JComboBox<>();
+    private final JCheckBox StartUpdate = new JCheckBox("启动检查更新");
     private final JCheckBox canExit = new JCheckBox("防止被意外关闭");
     private final JCheckBox startUp = new JCheckBox("开机自启动");
 
@@ -175,9 +176,14 @@ public class InfSetDialog extends JDialog implements WindowListener {
             canExit.setForeground(CTColor.textColor);
             canExit.setBackground(CTColor.backColor);
 
+            StartUpdate.setFont(new Font("微软雅黑", -1, 15));
+            StartUpdate.setForeground(CTColor.textColor);
+            StartUpdate.setBackground(CTColor.backColor);
+            StartUpdate.setSelected(true);
 
             otherPanel.add(startUp);
             otherPanel.add(canExit);
+            otherPanel.add(StartUpdate);
 
 
         }
@@ -213,6 +219,9 @@ public class InfSetDialog extends JDialog implements WindowListener {
             if (jsonObject.has("canExit")) {
                 canExit.setSelected(!jsonObject.getBoolean("canExit"));
 
+            }
+            if (jsonObject.has("StartUpdate")) {
+                StartUpdate.setSelected(jsonObject.getBoolean("StartUpdate"));
             }
         }
 
@@ -889,6 +898,8 @@ public class InfSetDialog extends JDialog implements WindowListener {
                     jsonObject.put("mainTheme", tempMainThemeColor);
 
                     jsonObject.put("canExit", !canExit.isSelected());
+
+                    jsonObject.put("StartUpdate", StartUpdate.isSelected());
 
                     System.out.println(jsonObject);
                     io.SetInf(jsonObject.toString());

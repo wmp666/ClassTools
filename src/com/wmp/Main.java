@@ -40,6 +40,8 @@ public class Main{
 
     public static boolean canExit = true;
 
+    private static boolean StartUpdate = true;
+
     static {
         //加载基础目录
         String path = System.getenv("LOCALAPPDATA");
@@ -84,9 +86,10 @@ public class Main{
                 }
             }
             if (jsonObject.has("canExit")) {
-
-                    canExit = jsonObject.getBoolean("canExit");
-
+                canExit = jsonObject.getBoolean("canExit");
+            }
+            if (jsonObject.has("StartUpdate")) {
+                StartUpdate = jsonObject.getBoolean("StartUpdate");
             }
         }
 
@@ -134,13 +137,16 @@ public class Main{
 
         loadingWindow.setVisible(true);
 
-        if (!(allArgs.get("StartUpdate:false").contains(list) ||
+        if (StartUpdate &&
+                !(allArgs.get("StartUpdate:false").contains(list) ||
                 allArgs.get("screenProduct:show").contains(list) ||
                 allArgs.get("screenProduct:view").contains(list))) {
             //执行你的代码
             GetNewerVersion.checkForUpdate(
                     loadingWindow, null);
             System.out.println("-StartUpdate:true");
+        }else{
+            System.out.println("-StartUpdate:false");
         }
 
         if (allArgs.get("EasterEgg:").contains(list)) {
