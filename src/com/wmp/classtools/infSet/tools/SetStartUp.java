@@ -1,9 +1,6 @@
 package com.wmp.classTools.infSet.tools;
 
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.IOException;
-import java.io.InputStreamReader;
+import java.io.*;
 
 public class SetStartUp {
 
@@ -18,6 +15,7 @@ public class SetStartUp {
      * @param programPath 程序的完整路径（需用双引号包裹路径）
      */
     public static void enableAutoStart(String programPath) {
+        System.out.println("programPath" + programPath);
         try {
             String command = String.format("reg add \"%s\" /v \"%s\" /t REG_SZ /d \"%s\" /f",
                     REGISTRY_PATH, ENTRY_NAME, programPath);
@@ -70,6 +68,12 @@ public class SetStartUp {
     private static void executeCommand(String command) throws IOException, InterruptedException {
         Process process = Runtime.getRuntime().exec(command);
         process.waitFor();
+        InputStream inputStream = process.getInputStream();
+        BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream));
+        while (reader.readLine() != null) {
+            // 输出命令执行结果
+            System.out.println(reader.readLine());
+        }
     }
 
     /**

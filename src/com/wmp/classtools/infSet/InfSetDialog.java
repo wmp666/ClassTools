@@ -229,9 +229,10 @@ public class InfSetDialog extends JDialog implements WindowListener {
                 StartUpdate.setSelected(jsonObject.getBoolean("StartUpdate"));
             }
             //是否自动启动
-            if (jsonObject.has("isAutoStart")){
+            startUp.setSelected(SetStartUp.isAutoStartEnabled());
+            /*if (jsonObject.has("isAutoStart")){
                 startUp.setSelected(jsonObject.getBoolean("isAutoStart"));
-            }
+            }*/
         }
 
         return tempPanel;
@@ -860,14 +861,15 @@ public class InfSetDialog extends JDialog implements WindowListener {
                     //设置是否自动启动
                     jsonObject.put("isAutoStart", startUp.isSelected());
                     String Path = SetStartUp.getFilePath();
+                    System.out.println("自启动地址:" + Path);
                     if (!startUp.isSelected()) {
                         SetStartUp.disableAutoStart();// 移除自启动
                     } else {
                         if (Path != null){
                             if (Path.endsWith(".jar")){
-                                SetStartUp.enableAutoStart("javaw -jar " + Path); // 使用javaw避免黑窗口
+                                SetStartUp.enableAutoStart("javaw -jar " + Path ); // 使用javaw避免黑窗口
                             } else if (Path.endsWith(".exe")) {
-                                SetStartUp.enableAutoStart("\"" + Path + "\"");
+                                SetStartUp.enableAutoStart(Path);
                             }
                         }
 
