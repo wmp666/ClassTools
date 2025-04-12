@@ -6,6 +6,7 @@ import com.wmp.PublicTools.update.GetNewerVersion;
 import com.wmp.classTools.frame.EasterEgg;
 import com.wmp.classTools.frame.LoadingWindow;
 import com.wmp.classTools.frame.MainWindow;
+import com.wmp.classTools.frame.tools.cookie.StartCookie;
 import org.json.JSONObject;
 
 import javax.swing.*;
@@ -60,6 +61,7 @@ public class Main{
         allArgs.put("EasterEgg:", StartupParameters.creative("-EasterEgg:", "/EasterEgg:"));
         allArgs.put("screenProduct:show", StartupParameters.creative("/s", "-s"));
         allArgs.put("screenProduct:view", StartupParameters.creative("/p", "-p"));
+        allArgs.put("Cookie:StartUp", StartupParameters.creative("-OpenCookie:", "/OpenCookie:"));
         //allArgs.put("", StartupParameters.creative("-EasterEgg-pin:nj02", "/EasterEgg-pin:nj02"));
     }
     public static void main(String[] args) throws IOException, URISyntaxException {
@@ -73,8 +75,6 @@ public class Main{
                  IllegalAccessException e) {
             throw new RuntimeException(e);
         }
-
-        //new JFXPanel();
 
         for (int i = 0; i < args.length; i++) {
             args[i] = args[i].replace("/", "-");
@@ -158,7 +158,13 @@ public class Main{
             int i = list.indexOf("-EasterEgg:") + 1;
             System.out.println("-EasterEgg:" + list.get(i));
             //System.out.println();
-            EasterEgg.showEasterEgg(list.get(i));
+            EasterEgg.showEasterEgg(list.get(i).split(";"));
+        }
+        if (allArgs.get("Cookie:StartUp").contains(list)) {
+            int i = list.indexOf("-OpenCookie:") + 1;
+            System.out.println("-OpenCookie:" + list.get(i));
+            //System.out.println();
+            StartCookie.showCookie(list.get(i).split(";"));
         }
         /*
 

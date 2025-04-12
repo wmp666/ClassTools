@@ -8,6 +8,7 @@ import com.wmp.PublicTools.io.ZipPack;
 import com.wmp.classTools.CTComponent.CTButton;
 import com.wmp.classTools.frame.tools.about.ShowHelpDoc;
 import com.wmp.classTools.frame.tools.cookie.GetCookie;
+import com.wmp.classTools.frame.tools.cookie.StartCookie;
 
 import javax.swing.*;
 import java.awt.*;
@@ -42,6 +43,45 @@ public class ShowCookieDialog extends JDialog {
     }
 
     private void initShowCookies(Container c) throws IOException {
+
+        // 控制面板
+        JPanel controlPanel = new JPanel();
+        controlPanel.setBackground(Color.WHITE);
+        controlPanel.setLayout(new FlowLayout(FlowLayout.RIGHT));
+
+        CTButton openInExp = new CTButton(CTButton.ButtonText, "打开所在目录",
+                "/image/openExp.png",
+                "/image/openExp.png", 30, 100, () -> {
+            OpenInExp.open(cookieMap.get(s[0]).getParent());
+        });
+        openInExp.setEnabled(false);
+        controlPanel.add(openInExp);
+
+        CTButton outputBtn = new CTButton(CTButton.ButtonText, "导出插件",
+                "/image/light/update_0.png",
+                "/image/light/update_1.png", 30, 100, () -> {
+            String path = GetPath.getDirectoryPath(this, "请选择导出目录");
+            //将选中的插件文件夹打包为.zip
+            boolean b = ZipPack.createZip(path, cookieMap.get(s[0]).getParent(), s[0] + ".zip");
+            if (!b){
+                JOptionPane.showMessageDialog(this, "数据导出异常", "世界拒绝了我", JOptionPane.ERROR_MESSAGE);
+            }
+        });
+        outputBtn.setEnabled(false);
+        controlPanel.add(outputBtn);
+
+        CTButton runCookie = new CTButton("运行插件",
+                "/image/wish.png",
+                "/image/wish.png",30, () -> {
+            StartCookie.showCookie(s[0]);
+        });
+        runCookie.setEnabled(false);
+        controlPanel.add(runCookie);
+
+        JScrollPane controlScrollPane = new JScrollPane(controlPanel);
+
+        c.add(controlScrollPane, BorderLayout.SOUTH);
+
         // 显示插件库
         JPanel cookiesPanel = new JPanel();
         cookiesPanel.setBackground(Color.WHITE);
@@ -62,10 +102,16 @@ public class ShowCookieDialog extends JDialog {
                 @Override
                 public void mouseClicked(MouseEvent evt) {
                     System.out.println("点击了" + label.getText());
+
                     s[0] = key;
                     s[1] = label.getText();
+
                     label.setBorder(BorderFactory.createLineBorder(new Color(0x0090FF), 1));
                     label.setForeground(new Color(0x0090FF));
+
+                    openInExp.setEnabled(true);
+                    runCookie.setEnabled(true);
+                    outputBtn.setEnabled(true);
                     for (JLabel label : cookiePanelMap) {
                         if (!label.getText().equals(s[1])) {
                             label.setBorder(BorderFactory.createLineBorder(Color.BLACK, 1));
@@ -109,26 +155,11 @@ public class ShowCookieDialog extends JDialog {
         });
 
         JScrollPane scrollPane = new JScrollPane(cookiesPanel);
+        //让滚动面板无法水平滚动
+        scrollPane.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);// 禁止水平滚动
         c.add(scrollPane, BorderLayout.CENTER);
 
-        // 控制面板
-        JPanel controlPanel = new JPanel();
-        controlPanel.setBackground(Color.WHITE);
-        controlPanel.setLayout(new FlowLayout(FlowLayout.RIGHT, 5, 5));
 
-        CTButton outputBtn = new CTButton(CTButton.ButtonText, "导出插件",
-                "/image/light/update_0.png",
-                "/image/light/update_1.png", 30, 100, () -> {
-            String path = GetPath.getDirectoryPath(this, "请选择导出目录");
-            //将选中的插件文件夹打包为.zip
-            boolean b = ZipPack.createZip(path, cookieMap.get(s[0]).getParent(), s[0] + ".zip");
-            if (!b){
-                JOptionPane.showMessageDialog(this, "数据导出异常", "世界拒绝了我", JOptionPane.ERROR_MESSAGE);
-            }
-        });
-        controlPanel.add(outputBtn);
-
-        c.add(controlPanel, BorderLayout.SOUTH);
     }
 
     private void initMenuBar() {
@@ -207,5 +238,6 @@ public class ShowCookieDialog extends JDialog {
                         32, 32).getImage());
         this.setLocationRelativeTo(null);
         this.setModal(true);
+        this.setResizable(false);//禁止改变大小
     }
 }
