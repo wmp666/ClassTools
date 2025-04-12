@@ -9,8 +9,6 @@ import javax.swing.*;
 import java.io.File;
 import java.io.IOException;
 import java.net.URISyntaxException;
-import java.util.ArrayList;
-import java.util.List;
 
 public class EasterEgg {
 
@@ -45,11 +43,16 @@ public class EasterEgg {
 
     }
 
-    public static void showEasterEgg(String pins) throws URISyntaxException, IOException {
-        ArrayList<String> pin = new ArrayList<>(List.of(pins.split(";")));
-        if (pin.contains("nj01")) {
+    public static void showEasterEgg(String... pins) throws URISyntaxException, IOException {
+        for (String pin : pins) {
+            showEasterEgg(pin);
+        }
+    }
+    public static void showEasterEgg(String pin) throws URISyntaxException, IOException {
 
-            //String localDataPath = System.getenv("LOCALAPPDATA") + "\\ClassTools\\";
+        if (pin.equals("nj01")) {
+
+
             String videoPath = Main.TempPath + "video\\01.mp4";
 
             File file = new File(videoPath);
@@ -59,8 +62,7 @@ public class EasterEgg {
 
             VideoPlayer.playVideo(videoPath);
         }
-        if (pin.contains("nj02")) {
-            //String localDataPath = System.getenv("LOCALAPPDATA") + "\\ClassTools\\";
+        if (pin.equals("nj02")) {
             String videoPath = Main.TempPath + "video\\02.mp4";
             File file = new File(videoPath);
             if (!file.exists()) {
@@ -69,8 +71,7 @@ public class EasterEgg {
 
             VideoPlayer.playVideo(videoPath);
         }
-        if (pin.contains("nj03")) {
-            //String localDataPath = System.getenv("LOCALAPPDATA") + "\\ClassTools\\";
+        if (pin.equals("nj03")) {
             String videoPath = Main.TempPath + "video\\03.mp4";
             File file = new File(videoPath);
             if (!file.exists()) {
@@ -78,6 +79,13 @@ public class EasterEgg {
             }
 
             VideoPlayer.playVideo(videoPath);
+        }
+        if (pin.equals("nj04")) {
+            String videoPath = Main.TempPath + "video\\04.mp4";
+            File file = new File(videoPath);
+            if (!file.exists()) {
+                VideoLocalizer.copyEmbeddedVideo(Main.TempPath, "04.mp4");
+            }
         }
     }
 }

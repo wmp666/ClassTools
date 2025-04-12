@@ -1,16 +1,15 @@
 package com.wmp.classTools.frame.tools.about;
 
+import com.wmp.Main;
 import com.wmp.PublicTools.GetIcon;
+import com.wmp.PublicTools.io.ResourceLocalizer;
 import org.commonmark.parser.Parser;
 import org.commonmark.renderer.html.HtmlRenderer;
 
 import javax.swing.*;
 import java.awt.*;
-import java.io.File;
 import java.io.IOException;
-import java.net.URI;
 import java.net.URISyntaxException;
-import java.net.URL;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 
@@ -32,40 +31,80 @@ public class ShowHelpDoc extends JDialog {
         initDialog();
         c = this.getContentPane();
 
-
-
         c.add(getChooseHelpDoc(), BorderLayout.WEST);
+
+        copyDocImage("InputExcel-0.png", "InputExcel-1.png", "InputExcel-2.png","SM-0.png", "SM-1.png");
+
 
         if (s != null){
             switch (s){
                 case INPUT_DOC->{
-                    URL resource = getClass().getResource("/help/如何导入表格数据.md");
-                    String html = initHelpDoc(resource);
+
+                    String html = initHelpDoc("如何导入表格数据.md");
                     this.helpDocPane.setViewportView(getHelpDocPane(html));
                     this.helpDocPane.repaint();
                 }
                 case START_PARAMETER->{
-                    URL resource = getClass().getResource("/help/启动参数.md");
-                    String html =initHelpDoc(resource);
+                    String html =initHelpDoc("启动参数.md");
                     this.helpDocPane.setViewportView(getHelpDocPane(html));
                     this.helpDocPane.repaint();
                 }
                 case CONFIG_PLUGIN->{
-                    URL resource = getClass().getResource("/help/如何配置插件.md");
-                    String html = initHelpDoc(resource);
+                    String html = initHelpDoc("如何配置插件.md");
                     this.helpDocPane.setViewportView(getHelpDocPane(html));
                     this.helpDocPane.repaint();
                 }
             }
         }
-        //URL resource = getClass().getResource("/help/如何导入表格数据.md");
-        //String html = initHelpDoc(resource);
-        //helpDocPane = getHelpDocPane(html);
         c.add(helpDocPane, BorderLayout.CENTER);
 
         this.setVisible(true);
     }
 
+    private static void copyDoc(String DocName){
+        //将resource/help中的文件复制到dataPath中
+        String dataPath = Main.TempPath + "help\\";
+        /*try (InputStream is = VideoLocalizer.class.getResourceAsStream("/help/" + DocName)) {// 获取资源流
+            if (is == null) {
+                throw new IOException("内置MD文件未找到");
+            }
+
+            Files.createDirectories(Paths.get(dataPath));
+            Files.copy(is,
+                    Paths.get(dataPath, DocName),
+                    StandardCopyOption.REPLACE_EXISTING);
+        } catch (IOException e) {
+            System.err.println("文件本地化失败: " + e.getMessage());
+        }*/
+        ResourceLocalizer.copyEmbeddedVideo(dataPath, "/help/", DocName);
+
+    }
+
+    private static void copyDocImage(String... imageNameList){
+        for (String s : imageNameList) {
+            copyDocImage(s);
+        }
+
+    }
+    private static void copyDocImage(String imageName){
+        //将resource/help中的文件复制到dataPath中
+        String dataPath = Main.TempPath + "help\\images\\";
+        /*try (InputStream is = VideoLocalizer.class.getResourceAsStream("/help/image/" + imageName)) {// 获取资源流
+
+            if (is == null) {
+                throw new IOException("内置图片文件未找到");
+            }
+
+            Files.createDirectories(Paths.get(dataPath));
+            Files.copy(is,
+                    Paths.get(dataPath, imageName),
+                    StandardCopyOption.REPLACE_EXISTING);
+        } catch (IOException e) {
+            System.err.println("文件本地化失败: " + e.getMessage());
+        }*/
+        ResourceLocalizer.copyEmbeddedVideo(dataPath, "/help/images/", imageName);
+
+    }
     private JScrollPane getChooseHelpDoc() {
         JPanel chooseHelpDoc = new JPanel();
         chooseHelpDoc.setLayout(new FlowLayout());
@@ -80,8 +119,8 @@ public class ShowHelpDoc extends JDialog {
                 try {
                     switch (s){
                         case "如何导入表格数据"->{
-                            URL resource = getClass().getResource("/help/如何导入表格数据.md");
-                            String html = initHelpDoc(resource);
+                            //URL resource = getClass().getResource("/help/如何导入表格数据.md");
+                            String html = initHelpDoc("如何导入表格数据.md");
                             this.helpDocPane.setViewportView(getHelpDocPane(html));
                             this.helpDocPane.repaint();
                             //c.remove(this.helpDocPane);
@@ -90,8 +129,8 @@ public class ShowHelpDoc extends JDialog {
 
                         }
                         case "启动参数"->{
-                            URL resource = getClass().getResource("/help/启动参数.md");
-                            String html = initHelpDoc(resource);
+                            //URL resource = getClass().getResource("/help/启动参数.md");
+                            String html = initHelpDoc("启动参数.md");
                             this.helpDocPane.setViewportView(getHelpDocPane(html));
                             this.helpDocPane.repaint();
                             //JScrollPane helpDocPane = getHelpDocPane(html);
@@ -100,8 +139,8 @@ public class ShowHelpDoc extends JDialog {
                             //c.add(helpDocPane, BorderLayout.CENTER);
                         }
                         case "如何配置插件"->{
-                            URL resource = getClass().getResource("/help/如何配置插件.md");
-                            String html = initHelpDoc(resource);
+                            //URL resource = getClass().getResource("/help/如何配置插件.md");
+                            String html = initHelpDoc("如何配置插件.md");
                             this.helpDocPane.setViewportView(getHelpDocPane(html));
                             this.helpDocPane.repaint();
                         }
@@ -118,24 +157,21 @@ public class ShowHelpDoc extends JDialog {
         return new JScrollPane(chooseHelpDoc);
     }
 
-    private static String initHelpDoc(URL resource) throws IOException, URISyntaxException {
-        String markdown = "";
-        if (resource != null) {
-            byte[] bytes = Files.readAllBytes(Paths.get(resource.toURI()));
-            markdown = new String(bytes);
-        }
+    private static String initHelpDoc(String name) throws IOException, URISyntaxException {
 
-        System.out.println("文件位置 :" + resource);
+        copyDoc(name);
+
+        String markdown = "";
+        String parent = Main.TempPath + "help\\";
+
+        markdown = Files.readString(Paths.get(parent + name));
+
         System.out.println("文件原内容 :" + markdown);
 
-        //替换图片路径
-        //获取resource.toURI()的上级目录
-        URI uri = resource.toURI();//.replace("help/", "")
-        String s = uri.getPath();
-        File file = new File(s);
 
-        String parent = file.getParent().replace("help", "help\\");
-        System.out.println("文件上级目录 :" + parent);
+
+        //String parent = file.getParent().replace("help", "help\\");
+        //System.out.println("文件上级目录 :" + parent);
         markdown = markdown.replaceAll("!\\[.*]\\(images/", "![](file:" + parent.replace("\\", "/") + "images/");
 
         Parser parser = Parser.builder().build();

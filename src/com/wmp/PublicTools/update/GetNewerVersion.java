@@ -125,11 +125,13 @@ public class GetNewerVersion {
         }
     }
 
-    public static void checkForUpdate(Window dialog, JPanel panel) {
+    public static void checkForUpdate(Window dialog, JPanel panel, boolean showMessage) {
 
         if (panel != null) {
-            view = panel;
-            view.removeAll();
+            /*view = panel;
+            view.removeAll();*/
+            panel.removeAll();
+
         }
 
 
@@ -143,33 +145,44 @@ public class GetNewerVersion {
 
             protected void done() {
                 if (latestVersion == null) {
-                    JOptionPane.showMessageDialog(dialog,
-                            "无法检查更新", "世界拒绝了我", JOptionPane.ERROR_MESSAGE);
+                    System.out.println("无法检查更新");
+
+                        JOptionPane.showMessageDialog(dialog,
+                                "无法检查更新", "世界拒绝了我", JOptionPane.ERROR_MESSAGE);
+
+
                     return;
                 }
-
                 int i = isNewerVersion(latestVersion, Main.version);
-                if (i == 1) {
-                    int result = JOptionPane.showConfirmDialog(dialog,
-                            "发现新版本 " + latestVersion + "，是否下载？\n" + versionContent,
-                            "发现更新", JOptionPane.YES_NO_OPTION);
+                    if (i == 1) {
+                        System.out.println("发现新版本 " + latestVersion);
+                        int result = JOptionPane.showConfirmDialog(dialog,
+                                "发现新版本 " + latestVersion + "，是否下载？\n" + versionContent,
+                                "发现更新", JOptionPane.YES_NO_OPTION);
 
-                    if (result == JOptionPane.YES_OPTION) {
-                        downloadUpdate(dialog, view, downloadUrl);
-                        //openGithubRelease();
+                        if (result == JOptionPane.YES_OPTION) {
+                            downloadUpdate(dialog, panel, downloadUrl);
+                            //openGithubRelease();
+                        }
+                    } else if (i == 2) {
+                        System.out.println("发现新版本 " + latestVersion);
+                        JOptionPane.showMessageDialog(dialog,
+                                "发现新版本 " + latestVersion + "!\n" + versionContent,
+                                "发现更新", JOptionPane.INFORMATION_MESSAGE);
+
+                        downloadUpdate(dialog, panel, downloadUrl);
+                    } else {
+                        System.out.println("当前已是最新版本");
+                        if (showMessage) {
+                            JOptionPane.showMessageDialog(dialog,
+                                    "当前已是最新版本", "提示", JOptionPane.INFORMATION_MESSAGE);
+                        }
+
                     }
-                } else if (i == 2) {
-                    JOptionPane.showMessageDialog(dialog,
-                            "发现新版本 " + latestVersion + "!\n" + versionContent,
-                            "发现更新", JOptionPane.INFORMATION_MESSAGE);
 
-                    downloadUpdate(dialog, view, downloadUrl);
-                } else {
-                    JOptionPane.showMessageDialog(dialog,
-                            "当前已是最新版本", "提示", JOptionPane.INFORMATION_MESSAGE);
-                }
+
             }
-        }.execute();
+        }.execute();// 开始执行异步任务
     }
 
     private static int isNewerVersion(String remote, String local) {
@@ -195,15 +208,6 @@ public class GetNewerVersion {
             return newerVersion;
         }else {
             return 0;
-        }
-    }
-
-
-    private static void openGithubRelease() {
-        try {
-            Desktop.getDesktop().browse(new URI("https://github.com/wmp666/ClassTools/releases/latest"));
-        } catch (Exception ex) {
-            ex.printStackTrace();
         }
     }
 
@@ -280,15 +284,6 @@ public class GetNewerVersion {
                 // 创建目标目录
                 File appDir = new File(Main.TempPath);
                 if (!appDir.exists()) appDir.mkdirs();
-
-                /*// 通过API获取准确下载链接（推荐）：
-                String apiUrl = "https://api.github.com/repos/wmp666/ClassTools/releases/latest";
-                Document apiDoc = Jsoup.connect(apiUrl)
-                        .ignoreContentType(true)
-                        .get();
-
-                Element jarAsset = apiDoc.selectFirst("a[href$=.jar]");
-                String fileUrl = jarAsset.attr("abs:href");*/
 
                 // 替换原有的页面解析逻辑为直接获取最新JAR
                 String fileUrl = downloadUrl.replace("github", "kkgithub");

@@ -129,7 +129,7 @@ public class MainWindow extends JDialog {
         CTButton update = new CTButton("检查更新",
                 "/image/%s/update_0.png",
                 "/image/%s/update_1.png",30,() -> {
-            GetNewerVersion.checkForUpdate(null, null);
+            GetNewerVersion.checkForUpdate(null, null, true);
 
         });
         update.setToolTipText("获取更新");

@@ -1,16 +1,13 @@
 package com.wmp.PublicTools.videoView;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.nio.file.Files;
-import java.nio.file.Paths;
-import java.nio.file.StandardCopyOption;
+import com.wmp.Main;
+import com.wmp.PublicTools.io.ResourceLocalizer;
 
 public class VideoLocalizer {
-    private static String EMBEDDED_VIDEO_PATH = "/video";
+    //private static String EMBEDDED_VIDEO_PATH = "/video";
     
     public static void copyEmbeddedVideo(String targetDir, String videoName) {
-        try (InputStream is = VideoLocalizer.class.getResourceAsStream(EMBEDDED_VIDEO_PATH + "/" + videoName)) {// 获取资源流
+        /*try (InputStream is = VideoLocalizer.class.getResourceAsStream(EMBEDDED_VIDEO_PATH + "/" + videoName)) {// 获取资源流
             if (is == null) {
                 throw new IOException("内置视频文件未找到");
             }
@@ -21,6 +18,8 @@ public class VideoLocalizer {
                 StandardCopyOption.REPLACE_EXISTING);
         } catch (IOException e) {
             System.err.println("视频本地化失败: " + e.getMessage());
-        }
+        }*/
+        ResourceLocalizer.copyEmbeddedVideo(targetDir + "/video/",
+                Main.TempPath + "/video/", videoName);
     }
 }

@@ -33,7 +33,7 @@ public class Main{
     * d:修复c版的问题(仅限)
     * e:测试版本号
      */
-    public static String version = "1.13.0";
+    public static String version = "1.13.1";
 
     public static ArrayList<String> list = new ArrayList<>();
 
@@ -55,6 +55,7 @@ public class Main{
         TempPath = sb2.append(path).append("\\ClassToolsTemp\\").toString();
 
         DataPath = sb.toString();
+
 
         allArgs.put("TimeView:screen", StartupParameters.creative("-TimeView:screen", "/TimeView:screen"));
         allArgs.put("StartUpdate:false", StartupParameters.creative("-StartUpdate:false", "/StartUpdate:false"));
@@ -148,7 +149,7 @@ public class Main{
                 allArgs.get("screenProduct:view").contains(list))) {
             //执行你的代码
             GetNewerVersion.checkForUpdate(
-                    loadingWindow, null);
+                    loadingWindow, null, true);
             System.out.println("-StartUpdate:true");
         }else{
             System.out.println("-StartUpdate:false");

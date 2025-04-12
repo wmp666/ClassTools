@@ -65,7 +65,7 @@ public class AboutDialog extends JDialog {
         CTButton getNew = new CTButton(CTButton.ButtonText, "检查更新",
                 "/image/%s/update_0.png",
                 "/image/%s/update_1.png", 150, 35,
-                () -> GetNewerVersion.checkForUpdate(this, view));
+                () -> GetNewerVersion.checkForUpdate(this, view, true));
         getNew.setBackground(CTColor.backColor);
         getNew.setLocation(60, 240);
 
@@ -78,7 +78,7 @@ public class AboutDialog extends JDialog {
 
         initMenuBar();
 
-        GetNewerVersion.checkForUpdate(this, view);
+        GetNewerVersion.checkForUpdate(this, view, false);
 
     }
 
@@ -162,7 +162,7 @@ public class AboutDialog extends JDialog {
 
         JMenuItem checkUpdate = new JMenuItem("检查更新");
         checkUpdate.setIcon(GetIcon.getIcon(getClass().getResource("/image/light/update_0.png"), 20, 20));
-        checkUpdate.addActionListener(e -> GetNewerVersion.checkForUpdate(this, view));
+        checkUpdate.addActionListener(e -> GetNewerVersion.checkForUpdate(this, view, true));
 
         downloadMenu.add(getSource);
         downloadMenu.add(checkUpdate);
