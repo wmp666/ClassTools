@@ -5,6 +5,7 @@ import com.wmp.Main;
 import com.wmp.PublicTools.GetIcon;
 import com.wmp.PublicTools.InfProcess;
 import com.wmp.PublicTools.OpenInExp;
+import com.wmp.PublicTools.io.GetPath;
 import com.wmp.PublicTools.io.IOStreamForInf;
 import com.wmp.PublicTools.io.ZipPack;
 import com.wmp.classTools.CTComponent.CTButton;
@@ -14,7 +15,6 @@ import com.wmp.classTools.infSet.tools.GetExcelData;
 import org.json.JSONObject;
 
 import javax.swing.*;
-import javax.swing.filechooser.FileFilter;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 import java.awt.event.WindowEvent;
@@ -444,7 +444,7 @@ public class InfSetDialog extends JDialog implements WindowListener {
         JMenuItem getDutyList = new JMenuItem("导入值日表(.xlsx)");
         getDutyList.setIcon(GetIcon.getIcon(getClass().getResource("/image/input.png"), 16, 16));
         getDutyList.addActionListener(e -> {
-            String filePath = getFilePath("请选择值日表", ".xlsx");
+            String filePath = GetPath.getFilePath(this, "请选择值日表", ".xlsx");
             new GetExcelData<Duty>().getExcelData(filePath, DutyListPath, Duty.class );
             JOptionPane.showConfirmDialog(this, "导入成功", "", JOptionPane.DEFAULT_OPTION, JOptionPane.INFORMATION_MESSAGE);
             this.setVisible(false);
@@ -454,7 +454,7 @@ public class InfSetDialog extends JDialog implements WindowListener {
         JMenuItem getAllStuList = new JMenuItem("导入人员表(.xlsx)");
         getAllStuList.setIcon(GetIcon.getIcon(getClass().getResource("/image/input.png"), 16, 16));
         getAllStuList.addActionListener(e -> {
-            String filePath = getFilePath("请选择人员表", ".xlsx");
+            String filePath = GetPath.getFilePath(this, "请选择人员表", ".xlsx");
             new GetExcelData<AllStu>().getExcelData(filePath, AllStuPath, AllStu.class );
             JOptionPane.showConfirmDialog(this, "导入成功", "", JOptionPane.DEFAULT_OPTION, JOptionPane.INFORMATION_MESSAGE);
             this.setVisible(false);
@@ -464,7 +464,7 @@ public class InfSetDialog extends JDialog implements WindowListener {
         JMenuItem getAllInf = new JMenuItem("导入所有数据(.ctdatas)");
         getAllInf.setIcon(GetIcon.getIcon(getClass().getResource("/image/input.png"), 16, 16));
         getAllInf.addActionListener(e -> {
-            String filePath = getFilePath("请选择所有数据", ".ctdatas");
+            String filePath = GetPath.getFilePath(this, "请选择所有数据", ".ctdatas");
             ZipPack.unzip(filePath, Main.DataPath);
             //刷新数据
             this.setVisible(false);
@@ -477,7 +477,7 @@ public class InfSetDialog extends JDialog implements WindowListener {
         JMenuItem inputAllInf = new JMenuItem("导出所有数据(.ctdatas)");
         inputAllInf.setIcon(GetIcon.getIcon(getClass().getResource("/image/light/update_0.png"), 16, 16));
         inputAllInf.addActionListener(e -> {
-            String path = getDirectoryPath("请选择导出目录");
+            String path = GetPath.getDirectoryPath(this, "请选择导出目录");
             //将ClassTools文件夹中的文件打包为.zip
             boolean b = ZipPack.createZip(path, Main.DataPath, "ClassTools.ctdatas");
             if (!b){
@@ -580,64 +580,7 @@ public class InfSetDialog extends JDialog implements WindowListener {
 
 
 
-    private String getFilePath(String title , String fileType) {
-        JFileChooser chooser = new JFileChooser();
-        chooser.setDialogTitle(title);
 
-        //将文件过滤器设置为只显示.xlsx 或 文件夹
-        chooser.setFileFilter(new FileFilter() {
-            @Override
-            public boolean accept(File f) {
-                if (f.isDirectory()) {
-                    return true;
-                } else {
-                    String fileName = f.getName();
-                    String fileSuffix = fileName.substring(fileName.lastIndexOf("."));
-                    return fileSuffix.equals(fileType);
-                }
-            }
-            @Override
-            public String getDescription() {
-                return "Excel文件(*"+ fileType +")";
-            }
-        });
-
-        //获取文件路径
-        if (chooser.showOpenDialog(this) == JFileChooser.APPROVE_OPTION) {
-            try {
-                String filePath = chooser.getSelectedFile().getAbsolutePath();
-                //获取文件名
-                String fileName = chooser.getSelectedFile().getName();
-                //获取文件名后缀
-                String fileSuffix = fileName.substring(fileName.lastIndexOf("."));
-                //获取文件名前缀
-                String filePrefix = fileName.substring(0, fileName.lastIndexOf("."));
-
-                System.out.println("文件路径：" + filePath + "|文件名: " + fileName + "|文件后缀: " + fileSuffix + "|文件前缀: " + filePrefix);
-                return filePath;
-            } catch (Exception ex) {
-                throw new RuntimeException(ex);
-            }
-        }
-        return null;
-    }
-
-    private String getDirectoryPath(String title) {
-        JFileChooser chooser = new JFileChooser();
-        chooser.setDialogTitle(title);
-        chooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
-        //返回文件路径
-        if(chooser.showOpenDialog(this) == JFileChooser.APPROVE_OPTION){// 如果点击了"确定"按钮
-            try {
-                String filePath = chooser.getSelectedFile().getAbsolutePath();
-                System.out.println("文件路径：" + filePath);
-                return filePath;
-            } catch (Exception ex) {
-                throw new RuntimeException(ex);
-            }
-        }
-        return null;
-    }
 
     private void initSaveButton() throws MalformedURLException {
         CTButton saveButton = new CTButton(CTButton.ButtonText, "保存数据",

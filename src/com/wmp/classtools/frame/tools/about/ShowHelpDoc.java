@@ -19,8 +19,15 @@ public class ShowHelpDoc extends JDialog {
     private Container c;
     private JScrollPane helpDocPane = new JScrollPane();
 
+    public static final String INPUT_DOC = "如何导入表格数据";
+    public static final String START_PARAMETER = "启动参数";
+    public static final String CONFIG_PLUGIN = "如何配置插件";
 
     public ShowHelpDoc() throws URISyntaxException, IOException {
+        new ShowHelpDoc(null);
+    }
+
+    public ShowHelpDoc(String s) throws URISyntaxException, IOException {
 
         initDialog();
         c = this.getContentPane();
@@ -29,6 +36,28 @@ public class ShowHelpDoc extends JDialog {
 
         c.add(getChooseHelpDoc(), BorderLayout.WEST);
 
+        if (s != null){
+            switch (s){
+                case INPUT_DOC->{
+                    URL resource = getClass().getResource("/help/如何导入表格数据.md");
+                    String html = initHelpDoc(resource);
+                    this.helpDocPane.setViewportView(getHelpDocPane(html));
+                    this.helpDocPane.repaint();
+                }
+                case START_PARAMETER->{
+                    URL resource = getClass().getResource("/help/启动参数.md");
+                    String html =initHelpDoc(resource);
+                    this.helpDocPane.setViewportView(getHelpDocPane(html));
+                    this.helpDocPane.repaint();
+                }
+                case CONFIG_PLUGIN->{
+                    URL resource = getClass().getResource("/help/如何配置插件.md");
+                    String html = initHelpDoc(resource);
+                    this.helpDocPane.setViewportView(getHelpDocPane(html));
+                    this.helpDocPane.repaint();
+                }
+            }
+        }
         //URL resource = getClass().getResource("/help/如何导入表格数据.md");
         //String html = initHelpDoc(resource);
         //helpDocPane = getHelpDocPane(html);
@@ -43,7 +72,7 @@ public class ShowHelpDoc extends JDialog {
         chooseHelpDoc.setBackground(Color.WHITE);
 
         JList<String> list = new JList<>();
-        list.setListData(new String[]{"如何导入表格数据", "启动参数"});
+        list.setListData(new String[]{"如何导入表格数据", "启动参数", "如何配置插件"});
         list.setFont(new Font("微软雅黑", Font.BOLD, 25));
         list.addListSelectionListener(e -> {
             if (!list.isSelectionEmpty()) {
@@ -69,6 +98,12 @@ public class ShowHelpDoc extends JDialog {
                             //c.remove(this.helpDocPane);
                             //this.helpDocPane = helpDocPane;
                             //c.add(helpDocPane, BorderLayout.CENTER);
+                        }
+                        case "如何配置插件"->{
+                            URL resource = getClass().getResource("/help/如何配置插件.md");
+                            String html = initHelpDoc(resource);
+                            this.helpDocPane.setViewportView(getHelpDocPane(html));
+                            this.helpDocPane.repaint();
                         }
                     }
                     this.repaint();
@@ -131,7 +166,7 @@ public class ShowHelpDoc extends JDialog {
 
     private static JEditorPane getHelpDocPane(String html) {
         JEditorPane editorPane = new JEditorPane("text/html", html);
-        editorPane.setFont(new Font("Arial", -1, 16));
+        editorPane.setFont(new Font("微软雅黑", -1, 16));
         editorPane.setEditable(false);
 
         return editorPane;

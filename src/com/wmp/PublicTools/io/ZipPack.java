@@ -1,22 +1,44 @@
 package com.wmp.PublicTools.io;
 
+import javax.swing.*;
 import java.io.*;
+import java.util.Objects;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
 import java.util.zip.ZipOutputStream;
 
 public class ZipPack {
 
+    private static JDialog dialog = new JDialog();
+    private static JProgressBar progressBar = new JProgressBar(0,100);
     public static void unzip(String zipFilePath, String destDir) {
         //new File(destDir).delete();
-        try (ZipInputStream zipInputStream = new ZipInputStream(new FileInputStream(zipFilePath))) {
+        //生成一个弹窗显示解压进度
+
+        new Thread(() ->{
+            dialog.setTitle("正在解压...");
+            dialog.setModal(true);
+            dialog.setSize(300, 80);
+            dialog.setLocationRelativeTo(null);
+
+            progressBar.setIndeterminate(true);
+
+            dialog.add(progressBar);
+            dialog.setVisible(true);
+        }).start();
+
+        try {
+            ZipInputStream zipInputStream = new ZipInputStream(new FileInputStream(zipFilePath));
             // 解压缩文件
             unzipFiles(zipInputStream, destDir);
 
             System.out.println("Files unzipped successfully!");
         } catch (IOException e) {
+            dialog.setVisible(false);
             e.printStackTrace();
         }
+
+        dialog.setVisible(false);
 
         //return true;
     }
@@ -25,7 +47,9 @@ public class ZipPack {
         byte[] buffer = new byte[1024];
         ZipEntry entry;
 
+        // 遍历压缩文件中的每个文件
         while ((entry = zipInputStream.getNextEntry()) != null) {
+            // 处理文件
             String fileName = entry.getName();
             File outputFile = new File(outputFolder + "/" + fileName);
 
@@ -36,6 +60,7 @@ public class ZipPack {
                 // 创建文件并写入内容
                 new File(outputFile.getParent()).mkdirs();
                 try (FileOutputStream fileOutputStream = new FileOutputStream(outputFile)) {
+
                     int bytesRead;
                     while ((bytesRead = zipInputStream.read(buffer)) != -1) {
                         fileOutputStream.write(buffer, 0, bytesRead);
@@ -48,21 +73,40 @@ public class ZipPack {
     }
 
     public static boolean createZip(String outputPath, String dataPath, String zipName){
+
+        System.out.println("数据位置:" + dataPath);
+        new Thread(() ->{
+            dialog.setTitle("正在压缩...");
+            dialog.setModal(true);
+            dialog.setSize(300, 100);
+            dialog.setLocationRelativeTo(null);
+
+            progressBar.setIndeterminate(true);
+
+            dialog.add(progressBar);
+            dialog.setVisible(true);
+        }).start();
+
         String sourceFolder = dataPath;
         // String zipName = zipName;
 
-        try (ZipOutputStream zos = new ZipOutputStream(new FileOutputStream(outputPath + File.separator + zipName))) {
+        try {
+            ZipOutputStream zos = new ZipOutputStream(new FileOutputStream(outputPath + File.separator + zipName));
             addFolderToZip(new File(sourceFolder), "", zos);
+            dialog.setVisible(false);
             return true;
         } catch (IOException e) {
+            dialog.setVisible(false);
             e.printStackTrace();
+            return false;
         }
-        return false;
+        //dialog.setVisible(false);
+        //return false;
     }
 
     // 优化的压缩方法
     private static void addFolderToZip(File folder, String parentPath, ZipOutputStream zos) throws IOException {
-        for (File file : folder.listFiles()) {
+        for (File file : Objects.requireNonNull(folder.listFiles())) {
             String entryName = parentPath + file.getName();
 
             if (file.isDirectory()) {

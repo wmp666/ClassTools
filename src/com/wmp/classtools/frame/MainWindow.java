@@ -101,6 +101,17 @@ public class MainWindow extends JDialog {
         //settings.setLocation(210, 0);
         finalPanel.add(settings);
 
+        CTButton cookie = new CTButton("启用插件",
+                "/image/%s/cookie_0.png",
+                "/image/%s/cookie_1.png",30, () -> {
+            try {
+                new ShowCookieDialog();
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+        });
+        finalPanel.add(cookie);
+
         CTButton about = new CTButton("软件信息",
                 "/image/%s/about_0.png",
                 "/image/%s/about_1.png",30,() -> {

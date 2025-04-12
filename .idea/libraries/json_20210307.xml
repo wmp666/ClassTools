@@ -4,6 +4,8 @@
       <root url="jar://$PROJECT_DIR$/lib/json-20210307.jar!/" />
     </CLASSES>
     <JAVADOC />
-    <SOURCES />
+    <SOURCES>
+      <root url="jar://$USER_HOME$/.ideaLibSources/json-20210307-sources.jar!/" />
+    </SOURCES>
   </library>
 </component>

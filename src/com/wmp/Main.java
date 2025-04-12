@@ -32,7 +32,7 @@ public class Main{
     * d:修复c版的问题(仅限)
     * e:测试版本号
      */
-    public static String version = "1.12.0";
+    public static String version = "1.13.0";
 
     public static ArrayList<String> list = new ArrayList<>();
 
@@ -64,6 +64,33 @@ public class Main{
     }
     public static void main(String[] args) throws IOException, URISyntaxException {
 
+        initSetUp();
+
+        try {
+            //使用系统UI
+            UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+        } catch (UnsupportedLookAndFeelException | ClassNotFoundException | InstantiationException |
+                 IllegalAccessException e) {
+            throw new RuntimeException(e);
+        }
+
+        //new JFXPanel();
+
+        for (int i = 0; i < args.length; i++) {
+            args[i] = args[i].replace("/", "-");
+        }
+        System.out.println("程序支持的启动参数:" + allArgs);
+
+        if (args.length > 0) {
+            list = new ArrayList<>(Arrays.asList(args));
+            System.out.println(list);
+        }
+
+        show();
+
+    }
+
+    private static void initSetUp() throws IOException {
         boolean exists = new File(Main.DataPath + "setUp.json").exists();
 
         if (exists) {
@@ -104,28 +131,6 @@ public class Main{
         }
 
         System.out.println(new CTColor());
-        try {
-            //使用系统UI
-            UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-        } catch (UnsupportedLookAndFeelException | ClassNotFoundException | InstantiationException |
-                 IllegalAccessException e) {
-            throw new RuntimeException(e);
-        }
-
-        //new JFXPanel();
-
-        for (int i = 0; i < args.length; i++) {
-            args[i] = args[i].replace("/", "-");
-        }
-        System.out.println("程序支持的启动参数:" + allArgs);
-
-        if (args.length > 0) {
-            list = new ArrayList<>(Arrays.asList(args));
-            System.out.println(list);
-        }
-
-        show();
-
     }
 
     private static void show() throws URISyntaxException, IOException {
@@ -153,7 +158,7 @@ public class Main{
             int i = list.indexOf("-EasterEgg:") + 1;
             System.out.println("-EasterEgg:" + list.get(i));
             //System.out.println();
-            EasterEgg.show(list.get(i));
+            EasterEgg.showEasterEgg(list.get(i));
         }
         /*
 
