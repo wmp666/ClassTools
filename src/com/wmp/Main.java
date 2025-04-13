@@ -7,6 +7,7 @@ import com.wmp.classTools.frame.EasterEgg;
 import com.wmp.classTools.frame.LoadingWindow;
 import com.wmp.classTools.frame.MainWindow;
 import com.wmp.classTools.frame.tools.cookie.StartCookie;
+import org.json.JSONArray;
 import org.json.JSONObject;
 
 import javax.swing.*;
@@ -33,11 +34,13 @@ public class Main{
     * d:修复c版的问题(仅限)
     * e:测试版本号
      */
-    public static String version = "1.13.5";
+    public static String version = "1.14.0";
 
     public static ArrayList<String> list = new ArrayList<>();
 
     public static final TreeMap<String, StartupParameters> allArgs = new TreeMap<>();
+
+    public static final ArrayList<String> disButList = new ArrayList<>();
 
     public static boolean canExit = true;
 
@@ -112,6 +115,13 @@ public class Main{
                     case "dark" -> CTColor.setMainTheme(CTColor.STYLE_DARK);
                     default -> CTColor.setMainTheme(CTColor.STYLE_LIGHT);
                 }
+            }
+            if (jsonObject.has("disposeButton")){
+                JSONArray disButtonList = jsonObject.getJSONArray("disposeButton");
+                disButtonList.forEach(object -> {
+                    disButList.add(object.toString());
+                });
+                System.out.println(disButList);
             }
             if (jsonObject.has("canExit")) {
                 canExit = jsonObject.getBoolean("canExit");

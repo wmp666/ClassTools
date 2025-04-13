@@ -2,13 +2,14 @@ package com.wmp.classTools.frame;
 
 import com.wmp.CTColor;
 import com.wmp.Main;
+import com.wmp.PublicTools.GetIcon;
+import com.wmp.PublicTools.io.IOStreamForInf;
+import com.wmp.PublicTools.update.GetNewerVersion;
 import com.wmp.classTools.CTComponent.CTButton;
 import com.wmp.classTools.importPanel.timeView.TimeViewPanel;
 import com.wmp.classTools.infSet.InfSetDialog;
 import com.wmp.extraPanel.attendance.panel.ATPanel;
 import com.wmp.extraPanel.duty.panel.DPanel;
-import com.wmp.PublicTools.io.IOStreamForInf;
-import com.wmp.PublicTools.update.GetNewerVersion;
 
 import javax.swing.*;
 import java.awt.*;
@@ -21,8 +22,7 @@ import java.io.IOException;
 import java.net.MalformedURLException;
 import java.util.concurrent.atomic.AtomicInteger;
 
-import static com.wmp.Main.allArgs;
-import static com.wmp.Main.list;
+import static com.wmp.Main.*;
 
 public class MainWindow extends JDialog {
     private final Container contentPane = this.getContentPane();
@@ -79,75 +79,120 @@ public class MainWindow extends JDialog {
         finalPanel.setLocation(0, mixY);
         finalPanel.setSize(250, 39);
 
-        CTButton settings = new CTButton("设置数据",
-                "/image/%s/settings_0.png",
-                "/image/%s/settings_1.png",30,() -> {
+        {
+            JDialog moreDialog = new JDialog();
+            moreDialog.setTitle("已折叠的功能");
+            moreDialog.setLayout(new FlowLayout(FlowLayout.CENTER));
+            moreDialog.setSize(250, 300);
+            moreDialog.setLocationRelativeTo(null);
+            moreDialog.setModal(true);
+            moreDialog.getContentPane().setBackground(CTColor.backColor);
+            moreDialog.setIconImage(GetIcon.getImageIcon(getClass().getResource("/image/light/more.png"), 32, 32).getImage());
 
-            try {
-                new InfSetDialog(this, AllStuPath, LeaveListPath, DutyListPath, indexPath, () -> {
-                    try {
-                        dPanel.refresh();
-                        aTPanel.refresh(); // 自定义刷新方法
-                    } catch (IOException ex) {
-                        ex.printStackTrace();
-                    }
-                }).setVisible(true);
-            } catch (IOException e) {
-                throw new RuntimeException(e);
-            }
+            CTButton more = new CTButton("更多功能",
+                    "/image/%s/more.png",
+                    "/image/%s/more.png", 30, () -> {
+                moreDialog.setVisible(true);
 
-        });
+            });
 
-        //settings.setLocation(210, 0);
-        finalPanel.add(settings);
+            CTButton settings = new CTButton("设置数据",
+                    "/image/%s/settings_0.png",
+                    "/image/%s/settings_1.png", 30, () -> {
 
-        CTButton cookie = new CTButton("启用插件",
-                "/image/%s/cookie_0.png",
-                "/image/%s/cookie_1.png",30, () -> {
-            try {
-                new ShowCookieDialog();
-            } catch (IOException e) {
-                throw new RuntimeException(e);
-            }
-        });
-        finalPanel.add(cookie);
-
-        CTButton about = new CTButton("软件信息",
-                "/image/%s/about_0.png",
-                "/image/%s/about_1.png",30,() -> {
-            try {
-                new AboutDialog().setVisible(true);
-            } catch (MalformedURLException e) {
-                throw new RuntimeException(e);
-            }
-        });
-
-        //about.setLocation(210, 0);
-        about.setToolTipText("版本：" + Main.version);
-        finalPanel.add(about);
-
-        CTButton update = new CTButton("检查更新",
-                "/image/%s/update_0.png",
-                "/image/%s/update_1.png",30,() -> {
-            GetNewerVersion.checkForUpdate(null, null, true);
-
-        });
-        update.setToolTipText("获取更新");
-        finalPanel.add(update);
-
-        if (Main.canExit) {
-            CTButton exit = new CTButton("关闭",
-                    "/image/%s/exit_0.png",
-                    "/image/%s/exit_1.png",30,() -> {
-                int i = JOptionPane.showConfirmDialog(null, "确认退出?", "询问", JOptionPane.YES_NO_OPTION);
-                if (i == JOptionPane.YES_OPTION){
-                    System.exit(0);
+                try {
+                    new InfSetDialog(this, AllStuPath, LeaveListPath, DutyListPath, indexPath, () -> {
+                        try {
+                            dPanel.refresh();
+                            aTPanel.refresh(); // 自定义刷新方法
+                        } catch (IOException ex) {
+                            ex.printStackTrace();
+                        }
+                    }).setVisible(true);
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
                 }
 
             });
 
-            //exit.setLocation(210, 0);
-            finalPanel.add(exit);
+            //settings.setLocation(210, 0);
+
+
+            CTButton cookie = new CTButton("启用插件",
+                    "/image/%s/cookie_0.png",
+                    "/image/%s/cookie_1.png", 30, () -> {
+                try {
+                    new ShowCookieDialog();
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
+                }
+            });
+
+
+            CTButton about = new CTButton("软件信息",
+                    "/image/%s/about_0.png",
+                    "/image/%s/about_1.png", 30, () -> {
+                try {
+                    new AboutDialog().setVisible(true);
+                } catch (MalformedURLException e) {
+                    throw new RuntimeException(e);
+                }
+            });
+
+
+
+            CTButton update = new CTButton("检查更新",
+                    "/image/%s/update_0.png",
+                    "/image/%s/update_1.png", 30, () -> {
+                GetNewerVersion.checkForUpdate(null, null, true);
+
+            });
+            update.setToolTipText("获取更新");
+
+            finalPanel.add(more);
+            finalPanel.add(settings);
+            finalPanel.add(cookie);
+            finalPanel.add(about);
+            finalPanel.add(update);
+
+            for (String s : disButList) {
+                if (s.equals("cookie")) {
+                    cookie.setText(cookie.getToolTipText());
+                    moreDialog.add(cookie);
+                }
+                if (s.equals("settings")) {
+                    settings.setText(settings.getToolTipText());
+                    moreDialog.add(settings);
+                }
+                if (s.equals("update")) {
+                    update.setText(update.getToolTipText());
+                    moreDialog.add(update);
+                }
+                if (s.equals("about")) {
+                    about.setText(about.getToolTipText());
+                    moreDialog.add(about);
+                }
+            }
+
+
+            //设置关闭按钮
+            if (Main.canExit) {
+                CTButton exit = new CTButton("关闭",
+                        "/image/%s/exit_0.png",
+                        "/image/%s/exit_1.png", 30, () -> {
+                    int i = JOptionPane.showConfirmDialog(null, "确认退出?", "询问", JOptionPane.YES_NO_OPTION);
+                    if (i == JOptionPane.YES_OPTION) {
+                        System.exit(0);
+                    }
+
+                });
+
+                //exit.setLocation(210, 0);
+                finalPanel.add(exit);
+            }
+
+
+
         }
 
 

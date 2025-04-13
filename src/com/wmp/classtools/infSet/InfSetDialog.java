@@ -13,6 +13,7 @@ import com.wmp.classTools.infSet.DataStyle.AllStu;
 import com.wmp.classTools.infSet.DataStyle.Duty;
 import com.wmp.classTools.infSet.tools.GetExcelData;
 import com.wmp.classTools.infSet.tools.SetStartUp;
+import org.json.JSONArray;
 import org.json.JSONObject;
 
 import javax.swing.*;
@@ -26,6 +27,7 @@ import java.net.MalformedURLException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Objects;
+import java.util.TreeMap;
 import java.util.concurrent.atomic.AtomicInteger;
 
 public class InfSetDialog extends JDialog implements WindowListener {
@@ -44,6 +46,7 @@ public class InfSetDialog extends JDialog implements WindowListener {
 
     private final JComboBox<String> mainColorComboBox = new JComboBox<>();
     private final JComboBox<String> mainThemeComboBox = new JComboBox<>();
+    private final TreeMap<String, JCheckBox> disposeButton = new TreeMap<>();
     private final JCheckBox StartUpdate = new JCheckBox("启动检查更新");
     private final JCheckBox canExit = new JCheckBox("防止被意外关闭");
     private final JCheckBox startUp = new JCheckBox("开机自启动");
@@ -96,14 +99,17 @@ public class InfSetDialog extends JDialog implements WindowListener {
     private JPanel initPersonalization() throws IOException {
         JPanel SetsPanel = new JPanel();
         JScrollPane mainPanelScroll = new JScrollPane(SetsPanel);
+        //调整滚动灵敏度
+        mainPanelScroll.getVerticalScrollBar().setUnitIncrement(16);
         mainPanelScroll.setSize(400, 400);
 
         SetsPanel.setBackground(CTColor.backColor);
-        SetsPanel.setLayout(new GridLayout(2,1));
+        SetsPanel.setLayout(new GridLayout(0,1));
 
         JPanel ColorPanel = new JPanel();
         ColorPanel.setBackground(CTColor.backColor);
-        ColorPanel.setLayout(new GridLayout(2,1));
+        ColorPanel.setLayout(new GridLayout(1,2));
+        ColorPanel.setBorder(BorderFactory.createTitledBorder("颜色设置"));
         //颜色设置
         {
             //主题色设置
@@ -165,9 +171,45 @@ public class InfSetDialog extends JDialog implements WindowListener {
 
         }
 
+        JPanel disposePanel = new JPanel();
+        disposePanel.setBackground(CTColor.backColor);
+        disposePanel.setLayout(new GridLayout(0, 2));
+        //设置边框
+        disposePanel.setBorder(BorderFactory.createTitledBorder("隐藏部分按钮"));
+        {
+            JCheckBox cookie = new JCheckBox("插件管理页");
+            cookie.setFont(new Font("微软雅黑", -1, 15));
+            cookie.setBackground(CTColor.backColor);
+            cookie.setForeground(CTColor.textColor);
+            disposeButton.put("cookie", cookie);
+
+            JCheckBox about = new JCheckBox("软件信息");
+            about.setFont(new Font("微软雅黑", -1, 15));
+            about.setBackground(CTColor.backColor);
+            about.setForeground(CTColor.textColor);
+            disposeButton.put("about", about);
+
+            JCheckBox update = new JCheckBox("更新");
+            update.setFont(new Font("微软雅黑", -1, 15));
+            update.setBackground(CTColor.backColor);
+            update.setForeground(CTColor.textColor);
+            disposeButton.put("update", update);
+
+            JCheckBox settings = new JCheckBox("设置");
+            settings.setFont(new Font("微软雅黑", -1, 15));
+            settings.setBackground(CTColor.backColor);
+            settings.setForeground(CTColor.textColor);
+            disposeButton.put("settings", settings);
+
+            disposeButton.forEach((key, value) -> {
+                disposePanel.add(value);
+            });
+        }
+
         JPanel otherPanel = new JPanel();
         otherPanel.setBackground(CTColor.backColor);
-
+        otherPanel.setLayout(new GridLayout(0,2));
+        otherPanel.setBorder(BorderFactory.createTitledBorder("其他设置"));
         //其他设置
         {
             startUp.setFont(new Font("微软雅黑", -1, 15));
@@ -189,15 +231,16 @@ public class InfSetDialog extends JDialog implements WindowListener {
 
 
         }
-        otherPanel.setLayout(new GridLayout(3,2));
+
 
         SetsPanel.add(ColorPanel);
+        SetsPanel.add(disposePanel);
         SetsPanel.add(otherPanel);
 
         JPanel tempPanel = new JPanel();
         tempPanel.setLayout(new BorderLayout());
         tempPanel.setBackground(CTColor.backColor);
-        tempPanel.add(mainPanelScroll, BorderLayout.NORTH);
+        tempPanel.add(mainPanelScroll, BorderLayout.CENTER);
 
         //显示数据
         {
@@ -218,6 +261,22 @@ public class InfSetDialog extends JDialog implements WindowListener {
                 switch (jsonObject.getString("mainTheme")) {
                     case "dark" -> mainThemeComboBox.setSelectedIndex(1);
                     default -> mainThemeComboBox.setSelectedIndex(0);
+                }
+            }
+
+            if (jsonObject.has("disposeButton")){
+                JSONArray JSONArrdisButton = jsonObject.getJSONArray("disposeButton");
+                for (int i = 0; i < JSONArrdisButton.length(); i++) {
+                    String s = JSONArrdisButton.getString(i);
+                    if (disposeButton.containsKey(s)){
+                        disposeButton.get(s).setSelected(true);
+                    }
+                    /*switch (JSONArrdisButton.getString(i)) {
+                        case "cookie" -> disposeButton.get("cookie").setSelected(true);
+                        case "about" -> disposeButton.get("about").setSelected(true);
+                        case "update" -> disposeButton.get("update").setSelected(true);
+                        case "settings" -> disposeButton.get("settings").setSelected(true);
+                    }*/
                 }
             }
             //是否可关闭
@@ -594,10 +653,6 @@ public class InfSetDialog extends JDialog implements WindowListener {
 
     }
 
-
-
-
-
     private void initSaveButton() throws MalformedURLException {
         CTButton saveButton = new CTButton(CTButton.ButtonText, "保存数据",
                 "/image/%s/save_0.png",
@@ -858,6 +913,13 @@ public class InfSetDialog extends JDialog implements WindowListener {
                     };
                     jsonObject.put("mainTheme", tempMainThemeColor);
 
+                    ArrayList<String> tempList = new ArrayList<>();
+                    disposeButton.forEach((key, value) -> {
+                        if (value.isSelected()) {
+                            tempList.add(key);
+                        }
+                    });
+                    jsonObject.put("disposeButton", tempList);
                     //设置是否可退出
                     jsonObject.put("canExit", !canExit.isSelected());
 
