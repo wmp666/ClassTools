@@ -12,8 +12,6 @@ import com.wmp.classTools.frame.tools.cookie.StartCookie;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
 import java.io.File;
 import java.io.IOException;
 import java.net.URISyntaxException;
@@ -25,7 +23,7 @@ public class ShowCookieDialog extends JDialog {
 
     private String[] s = {"null", "null"};
 
-    private final TreeSet<JLabel> cookiePanelMap = new TreeSet<>(Comparator.comparing(JLabel::getText));
+    private final TreeSet<JButton> cookiePanelMap = new TreeSet<>(Comparator.comparing(JButton::getText));
     private final TreeMap<String, File> cookieMap = new TreeMap<>();
 
     public ShowCookieDialog() throws IOException {
@@ -96,82 +94,55 @@ public class ShowCookieDialog extends JDialog {
         // 显示插件库
         JPanel cookiesPanel = new JPanel();
         cookiesPanel.setBackground(Color.WHITE);
-        cookiesPanel.setLayout(new GridLayout(0, 1, 20, 10));
+        cookiesPanel.setLayout(new GridLayout(10, 1, 20, 10));
 
         GetCookie getCookie = new GetCookie();
 
 
         getCookie.getCookieMap().forEach((key, value) -> {
-            JLabel label = new JLabel(getCookie.getName(key));
-            label.setHorizontalAlignment(JLabel.CENTER);
+            JButton cookieButton = new JButton(getCookie.getName(key));
+            cookieButton.setBackground(Color.WHITE);
+            if (getCookie.getCookieMap().get(key).getIcon() != null){
+                cookieButton.setIcon(getCookie.getCookieMap().get(key).getIcon());
+            }
+            cookieButton.setHorizontalAlignment(JLabel.CENTER);
             //显示边框
-            label.setBorder(BorderFactory.createLineBorder(Color.BLACK, 1));
-            label.setFont(new Font("微软雅黑", Font.BOLD, 18));
-            label.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));// 设置鼠标样式 - 箭头
-            label.addMouseListener(new MouseListener() {
+            cookieButton.setBorder(BorderFactory.createLineBorder(Color.BLACK, 1));
+            cookieButton.setFont(new Font("微软雅黑", Font.BOLD, 18));
+            cookieButton.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));// 设置鼠标样式 - 箭头
+            cookieButton.addActionListener(e->{
+                if (s[0].equals(key)){
+                    System.out.println("重复点击" + cookieButton.getText());
+                    cookieButton.setForeground(Color.RED);
 
-                // 鼠标点击事件
-                @Override
-                public void mouseClicked(MouseEvent evt) {
-                    if (s[0].equals(key)){
-                        System.out.println("重复点击" + label.getText());
-                        label.setForeground(Color.RED);
+                    StartCookie.showCookie(s[0]);
+                    s[0] = "null";
+                    return;
+                }else{
+                    System.out.println("点击了" + cookieButton.getText());
+                    s[0] = key;
+                    s[1] = cookieButton.getText();
+                }
 
-                        StartCookie.showCookie(s[0]);
-                        s[0] = "null";
-                        return;
-                    }else{
-                        System.out.println("点击了" + label.getText());
-                        s[0] = key;
-                        s[1] = label.getText();
+                //cookieButton.setBorder(BorderFactory.createLineBorder(new Color(0x0090FF), 1));
+                cookieButton.setForeground(new Color(0x0090FF));
+
+                openInExp.setEnabled(true);
+                runCookie.setEnabled(true);
+                outputBtn.setEnabled(true);
+                for (JButton label : cookiePanelMap) {
+                    if (!label.getText().equals(s[1])) {
+                        //label.setBorder(BorderFactory.createLineBorder(Color.BLACK, 1));
+                        label.setForeground(Color.BLACK);
                     }
-
-                    label.setBorder(BorderFactory.createLineBorder(new Color(0x0090FF), 1));
-                    label.setForeground(new Color(0x0090FF));
-
-                    openInExp.setEnabled(true);
-                    runCookie.setEnabled(true);
-                    outputBtn.setEnabled(true);
-                    for (JLabel label : cookiePanelMap) {
-                        if (!label.getText().equals(s[1])) {
-                            label.setBorder(BorderFactory.createLineBorder(Color.BLACK, 1));
-                            label.setForeground(Color.BLACK);
-                        }
-                    }
-                    label.repaint();
-                    cookiesPanel.repaint();
-                    c.repaint();
                 }
-
-                // 鼠标按下事件
-                @Override
-                public void mousePressed(MouseEvent evt) {
-
-                }
-
-                // 鼠标释放事件
-                @Override
-                public void mouseReleased(MouseEvent e) {
-
-                }
-
-                // 鼠标移入事件
-                @Override
-                public void mouseEntered(MouseEvent evt) {
-
-                }
-
-                // 鼠标移出事件
-                @Override
-                public void mouseExited(MouseEvent evt) {
-
-                }
-
-
+                cookieButton.repaint();
+                cookiesPanel.repaint();
+                c.repaint();
             });
-            cookiePanelMap.add(label);
+            cookiePanelMap.add(cookieButton);
             cookieMap.put(key, value.getPath());
-            cookiesPanel.add(label);
+            cookiesPanel.add(cookieButton);
         });
 
         cookiesPanel.setMaximumSize(cookiesPanel.getPreferredSize());
@@ -242,6 +213,7 @@ public class ShowCookieDialog extends JDialog {
         helpMenu.setMnemonic('H');
 
         JMenuItem helpDoc = new JMenuItem("帮助文档");
+        helpDoc.setIcon( GetIcon.getIcon(getClass().getResource("/image/doc.png"),16,16));
         helpDoc.addActionListener(e -> {
             try {
                 new ShowHelpDoc(ShowHelpDoc.CONFIG_PLUGIN);
@@ -258,7 +230,7 @@ public class ShowCookieDialog extends JDialog {
     private void initDialog() {
         this.setTitle("插件库");
         this.setSize(400, 500);
-        this.setIconImage(GetIcon.getImageIcon(getClass().getResource("/image/icon.png"),
+        this.setIconImage(GetIcon.getImageIcon(getClass().getResource("/image/light/cookie_0.png"),
                         32, 32).getImage());
         this.setLocationRelativeTo(null);
         this.setModal(true);

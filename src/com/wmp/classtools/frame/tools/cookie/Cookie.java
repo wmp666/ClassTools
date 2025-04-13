@@ -1,16 +1,19 @@
 package com.wmp.classTools.frame.tools.cookie;
 
+import javax.swing.*;
 import java.io.File;
 
 public class Cookie {
     private String name;
     private String Style;
     private File path;
+    private Icon icon;
 
-    public Cookie(String name, String style, File path) {
+    public Cookie(String name, String style, Icon icon, File path) {
         this.name = name;
-        Style = style;
+        this.Style = style;
         this.path = path;
+        this.icon = icon;
     }
 
     public Cookie() {
@@ -40,11 +43,20 @@ public class Cookie {
         this.path = path;
     }
 
+    public Icon getIcon() {
+        return icon;
+    }
+
+    public void setIcon(Icon icon) {
+        this.icon = icon;
+    }
+
     @Override
     public String toString() {
         return "Cookie{" +
                 "name='" + name + '\'' +
                 ", Style='" + Style + '\'' +
+                ", icon=" + icon + '\'' +
                 ", path=" + path +
                 '}';
     }
