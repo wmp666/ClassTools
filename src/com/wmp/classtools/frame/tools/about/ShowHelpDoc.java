@@ -194,7 +194,7 @@ public class ShowHelpDoc extends JDialog {
         this.setTitle("帮助");
         this.getContentPane().setLayout(new BorderLayout());// 设置布局为边界布局
         this.setSize(800, 600);
-        this.setIconImage(GetIcon.getImageIcon(getClass().getResource("/image/icon.png"),
+        this.setIconImage(GetIcon.getImageIcon(getClass().getResource("/image/doc.png"),
                         32, 32).getImage());
         //居中显示
         this.setLocationRelativeTo(null);

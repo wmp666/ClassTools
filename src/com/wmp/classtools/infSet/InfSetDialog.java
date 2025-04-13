@@ -57,6 +57,7 @@ public class InfSetDialog extends JDialog implements WindowListener {
     public InfSetDialog(Window owner, File AllStuPath, File leaveListPath, File DutyListPath, File indexPath, Runnable refreshCallback) throws IOException {
 
         this.setBackground(CTColor.backColor);
+        this.setIconImage(GetIcon.getImageIcon(getClass().getResource("/image/light/settings_0.png"), 32, 32).getImage());
         this.setTitle("设置");
         this.setSize(400, 500);
         this.setLocationRelativeTo(null);
@@ -431,22 +432,26 @@ public class InfSetDialog extends JDialog implements WindowListener {
             OpenInExp.open(System.getProperty("user.dir"));
         });
 
-        JMenuItem openSetsList = new JMenuItem("个性化文件");
+        JMenuItem openSetsList = new JMenuItem("数据位置");
+        openSetsList.setIcon(GetIcon.getIcon(getClass().getResource("/image/openExp.png"), 16, 16));
         openSetsList.addActionListener(e -> {
             OpenInExp.open(Main.DataPath);
         });
 
         JMenuItem openStuList = new JMenuItem("人员名单");
+        openStuList.setIcon(GetIcon.getIcon(getClass().getResource("/image/openExp.png"), 16, 16));
         openStuList.addActionListener(e -> {
             OpenInExp.open(AllStuPath.getParent());
         });
 
         JMenuItem openDutyList = new JMenuItem("值班人员");
+        openDutyList.setIcon(GetIcon.getIcon(getClass().getResource("/image/openExp.png"), 16, 16));
         openDutyList.addActionListener(e -> {
             OpenInExp.open(DutyListPath.getParent());
         });
 
         JMenu InfSets = new JMenu("数据设置");
+        InfSets.setIcon(GetIcon.getIcon(getClass().getResource("/image/light/setting_0.png"), 16, 16));
 
         JMenu getInf = new JMenu("导入数据");
         getInf.setIcon(GetIcon.getIcon(getClass().getResource("/image/input.png"), 16, 16));
@@ -529,6 +534,7 @@ public class InfSetDialog extends JDialog implements WindowListener {
         JMenu editMenu = new JMenu("编辑");
 
         JMenu setMenu = new JMenu("设置界面");
+        setMenu.setIcon(GetIcon.getIcon(getClass().getResource("/image/light/settings_0.png"), 16, 16));
 
         JMenuItem PersonalizationMenuItem = new JMenuItem("个性化");
         PersonalizationMenuItem.addActionListener(e -> {

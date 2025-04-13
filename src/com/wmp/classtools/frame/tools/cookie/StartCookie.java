@@ -38,8 +38,7 @@ public class StartCookie {
                     case "exe" -> {
                         Runtime runtime = Runtime.getRuntime();
                         runtime.exec(cookieFile.getPath(), null, cookieFile.getParentFile());
-                    }
-                    case "directory", "file" -> {
+                    }case "directory", "file" -> {
                         OpenInExp.open(cookieFile.getPath());
                     }
                     default -> {

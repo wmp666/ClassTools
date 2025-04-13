@@ -172,6 +172,7 @@ public class AboutDialog extends JDialog {
         JMenu helpMenu = new JMenu("帮助");
 
         JMenuItem helpDoc = new JMenuItem("帮助文档");
+        helpDoc.setIcon(GetIcon.getIcon(getClass().getResource("/image/doc.png"), 20, 20));
         helpDoc.addActionListener(e -> {
             try {
                 new ShowHelpDoc();
