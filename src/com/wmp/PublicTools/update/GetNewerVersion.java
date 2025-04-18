@@ -155,8 +155,10 @@ public class GetNewerVersion {
                                 "发现更新", JOptionPane.YES_NO_OPTION);
 
                         if (result == JOptionPane.YES_OPTION) {
-                            DownloadURLFile.downloadUpdate(dialog, panel, downloadUrl, Main.TEMP_PATH, "app");
-                            //openGithubRelease();
+                            new Thread(() ->{
+                                DownloadURLFile.downloadWebFile(dialog, panel, downloadUrl, "app");
+                            });
+
                         }
                     } else if (i == 2) {
                         System.out.println("发现新版本 " + latestVersion);
@@ -164,7 +166,9 @@ public class GetNewerVersion {
                                 "发现新版本 " + latestVersion + "!\n" + versionContent,
                                 "发现更新", JOptionPane.INFORMATION_MESSAGE);
 
-                        DownloadURLFile.downloadUpdate(dialog, panel, downloadUrl, Main.TEMP_PATH, "app");
+                        new Thread(() ->{
+                            DownloadURLFile.downloadWebFile(dialog, panel, downloadUrl, "app");
+                        });
                     } else {
                         System.out.println("当前已是最新版本");
                         if (showMessage) {

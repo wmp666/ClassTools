@@ -1,7 +1,5 @@
 package com.wmp.PublicTools.io;
 
-import com.wmp.PublicTools.videoView.VideoLocalizer;
-
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
@@ -15,7 +13,7 @@ public class ResourceLocalizer {
         if (!file.exists()) {
             file.mkdirs();
         }
-        try (InputStream is = VideoLocalizer.class.getResourceAsStream(inputPath + fileName)) {// 获取资源流
+        try (InputStream is = ResourceLocalizer.class.getResourceAsStream(inputPath + fileName)) {// 获取资源流
             if (is == null) {
                 System.out.println("内置文件:" + ResourceLocalizer.class.getResource(inputPath + fileName));
                 throw new IOException("内置文件[" + fileName + "]未找到");
@@ -34,21 +32,12 @@ public class ResourceLocalizer {
         File file = new File(outputPath);
         if (!file.exists()) {
             file.mkdirs();
-        }else{
+        }
+        File targetFile = new File(outputPath + "/" + fileName);
+        if (targetFile.exists()) {
             return;
         }
-        try (InputStream is = VideoLocalizer.class.getResourceAsStream(webPath + fileName)) {// 获取资源流
-            if (is == null) {
-                System.out.println("网络文件:" + ResourceLocalizer.class.getResource(webPath + fileName));
-                throw new IOException("网络文件[" + fileName + "]未找到");
-            }
-
-            Files.createDirectories(Paths.get(webPath, "video"));
-            Files.copy(is,
-                    Paths.get(outputPath, fileName),
-                    StandardCopyOption.REPLACE_EXISTING);
-        } catch (IOException e) {
-            System.err.println("文件[" + fileName + "]本地化失败: " + e.getMessage());
-        }
+        System.out.println("开始下载视频:" + webPath);
+        DownloadURLFile.downloadWebFile(null, null, webPath, outputPath);
     }
 }

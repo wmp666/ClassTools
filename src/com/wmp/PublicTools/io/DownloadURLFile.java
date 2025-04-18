@@ -1,6 +1,7 @@
 package com.wmp.PublicTools.io;
 
 import com.wmp.CTColor;
+import com.wmp.Main;
 
 import javax.swing.*;
 import java.awt.*;
@@ -10,8 +11,9 @@ import java.nio.charset.StandardCharsets;
 import java.util.Objects;
 
 public class DownloadURLFile {
-    public static void downloadUpdate(Window parent, JPanel panel, String downloadUrl, String tempPath, String dataPath) {
-        new Thread(() -> {
+    public static void downloadWebFile(Window parent, JPanel panel, String downloadUrl, String dataPath) {
+        //new Thread(() -> {
+
 
             JDialog progressDialog = new JDialog();
             JLabel label = new JLabel("正在下载更新，请稍候...");
@@ -55,18 +57,18 @@ public class DownloadURLFile {
                 Objects.requireNonNullElse(panel, progressDialog).repaint();
 
 
-                // 创建目标目录
-                File appDir = new File(tempPath);
+                // 创建缓存目录
+                File appDir = new File(Main.TEMP_PATH + "WebTemp\\");
                 if (!appDir.exists()) appDir.mkdirs();
 
                 // 替换原有的页面解析逻辑为直接获取最新JAR
-                String fileUrl = downloadUrl.replace("github", "kkgithub");
+                //String fileUrl = downloadUrl.replace("github", "kkgithub");
 
                 label.setText("正在初始化更新数据，请稍候...");
                 Objects.requireNonNullElse(panel, progressDialog).repaint();
 
                 // 开始下载
-                URL url = new URL(fileUrl);
+                URL url = new URL(downloadUrl);
                 HttpURLConnection conn = (HttpURLConnection) url.openConnection();
 
 
@@ -74,13 +76,12 @@ public class DownloadURLFile {
                 conn.setInstanceFollowRedirects(true); // 启用自动重定向
 
                 // 添加超时设置
-                conn.setConnectTimeout(10000);
-                conn.setReadTimeout(30000);
+                conn.setConnectTimeout(30000);// 设置连接超时时间为30秒
+                conn.setReadTimeout(120000);// 设置读取超时时间为120秒
 
-                String fileNameFromUrl = getFileNameFromUrl(fileUrl);
+                String fileNameFromUrl = getFileNameFromUrl(downloadUrl);
                 try (InputStream in = conn.getInputStream();
                      FileOutputStream out = new FileOutputStream(appDir.getAbsolutePath() + "/" + fileNameFromUrl)) {
-                    System.out.println(out);
                     byte[] buffer = new byte[1024 * 512];
                     int read;
                     long total = 0;
@@ -172,7 +173,7 @@ public class DownloadURLFile {
                     } else {
                         progressDialog.setVisible(false);
                     }
-                    JOptionPane.showMessageDialog(parent, "下载完成！请重启应用");
+                    JOptionPane.showMessageDialog(parent, "下载完成！");
 
                 }
             } catch (Exception ex) {
@@ -181,7 +182,7 @@ public class DownloadURLFile {
                     JOptionPane.showMessageDialog(parent, "下载失败: " + ex.getMessage(), "世界拒绝了我", JOptionPane.ERROR_MESSAGE);
                 });
             }
-        }).start();
+        //}).start();
     }
 
     private static String getFileNameFromUrl(String urlString) {
