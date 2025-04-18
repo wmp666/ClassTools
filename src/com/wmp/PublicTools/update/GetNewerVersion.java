@@ -2,6 +2,7 @@ package com.wmp.PublicTools.update;
 
 import com.wmp.Main;
 import com.wmp.PublicTools.io.DownloadURLFile;
+import com.wmp.PublicTools.web.GetWebInf;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import org.jsoup.Jsoup;
@@ -65,16 +66,10 @@ public class GetNewerVersion {
         }.execute();
     }
 
-    public static String getLatestVersion() throws Exception {
-        SslUtils.ignoreSsl();
+    public static String getLatestVersion(){
         try {
             // 获取原始JSON响应
-            String json = Jsoup.connect(apiUrl)
-                    .header("Accept", "application/vnd.github.v3+json")
-                    .timeout(10000)
-                    .ignoreContentType(true)
-                    .execute()
-                    .body();
+            String json = GetWebInf.getWebInf(apiUrl);
 
             // 使用JSONObject解析
             JSONObject release = new JSONObject(json);

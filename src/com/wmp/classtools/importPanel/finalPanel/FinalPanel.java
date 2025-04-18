@@ -17,7 +17,6 @@ import java.io.File;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.util.ArrayList;
-import java.util.concurrent.atomic.AtomicInteger;
 
 import static com.wmp.Main.disButList;
 
@@ -66,7 +65,7 @@ public class FinalPanel extends CTPanel {
         moreDialog.getContentPane().setBackground(CTColor.backColor);
         moreDialog.setIconImage(GetIcon.getImageIcon(getClass().getResource("/image/light/more.png"), 32, 32).getImage());
 
-        CTButton more = new CTButton("更多功能",
+        CTButton moreButton = new CTButton("更多功能",
                 "/image/%s/more.png",
                 "/image/%s/more.png", 30, () -> {
             moreDialog.setVisible(true);
@@ -89,8 +88,6 @@ public class FinalPanel extends CTPanel {
                     Main.canExit = setsJSON.isCanExit();
                     disButList.clear();
                     disButList.addAll(setsJSON.getDisButList());
-
-                        AtomicInteger mixY = new AtomicInteger(0);
 
                         panelList.forEach(panel -> {
                             try {
@@ -145,30 +142,41 @@ public class FinalPanel extends CTPanel {
         });
         update.setToolTipText("获取更新");
 
-        this.add(more);
+        this.add(moreButton);
         this.add(settings);
         this.add(cookie);
         this.add(about);
         this.add(update);
 
+        int length = 0;
+
         for (String s : disButList) {
             if (s.equals("cookie")) {
                 cookie.setText(cookie.getToolTipText());
                 moreDialog.add(cookie);
+                length++;
             }
             if (s.equals("settings")) {
                 settings.setText(settings.getToolTipText());
                 moreDialog.add(settings);
+                length++;
             }
             if (s.equals("update")) {
                 update.setText(update.getToolTipText());
                 moreDialog.add(update);
+                length++;
             }
             if (s.equals("about")) {
                 about.setText(about.getToolTipText());
                 moreDialog.add(about);
+                length++;
             }
         }
+        if (length == 0) {
+            this.remove(moreButton);
+        }
+
+
 
 
         //设置关闭按钮

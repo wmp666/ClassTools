@@ -76,7 +76,7 @@ public class ShowHelpDoc extends JDialog {
         } catch (IOException e) {
             System.err.println("文件本地化失败: " + e.getMessage());
         }*/
-        ResourceLocalizer.copyEmbeddedVideo(dataPath, "/help/", DocName);
+        ResourceLocalizer.copyEmbeddedFile(dataPath, "/help/", DocName);
 
     }
 
@@ -102,7 +102,7 @@ public class ShowHelpDoc extends JDialog {
         } catch (IOException e) {
             System.err.println("文件本地化失败: " + e.getMessage());
         }*/
-        ResourceLocalizer.copyEmbeddedVideo(dataPath, "/help/images/", imageName);
+        ResourceLocalizer.copyEmbeddedFile(dataPath, "/help/images/", imageName);
 
     }
     private JScrollPane getChooseHelpDoc() {

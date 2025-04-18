@@ -19,7 +19,7 @@ public class VideoLocalizer {
         } catch (IOException e) {
             System.err.println("视频本地化失败: " + e.getMessage());
         }*/
-        ResourceLocalizer.copyEmbeddedVideo(targetDir + "/video/",
+        ResourceLocalizer.copyEmbeddedFile(targetDir + "/video/",
                 Main.TEMP_PATH + "/video/", videoName);
     }
 }

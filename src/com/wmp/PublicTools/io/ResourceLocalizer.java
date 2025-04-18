@@ -10,7 +10,7 @@ import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
 
 public class ResourceLocalizer {
-    public static void copyEmbeddedVideo(String outputPath, String inputPath, String fileName) {
+    public static void copyEmbeddedFile(String outputPath, String inputPath, String fileName) {
         File file = new File(outputPath);
         if (!file.exists()) {
             file.mkdirs();
@@ -22,6 +22,28 @@ public class ResourceLocalizer {
             }
 
             Files.createDirectories(Paths.get(inputPath, "video"));
+            Files.copy(is,
+                    Paths.get(outputPath, fileName),
+                    StandardCopyOption.REPLACE_EXISTING);
+        } catch (IOException e) {
+            System.err.println("文件[" + fileName + "]本地化失败: " + e.getMessage());
+        }
+    }
+
+    public static void copyWebVideo(String outputPath, String webPath, String fileName) {
+        File file = new File(outputPath);
+        if (!file.exists()) {
+            file.mkdirs();
+        }else{
+            return;
+        }
+        try (InputStream is = VideoLocalizer.class.getResourceAsStream(webPath + fileName)) {// 获取资源流
+            if (is == null) {
+                System.out.println("网络文件:" + ResourceLocalizer.class.getResource(webPath + fileName));
+                throw new IOException("网络文件[" + fileName + "]未找到");
+            }
+
+            Files.createDirectories(Paths.get(webPath, "video"));
             Files.copy(is,
                     Paths.get(outputPath, fileName),
                     StandardCopyOption.REPLACE_EXISTING);

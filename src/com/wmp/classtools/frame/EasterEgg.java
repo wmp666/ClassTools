@@ -49,7 +49,8 @@ public class EasterEgg {
     }
     public static void showEasterEgg(String pin) throws URISyntaxException, IOException {
 
-        ResourceLocalizer.copyEmbeddedVideo(Main.TEMP_PATH + "video\\", "/video/", pin +".mp4");
+        //GetWebInf.getWebInf("https://api.github.com/repos/WMP-Team/WMP-Team/contents/video/" + pin + ".mp4")
+        ResourceLocalizer.copyEmbeddedFile(Main.TEMP_PATH + "video\\", "/video/", pin +".mp4");
         //VideoLocalizer.copyEmbeddedVideo(Main.TEMP_PATH, pin + ".mp4");
         String videoPath = "null";
         switch (pin) {
