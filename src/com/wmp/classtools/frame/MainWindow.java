@@ -2,27 +2,24 @@ package com.wmp.classTools.frame;
 
 import com.wmp.CTColor;
 import com.wmp.Main;
-import com.wmp.PublicTools.GetIcon;
 import com.wmp.PublicTools.io.IOStreamForInf;
-import com.wmp.PublicTools.update.GetNewerVersion;
-import com.wmp.classTools.CTComponent.CTButton;
+import com.wmp.classTools.CTComponent.CTPanel;
+import com.wmp.classTools.importPanel.finalPanel.FinalPanel;
 import com.wmp.classTools.importPanel.timeView.TimeViewPanel;
-import com.wmp.classTools.infSet.InfSetDialog;
 import com.wmp.extraPanel.attendance.panel.ATPanel;
 import com.wmp.extraPanel.duty.panel.DPanel;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
 import java.io.File;
 import java.io.IOException;
-import java.net.MalformedURLException;
+import java.util.ArrayList;
 import java.util.concurrent.atomic.AtomicInteger;
 
-import static com.wmp.Main.*;
+import static com.wmp.Main.allArgs;
+import static com.wmp.Main.list;
 
 public class MainWindow extends JDialog {
     private final Container contentPane = this.getContentPane();
@@ -48,161 +45,32 @@ public class MainWindow extends JDialog {
         new IOStreamForInf(indexPath);
         new IOStreamForInf(AllStuPath);
 
-        int mixY = 0;
+        AtomicInteger mixY = new AtomicInteger();
 
+        ArrayList<CTPanel> showPanelList = new ArrayList<>();
         //添加组件
-        TimeViewPanel timeViewPanel = new TimeViewPanel(mixY);
-        timeViewPanel.setLocation(0,mixY);
-        timeViewPanel.setBackground(CTColor.backColor);
-        contentPane.add(timeViewPanel);
-        mixY = timeViewPanel.getNextPanelY();
+        TimeViewPanel timeViewPanel = new TimeViewPanel(mixY.get());
+        showPanelList.add(timeViewPanel);
 
+        DPanel dPanel = new DPanel(mixY.get(),DutyListPath,indexPath);
+        showPanelList.add(dPanel);
 
-        //System.out.println("mixY = " + mixY);
+        ATPanel aTPanel = new ATPanel(mixY.get(),AllStuPath,LeaveListPath);
+        showPanelList.add(aTPanel);
 
-        DPanel dPanel = new DPanel(mixY,DutyListPath,indexPath);
-        dPanel.setLocation(0,mixY);
-        dPanel.setBackground( CTColor.backColor);
-        mixY = dPanel.getNextPanelY();
-        contentPane.add(dPanel);
+        FinalPanel finalPanel = new FinalPanel(mixY.get(), AllStuPath, LeaveListPath, DutyListPath, indexPath,
+                showPanelList);
+        showPanelList.add(finalPanel);
 
-        ATPanel aTPanel = new ATPanel(mixY,AllStuPath,LeaveListPath);
-        aTPanel.setLocation(0,mixY);
-        aTPanel.setBackground(CTColor.backColor);
-        mixY = aTPanel.getNextPanelY();
-        contentPane.add(aTPanel);
-
-        JPanel finalPanel = new JPanel();
-        finalPanel.setLayout(new GridLayout(1, 6));
-        finalPanel.setBackground(CTColor.backColor);
-        //finalPanel.setLayout(null);
-        finalPanel.setLocation(0, mixY);
-        finalPanel.setSize(250, 39);
-
-        {
-            JDialog moreDialog = new JDialog();
-            moreDialog.setTitle("已折叠的功能");
-            moreDialog.setLayout(new FlowLayout(FlowLayout.CENTER));
-            moreDialog.setSize(250, 300);
-            moreDialog.setLocationRelativeTo(null);
-            moreDialog.setModal(true);
-            moreDialog.getContentPane().setBackground(CTColor.backColor);
-            moreDialog.setIconImage(GetIcon.getImageIcon(getClass().getResource("/image/light/more.png"), 32, 32).getImage());
-
-            CTButton more = new CTButton("更多功能",
-                    "/image/%s/more.png",
-                    "/image/%s/more.png", 30, () -> {
-                moreDialog.setVisible(true);
-
-            });
-
-            CTButton settings = new CTButton("设置数据",
-                    "/image/%s/settings_0.png",
-                    "/image/%s/settings_1.png", 30, () -> {
-
-                try {
-                    new InfSetDialog(this, AllStuPath, LeaveListPath, DutyListPath, indexPath, () -> {
-                        try {
-                            dPanel.refresh();
-                            aTPanel.refresh(); // 自定义刷新方法
-                        } catch (IOException ex) {
-                            ex.printStackTrace();
-                        }
-                    }).setVisible(true);
-                } catch (IOException e) {
-                    throw new RuntimeException(e);
-                }
-
-            });
-
-            //settings.setLocation(210, 0);
-
-
-            CTButton cookie = new CTButton("启用插件",
-                    "/image/%s/cookie_0.png",
-                    "/image/%s/cookie_1.png", 30, () -> {
-                try {
-                    new ShowCookieDialog();
-                } catch (IOException e) {
-                    throw new RuntimeException(e);
-                }
-            });
-
-
-            CTButton about = new CTButton("软件信息",
-                    "/image/%s/about_0.png",
-                    "/image/%s/about_1.png", 30, () -> {
-                try {
-                    new AboutDialog().setVisible(true);
-                } catch (MalformedURLException e) {
-                    throw new RuntimeException(e);
-                }
-            });
-
-
-
-            CTButton update = new CTButton("检查更新",
-                    "/image/%s/update_0.png",
-                    "/image/%s/update_1.png", 30, () -> {
-                GetNewerVersion.checkForUpdate(null, null, true);
-
-            });
-            update.setToolTipText("获取更新");
-
-            finalPanel.add(more);
-            finalPanel.add(settings);
-            finalPanel.add(cookie);
-            finalPanel.add(about);
-            finalPanel.add(update);
-
-            for (String s : disButList) {
-                if (s.equals("cookie")) {
-                    cookie.setText(cookie.getToolTipText());
-                    moreDialog.add(cookie);
-                }
-                if (s.equals("settings")) {
-                    settings.setText(settings.getToolTipText());
-                    moreDialog.add(settings);
-                }
-                if (s.equals("update")) {
-                    update.setText(update.getToolTipText());
-                    moreDialog.add(update);
-                }
-                if (s.equals("about")) {
-                    about.setText(about.getToolTipText());
-                    moreDialog.add(about);
-                }
-            }
-
-
-            //设置关闭按钮
-            if (Main.canExit) {
-                CTButton exit = new CTButton("关闭",
-                        "/image/%s/exit_0.png",
-                        "/image/%s/exit_1.png", 30, () -> {
-                    int i = JOptionPane.showConfirmDialog(null, "确认退出?", "询问", JOptionPane.YES_NO_OPTION);
-                    if (i == JOptionPane.YES_OPTION) {
-                        System.exit(0);
-                    }
-
-                });
-
-                //exit.setLocation(210, 0);
-                finalPanel.add(exit);
-            }
-
-
-
-        }
-
-
-        mixY = finalPanel.getHeight() + mixY;
+        showPanelList.forEach(ctPanel -> {
+            ctPanel.setLocation(0, mixY.get());
+            ctPanel.setBackground(CTColor.backColor);
+            mixY.set(ctPanel.getNextPanelY());
+            contentPane.add(ctPanel);
+        });
         contentPane.add(finalPanel);
 
-        //添加至系统托盘
-        //initTray();
-
-        initFrame(mixY);
+        initFrame(mixY.get());
 
         if (allArgs.get("screenProduct:view").contains(list)){
             JDialog view = new JDialog();
@@ -254,25 +122,35 @@ public class MainWindow extends JDialog {
         }else {
             this.setVisible(true);
             //刷新
-            AtomicInteger finalMixY = new AtomicInteger(mixY);
+
             Thread repaint = new Thread(() -> {
 
                 while (true) {
                     try {
-                        Thread.sleep(300);
+                        Thread.sleep(500);
                     } catch (InterruptedException e) {
                         e.printStackTrace();
                     }
 
                     //刷新窗口大小
-                    int temp = timeViewPanel.getHeight() + dPanel.getHeight() + aTPanel.getHeight() + finalPanel.getHeight();
-                    if (temp != finalMixY.get()) {
-                        this.setSize(250, temp + 5);
-                        timeViewPanel.setLocation(0, 0);
-                        dPanel.setLocation(0, timeViewPanel.getHeight());
-                        aTPanel.setLocation(0, timeViewPanel.getHeight() + dPanel.getHeight());
-                        finalPanel.setLocation(0, temp - finalPanel.getHeight());
-                        finalMixY.set(temp);
+                    AtomicInteger temp = new AtomicInteger(0);
+                    AtomicInteger finalMixY = new AtomicInteger(mixY.get());
+
+                    showPanelList.forEach(ctPanel -> {
+                        temp.set(temp.get() + ctPanel.getHeight());
+
+                    });
+                    temp.set(temp.get() + finalPanel.getHeight());
+
+                    if (temp.get() != finalMixY.get()) {
+
+                        showPanelList.forEach(ctPanel -> {
+                            ctPanel.setLocation(0, finalMixY.get());
+                            ctPanel.setBackground(CTColor.backColor);
+                            finalMixY.set(finalMixY.get() + ctPanel.getHeight());
+                        });
+                        this.setSize(250, finalMixY.get() + 5);
+
                     }
 
                     this.repaint();
@@ -280,9 +158,6 @@ public class MainWindow extends JDialog {
             });
             repaint.start();
         }
-
-
-
     }
 
     private void initFrame(int mixY) {
@@ -298,134 +173,5 @@ public class MainWindow extends JDialog {
 
 
     }
-
-    private void initTray() {
-    if (!SystemTray.isSupported()) return;
-
-    // 创建托盘图标
-    Image trayImage = new ImageIcon(getClass().getResource("/image/icon.png")).getImage();
-    TrayIcon trayIcon = new TrayIcon(trayImage, "ClassTools");
-    trayIcon.setImageAutoSize(true);
-
-        JWindow window = new JWindow();
-
-    JButton exitButton = new JButton("关闭");
-    exitButton.setSize(80, 30);
-    exitButton.setLocation(0, 0);
-    exitButton.setFont(new Font("微软雅黑", Font.BOLD, 20));
-    exitButton.setBackground(Color.WHITE);
-    exitButton.setBorderPainted(false);
-
-    exitButton.addActionListener(e1 ->{
-            window.setVisible(false);
-
-            int result = JOptionPane.showConfirmDialog(
-                    null,
-                    "确定要退出程序吗？",
-                    "退出确认",
-                    JOptionPane.YES_NO_OPTION
-            );
-            if (result == JOptionPane.YES_OPTION) {
-                SystemTray.getSystemTray().remove(trayIcon);
-                System.exit(0);
-            }
-        });
-
-    trayIcon.addMouseListener(new MouseListener() {
-        // 鼠标点击
-        @Override
-        public void mouseClicked(MouseEvent e) {
-            //System.out.println("鼠标点击");
-
-
-            ImageIcon imageIcon = new ImageIcon(getClass().getResource("/image/hide_0.png"));
-            imageIcon.setImage(imageIcon.getImage().getScaledInstance(20, 20, Image.SCALE_DEFAULT));
-            JButton hideButton = new JButton(imageIcon);
-
-            hideButton.setBorderPainted(false);
-            hideButton.addMouseListener(new MouseListener() {
-
-                @Override
-                public void mouseClicked(MouseEvent e) {
-                    window.setVisible(false);
-                }
-
-                @Override
-                public void mousePressed(MouseEvent e) {
-
-                }
-
-                @Override
-                public void mouseReleased(MouseEvent e) {
-
-                }
-
-                @Override
-                public void mouseEntered(MouseEvent e) {
-                    ImageIcon imageIcon = new ImageIcon(getClass().getResource("/image/hide_1.png"));
-                    imageIcon.setImage(imageIcon.getImage().getScaledInstance(20, 20, Image.SCALE_DEFAULT));
-
-                    hideButton.setIcon(imageIcon);
-                }
-
-                @Override
-                public void mouseExited(MouseEvent e) {
-                    ImageIcon imageIcon = new ImageIcon(getClass().getResource("/image/hide_0.png"));
-                    imageIcon.setImage(imageIcon.getImage().getScaledInstance(20, 20, Image.SCALE_DEFAULT));
-
-                    hideButton.setIcon(imageIcon);
-                }
-            });
-            hideButton.setBackground(Color.WHITE);
-            hideButton.setBounds(80 - 25, 55, 20, 20);
-            window.getContentPane().add(hideButton);
-
-            window.getContentPane().add(exitButton);
-            //获取鼠标坐标
-            int x = e.getX();
-            int y = e.getY();
-
-            window.setLayout(null);
-            window.getContentPane().setBackground(Color.WHITE);
-            window.setAlwaysOnTop(true);
-            //将大小设置为popup的大小
-            window.setSize(80 , 80);
-            window.setLocation(x - window.getWidth(), y - window.getHeight());
-            window.setVisible(true);
-
-
-
-        }
-
-        @Override
-        public void mousePressed(MouseEvent e) {
-
-        }
-
-        @Override
-        public void mouseReleased(MouseEvent e) {
-
-        }
-
-        // 鼠标进入
-        @Override
-        public void mouseEntered(MouseEvent e) {
-            System.out.println("鼠标移入");
-        }
-
-        @Override
-        public void mouseExited(MouseEvent e) {
-            System.out.println("鼠标移出");
-        }
-    });
-
-    try {
-        SystemTray.getSystemTray().add(trayIcon);
-    } catch (AWTException e) {
-        System.err.println("无法添加系统托盘图标");
-    }
-}
-
-
 
 }

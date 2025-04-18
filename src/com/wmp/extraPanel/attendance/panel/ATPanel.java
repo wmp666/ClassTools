@@ -118,15 +118,13 @@ public class ATPanel extends CTPanel {
 
         // 重新加载数据
         initStuList(AllStudentPath, LeaveListPath);
-        //System.out.println( studentList);
-        //System.out.println("leave:" + leaveList);
+
 
         // 更新UI组件
 
         this.removeAll();
         ATPanelMixY = 0;
 
-        //initStuList(AllStudentPath,LeaveListPath);
         initContainer();
 
         nextPanelY(ATPanelMixY);

@@ -1,22 +1,16 @@
 package com.wmp;
 
 import com.wmp.PublicTools.StartupParameters;
-import com.wmp.PublicTools.io.IOStreamForInf;
 import com.wmp.PublicTools.update.GetNewerVersion;
 import com.wmp.classTools.frame.EasterEgg;
 import com.wmp.classTools.frame.LoadingWindow;
 import com.wmp.classTools.frame.MainWindow;
 import com.wmp.classTools.frame.tools.cookie.StartCookie;
-import org.json.JSONArray;
-import org.json.JSONObject;
+import com.wmp.classTools.infSet.tools.GetSetsJSON;
 
 import javax.swing.*;
-import java.io.File;
 import java.io.IOException;
 import java.net.URISyntaxException;
-import java.time.LocalDate;
-import java.time.Month;
-import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.TreeMap;
@@ -70,7 +64,11 @@ public class Main{
     }
     public static void main(String[] args) throws IOException, URISyntaxException {
 
-        initSetUp();
+        GetSetsJSON setsJSON = new GetSetsJSON();
+
+        StartUpdate = setsJSON.isStartUpdate();
+        canExit = setsJSON.isCanExit();
+        disButList.addAll(setsJSON.getDisButList());
 
         try {
             //使用系统UI
@@ -94,55 +92,7 @@ public class Main{
 
     }
 
-    private static void initSetUp() throws IOException {
-        boolean exists = new File(Main.DATA_PATH + "setUp.json").exists();
 
-        if (exists) {
-            IOStreamForInf sets = new IOStreamForInf(new File(Main.DATA_PATH + "setUp.json"));
-            System.out.println(sets);
-            JSONObject jsonObject = new JSONObject(sets.GetInf()[0]);
-            if (jsonObject.has("mainColor")) {
-                switch (jsonObject.getString("mainColor")) {
-                    case "black" -> CTColor.setMainColorColor(CTColor.MAIN_COLOR_BLACK);
-                    case "white" -> CTColor.setMainColorColor(CTColor.MAIN_COLOR_WHITE);
-                    case "green" -> CTColor.setMainColorColor(CTColor.MAIN_COLOR_GREEN);
-                    case "red" -> CTColor.setMainColorColor(CTColor.MAIN_COLOR_RED);
-                    default -> CTColor.setMainColorColor(CTColor.MAIN_COLOR_BLUE);
-                }
-            }
-            if (jsonObject.has("mainTheme")) {
-                switch (jsonObject.getString("mainTheme")) {
-                    case "dark" -> CTColor.setMainTheme(CTColor.STYLE_DARK);
-                    default -> CTColor.setMainTheme(CTColor.STYLE_LIGHT);
-                }
-            }
-            if (jsonObject.has("disposeButton")){
-                JSONArray disButtonList = jsonObject.getJSONArray("disposeButton");
-                disButtonList.forEach(object -> {
-                    disButList.add(object.toString());
-                });
-                System.out.println(disButList);
-            }
-            if (jsonObject.has("canExit")) {
-                canExit = jsonObject.getBoolean("canExit");
-            }
-            if (jsonObject.has("StartUpdate")) {
-                StartUpdate = jsonObject.getBoolean("StartUpdate");
-            }
-        }
-
-        //加载颜色(CTColor)数据
-        //判断当前时间是否是4月1日
-        // 明确指定时区
-        LocalDate currentDate = LocalDate.now(ZoneId.of("Asia/Shanghai"));
-        boolean b = currentDate.getMonth() == Month.APRIL
-                && currentDate.getDayOfMonth() == 1;
-        if (b){
-            CTColor.setAllColor(CTColor.MAIN_COLOR_GREEN, CTColor.STYLE_LIGHT);
-        }
-
-        System.out.println(new CTColor());
-    }
 
     private static void show() throws URISyntaxException, IOException {
         System.out.println("Hello, World!");

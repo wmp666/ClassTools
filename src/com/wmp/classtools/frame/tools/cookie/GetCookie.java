@@ -2,8 +2,10 @@ package com.wmp.classTools.frame.tools.cookie;
 
 import com.wmp.Main;
 import com.wmp.PublicTools.GetIcon;
+import org.json.JSONException;
 import org.json.JSONObject;
 
+import javax.swing.*;
 import java.io.*;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
@@ -41,7 +43,15 @@ public class GetCookie {
                         while ((line = reader.readLine()) != null) {
                             s.append(line);
                         }
-                        JSONObject JSONCookieSets = new JSONObject(s.toString());
+                        JSONObject JSONCookieSets;
+                        try {
+                            JSONCookieSets = new JSONObject(s.toString());
+                        } catch (JSONException e) {
+                            JOptionPane.showMessageDialog(null,  cookieSets.getParent() + "setUp.json数据出错\n" + e.getMessage(), "JSON格式错误", JOptionPane.ERROR_MESSAGE);
+                            System.err.println(e.getMessage());
+                            continue;
+                        }
+
 
                         if (JSONCookieSets.has("pin") && JSONCookieSets.has("run")) {
 

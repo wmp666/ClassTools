@@ -103,9 +103,7 @@ public class ShowCookieDialog extends JDialog {
             if (getCookie.getCookieMap().get(key).getIcon() != null){
                 cookieButton.setIcon(getCookie.getCookieMap().get(key).getIcon());
             }
-            cookieButton.setHorizontalAlignment(JLabel.CENTER);
-            //显示边框
-            cookieButton.setBorder(BorderFactory.createLineBorder(Color.BLACK, 1));
+            cookieButton.setBorder(BorderFactory.createLineBorder(Color.BLACK, 1));//显示边框
             cookieButton.setFont(new Font("微软雅黑", Font.BOLD, 18));
             cookieButton.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));// 设置鼠标样式 - 箭头
             cookieButton.addActionListener(e->{
@@ -137,7 +135,7 @@ public class ShowCookieDialog extends JDialog {
                 cookieButton.repaint();
                 cookiesPanel.repaint();
                 c.repaint();
-            });
+            });// 添加事件
             cookiePanelMap.add(cookieButton);
             cookieMap.put(key, value.getPath());
             cookiesPanel.add(cookieButton);

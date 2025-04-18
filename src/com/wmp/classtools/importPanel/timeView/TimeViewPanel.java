@@ -18,11 +18,39 @@ public class TimeViewPanel extends CTPanel {
 
     private final JLabel timeView = new JLabel();
 
-    public TimeViewPanel(int mixY) throws MalformedURLException {
+    private final Thread timeThread = new Thread(() -> {
+
+        while (true) {
+            //获取时间
+            Date date02 = new Date();
+            //格式化 11.22 23:05
+            DateFormat dateFormat02 = new SimpleDateFormat("MM.dd HH:mm:ss");
+            //让时间在组件左侧显示
+            timeView.setHorizontalAlignment(JLabel.CENTER);
+            timeView.setText(dateFormat02.format(date02));
+            try {
+                Thread.sleep(300);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+            repaint();
+        }
+    });
+
+    public TimeViewPanel(int nextPanelY) throws MalformedURLException {
 
 
-        setNextPanelY(mixY);
+        setNextPanelY(nextPanelY);
 
+        initPanel();
+
+        //时间刷新
+
+
+        timeThread.start();
+    }
+
+    private void initPanel() throws MalformedURLException {
         //获取时间
         Date date = new Date();
         //格式化 11.22 23:05
@@ -60,29 +88,7 @@ public class TimeViewPanel extends CTPanel {
         }
 
         this.setLayout(null);
-        this.setSize(250, getNextPanelY() + 5);
-
-        //时间刷新
-        Thread timeThread = new Thread(() -> {
-
-            while (true) {
-                //获取时间
-                Date date02 = new Date();
-                //格式化 11.22 23:05
-                DateFormat dateFormat02 = new SimpleDateFormat("MM.dd HH:mm:ss");
-                //让时间在组件左侧显示
-                timeView.setHorizontalAlignment(JLabel.CENTER);
-                timeView.setText(dateFormat02.format(date02));
-                try {
-                    Thread.sleep(300);
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
-                repaint();
-            }
-        });
-
-        timeThread.start();
+        this.setSize(250, 37);
     }
 
     private void viewTimeInDeskTop(int i) throws MalformedURLException {
@@ -138,6 +144,13 @@ public class TimeViewPanel extends CTPanel {
 
     @Override
     public void refresh() {
+        this.removeAll();
+
+        try {
+            initPanel();
+        } catch (MalformedURLException e) {
+            throw new RuntimeException(e);
+        }
 
     }
 

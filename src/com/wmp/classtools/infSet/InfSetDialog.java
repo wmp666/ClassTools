@@ -57,7 +57,7 @@ public class InfSetDialog extends JDialog implements WindowListener {
 
 
     // 添加文件路径参数
-    public InfSetDialog(Window owner, File AllStuPath, File leaveListPath, File DutyListPath, File indexPath, Runnable refreshCallback) throws IOException {
+    public InfSetDialog(File AllStuPath, File leaveListPath, File DutyListPath, File indexPath, Runnable refreshCallback) throws IOException {
 
         this.setBackground(CTColor.backColor);
         this.setIconImage(GetIcon.getImageIcon(getClass().getResource("/image/light/settings_0.png"), 32, 32).getImage());
@@ -245,7 +245,15 @@ public class InfSetDialog extends JDialog implements WindowListener {
         //显示数据
         {
             IOStreamForInf io = new IOStreamForInf(new File(Main.DATA_PATH + "setUp.json"));
-            JSONObject jsonObject = new JSONObject(io.GetInf()[0]);
+            JSONObject jsonObject;
+            try {
+                jsonObject = new JSONObject(io.GetInf()[0]);
+            }catch (Exception e){
+                System.err.println(e.getMessage());
+                return tempPanel;
+
+            }
+
             //主题色设置
             if (jsonObject.has("mainColor")) {
                 switch (jsonObject.getString("mainColor")) {
@@ -961,7 +969,7 @@ public class InfSetDialog extends JDialog implements WindowListener {
     //窗口准备关闭
     @Override
     public void windowClosing(WindowEvent e) {
-        save();
+        //save();
         this.setVisible(false);
     }
 

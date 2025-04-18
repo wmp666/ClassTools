@@ -14,8 +14,8 @@ public class CTColor {
     public static final String STYLE_LIGHT = "light";
 
     public static String style = STYLE_LIGHT;
-    public static Color mainColor = Color.WHITE;
-    public static Color textColor = Color.WHITE;
+    public static Color mainColor = new Color(0x0090FF);
+    public static Color textColor = Color.BLACK;
     public static Color backColor = Color.WHITE;
 
     public static void setAllColor(String mainColorStr, String tempStyle){
