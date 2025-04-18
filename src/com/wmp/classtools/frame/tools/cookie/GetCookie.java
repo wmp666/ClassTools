@@ -10,6 +10,8 @@ import java.io.*;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.util.TreeMap;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class GetCookie {
 
@@ -18,6 +20,14 @@ public class GetCookie {
     //private final TreeMap<String, String> nameList = new TreeMap<>();
     // pin -> 文件位置
     private final TreeMap<String, Cookie> cookieMap = new TreeMap<>();
+
+    private static final TreeMap<String, String> fixedPathMap = new TreeMap<>();
+
+    static {
+        fixedPathMap.put("%DataPath", Main.DATA_PATH);
+        fixedPathMap.put("%TempPath", Main.TEMP_PATH);
+        fixedPathMap.put("%AppDirPath", System.getProperty("user.dir"));
+    }
 
     public GetCookie() throws IOException {
         File basic = new File(CookiePath);
@@ -57,6 +67,15 @@ public class GetCookie {
 
                             String exec = JSONCookieSets.getString("run");
                             exec = exec.replace("%CookiePath", cookieFile.getPath());
+                            Pattern pattern = Pattern.compile("(%[^\\\\]+)");
+                            Matcher matcher = pattern.matcher(exec);
+
+                            while (matcher.find()){
+                                String group = matcher.group(1);
+                                if (fixedPathMap.containsKey(group)){
+                                    exec = exec.replace(group, fixedPathMap.get(group)).replace("\\", "/");
+                                }
+                            }
 
                             Cookie cookie = new Cookie("null", "other", null, new File(exec));
 
@@ -64,14 +83,32 @@ public class GetCookie {
                             if (JSONCookieSets.has("style")){
                                 cookie.setStyle(JSONCookieSets.getString("style"));
                             }
+                            if (JSONCookieSets.has("parameters")) {
+                                cookie.setParameters(JSONCookieSets.getJSONArray("parameters").toList());
+                            }
                             if (JSONCookieSets.has("name")){
                                 cookie.setName(JSONCookieSets.getString("name"));
                             }
                             if (JSONCookieSets.has("icon")){
                                 StringBuilder temp = new StringBuilder();
                                 temp.append("file:///").append(JSONCookieSets.getString("icon"));
-                                iconPath.append(temp.toString().replace("%CookiePath", cookieFile.getPath())
-                                        .replace("\\", "/"));
+
+                                {
+                                    String tempStr = temp.toString();
+                                    tempStr = tempStr.replace("%CookiePath", cookieFile.getPath());
+
+                                    Pattern pattern2 = Pattern.compile("(%[^\\\\]+)");
+                                    Matcher matcher2 = pattern2.matcher(tempStr);
+
+                                    while (matcher2.find()){
+                                        String group = matcher2.group(1);
+                                        if (fixedPathMap.containsKey(group)){
+                                            tempStr = tempStr.replace(group, fixedPathMap.get(group));
+                                        }
+                                    }
+
+                                    iconPath.append(tempStr.replace("\\", "/"));
+                                }
 
                                 try {
                                     if (!iconPath.toString().isEmpty()) {

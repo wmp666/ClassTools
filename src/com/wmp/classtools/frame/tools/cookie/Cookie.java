@@ -2,16 +2,27 @@ package com.wmp.classTools.frame.tools.cookie;
 
 import javax.swing.*;
 import java.io.File;
+import java.util.ArrayList;
+import java.util.List;
 
 public class Cookie {
     private String name;
-    private String Style;
+    private String style;
+    private ArrayList<String> parameters = new ArrayList<>();
     private File path;
     private Icon icon;
 
+    public Cookie(String name, String style, ArrayList<String> parameters, File path, Icon icon) {
+        this.name = name;
+        this.style = style;
+        this.parameters = parameters;
+        this.path = path;
+        this.icon = icon;
+    }
+
     public Cookie(String name, String style, Icon icon, File path) {
         this.name = name;
-        this.Style = style;
+        this.style = style;
         this.path = path;
         this.icon = icon;
     }
@@ -28,11 +39,11 @@ public class Cookie {
     }
 
     public String getStyle() {
-        return Style;
+        return style;
     }
 
     public void setStyle(String style) {
-        Style = style;
+        this.style = style;
     }
 
     public File getPath() {
@@ -47,6 +58,20 @@ public class Cookie {
         return icon;
     }
 
+    public ArrayList<String> getParameters() {
+        return parameters;
+    }
+
+    public void setParameters(List<Object> parameters) {
+        ArrayList<String> tempList= new ArrayList<>();
+        for (Object o : parameters) {
+            if (o instanceof String) {
+                tempList.add((String) o);
+            }
+        }
+        this.parameters = tempList;
+    }
+
     public void setIcon(Icon icon) {
         this.icon = icon;
     }
@@ -55,9 +80,10 @@ public class Cookie {
     public String toString() {
         return "Cookie{" +
                 "name='" + name + '\'' +
-                ", Style='" + Style + '\'' +
-                ", icon=" + icon + '\'' +
+                ", style='" + style + '\'' +
+                ", parameters='" + parameters + '\'' +
                 ", path=" + path +
+                ", icon=" + icon +
                 '}';
     }
 }

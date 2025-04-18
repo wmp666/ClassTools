@@ -13,7 +13,7 @@ public class InfProcess {
         Matcher matcher = pattern.matcher(input);
 
         while (matcher.find()) {
-            // 获取匹配到的内容（去掉大括号后的部分）
+            // 获取匹配到的内容（去掉括号后的部分）
             String group = matcher.group(1);
             // 按逗号分割并添加到结果列表
             String[] names = group.split(",");
