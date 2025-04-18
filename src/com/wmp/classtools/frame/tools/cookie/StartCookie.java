@@ -7,6 +7,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.TreeMap;
 
 public class StartCookie {
@@ -36,8 +37,24 @@ public class StartCookie {
                         VideoPlayer.playVideo(cookieFile.getPath());
                     }
                     case "exe" -> {
+
+                        if (!Desktop.isDesktopSupported()) {
+                            JOptionPane.showMessageDialog(null, "不支持运行exe文件", "世界拒绝了我", JOptionPane.ERROR_MESSAGE);
+                            return;
+                        }
+
+                        ArrayList<String> parameters = cookieMap.get(pin).getParameters();
+                        System.out.println("启动参数:" + parameters);
+
+                        ArrayList<String> temp = new ArrayList<>();
+                        temp.add(cookieFile.getPath());
+
+                        if (!parameters.isEmpty()){
+                            temp.addAll(parameters);
+                        }
+                        String[] cmdArray = temp.toArray(new String[0]);
                         Runtime runtime = Runtime.getRuntime();
-                        runtime.exec(cookieFile.getPath(), null, cookieFile.getParentFile());
+                        runtime.exec(cmdArray, null, cookieFile.getParentFile());
                     }case "directory", "file" -> {
                         OpenInExp.open(cookieFile.getPath());
                     }
