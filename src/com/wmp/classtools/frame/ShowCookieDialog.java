@@ -65,10 +65,8 @@ public class ShowCookieDialog extends JDialog {
                 "/image/light/update_0.png", 30, 100, () -> {
             String path = GetPath.getDirectoryPath(this, "请选择导出目录");
             //将选中的插件文件夹打包为.zip
-            boolean b = ZipPack.createZip(path, cookieMap.get(s[0]).getParent(), s[0] + ".zip");
-            if (!b){
-                JOptionPane.showMessageDialog(this, "数据导出异常", "世界拒绝了我", JOptionPane.ERROR_MESSAGE);
-            }
+            ZipPack.createZip(path, cookieMap.get(s[0]).getParentFile().getParent(), s[0] + ".zip", cookieMap.get(s[0]).getParentFile().getName());
+
         });
         outputBtn.setBorderPainted(true);
         outputBtn.setForeground(Color.BLACK);
@@ -94,7 +92,7 @@ public class ShowCookieDialog extends JDialog {
         // 显示插件库
         JPanel cookiesPanel = new JPanel();
         cookiesPanel.setBackground(Color.WHITE);
-        cookiesPanel.setLayout(new GridLayout(10, 1, 20, 10));
+        cookiesPanel.setLayout(new GridLayout(0, 1, 20, 10));
 
         GetCookie getCookie = new GetCookie();
 
@@ -167,9 +165,9 @@ public class ShowCookieDialog extends JDialog {
         JMenuItem inputCookie = new JMenuItem("导入插件(.zip)");
         inputCookie.setIcon( GetIcon.getIcon(getClass().getResource("/image/input.png"),16,16));
         inputCookie.addActionListener(e -> {
-            String filePath = GetPath.getFilePath(this, "导入插件", ".zip");
+            String filePath = GetPath.getFilePath(this, "导入插件", ".zip", "ClassTools插件");
             //将zip文件解压到Cookie
-            ZipPack.unzip(filePath, Main.DataPath + "\\Cookie\\");
+            ZipPack.unzip(filePath, Main.DATA_PATH + "\\Cookie\\");
 
             try {
                 new GetCookie();
@@ -183,16 +181,14 @@ public class ShowCookieDialog extends JDialog {
         outputMenuItem.addActionListener(e -> {
             String path = GetPath.getDirectoryPath(this, "请选择导出目录");
             //将选中的插件文件夹打包为.zip
-            boolean b = ZipPack.createZip(path, cookieMap.get(s[0]).getParent(), s[0] + ".zip");
-            if (!b){
-                JOptionPane.showMessageDialog(this, "数据导出异常", "世界拒绝了我", JOptionPane.ERROR_MESSAGE);
-            }
+            ZipPack.createZip(path, cookieMap.get(s[0]).getAbsolutePath(), s[0] + ".zip", cookieMap.get(s[0]).getParentFile().getName());
+
         });
 
         JMenuItem openInExp = new JMenuItem("打开插件所在目录");
         openInExp.setIcon( GetIcon.getIcon(getClass().getResource("/image/openExp.png"),16,16));
         openInExp.addActionListener(e -> {
-            OpenInExp.open(Main.DataPath + "\\Cookie\\");
+            OpenInExp.open(Main.DATA_PATH + "\\Cookie\\");
         });
 
 

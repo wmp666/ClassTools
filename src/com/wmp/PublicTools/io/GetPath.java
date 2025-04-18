@@ -8,7 +8,7 @@ import java.io.File;
 public class GetPath {
 
 
-    public static String getFilePath(Component c, String title , String fileType) {
+    public static String getFilePath(Component c, String title , String fileType, String fileName) throws RuntimeException{
         JFileChooser chooser = new JFileChooser();
         chooser.setDialogTitle(title);
 
@@ -26,7 +26,7 @@ public class GetPath {
             }
             @Override
             public String getDescription() {
-                return "Excel文件(*"+ fileType +")";
+                return fileName + "文件(*"+ fileType +")";
             }
         });
 
@@ -35,13 +35,13 @@ public class GetPath {
             try {
                 String filePath = chooser.getSelectedFile().getAbsolutePath();
                 //获取文件名
-                String fileName = chooser.getSelectedFile().getName();
+                String chooseFileName = chooser.getSelectedFile().getName();
                 //获取文件名后缀
-                String fileSuffix = fileName.substring(fileName.lastIndexOf("."));
+                String fileSuffix = chooseFileName.substring(chooseFileName.lastIndexOf("."));
                 //获取文件名前缀
-                String filePrefix = fileName.substring(0, fileName.lastIndexOf("."));
+                String filePrefix = chooseFileName.substring(0, chooseFileName.lastIndexOf("."));
 
-                System.out.println("文件路径：" + filePath + "|文件名: " + fileName + "|文件后缀: " + fileSuffix + "|文件前缀: " + filePrefix);
+                System.out.println("文件路径：" + filePath + "|文件名: " + chooseFileName + "|文件后缀: " + fileSuffix + "|文件前缀: " + filePrefix);
                 return filePath;
             } catch (Exception ex) {
                 throw new RuntimeException(ex);

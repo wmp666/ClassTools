@@ -23,9 +23,9 @@ import java.util.TreeMap;
 
 public class Main{
 
-    public static String DataPath = "null";
+    public static String DATA_PATH = "null";
 
-    public static String TempPath = "null";
+    public static String TEMP_PATH = "null";
 
     /**a.b.c.d.e
     * a:主版本号
@@ -51,13 +51,13 @@ public class Main{
         String path = System.getenv("LOCALAPPDATA");
 
         StringBuilder sb = new StringBuilder();
-        DataPath = sb.append(path).append("\\ClassTools\\").toString();
+        DATA_PATH = sb.append(path).append("\\ClassTools\\").toString();
 
         StringBuilder sb2 = new StringBuilder();
 
-        TempPath = sb2.append(path).append("\\ClassToolsTemp\\").toString();
+        TEMP_PATH = sb2.append(path).append("\\ClassToolsTemp\\").toString();
 
-        DataPath = sb.toString();
+        DATA_PATH = sb.toString();
 
 
         allArgs.put("TimeView:screen", StartupParameters.creative("-TimeView:screen", "/TimeView:screen"));
@@ -95,10 +95,10 @@ public class Main{
     }
 
     private static void initSetUp() throws IOException {
-        boolean exists = new File(Main.DataPath + "setUp.json").exists();
+        boolean exists = new File(Main.DATA_PATH + "setUp.json").exists();
 
         if (exists) {
-            IOStreamForInf sets = new IOStreamForInf(new File(Main.DataPath + "setUp.json"));
+            IOStreamForInf sets = new IOStreamForInf(new File(Main.DATA_PATH + "setUp.json"));
             System.out.println(sets);
             JSONObject jsonObject = new JSONObject(sets.GetInf()[0]);
             if (jsonObject.has("mainColor")) {
@@ -186,7 +186,7 @@ public class Main{
 */
 
 
-        new MainWindow(DataPath);
+        new MainWindow(DATA_PATH);
         loadingWindow.setVisible(false);
     }
 }

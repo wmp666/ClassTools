@@ -63,7 +63,7 @@ public class ShowHelpDoc extends JDialog {
 
     private static void copyDoc(String DocName){
         //将resource/help中的文件复制到dataPath中
-        String dataPath = Main.TempPath + "help\\";
+        String dataPath = Main.TEMP_PATH + "help\\";
         /*try (InputStream is = VideoLocalizer.class.getResourceAsStream("/help/" + DocName)) {// 获取资源流
             if (is == null) {
                 throw new IOException("内置MD文件未找到");
@@ -88,7 +88,7 @@ public class ShowHelpDoc extends JDialog {
     }
     private static void copyDocImage(String imageName){
         //将resource/help中的文件复制到dataPath中
-        String dataPath = Main.TempPath + "help\\images\\";
+        String dataPath = Main.TEMP_PATH + "help\\images\\";
         /*try (InputStream is = VideoLocalizer.class.getResourceAsStream("/help/image/" + imageName)) {// 获取资源流
 
             if (is == null) {
@@ -162,7 +162,7 @@ public class ShowHelpDoc extends JDialog {
         copyDoc(name);
 
         String markdown = "";
-        String parent = Main.TempPath + "help\\";
+        String parent = Main.TEMP_PATH + "help\\";
 
         markdown = Files.readString(Paths.get(parent + name));
 

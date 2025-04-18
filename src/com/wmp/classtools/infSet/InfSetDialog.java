@@ -244,7 +244,7 @@ public class InfSetDialog extends JDialog implements WindowListener {
 
         //显示数据
         {
-            IOStreamForInf io = new IOStreamForInf(new File(Main.DataPath + "setUp.json"));
+            IOStreamForInf io = new IOStreamForInf(new File(Main.DATA_PATH + "setUp.json"));
             JSONObject jsonObject = new JSONObject(io.GetInf()[0]);
             //主题色设置
             if (jsonObject.has("mainColor")) {
@@ -494,7 +494,7 @@ public class InfSetDialog extends JDialog implements WindowListener {
         JMenuItem openSetsList = new JMenuItem("数据位置");
         openSetsList.setIcon(GetIcon.getIcon(getClass().getResource("/image/openExp.png"), 16, 16));
         openSetsList.addActionListener(e -> {
-            OpenInExp.open(Main.DataPath);
+            OpenInExp.open(Main.DATA_PATH);
         });
 
         JMenuItem openStuList = new JMenuItem("人员名单");
@@ -518,7 +518,7 @@ public class InfSetDialog extends JDialog implements WindowListener {
         JMenuItem getDutyList = new JMenuItem("导入值日表(.xlsx)");
         getDutyList.setIcon(GetIcon.getIcon(getClass().getResource("/image/input.png"), 16, 16));
         getDutyList.addActionListener(e -> {
-            String filePath = GetPath.getFilePath(this, "请选择值日表", ".xlsx");
+            String filePath = GetPath.getFilePath(this, "请选择值日表", ".xlsx", "Excel");
             new GetExcelData<Duty>().getExcelData(filePath, DutyListPath, Duty.class );
             JOptionPane.showConfirmDialog(this, "导入成功", "", JOptionPane.DEFAULT_OPTION, JOptionPane.INFORMATION_MESSAGE);
             this.setVisible(false);
@@ -528,7 +528,7 @@ public class InfSetDialog extends JDialog implements WindowListener {
         JMenuItem getAllStuList = new JMenuItem("导入人员表(.xlsx)");
         getAllStuList.setIcon(GetIcon.getIcon(getClass().getResource("/image/input.png"), 16, 16));
         getAllStuList.addActionListener(e -> {
-            String filePath = GetPath.getFilePath(this, "请选择人员表", ".xlsx");
+            String filePath = GetPath.getFilePath(this, "请选择人员表", ".xlsx", "Excel");
             new GetExcelData<AllStu>().getExcelData(filePath, AllStuPath, AllStu.class );
             JOptionPane.showConfirmDialog(this, "导入成功", "", JOptionPane.DEFAULT_OPTION, JOptionPane.INFORMATION_MESSAGE);
             this.setVisible(false);
@@ -538,8 +538,8 @@ public class InfSetDialog extends JDialog implements WindowListener {
         JMenuItem getAllInf = new JMenuItem("导入所有数据(.ctdatas)");
         getAllInf.setIcon(GetIcon.getIcon(getClass().getResource("/image/input.png"), 16, 16));
         getAllInf.addActionListener(e -> {
-            String filePath = GetPath.getFilePath(this, "请选择所有数据", ".ctdatas");
-            ZipPack.unzip(filePath, Main.DataPath);
+            String filePath = GetPath.getFilePath(this, "请选择所有数据", ".ctdatas", "ClassTools");
+            ZipPack.unzip(filePath, Main.DATA_PATH);
             //刷新数据
             this.setVisible(false);
             refreshCallback.run();
@@ -553,11 +553,7 @@ public class InfSetDialog extends JDialog implements WindowListener {
         inputAllInf.addActionListener(e -> {
             String path = GetPath.getDirectoryPath(this, "请选择导出目录");
             //将ClassTools文件夹中的文件打包为.zip
-            boolean b = ZipPack.createZip(path, Main.DataPath, "ClassTools.ctdatas");
-            if (!b){
-                JOptionPane.showMessageDialog(this, "数据导出异常", "世界拒绝了我", JOptionPane.ERROR_MESSAGE);
-            }
-            //JOptionPane.showMessageDialog(this, "加急制作中...", "导出所有数据", JOptionPane.INFORMATION_MESSAGE);
+            ZipPack.createZip(path, Main.DATA_PATH, "ClassTools.ctdatas");
         });
 
 
@@ -893,7 +889,7 @@ public class InfSetDialog extends JDialog implements WindowListener {
 
                 //保存数据-个性化
                 {
-                    IOStreamForInf io = new IOStreamForInf(new File(Main.DataPath + "setUp.json"));
+                    IOStreamForInf io = new IOStreamForInf(new File(Main.DATA_PATH + "setUp.json"));
 
                     //设置主题色
                     JSONObject jsonObject = new JSONObject();

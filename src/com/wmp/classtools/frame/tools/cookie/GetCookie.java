@@ -11,7 +11,7 @@ import java.util.TreeMap;
 
 public class GetCookie {
 
-    private final String CookiePath = Main.DataPath + "\\Cookie\\";
+    private final String CookiePath = Main.DATA_PATH + "\\Cookie\\";
     // pin -> name
     //private final TreeMap<String, String> nameList = new TreeMap<>();
     // pin -> 文件位置

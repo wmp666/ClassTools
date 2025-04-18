@@ -2,6 +2,7 @@ package com.wmp.PublicTools.io;
 
 import javax.swing.*;
 import java.io.*;
+import java.util.Arrays;
 import java.util.Objects;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
@@ -15,30 +16,52 @@ public class ZipPack {
         //new File(destDir).delete();
         //生成一个弹窗显示解压进度
 
-        new Thread(() ->{
+        //System.exit(0);
+        try {
+            if (zipFilePath == null || !new File(zipFilePath).exists()) {
+                JOptionPane.showMessageDialog(null, "找不到压缩文件！", "世界拒绝了我", JOptionPane.ERROR_MESSAGE);
+                return;
+            }
+        }catch (Exception e) {
+            JOptionPane.showMessageDialog(null, "找不到压缩文件！", "世界拒绝了我", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+
+        //生成弹窗
+        SwingUtilities.invokeLater(() -> {
             dialog.setTitle("正在解压...");
             dialog.setModal(true);
             dialog.setSize(300, 80);
             dialog.setLocationRelativeTo(null);
-
-            progressBar.setIndeterminate(true);
-
+            progressBar.setIndeterminate(true);  // 确保在EDT设置进度条
             dialog.add(progressBar);
             dialog.setVisible(true);
-        }).start();
+        });
 
+
+        new Thread(() -> {
         try {
             ZipInputStream zipInputStream = new ZipInputStream(new FileInputStream(zipFilePath));
             // 解压缩文件
             unzipFiles(zipInputStream, destDir);
 
+
+            SwingUtilities.invokeLater(() -> {
+                JOptionPane.showMessageDialog(null, "解压完成！", "提示", JOptionPane.INFORMATION_MESSAGE);
+                dialog.setVisible(false);
+            });
+
             System.out.println("Files unzipped successfully!");
         } catch (IOException e) {
-            dialog.setVisible(false);
-            e.printStackTrace();
+            SwingUtilities.invokeLater(() -> {
+                dialog.setVisible(false);
+            });
+            JOptionPane.showMessageDialog(null, "解压失败！\n" + e.getMessage(), "世界拒绝了我", JOptionPane.ERROR_MESSAGE);
+            throw new RuntimeException(e);
         }
+        }).start();
 
-        dialog.setVisible(false);
+
 
         //return true;
     }
@@ -72,41 +95,66 @@ public class ZipPack {
         }
     }
 
-    public static boolean createZip(String outputPath, String dataPath, String zipName){
+    public static void createZip(String outputPath, String dataPath, String zipName, String... ZipFiles){
 
         System.out.println("数据位置:" + dataPath);
-        new Thread(() ->{
+        if (ZipFiles.length != 0){
+            System.out.println("要打包的文件:" + Arrays.toString(ZipFiles));
+
+        }else
+            System.out.println("要打包的文件:全部");
+
+        SwingUtilities.invokeLater(() -> {
             dialog.setTitle("正在压缩...");
             dialog.setModal(true);
-            dialog.setSize(300, 100);
+            dialog.setSize(300, 80);
             dialog.setLocationRelativeTo(null);
-
-            progressBar.setIndeterminate(true);
-
+            progressBar.setIndeterminate(true);  // 确保在EDT设置进度条
             dialog.add(progressBar);
             dialog.setVisible(true);
-        }).start();
+        });
+
+
 
         String sourceFolder = dataPath;
         // String zipName = zipName;
 
-        try {
-            ZipOutputStream zos = new ZipOutputStream(new FileOutputStream(outputPath + File.separator + zipName));
-            addFolderToZip(new File(sourceFolder), "", zos);
-            dialog.setVisible(false);
-            return true;
-        } catch (IOException e) {
-            dialog.setVisible(false);
-            e.printStackTrace();
-            return false;
-        }
-        //dialog.setVisible(false);
-        //return false;
+        new Thread(() -> {  // 在后台线程执行压缩操作
+            try (ZipOutputStream zos = new ZipOutputStream(
+                    new FileOutputStream(outputPath + File.separator + zipName))) {
+
+                addFolderToZip(new File(sourceFolder), "", zos, ZipFiles);
+
+                // 压缩完成后更新UI
+                SwingUtilities.invokeLater(() -> {
+                    JOptionPane.showMessageDialog(null, "压缩完成！", "提示", JOptionPane.INFORMATION_MESSAGE);
+                    dialog.setVisible(false);
+                });
+            } catch (IOException e) {
+                SwingUtilities.invokeLater(() -> {
+                    JOptionPane.showMessageDialog(null, "压缩失败！\n" + e.getMessage(),
+                            "世界拒绝了我", JOptionPane.ERROR_MESSAGE);
+                    dialog.setVisible(false);
+                });
+                throw new RuntimeException(e);
+            }
+        }).start();
+
     }
 
     // 优化的压缩方法
-    private static void addFolderToZip(File folder, String parentPath, ZipOutputStream zos) throws IOException {
+    private static void addFolderToZip(File folder, String parentPath, ZipOutputStream zos, String... ZipFiles) throws IOException {
         for (File file : Objects.requireNonNull(folder.listFiles())) {
+
+            if (ZipFiles.length != 0){
+                boolean b = Arrays.asList(ZipFiles).contains(file.getName());
+                //System.out.println(  file.getPath() + "目录与ZipFiles中的数据匹配情况:" + b);
+                if (!b){
+                    // 跳过不压缩的文件
+                    continue;
+                }
+            }
+
             String entryName = parentPath + file.getName();
 
             if (file.isDirectory()) {
@@ -128,39 +176,7 @@ public class ZipPack {
                 }
             }
         }
-    }
-    private static void compressFolder(String sourceFolder, String folderName, ZipOutputStream zipOutputStream) throws IOException {
-        File folder = new File(sourceFolder);
-        File[] files = folder.listFiles();
 
-        if (files != null) {
-            for (File file : files) {
-                if (file.isDirectory()) {
-                    // 压缩子文件夹
-                    compressFolder(file.getAbsolutePath(), folderName + "/" + file.getName(), zipOutputStream);
-                } else {
-                    // 压缩文件
-                    addToZipFile(folderName + "/" + file.getName(), file.getAbsolutePath(), zipOutputStream);
-                }
-            }
-        }
     }
 
-    private static void addToZipFile(String fileName, String fileAbsolutePath, ZipOutputStream zipOutputStream) throws IOException {
-        // 创建ZipEntry对象并设置文件名
-        ZipEntry entry = new ZipEntry(fileName);
-        zipOutputStream.putNextEntry(entry);
-
-        // 读取文件内容并写入Zip文件
-        try (FileInputStream fileInputStream = new FileInputStream(fileAbsolutePath)) {
-            byte[] buffer = new byte[1024];
-            int bytesRead;
-            while ((bytesRead = fileInputStream.read(buffer)) != -1) {
-                zipOutputStream.write(buffer, 0, bytesRead);
-            }
-        }
-
-        // 完成当前文件的压缩
-        zipOutputStream.closeEntry();
-    }
 }

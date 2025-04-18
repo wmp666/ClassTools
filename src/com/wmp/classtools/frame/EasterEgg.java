@@ -49,21 +49,21 @@ public class EasterEgg {
     }
     public static void showEasterEgg(String pin) throws URISyntaxException, IOException {
 
-        ResourceLocalizer.copyEmbeddedVideo(Main.TempPath + "video\\", "/video/", pin +".mp4");
-        //VideoLocalizer.copyEmbeddedVideo(Main.TempPath, pin + ".mp4");
+        ResourceLocalizer.copyEmbeddedVideo(Main.TEMP_PATH + "video\\", "/video/", pin +".mp4");
+        //VideoLocalizer.copyEmbeddedVideo(Main.TEMP_PATH, pin + ".mp4");
         String videoPath = "null";
         switch (pin) {
             case "nj01":
-                videoPath = Main.TempPath + "video\\nj01.mp4";
+                videoPath = Main.TEMP_PATH + "video\\nj01.mp4";
                 break;
             case "nj02":
-                videoPath = Main.TempPath + "video\\nj02.mp4";
+                videoPath = Main.TEMP_PATH + "video\\nj02.mp4";
                 break;
             case "nj03":
-                videoPath = Main.TempPath + "video\\nj03.mp4";
+                videoPath = Main.TEMP_PATH + "video\\nj03.mp4";
                 break;
             case "nj04":
-                videoPath = Main.TempPath + "video\\nj04.mp4";
+                videoPath = Main.TEMP_PATH + "video\\nj04.mp4";
                 break;
             default:
                 JOptionPane.showMessageDialog(null, "请输入正确的格式", "世界拒绝了我", JOptionPane.ERROR_MESSAGE);
