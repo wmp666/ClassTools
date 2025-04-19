@@ -28,10 +28,10 @@ public class Main{
     * a:主版本号
     * b:功能更新版本号
     * c:修订版本号/小功能更新
-    * d:修复c版的问题(仅限)
+    * d:只修复的问题,问题较少
     * e:测试版本号
      */
-    public static String version = "1.15.2";
+    public static String version = "1.15.2.01";
 
     public static ArrayList<String> list = new ArrayList<>();
 

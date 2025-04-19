@@ -178,7 +178,7 @@ public class DownloadURLFile {
                 }
             } catch (Exception ex) {
                 SwingUtilities.invokeLater(() -> {
-                    progressDialog.dispose();
+                    progressDialog.setVisible(false);
                     JOptionPane.showMessageDialog(parent, "下载失败: " + ex.getMessage(), "世界拒绝了我", JOptionPane.ERROR_MESSAGE);
                 });
             }
