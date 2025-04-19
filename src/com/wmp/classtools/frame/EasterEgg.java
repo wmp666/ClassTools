@@ -5,6 +5,7 @@ import com.wmp.PublicTools.io.ResourceLocalizer;
 import com.wmp.PublicTools.videoView.VideoPlayer;
 import com.wmp.PublicTools.web.GetWebInf;
 import com.wmp.classTools.frame.tools.cookie.StartCookie;
+import org.json.JSONArray;
 import org.json.JSONObject;
 
 import javax.swing.*;
@@ -55,18 +56,33 @@ public class EasterEgg {
             @Override
             protected Void doInBackground() throws Exception {
                 // 异步下载（在后台线程执行）
-                String webInf;
-                try {
-                    webInf = GetWebInf.getWebInf("https://api.github.com/repos/wmp666/ClassTools/contents/video/" + pin + ".mp4");
-                } catch (Exception e) {
-                    webInf = "{\"message\":\"Not Found\"}";
-                    throw new RuntimeException(e);
-                }
-                //处理数据
                 String downloadUrl = "";
-                JSONObject jsonObject = new JSONObject(webInf);
-                if (jsonObject.has("download_url")){
-                    downloadUrl = jsonObject.getString("download_url");
+                try {
+                    String temp = GetWebInf.getWebInf("https://api.github.com/repos/wmp666/ClassTools/releases");
+                    System.out.println(temp);
+                    //以数组的形式加载[n,d,v]
+                    JSONArray jsonArray = new JSONArray(temp);
+                    for (int i = 0; i < jsonArray.length(); i++) {
+                        JSONObject jsonObject = jsonArray.getJSONObject(i);
+                        if (jsonObject.getString("tag_name").equalsIgnoreCase("0.0.1")
+                                && jsonObject.getString("name").equalsIgnoreCase("视频专用")){
+
+                            JSONArray assets = jsonObject.getJSONArray("assets");
+                            for (int j = 0; j < assets.length(); j++) {
+                                JSONObject asset = assets.getJSONObject(j);
+                                if (asset.getString("name").equals(pin + ".mp4")) {
+                                    downloadUrl = asset.getString("browser_download_url");
+                                    break;
+                                }
+                            }
+                        }
+                    }
+
+
+                    //webInf = GetWebInf.getWebInf("https://api.github.com/repos/wmp666/ClassTools/contents/video/" + pin + ".mp4");
+                } catch (Exception e) {
+                    downloadUrl = "{\"message\":\"Not Found\"}";
+                    throw new RuntimeException(e);
                 }
 
                 ResourceLocalizer.copyWebVideo(Main.TEMP_PATH + "video\\", downloadUrl, pin + ".mp4");
