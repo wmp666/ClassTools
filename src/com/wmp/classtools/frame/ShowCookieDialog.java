@@ -6,31 +6,64 @@ import com.wmp.PublicTools.OpenInExp;
 import com.wmp.PublicTools.io.GetPath;
 import com.wmp.PublicTools.io.ZipPack;
 import com.wmp.classTools.CTComponent.CTButton;
-import com.wmp.classTools.frame.tools.about.ShowHelpDoc;
+import com.wmp.classTools.frame.tools.cookie.CookieSets;
+import com.wmp.classTools.frame.tools.cookie.FileDragDropLabel;
 import com.wmp.classTools.frame.tools.cookie.GetCookie;
 import com.wmp.classTools.frame.tools.cookie.StartCookie;
+import com.wmp.classTools.frame.tools.help.ShowHelpDoc;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
+import java.awt.event.WindowEvent;
+import java.awt.event.WindowListener;
 import java.io.File;
 import java.io.IOException;
+import java.net.MalformedURLException;
 import java.net.URISyntaxException;
 import java.util.Comparator;
 import java.util.TreeMap;
 import java.util.TreeSet;
 
-public class ShowCookieDialog extends JDialog {
+public class ShowCookieDialog extends JDialog implements WindowListener {
 
     private String[] s = {"null", "null"};
 
-    private final TreeSet<JButton> cookiePanelMap = new TreeSet<>(Comparator.comparing(JButton::getText));
+    private final TreeSet<JButton> cookiePanelList = new TreeSet<>(Comparator.comparing(JButton::getText));
     private final TreeMap<String, File> cookieMap = new TreeMap<>();
+
+    private final Thread repaintCookie = new Thread(() -> {
+        long lastModifyTime = 0;
+        File cookieDir = new File(Main.DATA_PATH + "\\Cookie\\");
+
+        // 监听文件修改
+        while (!Thread.interrupted()) {
+            try {
+                long currentModifyTime = cookieDir.lastModified();
+
+                //if (currentModifyTime != lastModifyTime) {
+                    lastModifyTime = currentModifyTime;
+
+                    SwingUtilities.invokeLater(() -> {
+                        try {
+                            refreshCookiePanel();
+                        } catch (IOException ex) {
+                            ex.printStackTrace();
+                        }
+                    });
+                //}
+                Thread.sleep(1000);
+            } catch (InterruptedException e) {
+                break;
+            }
+        }
+    });
 
     public ShowCookieDialog() throws IOException {
         initDialog();
 
         Container c = this.getContentPane();
-        BorderLayout borderLayout = new BorderLayout();
 
         c.setLayout(new BorderLayout());
 
@@ -39,63 +72,74 @@ public class ShowCookieDialog extends JDialog {
 
         initMenuBar();
 
+        this.addWindowListener(this);
         this.setVisible(true);
+
+
+        repaintCookie.start();
     }
 
     private void initShowCookies(Container c) throws IOException {
 
+        //插件设置面板
+        initCookieSetsPanel result1 = initCookieSets(c);
+
         // 控制面板
-        JPanel controlPanel = new JPanel();
-        controlPanel.setBackground(Color.WHITE);
-        controlPanel.setLayout(new FlowLayout(FlowLayout.RIGHT, 5, 15));
-
-        CTButton openInExp = new CTButton(CTButton.ButtonText, "打开所在目录",
-                "/image/openExp.png",
-                "/image/openExp.png", 30, 100, () -> {
-            OpenInExp.open(cookieMap.get(s[0]).getParent());
-        });
-        openInExp.setBorderPainted(true);
-        openInExp.setForeground(Color.BLACK);
-        openInExp.setBackground(Color.WHITE);
-        openInExp.setEnabled(false);
-        controlPanel.add(openInExp);
-
-        CTButton outputBtn = new CTButton(CTButton.ButtonText, "导出",
-                "/image/light/update_0.png",
-                "/image/light/update_0.png", 30, 100, () -> {
-            String path = GetPath.getDirectoryPath(this, "请选择导出目录");
-            //将选中的插件文件夹打包为.zip
-            ZipPack.createZip(path, cookieMap.get(s[0]).getParentFile().getParent(), s[0] + ".zip", cookieMap.get(s[0]).getParentFile().getName());
-
-        });
-        outputBtn.setBorderPainted(true);
-        outputBtn.setForeground(Color.BLACK);
-        outputBtn.setBackground(Color.WHITE);
-        outputBtn.setEnabled(false);
-        controlPanel.add(outputBtn);
-
-        CTButton runCookie = new CTButton(CTButton.ButtonText, "运行",
-                "/image/wish.png",
-                "/image/wish.png",30,100, () -> {
-            StartCookie.showCookie(s[0]);
-        });
-        runCookie.setBorderPainted(true);
-        runCookie.setForeground(Color.BLACK);
-        runCookie.setBackground(Color.WHITE);
-        runCookie.setEnabled(false);
-        controlPanel.add(runCookie);
-
-        JScrollPane controlScrollPane = new JScrollPane(controlPanel);
-
-        c.add(controlScrollPane, BorderLayout.SOUTH);
+        initControlPanel result2 = getInitControlPanel(c);
 
         // 显示插件库
+        initCookieShowPanel(c, result1, result2);
+
+
+    }
+
+    private initCookieSetsPanel initCookieSets(Container c) throws MalformedURLException {
+        JPanel cookieSettingPanel = new JPanel();
+        cookieSettingPanel.setBackground(Color.WHITE);
+        cookieSettingPanel.setLayout(new GridLayout(6, 1, 20, 5));
+
+        CTButton removeCookie = new CTButton(CTButton.ButtonText, "修改插件",
+                "/image/light/new_0.png", "/image/light/new_1.png", 30,100,
+                () -> {
+                    String cookiePin = s[0];
+                    CookieSets.CookieSetsDialog(cookieMap.get(cookiePin));
+                }
+        );
+        removeCookie.setBorderPainted(true);
+        removeCookie.setBackground(Color.WHITE);
+        removeCookie.setForeground(Color.BLACK);
+        removeCookie.setEnabled(false);
+        cookieSettingPanel.add(removeCookie);
+
+        CTButton deleteCookie = new CTButton(CTButton.ButtonText, "删除插件",
+                "/image/light/delete_0.png", "/image/light/delete_1.png", 30,100,
+                () -> {
+                    String cookiePin = s[0];
+                    CookieSets.deleteCookie(cookieMap.get(cookiePin));
+                }
+        );
+        deleteCookie.setBorderPainted(true);
+        deleteCookie.setBackground(Color.WHITE);
+        deleteCookie.setForeground(Color.BLACK);
+        deleteCookie.setEnabled(false);
+        cookieSettingPanel.add(deleteCookie);
+
+        c.add(cookieSettingPanel, BorderLayout.EAST);
+
+        return new initCookieSetsPanel(removeCookie, deleteCookie);
+    }
+
+    private void initCookieShowPanel(Container c, initCookieSetsPanel result1, initControlPanel result2) throws IOException {
+        cookiePanelList.clear();
+        cookieMap.clear();
+
         JPanel cookiesPanel = new JPanel();
+        cookiesPanel.removeAll();
+
         cookiesPanel.setBackground(Color.WHITE);
         cookiesPanel.setLayout(new GridLayout(0, 1, 20, 10));
 
         GetCookie getCookie = new GetCookie();
-
 
         getCookie.getCookieMap().forEach((key, value) -> {
             JButton cookieButton = new JButton(getCookie.getName(key));
@@ -123,10 +167,13 @@ public class ShowCookieDialog extends JDialog {
                 //cookieButton.setBorder(BorderFactory.createLineBorder(new Color(0x0090FF), 1));
                 cookieButton.setForeground(new Color(0x0090FF));
 
-                openInExp.setEnabled(true);
-                runCookie.setEnabled(true);
-                outputBtn.setEnabled(true);
-                for (JButton label : cookiePanelMap) {
+                result1.removeCookie().setEnabled(true);
+                result1.deleteCookie().setEnabled(true);
+
+                result2.openInExp().setEnabled(true);
+                result2.runCookie().setEnabled(true);
+                result2.outputBtn().setEnabled(true);
+                for (JButton label : cookiePanelList) {
                     if (!label.getText().equals(s[1])) {
                         //label.setBorder(BorderFactory.createLineBorder(Color.BLACK, 1));
                         label.setForeground(Color.BLACK);
@@ -136,10 +183,51 @@ public class ShowCookieDialog extends JDialog {
                 cookiesPanel.repaint();
                 c.repaint();
             });// 添加事件
-            cookiePanelMap.add(cookieButton);
-            cookieMap.put(key, value.getPath());
+            cookiePanelList.add(cookieButton);
+            cookieMap.put(key, value.getCookiePath());
             cookiesPanel.add(cookieButton);
+
+
+
         });
+
+        //添加文件
+        FileDragDropLabel addCookie = new FileDragDropLabel();
+        addCookie.setBackground(Color.WHITE);
+        addCookie.setIcon(GetIcon.getIcon(getClass().getResource("/image/light/new_0.png"),
+                30, 30));
+        addCookie.setHorizontalAlignment(JLabel.CENTER);
+        //addCookie.setBorder(BorderFactory.createLineBorder(Color.BLACK, 1));//显示边框
+        addCookie.setFont(new Font("微软雅黑", Font.BOLD, 18));
+        addCookie.addMouseListener(new MouseListener() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                // 添加文件
+                CookieSets.CookieSetsDialog();
+            }
+
+            @Override
+            public void mousePressed(MouseEvent e) {
+
+            }
+
+            @Override
+            public void mouseReleased(MouseEvent e) {
+
+            }
+
+            @Override
+            public void mouseEntered(MouseEvent e) {
+
+            }
+
+            @Override
+            public void mouseExited(MouseEvent e) {
+
+            }
+        });
+        addCookie.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));// 设置鼠标样式 - 箭头
+        cookiesPanel.add(addCookie);
 
         cookiesPanel.setMaximumSize(cookiesPanel.getPreferredSize());
         JScrollPane scrollPane = new JScrollPane(cookiesPanel);
@@ -150,9 +238,99 @@ public class ShowCookieDialog extends JDialog {
         scrollPane.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);// 禁止水平滚动
         c.add(scrollPane, BorderLayout.CENTER);
 
+        cookiesPanel.revalidate();
+        cookiesPanel.repaint();
+    }
+
+    private initControlPanel getInitControlPanel(Container c) throws MalformedURLException {
+        JPanel controlPanel = new JPanel();
+        controlPanel.setBackground(Color.WHITE);
+        controlPanel.setLayout(new FlowLayout(FlowLayout.LEFT, 5, 15));
+
+        CTButton openInExp = new CTButton(CTButton.ButtonText, "打开所在目录",
+                "/image/openExp.png",
+                "/image/openExp.png", 30, 100, () -> {
+            OpenInExp.open(cookieMap.get(s[0]).getPath());
+        });
+        openInExp.setBorderPainted(true);
+        openInExp.setForeground(Color.BLACK);
+        openInExp.setBackground(Color.WHITE);
+        openInExp.setEnabled(false);
+        controlPanel.add(openInExp);
+
+        CTButton outputBtn = new CTButton(CTButton.ButtonText, "导出",
+                "/image/light/update_0.png",
+                "/image/light/update_0.png", 30, 100, () -> {
+            String path = GetPath.getDirectoryPath(this, "请选择导出目录");
+            //将选中的插件文件夹打包为.zip
+            ZipPack.createZip(path, cookieMap.get(s[0]).getParent(), s[0] + ".zip", cookieMap.get(s[0]).getName());
+
+        });
+        outputBtn.setBorderPainted(true);
+        outputBtn.setForeground(Color.BLACK);
+        outputBtn.setBackground(Color.WHITE);
+        outputBtn.setEnabled(false);
+        controlPanel.add(outputBtn);
+
+        CTButton runCookie = new CTButton(CTButton.ButtonText, "运行",
+                "/image/wish.png",
+                "/image/wish.png",30,100, () -> {
+            StartCookie.showCookie(s[0]);
+        });
+        runCookie.setBorderPainted(true);
+        runCookie.setForeground(Color.BLACK);
+        runCookie.setBackground(Color.WHITE);
+        runCookie.setEnabled(false);
+        controlPanel.add(runCookie);
+
+        JScrollPane controlScrollPane = new JScrollPane(controlPanel);
+
+        c.add(controlScrollPane, BorderLayout.SOUTH);
+        initControlPanel result = new initControlPanel(openInExp, outputBtn, runCookie);
+        return result;
+    }
+
+    @Override
+    public void windowOpened(WindowEvent e) {
 
     }
 
+    @Override
+    public void windowClosing(WindowEvent e) {
+        repaintCookie.stop();
+        this.setVisible(false);
+    }
+
+    @Override
+    public void windowClosed(WindowEvent e) {
+
+    }
+
+    @Override
+    public void windowIconified(WindowEvent e) {
+
+    }
+
+    @Override
+    public void windowDeiconified(WindowEvent e) {
+
+    }
+
+    @Override
+    public void windowActivated(WindowEvent e) {
+
+    }
+
+    @Override
+    public void windowDeactivated(WindowEvent e) {
+
+    }
+
+    private record initControlPanel(CTButton openInExp, CTButton outputBtn, CTButton runCookie) {
+    }
+
+    private record initCookieSetsPanel(CTButton removeCookie, CTButton deleteCookie) {
+    }
     private void initMenuBar() {
         JMenuBar menuBar = new JMenuBar();
         this.setJMenuBar(menuBar);
@@ -164,11 +342,15 @@ public class ShowCookieDialog extends JDialog {
         inputCookie.setIcon( GetIcon.getIcon(getClass().getResource("/image/input.png"),16,16));
         inputCookie.addActionListener(e -> {
             String filePath = GetPath.getFilePath(this, "导入插件", ".zip", "ClassTools插件");
-            //将zip文件解压到Cookie
-            ZipPack.unzip(filePath, Main.DATA_PATH + "\\Cookie\\");
+
+            if (filePath != null) {
+                CookieSets.addCookie(new File(filePath));
+            }
 
             try {
-                new GetCookie();
+                this.removeAll();
+                initShowCookies(this.getContentPane());
+                this.getContentPane().repaint();
             } catch (IOException ex) {
                 throw new RuntimeException(ex);
             }
@@ -179,7 +361,7 @@ public class ShowCookieDialog extends JDialog {
         outputMenuItem.addActionListener(e -> {
             String path = GetPath.getDirectoryPath(this, "请选择导出目录");
             //将选中的插件文件夹打包为.zip
-            ZipPack.createZip(path, cookieMap.get(s[0]).getAbsolutePath(), s[0] + ".zip", cookieMap.get(s[0]).getParentFile().getName());
+            ZipPack.createZip(path, cookieMap.get(s[0]).getPath(), s[0] + ".zip", cookieMap.get(s[0]).getName());
 
         });
 
@@ -203,6 +385,26 @@ public class ShowCookieDialog extends JDialog {
 
         menuBar.add(fileMenu);
 
+        JMenu editMenu = new JMenu("编辑");
+        editMenu.setMnemonic('E');
+
+        JMenuItem cookieSets = new JMenuItem("修改插件");
+        cookieSets.setIcon( GetIcon.getIcon(getClass().getResource("/image/light/settings_0.png"),16,16));
+        cookieSets.addActionListener(e -> {
+            CookieSets.CookieSetsDialog(cookieMap.get(s[0]));
+        });
+
+        JMenuItem deleteCookie = new JMenuItem("删除插件");
+        deleteCookie.setIcon( GetIcon.getIcon(getClass().getResource("/image/light/delete_0.png"),16,16));
+        deleteCookie.addActionListener(e -> {
+            CookieSets.deleteCookie(cookieMap.get(s[0]));
+        });
+
+        editMenu.add(deleteCookie);
+        editMenu.add(cookieSets);
+
+        menuBar.add(editMenu);
+
         JMenu helpMenu = new JMenu("帮助");
         helpMenu.setMnemonic('H');
 
@@ -223,12 +425,21 @@ public class ShowCookieDialog extends JDialog {
 
     private void initDialog() {
         this.setTitle("插件库");
-        this.setSize(400, 500);
+        this.setSize(500, 400);
         this.setIconImage(GetIcon.getImageIcon(getClass().getResource("/image/light/cookie_0.png"),
                         32, 32).getImage());
         this.setLocationRelativeTo(null);
         this.setModal(true);
         //this.setMaximumSize(new Dimension(600, 400));
         this.setResizable(false);//禁止改变大小
+    }
+
+    public void refreshCookiePanel() throws IOException {
+        Container c = this.getContentPane();
+        c.removeAll();
+        initShowCookies(c);
+        initMenuBar();
+        c.revalidate();
+        c.repaint();
     }
 }

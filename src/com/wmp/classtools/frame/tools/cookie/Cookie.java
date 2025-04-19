@@ -9,21 +9,24 @@ public class Cookie {
     private String name;
     private String style;
     private ArrayList<String> parameters = new ArrayList<>();
-    private File path;
+    private File RunPath;
+    private File cookiePath;
     private Icon icon;
 
-    public Cookie(String name, String style, ArrayList<String> parameters, File path, Icon icon) {
+    public Cookie(String name, String style, ArrayList<String> parameters, File RunPath, File cookiePath, Icon icon) {
         this.name = name;
         this.style = style;
         this.parameters = parameters;
-        this.path = path;
+        this.RunPath = RunPath;
+        this.cookiePath = cookiePath;
         this.icon = icon;
     }
 
-    public Cookie(String name, String style, Icon icon, File path) {
+    public Cookie(String name, String style, Icon icon, File RunPath, File cookiePath) {
         this.name = name;
         this.style = style;
-        this.path = path;
+        this.RunPath = RunPath;
+        this.cookiePath = cookiePath;
         this.icon = icon;
     }
 
@@ -46,12 +49,12 @@ public class Cookie {
         this.style = style;
     }
 
-    public File getPath() {
-        return path;
+    public File getRunPath() {
+        return RunPath;
     }
 
-    public void setPath(File path) {
-        this.path = path;
+    public void setRunPath(File runPath) {
+        this.RunPath = runPath;
     }
 
     public Icon getIcon() {
@@ -76,13 +79,26 @@ public class Cookie {
         this.icon = icon;
     }
 
+    public void setParameters(ArrayList<String> parameters) {
+        this.parameters = parameters;
+    }
+
+    public File getCookiePath() {
+        return cookiePath;
+    }
+
+    public void setCookiePath(File cookiePath) {
+        this.cookiePath = cookiePath;
+    }
+
     @Override
     public String toString() {
         return "Cookie{" +
                 "name='" + name + '\'' +
                 ", style='" + style + '\'' +
-                ", parameters='" + parameters + '\'' +
-                ", path=" + path +
+                ", parameters=" + parameters +
+                ", RunPath=" + RunPath +
+                ", cookiePath=" + cookiePath +
                 ", icon=" + icon +
                 '}';
     }

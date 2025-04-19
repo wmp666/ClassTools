@@ -199,7 +199,7 @@ public class DownloadURLFile {
             for (int i = segments.length - 1; i >= 0; i--) {
                 if (!segments[i].isEmpty()) {
                     String fileName = segments[i];
-                    // 过滤查询参数（虽然URI.getPath()已处理，但二次确认）
+                    // 过滤查询参数（虽然URI.getRunPath()已处理，但二次确认）
                     int queryIndex = fileName.indexOf('?');
                     return queryIndex == -1 ? fileName : fileName.substring(0, queryIndex);
                 }

@@ -1,4 +1,4 @@
-package com.wmp.classTools.frame.tools.about;
+package com.wmp.classTools.frame.tools.help;
 
 import com.wmp.Main;
 import com.wmp.PublicTools.GetIcon;
@@ -203,6 +203,7 @@ public class ShowHelpDoc extends JDialog {
     private static JEditorPane getHelpDocPane(String html) {
         JEditorPane editorPane = new JEditorPane("text/html", html);
         editorPane.setFont(new Font("微软雅黑", -1, 16));
+        editorPane.setAutoscrolls(true);// 设置是否允许自动滚动
         editorPane.setEditable(false);
 
         return editorPane;

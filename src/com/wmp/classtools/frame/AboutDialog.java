@@ -6,7 +6,7 @@ import com.wmp.PublicTools.GetIcon;
 import com.wmp.PublicTools.OpenInExp;
 import com.wmp.PublicTools.update.GetNewerVersion;
 import com.wmp.classTools.CTComponent.CTButton;
-import com.wmp.classTools.frame.tools.about.ShowHelpDoc;
+import com.wmp.classTools.frame.tools.help.ShowHelpDoc;
 
 import javax.swing.*;
 import java.awt.*;

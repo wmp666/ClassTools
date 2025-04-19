@@ -27,14 +27,14 @@ public class StartCookie {
             GetCookie getCookie = new GetCookie();
             TreeMap<String, Cookie> cookieMap = getCookie.getCookieMap();
             if (cookieMap.containsKey(pin)) {
-                File cookieFile = cookieMap.get(pin).getPath();
+                File RunFile = cookieMap.get(pin).getRunPath();
                 String style = cookieMap.get(pin).getStyle();
                 switch (style){
                     case "image", "music", "other" ->{
-                        Desktop.getDesktop().open(cookieFile);
+                        Desktop.getDesktop().open(RunFile);
                     }
                     case "video"->{
-                        VideoPlayer.playVideo(cookieFile.getPath());
+                        VideoPlayer.playVideo(RunFile.getPath());
                     }
                     case "exe" -> {
 
@@ -47,16 +47,16 @@ public class StartCookie {
                         System.out.println("启动参数:" + parameters);
 
                         ArrayList<String> temp = new ArrayList<>();
-                        temp.add(cookieFile.getPath());
+                        temp.add(RunFile.getPath());
 
                         if (!parameters.isEmpty()){
                             temp.addAll(parameters);
                         }
                         String[] cmdArray = temp.toArray(new String[0]);
                         Runtime runtime = Runtime.getRuntime();
-                        runtime.exec(cmdArray, null, cookieFile.getParentFile());
+                        runtime.exec(cmdArray, null, RunFile.getParentFile());
                     }case "directory", "file" -> {
-                        OpenInExp.open(cookieFile.getPath());
+                        OpenInExp.open(RunFile.getPath());
                     }
                     default -> {
                         JOptionPane.showMessageDialog(null, "未知的cookie类型", "世界拒绝了我", JOptionPane.ERROR_MESSAGE);
@@ -66,7 +66,7 @@ public class StartCookie {
                     JOptionPane.showMessageDialog(null, "已通知运行:" + getCookie.getCookieMap().get(pin).getName(), "通知", JOptionPane.INFORMATION_MESSAGE);
                 }).start();
 
-                //Runtime.getRuntime().exec(cookieFile.getPath());
+                //Runtime.getRuntime().exec(cookieFile.getRunPath());
             } else if (pin.equals("null")) {
                 return;
             } else {

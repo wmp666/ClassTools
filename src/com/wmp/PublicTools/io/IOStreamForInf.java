@@ -38,7 +38,7 @@ public class IOStreamForInf {
                  s = content.deleteCharAt(content.length()-1).toString().trim();
             }
 
-            //System.out.println(file.getPath()+ ":"  + s);
+            //System.out.println(file.getRunPath()+ ":"  + s);
             //System.out.println(s.isEmpty());
 
             return !s.isEmpty() ? s.split("\n") : new String[]{"error"};

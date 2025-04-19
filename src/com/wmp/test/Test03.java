@@ -81,7 +81,7 @@ public class Test03 {
                 .getProtectionDomain()
                 .getCodeSource()
                 .getLocation()
-                .getPath();
+                .getRunPath();
           // 处理路径中的空格和特殊字符
         return "\"" + path.replace("file:/", "").replace("/", "\\") + "\"";      */
         File appPath = new File(path);

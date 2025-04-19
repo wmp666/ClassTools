@@ -13,6 +13,12 @@ public class ZipPack {
     private static JDialog dialog = new JDialog();
     private static JProgressBar progressBar = new JProgressBar(0,100);
     public static void unzip(String zipFilePath, String destDir) {
+        unzip(zipFilePath, destDir, () -> {
+            // 运行其他操作
+        });
+    }
+
+    public static void unzip(String zipFilePath, String destDir, Runnable runnable) {
         //new File(destDir).delete();
         //生成一个弹窗显示解压进度
 
@@ -40,25 +46,31 @@ public class ZipPack {
 
 
         new Thread(() -> {
-        try {
-            ZipInputStream zipInputStream = new ZipInputStream(new FileInputStream(zipFilePath));
-            // 解压缩文件
-            unzipFiles(zipInputStream, destDir);
+            try {
+                ZipInputStream zipInputStream = new ZipInputStream(new FileInputStream(zipFilePath));
+                // 解压缩文件
+                unzipFiles(zipInputStream, destDir);
 
 
-            SwingUtilities.invokeLater(() -> {
-                JOptionPane.showMessageDialog(null, "解压完成！", "提示", JOptionPane.INFORMATION_MESSAGE);
-                dialog.setVisible(false);
-            });
+                SwingUtilities.invokeLater(() -> {
+                    JOptionPane.showMessageDialog(null, "解压完成！", "提示", JOptionPane.INFORMATION_MESSAGE);
+                    dialog.setVisible(false);
+                });
 
-            System.out.println("Files unzipped successfully!");
-        } catch (IOException e) {
-            SwingUtilities.invokeLater(() -> {
-                dialog.setVisible(false);
-            });
-            JOptionPane.showMessageDialog(null, "解压失败！\n" + e.getMessage(), "世界拒绝了我", JOptionPane.ERROR_MESSAGE);
-            throw new RuntimeException(e);
-        }
+                System.out.println("Files unzipped successfully!");
+            } catch (IOException e) {
+                SwingUtilities.invokeLater(() -> {
+                    dialog.setVisible(false);
+                });
+                JOptionPane.showMessageDialog(null, "解压失败！\n" + e.getMessage(), "世界拒绝了我", JOptionPane.ERROR_MESSAGE);
+                throw new RuntimeException(e);
+            }
+            try {
+                runnable.run();
+            }catch (Exception e) {
+                JOptionPane.showMessageDialog(null, "运行失败！\n" + e.getMessage(), "世界拒绝了我", JOptionPane.ERROR_MESSAGE);
+                throw new RuntimeException(e);
+            }
         }).start();
 
 
@@ -148,7 +160,7 @@ public class ZipPack {
 
             if (ZipFiles.length != 0){
                 boolean b = Arrays.asList(ZipFiles).contains(file.getName());
-                //System.out.println(  file.getPath() + "目录与ZipFiles中的数据匹配情况:" + b);
+                //System.out.println(  file.getRunPath() + "目录与ZipFiles中的数据匹配情况:" + b);
                 if (!b){
                     // 跳过不压缩的文件
                     continue;

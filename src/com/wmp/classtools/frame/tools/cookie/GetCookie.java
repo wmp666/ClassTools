@@ -53,6 +53,7 @@ public class GetCookie {
                         while ((line = reader.readLine()) != null) {
                             s.append(line);
                         }
+                        reader.close();
                         JSONObject JSONCookieSets;
                         try {
                             JSONCookieSets = new JSONObject(s.toString());
@@ -77,7 +78,7 @@ public class GetCookie {
                                 }
                             }
 
-                            Cookie cookie = new Cookie("null", "other", null, new File(exec));
+                            Cookie cookie = new Cookie("null", "other", null, new File(exec), cookieFile);
 
                             StringBuilder iconPath = new StringBuilder();
                             if (JSONCookieSets.has("style")){
