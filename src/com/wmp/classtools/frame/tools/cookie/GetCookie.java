@@ -39,7 +39,6 @@ public class GetCookie {
         if (cookies != null) {
             //循环判断每一个文件夹
             for (File cookieFile : cookies) {
-                System.out.println(cookieFile);
                 if (cookieFile.isDirectory()) {
                     //获取相关数据
                     File cookieSets = new File(cookieFile + "\\setUp.json");

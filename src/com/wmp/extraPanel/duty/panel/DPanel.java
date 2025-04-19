@@ -200,7 +200,6 @@ public class DPanel extends CTPanel {
             }
         }
 
-        System.out.println(DutyList);
     }
 
 

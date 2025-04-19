@@ -11,6 +11,7 @@ import com.wmp.classTools.frame.tools.cookie.FileDragDropLabel;
 import com.wmp.classTools.frame.tools.cookie.GetCookie;
 import com.wmp.classTools.frame.tools.cookie.StartCookie;
 import com.wmp.classTools.frame.tools.help.ShowHelpDoc;
+import org.json.JSONException;
 
 import javax.swing.*;
 import java.awt.*;
@@ -99,10 +100,17 @@ public class ShowCookieDialog extends JDialog implements WindowListener {
         cookieSettingPanel.setLayout(new GridLayout(6, 1, 20, 5));
 
         CTButton removeCookie = new CTButton(CTButton.ButtonText, "修改插件",
-                "/image/light/new_0.png", "/image/light/new_1.png", 30,100,
+                "/image/light/settings_0.png", "/image/light/settings_1.png", 30,100,
                 () -> {
                     String cookiePin = s[0];
-                    CookieSets.CookieSetsDialog(cookieMap.get(cookiePin));
+                    try {
+                        CookieSets.CookieSetsDialog(cookieMap.get(cookiePin));
+                    } catch (IOException e) {
+                        throw new RuntimeException(e);
+                    }catch (JSONException e){
+                        JOptionPane.showMessageDialog(this, "插件设置文件格式错误", "错误", JOptionPane.ERROR_MESSAGE);
+                        throw new RuntimeException(e);
+                    }
                 }
         );
         removeCookie.setBorderPainted(true);
@@ -151,18 +159,10 @@ public class ShowCookieDialog extends JDialog implements WindowListener {
             cookieButton.setFont(new Font("微软雅黑", Font.BOLD, 18));
             cookieButton.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));// 设置鼠标样式 - 箭头
             cookieButton.addActionListener(e->{
-                if (s[0].equals(key)){
-                    System.out.println("重复点击" + cookieButton.getText());
-                    cookieButton.setForeground(Color.RED);
 
-                    StartCookie.showCookie(s[0]);
-                    s[0] = "null";
-                    return;
-                }else{
-                    System.out.println("点击了" + cookieButton.getText());
-                    s[0] = key;
-                    s[1] = cookieButton.getText();
-                }
+                System.out.println("点击了" + cookieButton.getText());
+                s[0] = key;
+                s[1] = cookieButton.getText();
 
                 //cookieButton.setBorder(BorderFactory.createLineBorder(new Color(0x0090FF), 1));
                 cookieButton.setForeground(new Color(0x0090FF));
@@ -203,7 +203,14 @@ public class ShowCookieDialog extends JDialog implements WindowListener {
             @Override
             public void mouseClicked(MouseEvent e) {
                 // 添加文件
-                CookieSets.CookieSetsDialog();
+                try {
+                    CookieSets.CookieSetsDialog();
+                } catch (IOException ex) {
+                    throw new RuntimeException(ex);
+                } catch (JSONException ex) {
+                    JOptionPane.showMessageDialog(c, "插件设置文件格式错误", "错误", JOptionPane.ERROR_MESSAGE);
+                    throw new RuntimeException(ex);
+                }
             }
 
             @Override
@@ -391,7 +398,14 @@ public class ShowCookieDialog extends JDialog implements WindowListener {
         JMenuItem cookieSets = new JMenuItem("修改插件");
         cookieSets.setIcon( GetIcon.getIcon(getClass().getResource("/image/light/settings_0.png"),16,16));
         cookieSets.addActionListener(e -> {
-            CookieSets.CookieSetsDialog(cookieMap.get(s[0]));
+            try {
+                CookieSets.CookieSetsDialog(cookieMap.get(s[0]));
+            } catch (IOException ex) {
+                throw new RuntimeException(ex);
+            } catch (JSONException ex){
+                JOptionPane.showMessageDialog(this, "插件设置文件格式错误", "错误", JOptionPane.ERROR_MESSAGE);
+                throw new RuntimeException(ex);
+            }
         });
 
         JMenuItem deleteCookie = new JMenuItem("删除插件");

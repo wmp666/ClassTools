@@ -149,14 +149,7 @@ public class ATPanel extends CTPanel {
                     //将数据改为默认
                     // 使用常量数组管理姓名数据
                     final String[] DEFAULT_NAMES = {
-                            "曾世通", "陈昌焱", "陈权浩", "陈思源", "程政", "程睿智",
-                            "范祖轩", "贾梓瑄", "姜宇航", "赖奕鑫", "李宇涵", "林宇轩",
-                            "刘弘祥", "刘诗怡", "刘欣妍", "刘雨涵", "芦其松", "罗伟钦",
-                            "骆钦阳", "毛佳欣", "毛嘉锐", "彭靖波", "唐志涛", "万涵予",
-                            "万思遥", "万文卿", "万延康", "吴鹤轩", "吴宇恒", "吴梓豪",
-                            "伍子阳", "熊天晴", "徐浩", "晏文杰", "杨沛妍", "姚嘉鑫",
-                            "姚焱竣", "易家树", "俞皓天", "袁立志", "章智峰", "赵银涛",
-                            "钟世豪", "朱彦轩", "祝思哲", "邹子煦"
+                            "请", "尽快", "设置", "!!!"
                     };
 
                     // 通过数组传递完整数据
@@ -191,7 +184,6 @@ public class ATPanel extends CTPanel {
                 //leaveList.clear();
                 leaveList.addAll(List.of(inf));
                 studentLateLength = leaveList.size();
-                System.out.println("leaveList.size():" + leaveList.size());
             }
         }
 

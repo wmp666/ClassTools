@@ -166,10 +166,6 @@ public class ShowHelpDoc extends JDialog {
 
         markdown = Files.readString(Paths.get(parent + name));
 
-        System.out.println("文件原内容 :" + markdown);
-
-
-
         //String parent = file.getParent().replace("help", "help\\");
         //System.out.println("文件上级目录 :" + parent);
         markdown = markdown.replaceAll("!\\[.*]\\(images/", "![](file:" + parent.replace("\\", "/") + "images/");
@@ -184,7 +180,6 @@ public class ShowHelpDoc extends JDialog {
         String html = renderer.render(document);
 
         //将images 路径改为绝对路径
-        System.out.println("文件渲染内容(HTML) :" + html);
         return html;
     }
 
