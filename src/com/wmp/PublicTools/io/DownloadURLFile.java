@@ -2,6 +2,7 @@ package com.wmp.PublicTools.io;
 
 import com.wmp.CTColor;
 import com.wmp.Main;
+import com.wmp.PublicTools.GetIcon;
 
 import javax.swing.*;
 import java.awt.*;
@@ -20,6 +21,7 @@ public class DownloadURLFile {
             JProgressBar progressBar = new JProgressBar(0, 100);
 
             if (panel == null) {
+                progressDialog.setIconImage(GetIcon.getImageIcon(DownloadURLFile.class.getResource("/image/input.png"), 30, 30).getImage());
                 progressDialog.setSize(300, 175);
                 progressDialog.setTitle("下载中...");
                 progressDialog.setLocationRelativeTo(parent);

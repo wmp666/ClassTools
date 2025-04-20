@@ -157,7 +157,7 @@ public class GetNewerVersion {
                         if (result == JOptionPane.YES_OPTION) {
                             new Thread(() ->{
                                 DownloadURLFile.downloadWebFile(dialog, panel, downloadUrl, "app");
-                            });
+                            }).start();
 
                         }
                     } else if (i == 2) {
@@ -168,7 +168,7 @@ public class GetNewerVersion {
 
                         new Thread(() ->{
                             DownloadURLFile.downloadWebFile(dialog, panel, downloadUrl, "app");
-                        });
+                        }).start();
                     } else {
                         System.out.println("当前已是最新版本");
                         if (showMessage) {

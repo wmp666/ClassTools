@@ -304,7 +304,7 @@ public class ShowCookieDialog extends JDialog implements WindowListener {
 
     @Override
     public void windowClosing(WindowEvent e) {
-        repaintCookie.stop();
+        repaintCookie.interrupt();
         this.setVisible(false);
     }
 

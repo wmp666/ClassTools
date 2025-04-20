@@ -31,7 +31,7 @@ public class Main{
     * d:只修复的问题,问题较少
     * e:测试版本号
      */
-    public static String version = "1.15.2.01";
+    public static String version = "1.15.2.02";
 
     public static ArrayList<String> list = new ArrayList<>();
 
