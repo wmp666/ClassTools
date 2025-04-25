@@ -15,7 +15,7 @@ public class GetWebInf {
                     .execute()
                     .body();
 
-            //System.out.println("原始数据 - " + webInf);
+            System.out.println("原始数据 - " + webInf);
             return webInf;
         } catch (Exception e) {
 

@@ -9,8 +9,10 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 import javax.swing.*;
+import java.awt.*;
 import java.io.IOException;
 import java.net.URISyntaxException;
+import java.util.Objects;
 
 public class EasterEgg {
 
@@ -24,14 +26,14 @@ public class EasterEgg {
                 String[] split = s.split(":");
                 if (split.length == 2) {
                     if (split[0].equalsIgnoreCase("EasterEgg")) {
-                        showEasterEgg(split[1]);
+                        showEasterEgg(split[1].split(";"));
                     } else if (split[0].equalsIgnoreCase("cookie")) {
-                        StartCookie.showCookie(split[1]);
+                        StartCookie.showCookie(split[1].split(";"));
                     } else{
                         JOptionPane.showMessageDialog(null, "请输入正确的格式", "世界拒绝了我", JOptionPane.ERROR_MESSAGE);
                     }
                 } else if (split.length == 1) {
-                    showEasterEgg(s);
+                    showEasterEgg(s.split(";"));
                 }else{
                     JOptionPane.showMessageDialog(null, "请输入正确的格式", "世界拒绝了我", JOptionPane.ERROR_MESSAGE);
                 }
@@ -50,7 +52,7 @@ public class EasterEgg {
             showEasterEgg(pin);
         }
     }
-    public static void showEasterEgg(String pin) throws URISyntaxException, IOException {
+    public static void showEasterEgg(String pin){
 
         new SwingWorker<Void, Void>() {
             @Override
@@ -93,9 +95,50 @@ public class EasterEgg {
             protected void done() {
                 // 下载完成后在EDT线程执行
                 try {
+
                     get(); // 获取执行结果（可捕获异常）
-                    String videoPath = buildVideoPath(pin);
-                    VideoPlayer.playVideo(videoPath);
+
+                    new SwingWorker<Void, Void>() {
+
+                        @Override
+                        protected void done() {
+                            String videoPath = buildVideoPath(pin);
+                            try {
+                                VideoPlayer.playVideo(videoPath);
+                            } catch (IOException e) {
+                                throw new RuntimeException(e);
+                            }
+                        }
+
+                        @Override
+                        protected Void doInBackground() throws Exception {
+                            ImageIcon imageIcon = new ImageIcon(
+                                Objects.requireNonNull(Main.class.getResource("/image/openEasterEgg.gif")));
+                            int iconHeight = imageIcon.getIconHeight();
+                            int iconWidth = imageIcon.getIconWidth();
+                            Icon icon = new ImageIcon(
+                                    imageIcon.getImage().getScaledInstance(iconWidth, iconHeight, Image.SCALE_DEFAULT));
+                            JLabel label = new JLabel(icon);
+                            JWindow window = new JWindow();
+                            window.setSize(iconWidth, iconHeight);
+                            window.setLocationRelativeTo(null);
+                            window.setAlwaysOnTop(true);
+                            window.add(label);
+
+                            window.setVisible(true);
+                            try {
+                                Thread.sleep(6850);
+                            } catch (InterruptedException e) {
+                                throw new RuntimeException(e);
+                            }
+                            window.dispose();
+
+                            return null;
+                        }
+                    }.execute();
+
+
+
                 } catch (Exception e) {
                     throw new RuntimeException(e);
                 }
