@@ -3,6 +3,7 @@ package com.wmp.classTools.importPanel.finalPanel;
 import com.wmp.CTColor;
 import com.wmp.Main;
 import com.wmp.PublicTools.GetIcon;
+import com.wmp.PublicTools.printLog.Log;
 import com.wmp.PublicTools.update.GetNewerVersion;
 import com.wmp.classTools.CTComponent.CTButton;
 import com.wmp.classTools.CTComponent.CTPanel;
@@ -22,12 +23,12 @@ import static com.wmp.Main.disButList;
 
 public class FinalPanel extends CTPanel {
 
-    private File AllStuPath;
-    private File LeaveListPath;
-    private File DutyListPath;
-    private File indexPath;
+    private final File AllStuPath;
+    private final File LeaveListPath;
+    private final File DutyListPath;
+    private final File indexPath;
 
-    private ArrayList<CTPanel> panelList;
+    private final ArrayList<CTPanel> panelList;
 
 
     public FinalPanel(int nextPanelY, File AllStuPath, File LeaveListPath, File DutyListPath, File indexPath, ArrayList<CTPanel> panelList) throws MalformedURLException {
@@ -67,10 +68,7 @@ public class FinalPanel extends CTPanel {
 
         CTButton moreButton = new CTButton("更多功能",
                 "/image/%s/more.png",
-                "/image/%s/more.png", 30, () -> {
-            moreDialog.setVisible(true);
-
-        });
+                "/image/%s/more.png", 30, () -> moreDialog.setVisible(true));
 
         CTButton settings = new CTButton("设置数据",
                 "/image/%s/settings_0.png",
@@ -80,7 +78,7 @@ public class FinalPanel extends CTPanel {
             try {
                 new InfSetDialog(AllStuPath, LeaveListPath, DutyListPath, indexPath, () -> {
 
-                    GetSetsJSON setsJSON = null;
+                    GetSetsJSON setsJSON;
                     try {
                         setsJSON = new GetSetsJSON();
 
@@ -136,16 +134,19 @@ public class FinalPanel extends CTPanel {
 
         CTButton update = new CTButton("检查更新",
                 "/image/%s/update_0.png",
-                "/image/%s/update_1.png", 30, () -> {
-            GetNewerVersion.checkForUpdate(null, null, true);
+                "/image/%s/update_1.png", 30, () -> GetNewerVersion.checkForUpdate(null, null, true));
 
-        });
-        update.setToolTipText("获取更新");
+        CTButton showLog = new CTButton("查看日志",
+                "/image/%s/showLog_0.png",
+                "/image/%s/showLog_1.png", 30, Log::showLogDialog);
+
+
 
         this.add(moreButton);
         this.add(settings);
         this.add(cookie);
         this.add(about);
+        this.add(showLog);
         this.add(update);
 
         int length = 0;

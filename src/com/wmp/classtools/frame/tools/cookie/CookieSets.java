@@ -21,10 +21,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardOpenOption;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Comparator;
-import java.util.Objects;
+import java.util.*;
 
 public class CookieSets {
 
@@ -67,7 +64,7 @@ public class CookieSets {
                 }
                 jsonObject = new JSONObject(s.toString());
             }
-            System.out.println(jsonObject);
+            //System.out.println(jsonObject);
             pin = jsonObject.getString("pin");
 
             GetCookie getCookie = new GetCookie();
@@ -78,6 +75,7 @@ public class CookieSets {
 
         }
 
+        TreeMap<String, Object> cookiePriData = cookie.getPriData();
 
         dialog.setSize(500, 350);
         dialog.setLocationRelativeTo(null);
@@ -102,17 +100,12 @@ public class CookieSets {
         styleComboBox.addItem("directory");
         styleComboBox.addItem("file");
         styleComboBox.addItem("other");
-        styleComboBox.setSelectedItem(cookie.getStyle());// 设置默认选中
-        JTextField iconTextField = new JTextField();
-        if (cookie.getIcon() != null){
-            iconTextField.setText(cookie.getIcon().toString());
-        }
-        JTextField runTextField = new JTextField();
-        if (cookie.getRunPath() != null){
-            runTextField.setText(cookie.getRunPath().toString());
-        }
+        styleComboBox.setSelectedItem(cookiePriData.get("style"));// 设置默认选中
+        JTextField iconTextField = new JTextField((String) cookiePriData.get("icon"));
+        JTextField runTextField = new JTextField((String) cookiePriData.get("RunPath"));
+
         StringBuilder parameters = new StringBuilder();
-        cookie.getParameters().forEach(s -> {
+        ((ArrayList<String>) cookiePriData.get("parameters")).forEach(s -> {
             parameters.append(s).append(";");
         });
         JTextField parametersTextField = new JTextField(parameters.toString());

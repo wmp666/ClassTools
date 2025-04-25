@@ -17,7 +17,7 @@ public class GetWebInf {
                     .body();
 
             Log.info.print("GetWebInf", "获取Web信息成功");
-            Log.warn.print("GetWebInf", "信息: " + webInf.replace("\n", "(\\n)"));
+            Log.info.print("GetWebInf", "信息: " + webInf);
             return webInf;
         } catch (Exception e) {
             Log.error.print("GetWebInf", "获取Web信息失败: " + e.getMessage());
