@@ -7,12 +7,13 @@ import java.awt.dnd.*;
 import java.io.File;
 import java.util.List;
 
-public class FileDragDropDemo extends JFrame {
+public class Test05 extends JFrame {
 
+    //文件拖拽
     private final JLabel statusLabel;
 	private final JPanel dropPanel;
 
-    public FileDragDropDemo() {
+    public Test05() {
         this.setTitle("文件拖拽上传示例");
         this.setSize(400, 300);
         this.setDefaultCloseOperation(EXIT_ON_CLOSE);
@@ -99,7 +100,7 @@ public class FileDragDropDemo extends JFrame {
 
     public static void main(String[] args) {
         SwingUtilities.invokeLater(() -> {
-            new FileDragDropDemo().setVisible(true);
+            new Test05().setVisible(true);
         });
     }
 }

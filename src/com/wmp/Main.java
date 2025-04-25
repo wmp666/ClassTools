@@ -1,6 +1,7 @@
 package com.wmp;
 
 import com.wmp.PublicTools.StartupParameters;
+import com.wmp.PublicTools.printLog.Log;
 import com.wmp.PublicTools.update.GetNewerVersion;
 import com.wmp.classTools.frame.EasterEgg;
 import com.wmp.classTools.frame.LoadingWindow;
@@ -67,6 +68,7 @@ public class Main{
     }
     public static void main(String[] args) throws IOException, URISyntaxException {
 
+
         GetSetsJSON setsJSON = new GetSetsJSON();
 
         boolean b = isImportDay();
@@ -86,11 +88,11 @@ public class Main{
         for (int i = 0; i < args.length; i++) {
             args[i] = args[i].replace("/", "-");
         }
-        System.out.println("程序支持的启动参数:" + allArgs);
+        Log.info.print("Main", "启动参数:" + Arrays.toString(args));
 
         if (args.length > 0) {
             list = new ArrayList<>(Arrays.asList(args));
-            System.out.println(list);
+            Log.info.print("Main", "使用的启动参数:" + Arrays.toString(args));
         }
 
         show(b);
@@ -127,12 +129,9 @@ public class Main{
 
 
     private static void show(boolean b) throws URISyntaxException, IOException {
-        System.out.println("Hello, World!");
-
 
         LoadingWindow loadingWindow;
         if (b){
-            System.out.println("April Fools!");
             if (allArgs.get("screenProduct:show").contains(list)){
                 loadingWindow = new LoadingWindow(Main.class.getResource("/image/start.gif"),
                         692, 491, "", true, 1300, LoadingWindow.STYLE_SCREEN);
@@ -153,34 +152,24 @@ public class Main{
                 !(allArgs.get("StartUpdate:false").contains(list) ||
                 allArgs.get("screenProduct:show").contains(list) ||
                 allArgs.get("screenProduct:view").contains(list))) {
-            //执行你的代码
+            Log.info.print("Main", "开始启动自动检查更新");
             GetNewerVersion.checkForUpdate(
                     loadingWindow, null, true);
-            System.out.println("-StartUpdate:true");
-        }else{
-            System.out.println("-StartUpdate:false");
+
         }
 
         if (allArgs.get("EasterEgg:").contains(list)) {
             int i = list.indexOf("-EasterEgg:") + 1;
-            System.out.println("-EasterEgg:" + list.get(i));
+            Log.info.print("Main", "-EasterEgg:" + list.get(i));
             //System.out.println();
             EasterEgg.showEasterEgg(list.get(i).split(";"));
         }
         if (allArgs.get("Cookie:StartUp").contains(list)) {
             int i = list.indexOf("-OpenCookie:") + 1;
-            System.out.println("-OpenCookie:" + list.get(i));
+            Log.info.print("Main", "-OpenCookie:" + list.get(i));
             //System.out.println();
             StartCookie.showCookie(list.get(i).split(";"));
         }
-        /*
-
-        if (allArgs.get(5).contains(list)){
-            System.out.println("-EasterEgg-pin:nj02");
-            EasterEgg.show("nj02");
-        }
-*/
-
 
         new MainWindow(DATA_PATH);
         loadingWindow.setVisible(false);

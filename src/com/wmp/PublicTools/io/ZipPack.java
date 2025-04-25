@@ -1,5 +1,9 @@
 package com.wmp.PublicTools.io;
 
+import com.wmp.PublicTools.printLog.Log;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import javax.swing.*;
 import java.io.*;
 import java.util.Arrays;
@@ -10,6 +14,7 @@ import java.util.zip.ZipOutputStream;
 
 public class ZipPack {
 
+    private static final Logger log = LoggerFactory.getLogger(ZipPack.class);
     private static JDialog dialog = new JDialog();
     private static JProgressBar progressBar = new JProgressBar(0,100);
     public static void unzip(String zipFilePath, String destDir) {
@@ -21,21 +26,23 @@ public class ZipPack {
     public static void unzip(String zipFilePath, String destDir, Runnable runnable) {
         //new File(destDir).delete();
         //生成一个弹窗显示解压进度
+        Log.info.print("ZipPack-解压", "正在解压...");
 
-        //System.exit(0);
         try {
             if (zipFilePath == null || !new File(zipFilePath).exists()) {
-                JOptionPane.showMessageDialog(null, "找不到压缩文件！", "世界拒绝了我", JOptionPane.ERROR_MESSAGE);
+                Log.error.print("ZipPack-解压", "找不到压缩包!");
                 return;
             }
         }catch (Exception e) {
-            JOptionPane.showMessageDialog(null, "找不到压缩文件！", "世界拒绝了我", JOptionPane.ERROR_MESSAGE);
+            Log.error.print("ZipPack-解压", "找不到压缩包!");
+
             return;
         }
 
         //生成弹窗
         SwingUtilities.invokeLater(() -> {
             dialog.setTitle("正在解压...");
+            dialog.setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
             dialog.setModal(true);
             dialog.setSize(300, 80);
             dialog.setLocationRelativeTo(null);
@@ -51,24 +58,20 @@ public class ZipPack {
                 // 解压缩文件
                 unzipFiles(zipInputStream, destDir);
 
+                Log.info.print("ZipPack-解压", "解压完成!");
+                dialog.setVisible(false);
 
-                SwingUtilities.invokeLater(() -> {
-                    JOptionPane.showMessageDialog(null, "解压完成！", "提示", JOptionPane.INFORMATION_MESSAGE);
-                    dialog.setVisible(false);
-                });
-
-                System.out.println("Files unzipped successfully!");
             } catch (IOException e) {
                 SwingUtilities.invokeLater(() -> {
                     dialog.setVisible(false);
                 });
-                JOptionPane.showMessageDialog(null, "解压失败！\n" + e.getMessage(), "世界拒绝了我", JOptionPane.ERROR_MESSAGE);
+                Log.error.print("ZipPack-解压", "解压失败！\n" + e.getMessage());
                 throw new RuntimeException(e);
             }
             try {
                 runnable.run();
             }catch (Exception e) {
-                JOptionPane.showMessageDialog(null, "运行失败！\n" + e.getMessage(), "世界拒绝了我", JOptionPane.ERROR_MESSAGE);
+                Log.error.print("ZipPack-解压", "运行失败！\n" + e.getMessage());
                 throw new RuntimeException(e);
             }
         }).start();
@@ -88,6 +91,7 @@ public class ZipPack {
             String fileName = entry.getName();
             File outputFile = new File(outputFolder + "/" + fileName);
 
+            Log.info.print("ZipPack-解压", "解压文件: " + outputFile);
             // 创建文件夹
             if (entry.isDirectory()) {
                 outputFile.mkdirs();
@@ -109,15 +113,16 @@ public class ZipPack {
 
     public static void createZip(String outputPath, String dataPath, String zipName, String... ZipFiles){
 
-        System.out.println("数据位置:" + dataPath);
+        Log.info.print("ZipPack-压缩", "开始压缩...");
+        Log.info.print("ZipPack-压缩", "压缩:" + dataPath + "->" + outputPath);
         if (ZipFiles.length != 0){
-            System.out.println("要打包的文件:" + Arrays.toString(ZipFiles));
+            Log.info.print("ZipPack-压缩", "要打包的文件:" + Arrays.toString(ZipFiles));
 
-        }else
-            System.out.println("要打包的文件:全部");
+        }else Log.info.print("ZipPack-压缩", "要打包的文件:全部");
 
         SwingUtilities.invokeLater(() -> {
             dialog.setTitle("正在压缩...");
+            dialog.setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
             dialog.setModal(true);
             dialog.setSize(300, 80);
             dialog.setLocationRelativeTo(null);
@@ -138,17 +143,11 @@ public class ZipPack {
                 addFolderToZip(new File(sourceFolder), "", zos, ZipFiles);
 
                 // 压缩完成后更新UI
-                SwingUtilities.invokeLater(() -> {
-                    JOptionPane.showMessageDialog(null, "压缩完成！", "提示", JOptionPane.INFORMATION_MESSAGE);
-                    dialog.setVisible(false);
-                });
+                Log.info.print("ZipPack-压缩", "压缩完成!");
+                dialog.setVisible(false);
             } catch (IOException e) {
-                SwingUtilities.invokeLater(() -> {
-                    JOptionPane.showMessageDialog(null, "压缩失败！\n" + e.getMessage(),
-                            "世界拒绝了我", JOptionPane.ERROR_MESSAGE);
-                    dialog.setVisible(false);
-                });
-                throw new RuntimeException(e);
+                Log.error.print("ZipPack-压缩", "压缩失败！\n" + e.getMessage());
+                dialog.setVisible(false);
             }
         }).start();
 
@@ -160,7 +159,6 @@ public class ZipPack {
 
             if (ZipFiles.length != 0){
                 boolean b = Arrays.asList(ZipFiles).contains(file.getName());
-                //System.out.println(  file.getRunPath() + "目录与ZipFiles中的数据匹配情况:" + b);
                 if (!b){
                     // 跳过不压缩的文件
                     continue;
@@ -169,6 +167,7 @@ public class ZipPack {
 
             String entryName = parentPath + file.getName();
 
+            Log.info.print("ZipPack-压缩", "压缩文件: " + entryName);
             if (file.isDirectory()) {
                 // 处理目录时添加"/"后缀
                 zos.putNextEntry(new ZipEntry(entryName + "/"));

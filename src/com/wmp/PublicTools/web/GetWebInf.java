@@ -1,5 +1,6 @@
 package com.wmp.PublicTools.web;
 
+import com.wmp.PublicTools.printLog.Log;
 import com.wmp.PublicTools.update.SslUtils;
 import org.jsoup.Jsoup;
 
@@ -15,11 +16,13 @@ public class GetWebInf {
                     .execute()
                     .body();
 
-            System.out.println("原始数据 - " + webInf);
+            Log.info.print("GetWebInf", "获取Web信息成功");
+            Log.warn.print("GetWebInf", "信息: " + webInf.replace("\n", "(\\n)"));
             return webInf;
         } catch (Exception e) {
-
-            throw new RuntimeException("信息解析失败", e);
+            Log.error.print("GetWebInf", "获取Web信息失败: " + e.getMessage());
+            //throw new RuntimeException("信息解析失败", e);
         }
+        return "";
     }
 }

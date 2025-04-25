@@ -8,6 +8,7 @@ import com.wmp.PublicTools.OpenInExp;
 import com.wmp.PublicTools.io.GetPath;
 import com.wmp.PublicTools.io.IOStreamForInf;
 import com.wmp.PublicTools.io.ZipPack;
+import com.wmp.PublicTools.printLog.Log;
 import com.wmp.classTools.CTComponent.CTButton;
 import com.wmp.classTools.infSet.DataStyle.AllStu;
 import com.wmp.classTools.infSet.DataStyle.Duty;
@@ -249,7 +250,7 @@ public class InfSetDialog extends JDialog implements WindowListener {
             try {
                 jsonObject = new JSONObject(io.GetInf()[0]);
             }catch (Exception e){
-                System.err.println(e.getMessage());
+                Log.error.print("InfSetDialog", "读取设置文件失败: " + e.getMessage());
                 return tempPanel;
 
             }
@@ -705,8 +706,8 @@ public class InfSetDialog extends JDialog implements WindowListener {
         //scrollPane.setLayout(null);
         mainPanel.add(scrollPane);
 
-        System.out.println("studentList:" + studentList);
-        System.out.println("leaveList:" + leaveList);
+        Log.info.print("数据设置界面-initATSet", "studentList:" + studentList);
+        Log.info.print("数据设置界面-initATSet", "leaveList:" + leaveList);
         for (String student : studentList) {
             JCheckBox checkBox = new JCheckBox(student);
             checkBox.setBackground(CTColor.backColor);
@@ -933,7 +934,6 @@ public class InfSetDialog extends JDialog implements WindowListener {
                     //设置是否自动启动
                     jsonObject.put("isAutoStart", startUp.isSelected());
                     String Path = SetStartUp.getFilePath();
-                    System.out.println("自启动地址:" + Path);
                     if (!startUp.isSelected()) {
                         SetStartUp.disableAutoStart();// 移除自启动
                     } else {
@@ -947,8 +947,9 @@ public class InfSetDialog extends JDialog implements WindowListener {
 
                     }
 
-                    System.out.println(jsonObject);
+                    Log.info.print("InfSetDialog", "保存数据: " + jsonObject.toString());
                     io.SetInf(jsonObject.toString());
+
                 }
 
                 // 保存成功后执行回调

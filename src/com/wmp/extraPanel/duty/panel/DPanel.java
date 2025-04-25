@@ -1,12 +1,13 @@
 package com.wmp.extraPanel.duty.panel;
 
 import com.wmp.CTColor;
-import com.wmp.classTools.CTComponent.CTButton;
-import com.wmp.classTools.CTComponent.CTPanel;
-import com.wmp.extraPanel.duty.type.DutyDay;
 import com.wmp.PublicTools.InfProcess;
 import com.wmp.PublicTools.PeoPanelProcess;
 import com.wmp.PublicTools.io.IOStreamForInf;
+import com.wmp.PublicTools.printLog.Log;
+import com.wmp.classTools.CTComponent.CTButton;
+import com.wmp.classTools.CTComponent.CTPanel;
+import com.wmp.extraPanel.duty.type.DutyDay;
 
 import javax.swing.*;
 import java.awt.*;
@@ -158,7 +159,7 @@ public class DPanel extends CTPanel {
         }else{
             index = Integer.parseInt(inf[0]);
         }
-        System.out.println("index:" + index);
+        Log.info.print("DPanel-initIndex", "值日索引:" + index);
     }
 
     //初始化数据
@@ -170,7 +171,7 @@ public class DPanel extends CTPanel {
 
         String[] inf = ioStreamForInf.GetInf();
 
-        System.out.println(inf);
+
         if(inf[0].equals("error")){
             //将数据改为默认-空,需要用户自行输入数据
 
@@ -200,6 +201,7 @@ public class DPanel extends CTPanel {
             }
         }
 
+        Log.info.print("DPanel-initDutyList", "值日数据:" + DutyList);
     }
 
 

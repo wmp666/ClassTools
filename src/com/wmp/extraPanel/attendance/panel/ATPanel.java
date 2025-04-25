@@ -1,6 +1,7 @@
 package com.wmp.extraPanel.attendance.panel;
 
 import com.wmp.CTColor;
+import com.wmp.PublicTools.printLog.Log;
 import com.wmp.classTools.CTComponent.CTPanel;
 import com.wmp.PublicTools.PeoPanelProcess;
 import com.wmp.PublicTools.io.IOStreamForInf;
@@ -54,12 +55,10 @@ public class ATPanel extends CTPanel {
 
         String StrMainColor = String.format("#%06x", CTColor.mainColor.getRGB());
         StrMainColor = StrMainColor.substring(2, 9);
-        System.out.println("MainColor:" + StrMainColor);
         String NumColor = "style='color: " + StrMainColor + ";'";
 
         String StrTextColor = String.format("#%06x", CTColor.textColor.getRGB());
         StrTextColor = StrTextColor.substring(2, 9);
-        System.out.println("TextColor:" + StrTextColor);
         String TextColor = "style='color: " + StrTextColor + ";'";
 
         AllStuLabel.setText("<html><span " + TextColor + ">" + "应到：<span " + NumColor + ">" + studentLength + "人</html>");
@@ -173,10 +172,9 @@ public class ATPanel extends CTPanel {
                 if (s.equals("")) {
                     continue;
                 }
-                System.out.print(s + "-");
+                Log.info.print("ATPanel-initStuList", "请假名单:" + s);
                 //leaveList.add(s);
             }
-            System.out.println();
             if (inf[0].equals("error")) {
                 ioStreamForInf.SetInf("");
                 studentLateLength = 0;

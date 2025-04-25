@@ -1,5 +1,7 @@
 package com.wmp;
 
+import com.wmp.PublicTools.printLog.Log;
+
 import java.awt.*;
 
 public class CTColor {
@@ -45,7 +47,7 @@ public class CTColor {
                 mainColor = Color.BLACK;
             }
         }
-        System.out.println("mainColor:" + String.format("#%06x", mainColor.getRGB()));
+        Log.info.print("CTColor", "mainColor:" + String.format("#%06x", mainColor.getRGB()));
     }
 
     public static void setMainTheme(String tempStyle){
@@ -60,6 +62,7 @@ public class CTColor {
                 backColor = new Color(0xFFFFFF);
             }
         }
+        Log.info.print("CTColor", "style:" + tempStyle);
     }
 
     @Override

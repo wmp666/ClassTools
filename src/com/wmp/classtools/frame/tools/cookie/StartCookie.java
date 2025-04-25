@@ -1,6 +1,7 @@
 package com.wmp.classTools.frame.tools.cookie;
 
 import com.wmp.PublicTools.OpenInExp;
+import com.wmp.PublicTools.printLog.Log;
 import com.wmp.PublicTools.videoView.VideoPlayer;
 
 import javax.swing.*;
@@ -20,7 +21,7 @@ public class StartCookie {
     }
     public static void showCookie(String pin){
         if (pin == null){
-            JOptionPane.showMessageDialog(null, "pin为空", "世界拒绝了我", JOptionPane.ERROR_MESSAGE);
+            Log.error.print("StartCookie", "pin为空");
             return;
         }
         try {
@@ -39,12 +40,11 @@ public class StartCookie {
                     case "exe" -> {
 
                         if (!Desktop.isDesktopSupported()) {
-                            JOptionPane.showMessageDialog(null, "不支持运行exe文件", "世界拒绝了我", JOptionPane.ERROR_MESSAGE);
+                            Log.error.print("StartCookie", "不支持运行此exe文件");
                             return;
                         }
 
                         ArrayList<String> parameters = cookieMap.get(pin).getParameters();
-                        System.out.println("启动参数:" + parameters);
 
                         ArrayList<String> temp = new ArrayList<>();
                         temp.add(RunFile.getPath());
@@ -59,21 +59,20 @@ public class StartCookie {
                         OpenInExp.open(RunFile.getPath());
                     }
                     default -> {
-                        JOptionPane.showMessageDialog(null, "未知的cookie类型", "世界拒绝了我", JOptionPane.ERROR_MESSAGE);
+                        Log.error.print("StartCookie", "未知的cookie类型");
                     }
                 }
                 new Thread(() -> {
+                    Log.info.print("StartCookie", "已通知运行:" + getCookie.getCookieMap().get(pin).getName());
                     JOptionPane.showMessageDialog(null, "已通知运行:" + getCookie.getCookieMap().get(pin).getName(), "通知", JOptionPane.INFORMATION_MESSAGE);
                 }).start();
 
                 //Runtime.getRuntime().exec(cookieFile.getRunPath());
-            } else if (pin.equals("null")) {
-                return;
-            } else {
-                JOptionPane.showMessageDialog(null, "错误的pin", "世界拒绝了我", JOptionPane.ERROR_MESSAGE);
+            }else {
+                Log.error.print("StartCookie", "错误的pin");
             }
         } catch (IOException e) {
-            e.printStackTrace();
+            Log.error.print("StartCookie", "运行失败！\n" + e.getMessage());
         }
 
     }

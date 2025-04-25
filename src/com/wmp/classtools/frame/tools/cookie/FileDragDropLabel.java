@@ -1,5 +1,7 @@
 package com.wmp.classTools.frame.tools.cookie;
 
+import com.wmp.PublicTools.printLog.Log;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.datatransfer.DataFlavor;
@@ -55,7 +57,7 @@ public class FileDragDropLabel extends JLabel {
                         if (fileName.endsWith(".zip")){
                             fileList.add(file);
                         }else{
-                            System.out.println("文件不是zip文件");
+                            Log.error.print("插件管理页-文件上传", "文件不是zip文件");
                         }
                     });
 
@@ -84,7 +86,7 @@ public class FileDragDropLabel extends JLabel {
                     SwingUtilities.invokeLater(() -> {
                         //updateStatus("已上传", new Color(0, 150, 0)));
 
-                        System.out.println("文件位置:" + file.getPath());
+                        Log.info.print("插件管理页-添加文件", "文件位置:" + file.getPath());
                         CookieSets.addCookie(file);
                     });
                 }

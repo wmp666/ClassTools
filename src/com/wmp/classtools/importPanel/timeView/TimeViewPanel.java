@@ -1,6 +1,7 @@
 package com.wmp.classTools.importPanel.timeView;
 
 import com.wmp.CTColor;
+import com.wmp.PublicTools.printLog.Log;
 import com.wmp.classTools.CTComponent.CTButton;
 import com.wmp.classTools.CTComponent.CTPanel;
 
@@ -81,9 +82,10 @@ public class TimeViewPanel extends CTPanel {
         if (allArgs.get("TimeView:screen").contains(list)) {
             //执行你的代码
             viewTimeInDeskTop(0);
-            System.out.println("-TimeView:screen");
+            Log.info.print("TimeView", "全屏显示时间");
         }else if(allArgs.get("screenProduct:show").contains(list)){
 
+            Log.info.print("TimeView", "屏保模式");
             viewTimeInDeskTop(1);
         }
 

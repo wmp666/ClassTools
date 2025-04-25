@@ -5,6 +5,7 @@ import com.wmp.PublicTools.GetIcon;
 import com.wmp.PublicTools.OpenInExp;
 import com.wmp.PublicTools.io.GetPath;
 import com.wmp.PublicTools.io.ZipPack;
+import com.wmp.PublicTools.printLog.Log;
 import com.wmp.classTools.CTComponent.CTButton;
 import com.wmp.classTools.frame.tools.cookie.CookieSets;
 import com.wmp.classTools.frame.tools.cookie.FileDragDropLabel;
@@ -160,7 +161,7 @@ public class ShowCookieDialog extends JDialog implements WindowListener {
             cookieButton.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));// 设置鼠标样式 - 箭头
             cookieButton.addActionListener(e->{
 
-                System.out.println("点击了" + cookieButton.getText());
+                Log.info.print("插件管理页", "点击了" + cookieButton.getText());
                 s[0] = key;
                 s[1] = cookieButton.getText();
 

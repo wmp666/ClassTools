@@ -1,13 +1,10 @@
 package com.wmp.PublicTools.update;
 
+import com.wmp.PublicTools.printLog.Log;
+
+import javax.net.ssl.*;
 import java.security.cert.CertificateException;
 import java.security.cert.X509Certificate;
-import javax.net.ssl.HostnameVerifier;
-import javax.net.ssl.HttpsURLConnection;
-import javax.net.ssl.SSLContext;
-import javax.net.ssl.SSLSession;
-import javax.net.ssl.TrustManager;
-import javax.net.ssl.X509TrustManager;
 
 public class SslUtils {
     private static void trustAllHttpsCertificates() throws Exception {
@@ -44,7 +41,7 @@ public class SslUtils {
     public static void ignoreSsl() throws Exception{
         HostnameVerifier hv = new HostnameVerifier() {
             public boolean verify(String urlHostName, SSLSession session) {
-                System.out.println("Warning: URL Host: " + urlHostName + " vs. " + session.getPeerHost());
+                Log.info.print("SslUtils","Warning: URL Host: " + urlHostName + " vs. " + session.getPeerHost());
                 return true;
             }
         };

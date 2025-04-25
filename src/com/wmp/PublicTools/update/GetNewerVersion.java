@@ -107,7 +107,6 @@ public class GetNewerVersion {
             // 使用JSONObject解析
             JSONObject release = new JSONObject(json);
 
-            System.out.println("原始数据" + json);
             // 获取准确下载地址
             String sourceURL = release.getString("zipball_url");
 

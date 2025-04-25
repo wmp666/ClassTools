@@ -3,15 +3,13 @@ package com.wmp.classTools.infSet.tools;
 import com.wmp.CTColor;
 import com.wmp.Main;
 import com.wmp.PublicTools.io.IOStreamForInf;
+import com.wmp.PublicTools.printLog.Log;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.File;
 import java.io.IOException;
-import java.time.LocalDate;
-import java.time.Month;
-import java.time.ZoneId;
 import java.util.ArrayList;
 
 public class GetSetsJSON {
@@ -24,12 +22,12 @@ public class GetSetsJSON {
 
         if (exists) {
             IOStreamForInf sets = new IOStreamForInf(new File(Main.DATA_PATH + "setUp.json"));
-            System.out.println(sets);
+
             JSONObject jsonObject;
             try {
                 jsonObject = new JSONObject(sets.GetInf()[0]);
             }catch (JSONException e){
-                System.err.println(e.getMessage());
+                Log.error.print("获取个性化数据", "数据获取发生错误:" + e.getMessage());
                 return;
             }
 
@@ -43,9 +41,10 @@ public class GetSetsJSON {
                 }
             }
             if (jsonObject.has("mainTheme")) {
-                switch (jsonObject.getString("mainTheme")) {
-                    case "dark" -> CTColor.setMainTheme(CTColor.STYLE_DARK);
-                    default -> CTColor.setMainTheme(CTColor.STYLE_LIGHT);
+                if (jsonObject.getString("mainTheme").equals("dark")) {
+                    CTColor.setMainTheme(CTColor.STYLE_DARK);
+                } else {
+                    CTColor.setMainTheme(CTColor.STYLE_LIGHT);
                 }
             }
             if (jsonObject.has("disposeButton")){
@@ -53,7 +52,6 @@ public class GetSetsJSON {
                 disButtonList.forEach(object -> {
                     disButList.add(object.toString());
                 });
-                System.out.println(disButList);
             }
             if (jsonObject.has("canExit")) {
                 canExit = jsonObject.getBoolean("canExit");

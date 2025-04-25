@@ -4,10 +4,13 @@ import com.wmp.Main;
 import com.wmp.PublicTools.GetIcon;
 import com.wmp.PublicTools.OpenInExp;
 import com.wmp.PublicTools.io.ZipPack;
+import com.wmp.PublicTools.printLog.Log;
 import com.wmp.classTools.CTComponent.CTButton;
 import com.wmp.classTools.frame.ShowCookieDialog;
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.swing.*;
 import java.awt.*;
@@ -25,11 +28,16 @@ import java.util.Objects;
 
 public class CookieSets {
 
+    private static final Logger log = LoggerFactory.getLogger(CookieSets.class);
+
     public static void CookieSetsDialog() throws IOException, JSONException {
         CookieSetsDialog(null);
     }
 
     public static void CookieSetsDialog(File file) throws IOException, JSONException {
+
+        Log.info.print("插件设置窗口", "开始加载窗口...");
+
         JDialog dialog = new JDialog();
         Container container = dialog.getContentPane();
         String pin = "";
@@ -43,11 +51,12 @@ public class CookieSets {
         } else {
             File setsFile = new File(file, "setUp.json");
             if (!setsFile.exists()) {
-                JOptionPane.showMessageDialog(dialog, "此插件无配置文件", "世界拒绝了我", JOptionPane.ERROR_MESSAGE);
+                Log.error.print("插件设置窗口", "此插件无配置文件");
                 return;
             }
             JSONObject jsonObject;
-            {//读取文件
+            {
+                //读取文件
                 BufferedReader reader = new BufferedReader(
                         new InputStreamReader(
                                 new FileInputStream(setsFile), StandardCharsets.UTF_8));
@@ -294,12 +303,20 @@ public class CookieSets {
                     }
 
                     try {
-                        Files.write(Paths.get(cookiePath, "setUp.json"),
-                                result.toString().getBytes(), StandardOpenOption.CREATE, StandardOpenOption.TRUNCATE_EXISTING);
+                        // 显式指定UTF-8编码，添加路径规范化处理
+                        Log.info.print("插件设置窗口", "setUp.json设置中...");
+                        Log.info.print("插件设置窗口", "setUp.json数据:" + result.toString());
+                        Files.writeString(
+                                Paths.get(cookiePath).normalize().resolve("setUp.json"),
+                                result.toString(),
+                                StandardOpenOption.CREATE,
+                                StandardOpenOption.TRUNCATE_EXISTING
+                        );
+                        Log.info.print("插件设置窗口", "设置完成");
                         JOptionPane.showMessageDialog(dialog, "设置完成", "提示", JOptionPane.INFORMATION_MESSAGE);
                     } catch (IOException e) {
-                        JOptionPane.showMessageDialog(dialog, "设置失败\n" + e.getMessage(), "世界拒绝了我", JOptionPane.ERROR_MESSAGE);
-                        throw new RuntimeException(e);
+                        Log.error.print("插件设置窗口", "设置失败\n" + e.getMessage());
+                        return;
                     }
 
 
@@ -307,7 +324,8 @@ public class CookieSets {
                     try {
                         refreshParentWindow();
                     } catch (IOException e) {
-                        throw new RuntimeException(e);
+                        Log.error.print("插件设置窗口", "刷新失败\n" + e.getMessage());
+                        return;
                     }
                 }
 
@@ -347,13 +365,17 @@ public class CookieSets {
     }
 
     public static void deleteCookie(File file) {
-        final String DIALOG_TITLE = "世界拒绝了我";
+        Log.info.print("删除插件", "询问是否删除");
         final int CONFIRM = JOptionPane.showConfirmDialog(null,
                 "确认删除该 Cookie 配置？",
-                DIALOG_TITLE,
+                "询问",
                 JOptionPane.YES_NO_OPTION);
 
-        if (CONFIRM != JOptionPane.YES_OPTION) return;
+        if (CONFIRM != JOptionPane.YES_OPTION) {
+            Log.info.print("删除插件", "取消删除");
+            return;
+        }
+        Log.info.print("删除插件", "删除");
 
         JDialog dialog = new JDialog();
 
@@ -377,7 +399,7 @@ public class CookieSets {
                 protected Void doInBackground() throws Exception {
                     try {
                         if (file == null || !file.exists()) {
-                            JOptionPane.showMessageDialog(null, "目标不存在", DIALOG_TITLE, JOptionPane.ERROR_MESSAGE);
+                            Log.error.print("删除 Cookie", "目标不存在");
                             return null;
                         }
 
@@ -389,15 +411,16 @@ public class CookieSets {
                         }
 
                         if (file.delete() || !file.exists()) {
-                            JOptionPane.showMessageDialog(null, "删除成功", DIALOG_TITLE, JOptionPane.INFORMATION_MESSAGE);
+                            Log.info.print("删除 Cookie", "删除成功");
+                            JOptionPane.showMessageDialog(null, "删除成功", "提示", JOptionPane.INFORMATION_MESSAGE);
                         } else {
                             String errorType = file.canWrite() ? "文件被占用" : "权限不足";
-                            JOptionPane.showMessageDialog(null, "删除失败：" + errorType, DIALOG_TITLE, JOptionPane.ERROR_MESSAGE);
+                            Log.error.print("删除 Cookie", "删除失败：" + errorType);
                         }
                     } catch (IOException e) {
-                        JOptionPane.showMessageDialog(null, "文件遍历异常：" + e.getMessage(), DIALOG_TITLE, JOptionPane.ERROR_MESSAGE);
+                        Log.error.print("删除 Cookie", "删除失败：文件遍历异常-" + e.getMessage());
                     } catch (SecurityException e) {
-                        JOptionPane.showMessageDialog(null, "安全限制：" + e.getMessage(), DIALOG_TITLE, JOptionPane.ERROR_MESSAGE);
+                        Log.error.print("删除 Cookie", "删除失败：安全限制-" + e.getMessage());
                     }
                     return null;
                 }

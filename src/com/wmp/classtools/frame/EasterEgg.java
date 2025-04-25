@@ -2,6 +2,7 @@ package com.wmp.classTools.frame;
 
 import com.wmp.Main;
 import com.wmp.PublicTools.io.ResourceLocalizer;
+import com.wmp.PublicTools.printLog.Log;
 import com.wmp.PublicTools.videoView.VideoPlayer;
 import com.wmp.PublicTools.web.GetWebInf;
 import com.wmp.classTools.frame.tools.cookie.StartCookie;
@@ -54,14 +55,18 @@ public class EasterEgg {
     }
     public static void showEasterEgg(String pin){
 
+        Log.info.print("EasterEgg-显示", "正在准备...");
+
         new SwingWorker<Void, Void>() {
             @Override
             protected Void doInBackground() throws Exception {
                 // 异步下载（在后台线程执行）
+                Log.info.print("EasterEgg-下载", "正在下载...");
                 String downloadUrl = "";
                 try {
                     String temp = GetWebInf.getWebInf("https://api.github.com/repos/wmp666/ClassTools/releases");
-                    System.out.println(temp);
+
+
                     //以数组的形式加载[n,d,v]
                     JSONArray jsonArray = new JSONArray(temp);
                     for (int i = 0; i < jsonArray.length(); i++) {
@@ -86,6 +91,7 @@ public class EasterEgg {
                     downloadUrl = "{\"message\":\"Not Found\"}";
                     throw new RuntimeException(e);
                 }
+                Log.info.print("EasterEgg-下载", "下载链接: " + downloadUrl);
 
                 ResourceLocalizer.copyWebVideo(Main.TEMP_PATH + "video\\", downloadUrl, pin + ".mp4");
                 return null;

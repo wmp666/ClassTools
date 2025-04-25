@@ -8,7 +8,7 @@ import java.io.File;
 public class GetPath {
 
 
-    public static String getFilePath(Component c, String title , String fileType, String fileName) throws RuntimeException{
+    public static String getFilePath(Component c, String title, String fileType, String fileName) throws RuntimeException {
         JFileChooser chooser = new JFileChooser();
         chooser.setDialogTitle(title);
 
@@ -24,9 +24,10 @@ public class GetPath {
                     return fileSuffix.equals(fileType);
                 }
             }
+
             @Override
             public String getDescription() {
-                return fileName + "文件(*"+ fileType +")";
+                return fileName + "文件(*" + fileType + ")";
             }
         });
 
@@ -55,7 +56,7 @@ public class GetPath {
         chooser.setDialogTitle(title);
         chooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
         //返回文件路径
-        if(chooser.showOpenDialog(c) == JFileChooser.APPROVE_OPTION){// 如果点击了"确定"按钮
+        if (chooser.showOpenDialog(c) == JFileChooser.APPROVE_OPTION) {// 如果点击了"确定"按钮
             try {
                 String filePath = chooser.getSelectedFile().getAbsolutePath();
                 System.out.println("文件路径：" + filePath);
