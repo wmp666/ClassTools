@@ -52,25 +52,7 @@ public class MainWindow extends JDialog {
         TimeViewPanel timeViewPanel = new TimeViewPanel(mixY.get());
         showPanelList.add(timeViewPanel);
 
-        DPanel dPanel = new DPanel(mixY.get(),DutyListPath,indexPath);
-        showPanelList.add(dPanel);
 
-        ATPanel aTPanel = new ATPanel(mixY.get(),AllStuPath,LeaveListPath);
-        showPanelList.add(aTPanel);
-
-        FinalPanel finalPanel = new FinalPanel(mixY.get(), AllStuPath, LeaveListPath, DutyListPath, indexPath,
-                showPanelList);
-        showPanelList.add(finalPanel);
-
-        showPanelList.forEach(ctPanel -> {
-            ctPanel.setLocation(0, mixY.get());
-            ctPanel.setBackground(CTColor.backColor);
-            mixY.set(ctPanel.getNextPanelY());
-            contentPane.add(ctPanel);
-        });
-        contentPane.add(finalPanel);
-
-        initFrame(mixY.get());
 
         if (allArgs.get("screenProduct:view").contains(list)){
             JDialog view = new JDialog();
@@ -120,6 +102,26 @@ public class MainWindow extends JDialog {
             view.setVisible(true);
 
         }else {
+            DPanel dPanel = new DPanel(mixY.get(),DutyListPath,indexPath);
+            showPanelList.add(dPanel);
+
+            ATPanel aTPanel = new ATPanel(mixY.get(),AllStuPath,LeaveListPath);
+            showPanelList.add(aTPanel);
+
+            FinalPanel finalPanel = new FinalPanel(mixY.get(), AllStuPath, LeaveListPath, DutyListPath, indexPath,
+                    showPanelList);
+            showPanelList.add(finalPanel);
+
+            showPanelList.forEach(ctPanel -> {
+                ctPanel.setLocation(0, mixY.get());
+                ctPanel.setBackground(CTColor.backColor);
+                mixY.set(ctPanel.getNextPanelY());
+                contentPane.add(ctPanel);
+            });
+            contentPane.add(finalPanel);
+
+            initFrame(mixY.get());
+
             this.setVisible(true);
             //刷新
 

@@ -63,17 +63,7 @@ public class GetSetsJSON {
             }
         }
 
-        //加载颜色(CTColor)数据
-        //判断当前时间是否是4月1日
-        // 明确指定时区
-        LocalDate currentDate = LocalDate.now(ZoneId.of("Asia/Shanghai"));
-        boolean b = currentDate.getMonth() == Month.APRIL
-                && currentDate.getDayOfMonth() == 1;
-        if (b){
-            CTColor.setAllColor(CTColor.MAIN_COLOR_GREEN, CTColor.STYLE_LIGHT);
-        }
 
-        System.out.println(new CTColor());
     }
 
     public boolean isCanExit() {

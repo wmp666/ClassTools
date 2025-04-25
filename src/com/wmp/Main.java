@@ -11,6 +11,9 @@ import com.wmp.classTools.infSet.tools.GetSetsJSON;
 import javax.swing.*;
 import java.io.IOException;
 import java.net.URISyntaxException;
+import java.time.LocalDate;
+import java.time.Month;
+import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.TreeMap;
@@ -28,7 +31,7 @@ public class Main{
     * d:修复c版的问题(仅限)
     * e:测试版本号
      */
-    public static String version = "1.14.0";
+    public static String version = "1.15.1";
 
     public static ArrayList<String> list = new ArrayList<>();
 
@@ -66,6 +69,8 @@ public class Main{
 
         GetSetsJSON setsJSON = new GetSetsJSON();
 
+        boolean b = isImportDay();
+
         StartUpdate = setsJSON.isStartUpdate();
         canExit = setsJSON.isCanExit();
         disButList.addAll(setsJSON.getDisButList());
@@ -88,20 +93,61 @@ public class Main{
             System.out.println(list);
         }
 
-        show();
+        show(b);
+
+    }
+
+    private static boolean isImportDay() {
+        //加载颜色(CTColor)数据
+        //判断当前时间是否是4月1日
+        // 明确指定时区
+        LocalDate currentDate = LocalDate.now(ZoneId.of("Asia/Shanghai"));
+        boolean b = currentDate.getMonth() == Month.APRIL
+                && currentDate.getDayOfMonth() == 1;
+        if (b){
+            CTColor.setAllColor(CTColor.MAIN_COLOR_GREEN, CTColor.STYLE_LIGHT);
+            return b;
+        }
+
+        b = (currentDate.getMonth() == Month.SEPTEMBER //原神周年庆
+                && currentDate.getDayOfMonth() == 28) ||
+                (currentDate.getMonth() == Month.NOVEMBER //author birthday
+                && currentDate.getDayOfMonth() == 3) ||
+                (currentDate.getMonth() == Month.SEPTEMBER //mc
+                && currentDate.getDayOfMonth() == 3) ||
+                (currentDate.getMonth() == Month.APRIL //崩铁
+                && currentDate.getDayOfMonth() == 25);
+
+        return b;
+
+
+        //System.out.println(new CTColor());
 
     }
 
 
-
-    private static void show() throws URISyntaxException, IOException {
+    private static void show(boolean b) throws URISyntaxException, IOException {
         System.out.println("Hello, World!");
 
 
-        //System.out.println(sb);
-        LoadingWindow loadingWindow = new LoadingWindow();
+        LoadingWindow loadingWindow;
+        if (b){
+            System.out.println("April Fools!");
+            if (allArgs.get("screenProduct:show").contains(list)){
+                loadingWindow = new LoadingWindow(Main.class.getResource("/image/start.gif"),
+                        692, 491, "", true, 1300, LoadingWindow.STYLE_SCREEN);
+            }else{
+                loadingWindow = new LoadingWindow(Main.class.getResource("/image/loading.gif"),
+                        200, 200, "加载中...", true, 2300);
+            }
 
-        loadingWindow.setVisible(true);
+        }else{
+            loadingWindow = new LoadingWindow();
+        }
+        //System.out.println(sb);
+
+
+        //loadingWindow.setVisible(true);
 
         if (StartUpdate &&
                 !(allArgs.get("StartUpdate:false").contains(list) ||
