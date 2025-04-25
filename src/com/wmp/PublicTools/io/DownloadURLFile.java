@@ -176,6 +176,11 @@ public class DownloadURLFile {
                     }
 
                 } catch (IOException e) {
+                    //判断错误是否为拒绝访问
+                    Log.error.print("DownloadURLFile-下载", "下载失败: " + e.getMessage());
+                    if (e.getMessage().contains("拒绝访问")) {
+                        JOptionPane.showMessageDialog(parent, "下载失败，请以管理员身份运行");
+                    }
                     throw new RuntimeException(e);
                 }
 
