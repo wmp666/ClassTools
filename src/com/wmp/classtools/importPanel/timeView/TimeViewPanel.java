@@ -131,7 +131,8 @@ public class TimeViewPanel extends CTPanel {
                 timeView.setBounds(5,3,180,32);
                 this.add(timeView);
             } else if (i == 1) {
-                System.exit(0);
+                Log.exit(0);
+                //System.exit(0);
             }
         });
 
