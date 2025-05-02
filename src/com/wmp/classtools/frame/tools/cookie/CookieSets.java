@@ -48,7 +48,7 @@ public class CookieSets {
         } else {
             File setsFile = new File(file, "setUp.json");
             if (!setsFile.exists()) {
-                Log.error.print("插件设置窗口", "此插件无配置文件");
+                Log.error.print(dialog, "插件设置窗口", "此插件无配置文件");
                 return;
             }
             JSONObject jsonObject;
@@ -305,10 +305,10 @@ public class CookieSets {
                                 StandardOpenOption.CREATE,
                                 StandardOpenOption.TRUNCATE_EXISTING
                         );
-                        Log.info.print("插件设置窗口", "设置完成");
-                        JOptionPane.showMessageDialog(dialog, "设置完成", "提示", JOptionPane.INFORMATION_MESSAGE);
+                        Log.info.message(dialog, "插件设置窗口", "设置完成");
+
                     } catch (IOException e) {
-                        Log.error.print("插件设置窗口", "设置失败\n" + e.getMessage());
+                        Log.error.print(dialog, "插件设置窗口", "设置失败\n" + e.getMessage());
                         return;
                     }
 
@@ -317,7 +317,7 @@ public class CookieSets {
                     try {
                         refreshParentWindow();
                     } catch (IOException e) {
-                        Log.error.print("插件设置窗口", "刷新失败\n" + e.getMessage());
+                        Log.error.print(dialog, "插件设置窗口", "刷新失败\n" + e.getMessage());
                         return;
                     }
                 }
@@ -359,10 +359,9 @@ public class CookieSets {
 
     public static void deleteCookie(File file) {
         Log.info.print("删除插件", "询问是否删除");
-        final int CONFIRM = JOptionPane.showConfirmDialog(null,
-                "确认删除该 Cookie 配置？",
-                "询问",
-                JOptionPane.YES_NO_OPTION);
+        final int CONFIRM = Log.info.inputInt(null,
+                "删除插件",
+                "确认删除该 Cookie 配置？");
 
         if (CONFIRM != JOptionPane.YES_OPTION) {
             Log.info.print("删除插件", "取消删除");
@@ -404,8 +403,7 @@ public class CookieSets {
                         }
 
                         if (file.delete() || !file.exists()) {
-                            Log.info.print("删除 Cookie", "删除成功");
-                            JOptionPane.showMessageDialog(null, "删除成功", "提示", JOptionPane.INFORMATION_MESSAGE);
+                            Log.info.message(null, "删除 Cookie", "删除成功");
                         } else {
                             String errorType = file.canWrite() ? "文件被占用" : "权限不足";
                             Log.error.print("删除 Cookie", "删除失败：" + errorType);

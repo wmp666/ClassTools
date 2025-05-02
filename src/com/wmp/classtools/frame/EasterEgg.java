@@ -18,7 +18,8 @@ import java.util.Objects;
 public class EasterEgg {
 
     public static void getPin() {
-        String s = JOptionPane.showInputDialog(null, "请输入■■", "祈愿", JOptionPane.PLAIN_MESSAGE);
+        String s = Log.info.input(null, "祈愿", "请输入■■");
+
 
 
         if (s != null) {
@@ -31,12 +32,13 @@ public class EasterEgg {
                     } else if (split[0].equalsIgnoreCase("cookie")) {
                         StartCookie.showCookie(split[1].split(";"));
                     } else{
-                        JOptionPane.showMessageDialog(null, "请输入正确的格式", "世界拒绝了我", JOptionPane.ERROR_MESSAGE);
+                        Log.error.print(null, "祈愿", "请输入正确的格式");
+
                     }
                 } else if (split.length == 1) {
                     showEasterEgg(s.split(";"));
                 }else{
-                    JOptionPane.showMessageDialog(null, "请输入正确的格式", "世界拒绝了我", JOptionPane.ERROR_MESSAGE);
+                    Log.error.print(null, "祈愿", "请输入正确的格式");
                 }
 
 
@@ -151,27 +153,7 @@ public class EasterEgg {
             }
         }.execute();
 
-        //VideoLocalizer.copyEmbeddedVideo(Main.TEMP_PATH, pin + ".mp4");
-        /*String videoPath = "null";
-        switch (pin) {
-            case "nj01":
-                videoPath = Main.TEMP_PATH + "video\\nj01.mp4";
-                break;
-            case "nj02":
-                videoPath = Main.TEMP_PATH + "video\\nj02.mp4";
-                break;
-            case "nj03":
-                videoPath = Main.TEMP_PATH + "video\\nj03.mp4";
-                break;
-            case "nj04":
-                videoPath = Main.TEMP_PATH + "video\\nj04.mp4";
-                break;
-            default:
-                JOptionPane.showMessageDialog(null, "请输入正确的格式", "世界拒绝了我", JOptionPane.ERROR_MESSAGE);
-                break;
 
-        }
-        VideoPlayer.playVideo(videoPath);*/
 
     }
 

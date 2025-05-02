@@ -1,5 +1,7 @@
 package com.wmp.PublicTools.printLog;
 
+import java.awt.*;
+
 public class PrintLogStyle {
     private LogStyle style;
 
@@ -16,6 +18,11 @@ public class PrintLogStyle {
     }
 
     public void print(String owner, String logInfo) {
-        Log.print(style, owner, logInfo);
+        Log.print(style, owner, logInfo, null);
+    }
+
+    public void print(Container c, String owner, String logInfo) {
+        Log.print(style, owner, logInfo, c);
     }
 }
+

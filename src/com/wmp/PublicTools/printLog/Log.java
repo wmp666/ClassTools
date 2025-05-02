@@ -44,7 +44,7 @@ public class Log {
         }
     });
 
-    public static PrintLogStyle info = new PrintLogStyle(LogStyle.INFO);
+    public static InfoLogStyle info = new InfoLogStyle(LogStyle.INFO);
     public static PrintLogStyle warn = new PrintLogStyle(LogStyle.WARN);
     public static PrintLogStyle error = new PrintLogStyle(LogStyle.ERROR);
 
@@ -127,7 +127,7 @@ public class Log {
 
     }
 
-    public static void print(LogStyle style, String owner, String logInfo) {
+    public static void print(LogStyle style, String owner, String logInfo, Container c) {
         Date date = new Date();
         DateFormat dateFormat = new SimpleDateFormat("MM.dd HH:mm:ss");
         String dateStr = dateFormat.format(date);
@@ -162,7 +162,7 @@ public class Log {
                         logInfo;
                 System.err.println(info);
 
-                JOptionPane.showMessageDialog(null, logInfo, "世界拒绝了我", JOptionPane.ERROR_MESSAGE);
+                JOptionPane.showMessageDialog(c, logInfo, "世界拒绝了我", JOptionPane.ERROR_MESSAGE);
 
                 logInfList.add(info);
             }

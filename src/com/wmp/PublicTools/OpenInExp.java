@@ -1,6 +1,7 @@
 package com.wmp.PublicTools;
 
-import javax.swing.*;
+import com.wmp.PublicTools.printLog.Log;
+
 import java.awt.*;
 import java.io.File;
 import java.io.IOException;
@@ -13,7 +14,7 @@ public class OpenInExp {
 
             // 校验父目录有效性
             if (targetDir == null || !targetDir.exists()) {
-                JOptionPane.showMessageDialog(null, "Parent directory does not exist", "世界拒绝了我", JOptionPane.ERROR_MESSAGE);
+                Log.error.print("OpenInExp", "不存在的位置");
                 throw new IOException("Parent directory does not exist");
             }
             // 使用跨平台方式打开文件管理器

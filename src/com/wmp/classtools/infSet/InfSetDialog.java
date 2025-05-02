@@ -340,7 +340,8 @@ public class InfSetDialog extends JDialog implements WindowListener {
                 String s1 = "null";
                 String s2 = "null";
                 while (b) {
-                    s1 = JOptionPane.showInputDialog(this, "请输入擦黑板人员", "新建", JOptionPane.PLAIN_MESSAGE);
+                    s1 =  Log.info.input(c, "InfSetDialog-新建", "请输入擦黑板人员");
+
                     if (s1 != null && !s1.trim().isEmpty() && !(s1.indexOf('[') != -1 || s1.indexOf(']') != -1)) {
                         b = false;
                     } else if (s1 == null) {
@@ -350,7 +351,7 @@ public class InfSetDialog extends JDialog implements WindowListener {
 
                 b = true;
                 while (b) {
-                    s2 = JOptionPane.showInputDialog(this, "请输入扫地人员", "新建", JOptionPane.PLAIN_MESSAGE);
+                    s2 = Log.info.input(c, "InfSetDialog-新建", "请输入扫地人员");
                     if (s2 != null && !s2.trim().isEmpty() && !(s2.indexOf('[') != -1 || s2.indexOf(']') != -1)) {
                         b = false;
                     } else if (s2 == null) {
@@ -434,7 +435,7 @@ public class InfSetDialog extends JDialog implements WindowListener {
                 boolean b = true;
                 String s1 = "null";
                 while (b) {
-                    s1 = JOptionPane.showInputDialog(this, "请输入姓名", "新建", JOptionPane.PLAIN_MESSAGE);
+                    s1 = Log.info.input(c, "InfSetDialog-新建", "请输入姓名");
                     if (s1 != null && !s1.trim().isEmpty()) {
                         b = false;
                     } else if (s1 == null) {
@@ -529,7 +530,7 @@ public class InfSetDialog extends JDialog implements WindowListener {
         getDutyList.addActionListener(e -> {
             String filePath = GetPath.getFilePath(this, "请选择值日表", ".xlsx", "Excel");
             new GetExcelData<Duty>().getExcelData(filePath, DutyListPath, Duty.class );
-            JOptionPane.showConfirmDialog(this, "导入成功", "", JOptionPane.DEFAULT_OPTION, JOptionPane.INFORMATION_MESSAGE);
+            Log.info.message(this, "InfSetDialog-导入表格", "导入成功");
             this.setVisible(false);
             refreshCallback.run();
         });
@@ -539,7 +540,7 @@ public class InfSetDialog extends JDialog implements WindowListener {
         getAllStuList.addActionListener(e -> {
             String filePath = GetPath.getFilePath(this, "请选择人员表", ".xlsx", "Excel");
             new GetExcelData<AllStu>().getExcelData(filePath, AllStuPath, AllStu.class );
-            JOptionPane.showConfirmDialog(this, "导入成功", "", JOptionPane.DEFAULT_OPTION, JOptionPane.INFORMATION_MESSAGE);
+            Log.info.message(this, "InfSetDialog-导入表格", "导入成功");
             this.setVisible(false);
             refreshCallback.run();
         });
@@ -641,7 +642,7 @@ public class InfSetDialog extends JDialog implements WindowListener {
         saveMenuItem.setIcon(GetIcon.getIcon(getClass().getResource("/image/light/save_0.png"), 16, 16));
         saveMenuItem.addActionListener(e -> {
             save();
-            //JOptionPane.showMessageDialog(this, "保存成功");
+
         });
 
 
@@ -722,34 +723,7 @@ public class InfSetDialog extends JDialog implements WindowListener {
         }
 
         // 保存按钮
-        /*{
 
-            CTButton saveBtn = new CTButton("保存", getClass().getResource("/image/save_0.png")
-                    , getClass().getResource("/image/save_1.png"), 95, 35, () -> {
-                try {
-                    StringBuilder sb = new StringBuilder();
-                    for (JCheckBox checkBox : checkBoxList) {
-                        if (checkBox.isSelected()) {
-                            sb.append(checkBox.getText()).append(",");
-                        }
-                    }
-                    String names = sb.toString();
-                    new IOStreamForInf(leaveListPath).SetInf(names);
-                    JOptionPane.showMessageDialog(this, "保存成功");
-
-                    refreshCallback.run(); // 保存成功后执行回调
-
-                    this.setVisible(false);
-
-                } catch (IOException ex) {
-                    JOptionPane.showMessageDialog(this, "保存失败", "错误", JOptionPane.ERROR_MESSAGE);
-                }
-            });
-            //JButton saveBtn = new JButton("保存");
-            saveBtn.setLocation(22, 340);
-
-            c.add(saveBtn);
-        }*/
 
         return mainPanel;
     }
@@ -827,7 +801,7 @@ public class InfSetDialog extends JDialog implements WindowListener {
     }
 
     private void save() {
-        int result = JOptionPane.showConfirmDialog(this, "是否保存？", "提示", JOptionPane.YES_NO_OPTION);
+        int result = Log.info.inputInt(this, "InfSetDialog-保存", "是否保存？");
         if (result == JOptionPane.YES_OPTION) {
             try {
 
@@ -855,10 +829,6 @@ public class InfSetDialog extends JDialog implements WindowListener {
                     new IOStreamForInf(DutyListPath).SetInf(sb.toString());
                     new IOStreamForInf(indexPath).SetInf(String.valueOf(index.get()));
 
-                    //System.out.println(new IOStreamForInf(indexPath).GetInf());
-
-                    //JOptionPane.showMessageDialog(this, "保存成功");
-
                 }
 
                 //保存数据-请假信息
@@ -871,7 +841,6 @@ public class InfSetDialog extends JDialog implements WindowListener {
                     }
                     String names = sb.toString();
                     new IOStreamForInf(leaveListPath).SetInf(names);
-                    //JOptionPane.showMessageDialog(this, "保存成功");
 
 
                 }
@@ -957,7 +926,7 @@ public class InfSetDialog extends JDialog implements WindowListener {
                 //this.setVisible(false);
 
             } catch (IOException ex) {
-                JOptionPane.showMessageDialog(this, "保存失败", "世界拒绝了我", JOptionPane.ERROR_MESSAGE);
+                Log.error.print("InfSetDialog", "保存数据失败: " + ex.getMessage());
             }
         }
     }

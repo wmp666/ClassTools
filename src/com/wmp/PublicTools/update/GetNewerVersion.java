@@ -2,6 +2,7 @@ package com.wmp.PublicTools.update;
 
 import com.wmp.Main;
 import com.wmp.PublicTools.io.DownloadURLFile;
+import com.wmp.PublicTools.printLog.Log;
 import com.wmp.PublicTools.web.GetWebInf;
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -42,20 +43,17 @@ public class GetNewerVersion {
 
             protected void done() {
                 if (sourceURL == null) {
-                    JOptionPane.showMessageDialog(dialog,
-                            "无法获取下载地址", "世界拒绝了我", JOptionPane.ERROR_MESSAGE);
+                    Log.error.print(dialog, "获取新版本", "无法获取下载地址");
                     return;
                 }
 
-                    int result = JOptionPane.showConfirmDialog(dialog,
-                            "检测到源代码文件，是否下载？",
-                            "发现更新", JOptionPane.YES_NO_OPTION);
+                    int result = Log.info.inputInt(dialog, "发现新版本", "检测到源代码文件，是否下载？");
 
                     if (result == JOptionPane.YES_OPTION) {
                         try {
                             downloadSource(sourceURL);
                         } catch (URISyntaxException e) {
-                            JOptionPane.showMessageDialog(dialog, "下载失败", "世界拒绝了我", JOptionPane.ERROR_MESSAGE);
+                            Log.error.print(dialog, "获取新版本-下载", "下载失败");
                             throw new RuntimeException(e);
                         } catch (IOException e) {
                             throw new RuntimeException(e);
@@ -140,18 +138,16 @@ public class GetNewerVersion {
                 if (latestVersion == null) {
                     System.out.println("无法检查更新");
 
-                        JOptionPane.showMessageDialog(dialog,
-                                "无法检查更新", "世界拒绝了我", JOptionPane.ERROR_MESSAGE);
-
+                    Log.error.print(dialog, "获取新版本", "无法获取版本信息");
 
                     return;
                 }
                 int i = isNewerVersion(latestVersion, Main.version);
                     if (i == 1) {
-                        System.out.println("发现新版本 " + latestVersion);
-                        int result = JOptionPane.showConfirmDialog(dialog,
-                                "发现新版本 " + latestVersion + "，是否下载？\n" + versionContent,
-                                "发现更新", JOptionPane.YES_NO_OPTION);
+                        Log.info.print( "发现新版本", "发现新版本 " + latestVersion);
+                        int result = Log.info.inputInt(dialog, "发现新版本",
+                                "发现新版本 " + latestVersion + "，是否下载？\n" + versionContent);
+
 
                         if (result == JOptionPane.YES_OPTION) {
                             new Thread(() ->{
@@ -160,10 +156,9 @@ public class GetNewerVersion {
 
                         }
                     } else if (i == 2) {
-                        System.out.println("发现新版本 " + latestVersion);
-                        JOptionPane.showMessageDialog(dialog,
-                                "发现新版本 " + latestVersion + "!\n" + versionContent,
-                                "发现更新", JOptionPane.INFORMATION_MESSAGE);
+                        Log.info.message(dialog, "发现新版本",
+                                "发现新版本 " + latestVersion + "，是否下载？\n" + versionContent);
+
 
                         new Thread(() ->{
                             DownloadURLFile.downloadWebFile(dialog, panel, downloadUrl, "app");
@@ -171,8 +166,8 @@ public class GetNewerVersion {
                     } else {
                         System.out.println("当前已是最新版本");
                         if (showMessage) {
-                            JOptionPane.showMessageDialog(dialog,
-                                    "当前已是最新版本", "提示", JOptionPane.INFORMATION_MESSAGE);
+                            Log.info.message(dialog, "获取新版本", "当前已是最新版本");
+
                         }
 
                     }

@@ -5,7 +5,6 @@ import com.wmp.PublicTools.printLog.Log;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import javax.swing.*;
 import java.io.*;
 import java.nio.charset.StandardCharsets;
 import java.util.TreeMap;
@@ -49,8 +48,7 @@ public class GetCookie {
                         try {
                             JSONCookieSets = new JSONObject(s.toString());
                         } catch (JSONException e) {
-                            JOptionPane.showMessageDialog(null,  cookieSets.getParent() + "setUp.json数据出错\n" + e.getMessage(), "JSON格式错误", JOptionPane.ERROR_MESSAGE);
-                            System.err.println(e.getMessage());
+                            Log.error.print(null, "获取插件数据", cookieSets.getParent() + "setUp.json数据出错\n" + e.getMessage());
                             continue;
                         }
 

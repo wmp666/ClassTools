@@ -4,6 +4,7 @@ import com.wmp.CTColor;
 import com.wmp.Main;
 import com.wmp.PublicTools.GetIcon;
 import com.wmp.PublicTools.OpenInExp;
+import com.wmp.PublicTools.printLog.Log;
 import com.wmp.PublicTools.update.GetNewerVersion;
 import com.wmp.classTools.CTComponent.CTButton;
 import com.wmp.classTools.frame.tools.help.ShowHelpDoc;
@@ -93,12 +94,13 @@ public class AboutDialog extends JDialog {
         JMenuItem weChat = new JMenuItem("微信");
         weChat.setIcon(GetIcon.getIcon(getClass().getResource("/image/wechat.png"), 23, 20));
         weChat.addActionListener(e ->
-                JOptionPane.showMessageDialog(this, "微信: w13607088913"));
+                Log.info.message(this, "关于-个人信息", "微信: w13607088913")
+        );
 
         JMenuItem qq = new JMenuItem("QQ");
         qq.setIcon(GetIcon.getIcon(getClass().getResource("/image/qq.png"), 20, 20));
         qq.addActionListener(e ->
-            JOptionPane.showMessageDialog(this, "QQ: 2134868121"));
+                Log.info.message(this, "关于-个人信息", "QQ: 2134868121"));
 
         JMenuItem bilibili = new JMenuItem("哔哩哔哩");
         bilibili.setIcon(GetIcon.getIcon(getClass().getResource("/image/bilibili.png"), 20, 20));
@@ -179,7 +181,7 @@ public class AboutDialog extends JDialog {
             } catch (URISyntaxException | IOException ex) {
                 throw new RuntimeException(ex);
             }
-            //JOptionPane.showMessageDialog(this, "正在加急制作...", "帮助文档(前面的区域，以后再来探索吧)", JOptionPane.INFORMATION_MESSAGE);
+
         });
 
         JMenuItem easterEgg = new JMenuItem("■■");

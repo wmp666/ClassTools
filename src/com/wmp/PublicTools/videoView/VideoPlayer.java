@@ -1,6 +1,7 @@
 package com.wmp.PublicTools.videoView;
 
-import javax.swing.*;
+import com.wmp.PublicTools.printLog.Log;
+
 import java.awt.*;
 import java.io.File;
 import java.io.IOException;
@@ -17,7 +18,8 @@ public class VideoPlayer {
         try {
             Desktop.getDesktop().open(videoFile);
         } catch (IOException e) {
-            JOptionPane.showMessageDialog(null, "播放出现错误\n" + e.getMessage(), "世界拒绝了我", JOptionPane.ERROR_MESSAGE);
+            // 处理打开视频文件失败的情况
+            Log.error.print("VideoPlayer", "播放出现错误\n" + e.getMessage());
             throw new RuntimeException(e);
         }
     }

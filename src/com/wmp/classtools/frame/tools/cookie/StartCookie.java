@@ -4,7 +4,6 @@ import com.wmp.PublicTools.OpenInExp;
 import com.wmp.PublicTools.printLog.Log;
 import com.wmp.PublicTools.videoView.VideoPlayer;
 
-import javax.swing.*;
 import java.awt.*;
 import java.io.File;
 import java.io.IOException;
@@ -77,8 +76,7 @@ public class StartCookie {
                     throw new RuntimeException(e);
                 }
                 new Thread(() -> {
-                    Log.info.print("StartCookie", "已通知运行:" + getCookie.getCookieMap().get(pin).getName());
-                    JOptionPane.showMessageDialog(null, "已通知运行:" + getCookie.getCookieMap().get(pin).getName(), "通知", JOptionPane.INFORMATION_MESSAGE);
+                    Log.info.message(null, "StartCookie", "已通知运行:" + getCookie.getCookieMap().get(pin).getName());
                 }).start();
 
                 //Runtime.getRuntime().exec(cookieFile.getRunPath());

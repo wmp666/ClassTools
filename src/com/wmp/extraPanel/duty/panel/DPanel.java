@@ -58,7 +58,7 @@ public class DPanel extends CTPanel {
             now = DutyList.get(index);
         } catch (Exception e) {
             new IOStreamForInf(indexPath).SetInf("0");
-            JOptionPane.showMessageDialog(null, "数据异常,请检查数据文件\n问题:" + e.getMessage(), "世界拒绝了我", JOptionPane.ERROR_MESSAGE);
+            Log.error.print("CTPanel-DutyPanel", "数据异常,请检查数据文件\n问题:" + e.getMessage());
             //throw new RuntimeException(e);
         }
 
@@ -81,7 +81,8 @@ public class DPanel extends CTPanel {
                     "/image/%s/next_0.png",
                     "/image/%s/next_1.png", 30, () -> {
 
-                int i = JOptionPane.showConfirmDialog(this, "确认切换至下一天", "询问", JOptionPane.YES_NO_OPTION);
+                int i = Log.info.inputInt(this, "CTPanel-DutyPanel-日期切换", "确认切换至下一天");
+
                 if (i == 0) {
                     if (index < DutyList.size() - 1) index++;
 
@@ -106,7 +107,7 @@ public class DPanel extends CTPanel {
             CTButton last = new CTButton("上一天",
                     "/image/%s/last_0.png",
                     "/image/%s/last_1.png", 30, () -> {
-                int i = JOptionPane.showConfirmDialog(this, "确认切换至上一天", "询问", JOptionPane.YES_NO_OPTION);
+                int i = Log.info.inputInt(this, "CTPanel-DutyPanel-日期切换", "确认切换至上一天");
                 if (i == 0) {
                     if (index > 0) index--;
                     else index = DutyList.size() - 1;
@@ -195,7 +196,7 @@ public class DPanel extends CTPanel {
                         DutyDay.setDutyPersonList(strings.get(1))));
             } catch (Exception e) {
                 if (strings.size() <= 2){
-                    JOptionPane.showMessageDialog(this, "请检查数据格式是否正确", "世界拒绝了我", JOptionPane.ERROR_MESSAGE);
+                    Log.error.print(this, "CTPanel-DutyPanel-初始化数据", "请检查数据格式是否正确");
                 }
                 throw new RuntimeException(e);
             }

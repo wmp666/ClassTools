@@ -109,7 +109,7 @@ public class ShowCookieDialog extends JDialog implements WindowListener {
                     } catch (IOException e) {
                         throw new RuntimeException(e);
                     }catch (JSONException e){
-                        JOptionPane.showMessageDialog(this, "插件设置文件格式错误", "错误", JOptionPane.ERROR_MESSAGE);
+                        Log.error.print(c,"插件管理页", "插件设置文件格式错误");
                         throw new RuntimeException(e);
                     }
                 }
@@ -209,7 +209,7 @@ public class ShowCookieDialog extends JDialog implements WindowListener {
                 } catch (IOException ex) {
                     throw new RuntimeException(ex);
                 } catch (JSONException ex) {
-                    JOptionPane.showMessageDialog(c, "插件设置文件格式错误", "错误", JOptionPane.ERROR_MESSAGE);
+                    Log.error.print(c,"插件管理页", "插件设置文件格式错误");
                     throw new RuntimeException(ex);
                 }
             }
@@ -404,7 +404,7 @@ public class ShowCookieDialog extends JDialog implements WindowListener {
             } catch (IOException ex) {
                 throw new RuntimeException(ex);
             } catch (JSONException ex){
-                JOptionPane.showMessageDialog(this, "插件设置文件格式错误", "错误", JOptionPane.ERROR_MESSAGE);
+                Log.error.print(this,"插件管理页", "插件设置文件格式错误");
                 throw new RuntimeException(ex);
             }
         });
@@ -431,7 +431,7 @@ public class ShowCookieDialog extends JDialog implements WindowListener {
             } catch (URISyntaxException | IOException ex) {
                 throw new RuntimeException(ex);
             }
-            //JOptionPane.showMessageDialog(this, "正在加急制作...", "帮助文档(前面的区域，以后再来探索吧)", JOptionPane.INFORMATION_MESSAGE);
+
         });
         helpMenu.add(helpDoc);
 

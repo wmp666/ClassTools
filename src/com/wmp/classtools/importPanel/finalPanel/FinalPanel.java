@@ -185,7 +185,7 @@ public class FinalPanel extends CTPanel {
             CTButton exit = new CTButton("关闭",
                     "/image/%s/exit_0.png",
                     "/image/%s/exit_1.png", 30, () -> {
-                int i = JOptionPane.showConfirmDialog(null, "确认退出?", "询问", JOptionPane.YES_NO_OPTION);
+                int i = Log.info.inputInt(null, "CTPanel-按钮组", "确认退出?");
                 if (i == JOptionPane.YES_OPTION) {
                     Log.exit(0);
                 }
