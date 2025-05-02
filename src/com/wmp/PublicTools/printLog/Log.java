@@ -257,6 +257,7 @@ public class Log {
                     sb.toString(),
                     StandardOpenOption.CREATE,
                     StandardOpenOption.TRUNCATE_EXISTING);
+            Log.info.message(null, "Log", "日志保存成功");
         } catch (IOException e) {
             Log.error.print("Log", "日志保存失败");
             throw new RuntimeException(e);
