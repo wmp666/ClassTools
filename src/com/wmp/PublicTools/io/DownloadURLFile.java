@@ -194,10 +194,9 @@ public class DownloadURLFile {
 
             }
         } catch (Exception ex) {
-            SwingUtilities.invokeLater(() -> {
                 Log.error.print("DownloadURLFile-下载", "下载失败: " + ex.getMessage());
                 progressDialog.setVisible(false);
-            });
+
         }
         //}).start();
     }

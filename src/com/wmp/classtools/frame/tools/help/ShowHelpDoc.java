@@ -64,18 +64,7 @@ public class ShowHelpDoc extends JDialog {
     private static void copyDoc(String DocName){
         //将resource/help中的文件复制到dataPath中
         String dataPath = Main.TEMP_PATH + "help\\";
-        /*try (InputStream is = VideoLocalizer.class.getResourceAsStream("/help/" + DocName)) {// 获取资源流
-            if (is == null) {
-                throw new IOException("内置MD文件未找到");
-            }
 
-            Files.createDirectories(Paths.get(dataPath));
-            Files.copy(is,
-                    Paths.get(dataPath, DocName),
-                    StandardCopyOption.REPLACE_EXISTING);
-        } catch (IOException e) {
-            System.err.println("文件本地化失败: " + e.getMessage());
-        }*/
         ResourceLocalizer.copyEmbeddedFile(dataPath, "/help/", DocName);
 
     }
@@ -89,19 +78,7 @@ public class ShowHelpDoc extends JDialog {
     private static void copyDocImage(String imageName){
         //将resource/help中的文件复制到dataPath中
         String dataPath = Main.TEMP_PATH + "help\\images\\";
-        /*try (InputStream is = VideoLocalizer.class.getResourceAsStream("/help/image/" + imageName)) {// 获取资源流
 
-            if (is == null) {
-                throw new IOException("内置图片文件未找到");
-            }
-
-            Files.createDirectories(Paths.get(dataPath));
-            Files.copy(is,
-                    Paths.get(dataPath, imageName),
-                    StandardCopyOption.REPLACE_EXISTING);
-        } catch (IOException e) {
-            System.err.println("文件本地化失败: " + e.getMessage());
-        }*/
         ResourceLocalizer.copyEmbeddedFile(dataPath, "/help/images/", imageName);
 
     }

@@ -1,11 +1,18 @@
 package com.wmp.PublicTools.printLog;
 
+import com.wmp.Main;
+import com.wmp.PublicTools.OpenInExp;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.nio.file.StandardOpenOption;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -121,6 +128,7 @@ public class Log {
         // 改为自动关闭窗口
         new Timer(3000, e -> {
             window.dispose();
+            saveLog();
             System.exit(status);
         }).start();
 
@@ -185,8 +193,74 @@ public class Log {
         //scrollPane.setPreferredSize(new Dimension(480, 550));
         dialog.add(scrollPane, BorderLayout.CENTER);
 
+        JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT));
+        JButton closeButton = new JButton("关闭");
+        closeButton.addActionListener(e -> dialog.dispose());
+
+
+        JButton clearButton = new JButton("清空");
+        clearButton.addActionListener(e -> {
+            int i = Log.info.inputInt(dialog, "日志-清空", "是否清空并保存?");
+            if (i == JOptionPane.YES_OPTION){
+                saveLog();
+            }
+            textArea.setText("");
+            logInfList.clear();
+            index = 0;
+
+        });
+
+        JButton openButton = new JButton("打开所在位置");
+        openButton.addActionListener(e -> {
+            if ( !Files.exists(Paths.get(Main.DATA_PATH + "Log\\"))){
+                try {
+                    Files.createDirectories(Paths.get(Main.DATA_PATH + "Log\\"));
+                } catch (IOException ex) {
+                    throw new RuntimeException(ex);
+                }
+            }
+
+            OpenInExp.open(Main.DATA_PATH + "Log\\");
+        });
+
+        JButton saveButton = new JButton("保存");
+        saveButton.addActionListener(e -> {
+            saveLog();
+        });
+        buttonPanel.add(closeButton);
+        buttonPanel.add(openButton);
+        buttonPanel.add(clearButton);
+        buttonPanel.add(saveButton);
+
+
+
+
+        dialog.add(buttonPanel, BorderLayout.SOUTH);
+
         dialog.setVisible(true);
 
+    }
+
+    private static void saveLog() {
+        DateFormat dateFormat = new SimpleDateFormat("yyyy_MM_dd_HH_mm_ss");
+        //将logInfList中的内容转化为byte数组
+        StringBuilder sb = new StringBuilder();
+        for (String s : logInfList) {
+            sb.append(s).append("\n");
+        }
+        // 实现日志保存
+        try {
+            if (!Files.exists(Paths.get(Main.DATA_PATH + "Log\\"))){
+                Files.createDirectories(Paths.get(Main.DATA_PATH + "Log\\"));
+            }
+            Files.writeString(Paths.get(Main.DATA_PATH + "Log\\Log_" + dateFormat.format(new Date()) + ".txt"),
+                    sb.toString(),
+                    StandardOpenOption.CREATE,
+                    StandardOpenOption.TRUNCATE_EXISTING);
+        } catch (IOException e) {
+            Log.error.print("Log", "日志保存失败");
+            throw new RuntimeException(e);
+        }
     }
 }
 

@@ -18,14 +18,14 @@ public class InfoLogStyle extends PrintLogStyle {
 
     public String input(Container c, String owner, String logInfo) {
         Log.print(getStyle(), owner, "弹窗信息->" + logInfo, c);
-        String s = JOptionPane.showInputDialog(c, logInfo, "输入", JOptionPane.QUESTION_MESSAGE);
+        String s = JOptionPane.showInputDialog(c, logInfo, owner, JOptionPane.QUESTION_MESSAGE);
         Log.print(getStyle(), owner, "输入信息->" + s, c);
         return s;
     }
 
     public int inputInt(Container c, String owner, String logInfo) {
         Log.print(getStyle(), owner, "弹窗信息->" + logInfo, c);
-        int i = JOptionPane.showConfirmDialog(c, logInfo, "输入", JOptionPane.YES_NO_OPTION);
+        int i = JOptionPane.showConfirmDialog(c, logInfo, owner, JOptionPane.YES_NO_OPTION);
         String s ;
         if (i == JOptionPane.YES_OPTION) {
             s = "是";
