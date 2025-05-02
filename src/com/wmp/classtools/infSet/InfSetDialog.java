@@ -25,6 +25,7 @@ import java.awt.event.WindowListener;
 import java.io.File;
 import java.io.IOException;
 import java.net.MalformedURLException;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Objects;
@@ -484,6 +485,45 @@ public class InfSetDialog extends JDialog implements WindowListener {
         return mainPanel;
     }
 
+    private JPanel initClearTemp() throws IOException {
+        JPanel mainPanel = new JPanel();
+        mainPanel.setBackground(Color.WHITE);
+        mainPanel.setLayout(new GridLayout( 0, 1, 5,5));
+
+        JPanel buttonPanel = new JPanel();
+        buttonPanel.setBackground(Color.WHITE);
+        buttonPanel.setLayout(new FlowLayout(FlowLayout.LEFT, 5, 5));
+        buttonPanel.setBounds(0, 0, 400, 45);
+
+        CTButton clearTemp = new CTButton(CTButton.ButtonText, "清除临时文件",
+                "/image/%s/delete_0.png",
+                "/image/%s/delete_1.png", 35, 150, () -> {
+            try {
+                IOStreamForInf.deleteDirectoryRecursively(Paths.get(Main.TEMP_PATH));
+
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+        });
+        buttonPanel.add(clearTemp);
+
+        CTButton clearLog = new CTButton(CTButton.ButtonText, "清除日志",
+                "/image/%s/delete_0.png",
+                "/image/%s/delete_1.png", 35, 150, () -> {
+            try {
+                IOStreamForInf.deleteDirectoryRecursively(Paths.get(Main.DATA_PATH + "Log\\"));
+
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+        });
+        buttonPanel.add(clearLog);
+
+        mainPanel.add(buttonPanel);
+
+        return mainPanel;
+    }
+
     private void initMenuBar() {
         JMenuBar menuBar = new JMenuBar();
         menuBar.setBackground(CTColor.backColor);
@@ -610,6 +650,15 @@ public class InfSetDialog extends JDialog implements WindowListener {
             }
         });
 
+        JMenuItem ClearTempMenuItem = new JMenuItem("清除临时文件");
+        ClearTempMenuItem.addActionListener(e -> {
+            try {
+                repaintSetsPanel(initClearTemp());
+            } catch (IOException ex) {
+                throw new RuntimeException(ex);
+            }
+        });
+
 
         JMenuItem DutyMenuItem = new JMenuItem("值日生");
         DutyMenuItem.addActionListener(e -> {
@@ -647,6 +696,7 @@ public class InfSetDialog extends JDialog implements WindowListener {
 
 
         setMenu.add(PersonalizationMenuItem);
+        setMenu.add(ClearTempMenuItem);
         setMenu.add(DutyMenuItem);
         setMenu.add(AttMenuItem);
         setMenu.add(AllStuMenuItem);
