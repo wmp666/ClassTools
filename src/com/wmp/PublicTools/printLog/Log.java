@@ -128,11 +128,12 @@ public class Log {
         // 改为自动关闭窗口
         new Timer(3000, e -> {
             window.dispose();
-            saveLog();
+
             System.exit(status);
+
         }).start();
 
-
+        saveLog(false);
     }
 
     public static void print(LogStyle style, String owner, String logInfo, Container c) {
@@ -242,6 +243,10 @@ public class Log {
     }
 
     private static void saveLog() {
+        saveLog(true);
+    }
+
+    private static void saveLog(boolean showMessageDialog){
         DateFormat dateFormat = new SimpleDateFormat("yyyy_MM_dd_HH_mm_ss");
         //将logInfList中的内容转化为byte数组
         StringBuilder sb = new StringBuilder();
@@ -257,9 +262,11 @@ public class Log {
                     sb.toString(),
                     StandardOpenOption.CREATE,
                     StandardOpenOption.TRUNCATE_EXISTING);
-            Log.info.message(null, "Log", "日志保存成功");
+            if (showMessageDialog)
+                Log.info.message(null, "Log", "日志保存成功");
         } catch (IOException e) {
-            Log.error.print("Log", "日志保存失败");
+            if (showMessageDialog)
+                Log.error.print("Log", "日志保存失败");
             throw new RuntimeException(e);
         }
     }

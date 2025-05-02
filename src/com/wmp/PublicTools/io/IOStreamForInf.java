@@ -6,6 +6,11 @@ import org.slf4j.LoggerFactory;
 
 import java.io.*;
 import java.nio.charset.StandardCharsets;
+import java.nio.file.FileVisitResult;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.SimpleFileVisitor;
+import java.nio.file.attribute.BasicFileAttributes;
 import java.util.Arrays;
 
 public class IOStreamForInf {
@@ -97,6 +102,25 @@ public class IOStreamForInf {
         Log.info.print("IOStreamForInf-创建文件", file.getPath() + "文件创建");
         file.getParentFile().mkdirs();
         return file.createNewFile();
+    }
+
+    public static void deleteDirectoryRecursively(Path path) throws IOException {
+        if (Files.exists(path)) {
+            Files.walkFileTree(path, new SimpleFileVisitor<Path>() {
+                @Override
+                public FileVisitResult visitFile(Path file, BasicFileAttributes attrs) throws IOException {
+                    Files.delete(file);
+                    return FileVisitResult.CONTINUE;
+                }
+
+                @Override
+                public FileVisitResult postVisitDirectory(Path dir, IOException exc) throws IOException {
+                    Files.delete(dir);
+                    return FileVisitResult.CONTINUE;
+                }
+            });
+        }
+        Log.info.message(null, "IOStreamForInf-删除文件", "删除文件/文件夹: " + path);
     }
 
     @Override
