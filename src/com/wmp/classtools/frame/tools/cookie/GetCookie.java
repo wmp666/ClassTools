@@ -1,7 +1,7 @@
 package com.wmp.classTools.frame.tools.cookie;
 
 import com.wmp.Main;
-import com.wmp.PublicTools.printLog.Log;
+import com.wmp.classTools.printLog.Log;
 import org.json.JSONException;
 import org.json.JSONObject;
 

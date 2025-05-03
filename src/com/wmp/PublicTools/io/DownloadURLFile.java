@@ -3,7 +3,7 @@ package com.wmp.PublicTools.io;
 import com.wmp.CTColor;
 import com.wmp.Main;
 import com.wmp.PublicTools.GetIcon;
-import com.wmp.PublicTools.printLog.Log;
+import com.wmp.classTools.printLog.Log;
 
 import javax.swing.*;
 import java.awt.*;

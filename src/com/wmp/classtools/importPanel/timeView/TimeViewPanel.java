@@ -1,7 +1,7 @@
 package com.wmp.classTools.importPanel.timeView;
 
 import com.wmp.CTColor;
-import com.wmp.PublicTools.printLog.Log;
+import com.wmp.classTools.printLog.Log;
 import com.wmp.classTools.CTComponent.CTButton;
 import com.wmp.classTools.CTComponent.CTPanel;
 
@@ -131,8 +131,8 @@ public class TimeViewPanel extends CTPanel {
                 timeView.setBounds(5,3,180,32);
                 this.add(timeView);
             } else if (i == 1) {
-                Log.exit(0);
-                //System.exit(0);
+                //Log.exit(0);
+                System.exit(0);
             }
         });
 

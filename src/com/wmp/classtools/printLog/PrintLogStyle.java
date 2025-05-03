@@ -1,4 +1,4 @@
-package com.wmp.PublicTools.printLog;
+package com.wmp.classTools.printLog;
 
 import java.awt.*;
 

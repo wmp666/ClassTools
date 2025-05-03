@@ -1,6 +1,6 @@
 package com.wmp.PublicTools.io;
 
-import com.wmp.PublicTools.printLog.Log;
+import com.wmp.classTools.printLog.Log;
 
 import java.io.File;
 import java.io.IOException;

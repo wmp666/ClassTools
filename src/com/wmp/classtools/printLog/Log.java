@@ -1,4 +1,4 @@
-package com.wmp.PublicTools.printLog;
+package com.wmp.classTools.printLog;
 
 import com.wmp.Main;
 import com.wmp.PublicTools.OpenInExp;
@@ -58,6 +58,9 @@ public class Log {
     static {
         thread.setDaemon(true);
         thread.start();  // 确保启动线程
+    }
+
+    public Log() {
     }
 
     public static void exit(int status) {
