@@ -1,4 +1,4 @@
-package com.wmp.PublicTools.printLog;
+package com.wmp.classTools.printLog;
 
 public enum LogStyle {
     INFO,

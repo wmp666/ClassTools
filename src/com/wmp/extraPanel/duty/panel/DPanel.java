@@ -4,7 +4,7 @@ import com.wmp.CTColor;
 import com.wmp.PublicTools.InfProcess;
 import com.wmp.PublicTools.PeoPanelProcess;
 import com.wmp.PublicTools.io.IOStreamForInf;
-import com.wmp.PublicTools.printLog.Log;
+import com.wmp.classTools.printLog.Log;
 import com.wmp.classTools.CTComponent.CTButton;
 import com.wmp.classTools.CTComponent.CTPanel;
 import com.wmp.extraPanel.duty.type.DutyDay;

@@ -1,7 +1,7 @@
 package com.wmp.classTools.importPanel.timeView;
 
 import com.wmp.CTColor;
-import com.wmp.PublicTools.printLog.Log;
+import com.wmp.classTools.printLog.Log;
 import com.wmp.classTools.CTComponent.CTButton;
 import com.wmp.classTools.CTComponent.CTPanel;
 

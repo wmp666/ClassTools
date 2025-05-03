@@ -8,7 +8,7 @@ import com.wmp.PublicTools.OpenInExp;
 import com.wmp.PublicTools.io.GetPath;
 import com.wmp.PublicTools.io.IOStreamForInf;
 import com.wmp.PublicTools.io.ZipPack;
-import com.wmp.PublicTools.printLog.Log;
+import com.wmp.classTools.printLog.Log;
 import com.wmp.classTools.CTComponent.CTButton;
 import com.wmp.classTools.infSet.DataStyle.AllStu;
 import com.wmp.classTools.infSet.DataStyle.Duty;

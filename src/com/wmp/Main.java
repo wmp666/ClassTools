@@ -1,7 +1,7 @@
 package com.wmp;
 
 import com.wmp.PublicTools.StartupParameters;
-import com.wmp.PublicTools.printLog.Log;
+import com.wmp.classTools.printLog.Log;
 import com.wmp.PublicTools.update.GetNewerVersion;
 import com.wmp.classTools.frame.EasterEgg;
 import com.wmp.classTools.frame.LoadingWindow;
@@ -32,7 +32,7 @@ public class Main{
     * d:只修复的问题,问题较少
     * e:测试版本号
      */
-    public static String version = "1.17.0";
+    public static String version = "1.17.0.1";
 
     public static ArrayList<String> list = new ArrayList<>();
 
@@ -45,6 +45,7 @@ public class Main{
     private static boolean StartUpdate = true;
 
     static {
+        Log log = new Log();
         //加载基础目录
         String path = System.getenv("LOCALAPPDATA");
 

@@ -2,7 +2,7 @@ package com.wmp.PublicTools.update;
 
 import com.wmp.Main;
 import com.wmp.PublicTools.io.DownloadURLFile;
-import com.wmp.PublicTools.printLog.Log;
+import com.wmp.classTools.printLog.Log;
 import com.wmp.PublicTools.web.GetWebInf;
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -202,9 +202,6 @@ public class GetNewerVersion {
             return 0;
         }
     }
-
-
-
 
 
     public static void downloadSource(String downloadUrl) throws URISyntaxException, IOException {

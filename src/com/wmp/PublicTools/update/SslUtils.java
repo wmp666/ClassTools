@@ -1,6 +1,6 @@
 package com.wmp.PublicTools.update;
 
-import com.wmp.PublicTools.printLog.Log;
+import com.wmp.classTools.printLog.Log;
 
 import javax.net.ssl.*;
 import java.security.cert.CertificateException;
