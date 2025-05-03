@@ -152,6 +152,8 @@ public class GetNewerVersion {
                         if (result == JOptionPane.YES_OPTION) {
                             new Thread(() ->{
                                 DownloadURLFile.downloadWebFile(dialog, panel, downloadUrl, "app");
+                                JOptionPane.showMessageDialog(dialog, "更新完成，即将退出程序...", "提示", JOptionPane.INFORMATION_MESSAGE);
+                                System.exit(0);
                             }).start();
 
                         }
