@@ -3,7 +3,7 @@ package com.wmp.classTools.infSet.tools;
 import com.wmp.CTColor;
 import com.wmp.Main;
 import com.wmp.PublicTools.io.IOStreamForInf;
-import com.wmp.classTools.printLog.Log;
+import com.wmp.PublicTools.printLog.Log;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;

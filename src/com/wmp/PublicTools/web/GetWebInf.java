@@ -1,6 +1,6 @@
 package com.wmp.PublicTools.web;
 
-import com.wmp.classTools.printLog.Log;
+import com.wmp.PublicTools.printLog.Log;
 import com.wmp.PublicTools.update.SslUtils;
 import org.jsoup.Jsoup;
 

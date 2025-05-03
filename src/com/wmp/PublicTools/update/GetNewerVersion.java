@@ -2,7 +2,7 @@ package com.wmp.PublicTools.update;
 
 import com.wmp.Main;
 import com.wmp.PublicTools.io.DownloadURLFile;
-import com.wmp.classTools.printLog.Log;
+import com.wmp.PublicTools.printLog.Log;
 import com.wmp.PublicTools.web.GetWebInf;
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -162,6 +162,8 @@ public class GetNewerVersion {
 
                         new Thread(() ->{
                             DownloadURLFile.downloadWebFile(dialog, panel, downloadUrl, "app");
+                            JOptionPane.showMessageDialog(dialog, "更新完成，即将退出程序...", "提示", JOptionPane.INFORMATION_MESSAGE);
+                            System.exit(0);
                         }).start();
                     } else {
                         System.out.println("当前已是最新版本");

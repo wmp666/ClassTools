@@ -1,7 +1,7 @@
 package com.wmp.classTools.frame.tools.cookie;
 
 import com.wmp.PublicTools.OpenInExp;
-import com.wmp.classTools.printLog.Log;
+import com.wmp.PublicTools.printLog.Log;
 import com.wmp.PublicTools.videoView.VideoPlayer;
 
 import java.awt.*;

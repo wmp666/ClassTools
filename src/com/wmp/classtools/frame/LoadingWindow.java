@@ -1,6 +1,6 @@
 package com.wmp.classTools.frame;
 
-import com.wmp.classTools.printLog.Log;
+import com.wmp.PublicTools.printLog.Log;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

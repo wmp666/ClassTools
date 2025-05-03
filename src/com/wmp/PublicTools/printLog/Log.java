@@ -1,4 +1,4 @@
-package com.wmp.classTools.printLog;
+package com.wmp.PublicTools.printLog;
 
 import com.wmp.Main;
 import com.wmp.PublicTools.OpenInExp;
@@ -65,6 +65,9 @@ public class Log {
 
     public static void exit(int status) {
 
+        if(status == -1){
+            return;
+        }
         //获取桌面大小
         Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
 

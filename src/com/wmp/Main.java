@@ -1,13 +1,13 @@
 package com.wmp;
 
 import com.wmp.PublicTools.StartupParameters;
-import com.wmp.classTools.printLog.Log;
 import com.wmp.PublicTools.update.GetNewerVersion;
 import com.wmp.classTools.frame.EasterEgg;
 import com.wmp.classTools.frame.LoadingWindow;
 import com.wmp.classTools.frame.MainWindow;
 import com.wmp.classTools.frame.tools.cookie.StartCookie;
 import com.wmp.classTools.infSet.tools.GetSetsJSON;
+import com.wmp.PublicTools.printLog.Log;
 
 import javax.swing.*;
 import java.io.IOException;
@@ -45,7 +45,7 @@ public class Main{
     private static boolean StartUpdate = true;
 
     static {
-        Log log = new Log();
+        Log.exit(-1);
         //加载基础目录
         String path = System.getenv("LOCALAPPDATA");
 

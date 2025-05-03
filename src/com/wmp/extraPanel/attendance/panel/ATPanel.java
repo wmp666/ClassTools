@@ -1,7 +1,7 @@
 package com.wmp.extraPanel.attendance.panel;
 
 import com.wmp.CTColor;
-import com.wmp.classTools.printLog.Log;
+import com.wmp.PublicTools.printLog.Log;
 import com.wmp.classTools.CTComponent.CTPanel;
 import com.wmp.PublicTools.PeoPanelProcess;
 import com.wmp.PublicTools.io.IOStreamForInf;

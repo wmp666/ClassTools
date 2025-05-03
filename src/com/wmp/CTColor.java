@@ -1,6 +1,6 @@
 package com.wmp;
 
-import com.wmp.classTools.printLog.Log;
+import com.wmp.PublicTools.printLog.Log;
 
 import java.awt.*;
 

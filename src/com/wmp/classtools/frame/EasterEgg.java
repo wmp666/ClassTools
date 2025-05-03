@@ -2,7 +2,7 @@ package com.wmp.classTools.frame;
 
 import com.wmp.Main;
 import com.wmp.PublicTools.io.ResourceLocalizer;
-import com.wmp.classTools.printLog.Log;
+import com.wmp.PublicTools.printLog.Log;
 import com.wmp.PublicTools.videoView.VideoPlayer;
 import com.wmp.PublicTools.web.GetWebInf;
 import com.wmp.classTools.frame.tools.cookie.StartCookie;

@@ -4,7 +4,7 @@ import com.wmp.CTColor;
 import com.wmp.Main;
 import com.wmp.PublicTools.GetIcon;
 import com.wmp.PublicTools.OpenInExp;
-import com.wmp.classTools.printLog.Log;
+import com.wmp.PublicTools.printLog.Log;
 import com.wmp.PublicTools.update.GetNewerVersion;
 import com.wmp.classTools.CTComponent.CTButton;
 import com.wmp.classTools.frame.tools.help.ShowHelpDoc;
