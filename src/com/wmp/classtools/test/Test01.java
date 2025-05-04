@@ -1,4 +1,4 @@
-package com.wmp.test;
+package com.wmp.classTools.test;
 
 import com.wmp.PublicTools.update.SslUtils;
 import org.jsoup.Jsoup;

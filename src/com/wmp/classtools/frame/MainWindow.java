@@ -1,13 +1,13 @@
 package com.wmp.classTools.frame;
 
-import com.wmp.CTColor;
+import com.wmp.PublicTools.CTColor;
 import com.wmp.Main;
 import com.wmp.PublicTools.io.IOStreamForInf;
 import com.wmp.classTools.CTComponent.CTPanel;
 import com.wmp.classTools.importPanel.finalPanel.FinalPanel;
 import com.wmp.classTools.importPanel.timeView.TimeViewPanel;
-import com.wmp.extraPanel.attendance.panel.ATPanel;
-import com.wmp.extraPanel.duty.panel.DPanel;
+import com.wmp.classTools.extraPanel.attendance.panel.ATPanel;
+import com.wmp.classTools.extraPanel.duty.panel.DPanel;
 
 import javax.swing.*;
 import java.awt.*;

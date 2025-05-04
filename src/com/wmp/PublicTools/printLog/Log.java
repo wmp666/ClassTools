@@ -34,7 +34,7 @@ public class Log {
                     //SwingUtilities.invokeLater(() -> {
                     for (int i = index; i < currentSize; i++) {
                         textArea.append(logInfList.get(i) + "\n");
-                        System.out.printf("内容(%s): %s%n", i, logInfList.get(i)); // 添加换行
+                        //System.out.printf("内容(%s): %s%n", i, logInfList.get(i)); // 添加换行
                     }
                     textArea.setCaretPosition(textArea.getDocument().getLength());
                     //});

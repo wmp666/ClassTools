@@ -1,6 +1,6 @@
 package com.wmp.classTools.frame;
 
-import com.wmp.CTColor;
+import com.wmp.PublicTools.CTColor;
 import com.wmp.Main;
 import com.wmp.PublicTools.GetIcon;
 import com.wmp.PublicTools.OpenInExp;

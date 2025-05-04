@@ -7,6 +7,8 @@ import org.slf4j.LoggerFactory;
 import javax.swing.*;
 import java.awt.*;
 import java.net.URL;
+import java.util.Arrays;
+import java.util.Random;
 
 public class LoadingWindow extends JWindow {
 
@@ -14,9 +16,75 @@ public class LoadingWindow extends JWindow {
     public static final int STYLE_SCREEN = 1;
     private static final Logger log = LoggerFactory.getLogger(LoadingWindow.class);
 
+    private static final String[] easterEggs = {
+            //原神
+            "天时地利不可多得\n人和同心更弥足珍贵\n云集众生之力\n即使潜居深海的游鱼也可得见群星璀璨",
+            " —曲终了，难免令人感叹——\n人生如戏，花月蝉娟书真意\n戏若人生，畅快豪情又何妨",
+            "只盯着别人弱点的人\n自己的弱点也会很容易暴露出来",
+            "只有简朴的生活\n才能窥探到世界的真实。",
+            "旅途是什么\n终点是什么\n还等着我们去见证呢",
+            "终点并不意味着一切\n在抵达终点之前\n用你的眼睛多多观察这个世界吧",
+            "生命的道路十分漫长\n我们都很难看到终点\n但如果你们觉得生命就是虚无\n那他就会逐渐走向虚无",
+            "时间就像一条线\n我们只能往前走\n无法改变过去\n也无法预知未来",
+            "我空有一身武力\n即使能斩断祟神\n剿灭祸兽\n却终究无法战胜时间\n无法留下珍视的人",
+            "为了正确的道路\n人们不断放弃\n不断失去",
+            "正是因为我们会飞\n才会无比向往天空",
+            "总会有地上的生灵\n敢于直面雷霆的微光",
+            "我们之所以深爱这个世界\n是因为它记载了我们的幸福与感动\n也塑造了我们的思想与意志",
+            "我曾说命运是终极的知识\n而你的未来则是终极的命运",
+            "承载记忆之人\n注定背负真相的重量",
+            "几千年岁月的冲刷\n哪怕是岩石\n也会倍感疲惫",
+            "但 风向是会转变的\n终有一天会吹向更有光亮的方向",
+            "打破预言\n让■■活下去\n才应该是此刻高于一切正义",
+            "此刻我的意志绝非磨损的产物\n我将铸就的未来\n会是经得起磨损的伟业",
+            "飞翔吧 飞翔吧\n就像飞鸟那样\n代我看看这个世界\n代我飞到高天之上",
+            "再会了我的老友\n既是为了今日\n也是为了将来能有机会重逢",
+            "这次是真的再见了 ■",
+            "终有一日\n我会将你带到约定的地方",
+            //崩铁
+            "总是人性的弱点让他们驻足停留\n但在真正无法前行时\n人类一定会试图拯救自己\n即便早已知晓自己在做徒劳地反抗\n人们依旧会拼尽全力",
+            "想要存乎一片自由\n我们就必须行动起来\n向那些怀疑的眼光证明\n我们有意愿\n也有能力\n掌控自己的命运",
+            "大人们总是用长大以后就明白的道理\n来糊弄■■\n■■反倒觉得\n大人们有很多长大以后就忘记了的道理",
+            "每次看见你这样的学生\n我就觉得心累\n没有爬树天赋的猴子永远摘不到香蕉\n何必伤害难为自己呢\n如果总在追求得不到的东西\n不就是在朝幸福的反方向前进吗\n...",
+            "但择徒非要看天分吗\n那只是当师傅的偷懒\n想事半功倍\n又或者想借图留名吧",
+            "名声传承\n这些我通通不在意\n我的剑谁要学我便教",
+            "对弱者出手相救\n是医者仁心\n此后袖手旁观任世态发酵\n是学者的严厉\n而深处幕后掌控全局\n则是向天才寄出的挑战\n袖手旁观才是真正的医治",
+            "这世上有种顽疾\n名为愚钝\n比任何病症都更难根治\n智识的命途既无道理\n也无逻辑\n天才们漫步繁星\n繁庸却连一处脚印都无法追及\n...",
+            "庸人只得学会独立行走\n在跌跌撞撞中度过碌碌一生\n但失败的人生同样是人生，\n他们有权品尝至最后\n...",
+            "也只有摔倒了无人扶起\n与人们才能领悟如何站起",
+            "梦想是生命的航标\n只要点亮了这个航标\n我们随时都可以休息\n到这并不意味着放弃\n因为只要看到航标的光\n我们就有勇气重新启程",
+            "如果眼前有个必输之局\n我在牌桌上的选择就没有任何意义吗\n不对选择就是意义本身",
+            "每个人都有迷路的时候\n犹豫不决\n不知道该去往哪个方向\n他们需要的只是一道小小的推力\n然后就能迈开步伐\n走向属于自己的前方",
+            "钟表的指针周而复始\n就像人的困惑烦恼软弱摇摆不停\n但最终人们依旧要前进\n就像你的指针永远落在前方",
+            "在作出选择的瞬间\n我们心中的结果早已有答案了\n并非是命运塑造了我们\n而是我们塑造了命运",
+            "这世上固然存在英雄\n人们向往歌颂他们\n到大多数普通人\n终其一生也无法成为英雄\n...",
+            "有人生来就弱小无助\n有人陷于后天的不幸\n有人向卑劣和怯懦屈服\n在生存面前\n他们同样平等\n只能目视自己的价值\n不断被外物掠夺\n...",
+            "人们总是会忘记当第一只鸟儿飞上天际\n那是整个世界对他的期许\n之自此以后\n不再有任何雏鸟坠亡大地",
+            "到头来我终于明白了\n人生到处都是打不赢的仗\n有些战斗即使不得不赢\n也还是会输\n人生就是一场必败的擂台\n...",
+            "擂台上有输赢的标准\n但评判这条命只有我们自己最有资格",
+            "欢迎来到着悲伤的世界\n■■■■\n为什么我们要为了死亡而出生在这世上\n倘若命运的骰子从来都被灌铅\n那就是我们命定的归宿\n我们又为何与之相抗\n...",
+            "就算结局早已注定\n但也无妨\n人改变不了的事太多\n但在此之前\n在走向结局的路上\n人们能做的事同样很多\n而结局也会因此展现截然不同的意义",
+            "我想要活下去\n但我不害怕死亡\n死亡的反面是永生\n那从来不是我的所求",
+            "人终有一死\n■也一样\n死亡就像剧本\n是无法违抗的命运\n但也正因如此\n我们才要自己选择埋骨之地",
+            "旅途之所以伟大\n史诗之所以壮阔\n皆因万物终有逝去之时\n只有被置于纷争之下\n文明方能成长",
+            "人生来便憎恶苦难\n但唯有苦难能教人屹立",
+            "所谓开拓\n就是沿着前任未尽的道路\n走出更遥远的距离",
+            "开拓能为人们指明方向\n当一个世界的命运\n终究要还给属于它的人",
+            "银河浩瀚，生命渺小\n开拓的脚步从不停歇\n但在宇宙的尺度下\n普通人穷尽一生\n也只能走出一段短短的距离\n...",
+            "可就是这么一段极短的路\n彼此相连\n就能将无数的世界连接在一起\n...",
+            "每一个在银轨上留下枕木的人\n宇宙或许不记得他们\n但我们会记得\n只要我们还记得\n他们的故事就还没有结束",
+            "愿此行\n抵达群星"
+
+
+    };
     public LoadingWindow() {
         this(LoadingWindow.class.getResource("/image/icon.png"),
-                180, 180, "正在加载...", false, 0);
+                180, 180, "useLoadingText", false, 0, 0);
+    }
+
+    public LoadingWindow(String text) {
+        this(LoadingWindow.class.getResource("/image/icon.png"),
+                180, 180, text, false, 0, 0);
     }
 
     public LoadingWindow(URL url, int width, int height, String text){
@@ -28,39 +96,66 @@ public class LoadingWindow extends JWindow {
     }
 
     public LoadingWindow(URL url, int width, int height, String text, boolean mustWait, long time, int windowStyle){
+
         Log.info.print("LoadingWindow-窗口", "开始初始化加载窗口");
-
-        this.setSize(350, 200);
-
-        if (windowStyle == STYLE_SCREEN){
-            this.setSize(Toolkit.getDefaultToolkit().getScreenSize());
-        }
-
-        this.setLocationRelativeTo(null);
-        //this.setAlwaysOnTop(true);
 
         ImageIcon defaultIcon = new ImageIcon(url);
         defaultIcon.setImage(defaultIcon.getImage().getScaledInstance(width, height, Image.SCALE_DEFAULT));
 
+        String showText = text;
+        if (showText.equals("useLoadingText")){
+            showText = getLoadingText();
+        }
 
+        // 根据文字数量调整窗口大小
+        String plainText = showText.replaceAll("<html>|</html>", "").replaceAll("<br>", "\n"); // 去除HTML标签
+        String[] lines = plainText.split("\n"); // 按换行符分割
+        int lineCount = lines.length;
+        // 计算最长行的长度 .mapToInt(String::length) 将每个字符串映射为其长度，然后使用 max() 方法找到最大值
+        //.orElse(0) 如果数组为空，返回默认值 0
+        int maxLength = Arrays.stream(lines).mapToInt(String::length).max().orElse(0);
 
-        JLabel label = new JLabel(text,defaultIcon, SwingConstants.CENTER);
+        // 计算新的窗口尺寸（基础尺寸 + 动态调整）
+        int baseWidth = 350;
+        int baseHeight = 200;
+        int newWidth = Math.max(baseWidth, maxLength * 20 + 200); // 每个字符约15像素宽度
+        int newHeight = Math.max(baseHeight, lineCount * 20);  // 每多一行增加30像素高度
+
+        if (windowStyle == STYLE_SCREEN){
+            this.setSize(Toolkit.getDefaultToolkit().getScreenSize());
+        } else {
+            this.setSize(newWidth, newHeight); // 应用新尺寸
+        }
+
+        JLabel label = new JLabel(showText,defaultIcon, SwingConstants.CENTER);
         label.setBackground(Color.WHITE);
         label.setFont(new Font("微软雅黑", Font.BOLD, 20));
 
         this.getContentPane().setBackground(Color.WHITE);
         this.add(label);
 
+        this.setAlwaysOnTop(true);
+        this.setLocationRelativeTo(null);
         this.setVisible(true);
-        if (mustWait){
-            try {
+        try {
+            if (mustWait){
                 Thread.sleep(time);
-            } catch (InterruptedException e) {
-                throw new RuntimeException(e);
+            } else if (text.equals("useLoadingText")) {
+                Thread.sleep(2000);
             }
-        }
+        } catch (InterruptedException e) {
+        throw new RuntimeException(e);
+    }
 
         Log.info.print("LoadingWindow-窗口", "加载窗口初始化完毕");
 
+    }
+
+    private String getLoadingText() {
+        String temp =  easterEggs[new Random().nextInt(easterEggs.length)];
+        if (temp.contains("\n")) {
+            temp = "<html>" + temp.replaceAll("\\n", "<br>") + "</html>";
+        }
+        return temp;
     }
 }

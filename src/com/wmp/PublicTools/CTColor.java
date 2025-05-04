@@ -1,4 +1,4 @@
-package com.wmp;
+package com.wmp.PublicTools;
 
 import com.wmp.PublicTools.printLog.Log;
 

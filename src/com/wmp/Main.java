@@ -1,15 +1,11 @@
 package com.wmp;
 
+import com.wmp.PublicTools.CTColor;
 import com.wmp.PublicTools.StartupParameters;
-import com.wmp.PublicTools.update.GetNewerVersion;
-import com.wmp.classTools.frame.EasterEgg;
-import com.wmp.classTools.frame.LoadingWindow;
-import com.wmp.classTools.frame.MainWindow;
-import com.wmp.classTools.frame.tools.cookie.StartCookie;
-import com.wmp.classTools.infSet.tools.GetSetsJSON;
 import com.wmp.PublicTools.printLog.Log;
+import com.wmp.classTools.SwingRun;
+import com.wmp.classTools.infSet.tools.GetSetsJSON;
 
-import javax.swing.*;
 import java.io.IOException;
 import java.net.URISyntaxException;
 import java.time.LocalDate;
@@ -32,7 +28,7 @@ public class Main{
     * d:只修复的问题,问题较少
     * e:测试版本号
      */
-    public static String version = "1.17.0.2";
+    public static String version = "1.17.1";
 
     public static ArrayList<String> list = new ArrayList<>();
 
@@ -41,8 +37,6 @@ public class Main{
     public static final ArrayList<String> disButList = new ArrayList<>();
 
     public static boolean canExit = true;
-
-    private static boolean StartUpdate = true;
 
     static {
         Log.exit(-1);
@@ -67,24 +61,18 @@ public class Main{
         allArgs.put("Cookie:StartUp", StartupParameters.creative("-OpenCookie:", "/OpenCookie:"));
         //allArgs.put("", StartupParameters.creative("-EasterEgg-pin:nj02", "/EasterEgg-pin:nj02"));
     }
-    public static void main(String[] args) throws IOException, URISyntaxException {
+    public static void main(String[] args) throws IOException {
 
 
         GetSetsJSON setsJSON = new GetSetsJSON();
 
         boolean b = isImportDay();
 
-        StartUpdate = setsJSON.isStartUpdate();
+        boolean startUpdate = setsJSON.isStartUpdate();
         canExit = setsJSON.isCanExit();
         disButList.addAll(setsJSON.getDisButList());
 
-        try {
-            //使用系统UI
-            UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-        } catch (UnsupportedLookAndFeelException | ClassNotFoundException | InstantiationException |
-                 IllegalAccessException e) {
-            throw new RuntimeException(e);
-        }
+
 
         for (int i = 0; i < args.length; i++) {
             args[i] = args[i].replace("/", "-");
@@ -95,8 +83,13 @@ public class Main{
             list = new ArrayList<>(Arrays.asList(args));
             Log.info.print("Main", "使用的启动参数:" + Arrays.toString(args));
         }
+            try {
+                SwingRun.show(b, allArgs, list, startUpdate);
+            } catch (URISyntaxException e) {
+                throw new RuntimeException(e);
+            }
 
-        show(b);
+
 
     }
 
@@ -129,50 +122,5 @@ public class Main{
     }
 
 
-    private static void show(boolean b) throws URISyntaxException, IOException {
 
-        LoadingWindow loadingWindow;
-        if (b){
-            if (allArgs.get("screenProduct:show").contains(list)){
-                loadingWindow = new LoadingWindow(Main.class.getResource("/image/start.gif"),
-                        692, 491, "", true, 1300, LoadingWindow.STYLE_SCREEN);
-            }else{
-                loadingWindow = new LoadingWindow(Main.class.getResource("/image/loading.gif"),
-                        200, 200, "加载中...", true, 2300);
-            }
-
-        }else{
-            loadingWindow = new LoadingWindow();
-        }
-        //System.out.println(sb);
-
-
-        //loadingWindow.setVisible(true);
-
-        if (StartUpdate &&
-                !(allArgs.get("StartUpdate:false").contains(list) ||
-                allArgs.get("screenProduct:show").contains(list) ||
-                allArgs.get("screenProduct:view").contains(list))) {
-            Log.info.print("Main", "开始启动自动检查更新");
-            GetNewerVersion.checkForUpdate(
-                    loadingWindow, null, true);
-
-        }
-
-        if (allArgs.get("EasterEgg:").contains(list)) {
-            int i = list.indexOf("-EasterEgg:") + 1;
-            Log.info.print("Main", "-EasterEgg:" + list.get(i));
-            //System.out.println();
-            EasterEgg.showEasterEgg(list.get(i).split(";"));
-        }
-        if (allArgs.get("Cookie:StartUp").contains(list)) {
-            int i = list.indexOf("-OpenCookie:") + 1;
-            Log.info.print("Main", "-OpenCookie:" + list.get(i));
-            //System.out.println();
-            StartCookie.showCookie(list.get(i).split(";"));
-        }
-
-        new MainWindow(DATA_PATH);
-        loadingWindow.setVisible(false);
-    }
 }

@@ -1,6 +1,6 @@
 package com.wmp.classTools.infSet.tools;
 
-import com.wmp.CTColor;
+import com.wmp.PublicTools.CTColor;
 import com.wmp.Main;
 import com.wmp.PublicTools.io.IOStreamForInf;
 import com.wmp.PublicTools.printLog.Log;
@@ -13,6 +13,9 @@ import java.io.IOException;
 import java.util.ArrayList;
 
 public class GetSetsJSON {
+
+    private JSONObject jsonObject;
+
     private boolean canExit = true;
     private boolean StartUpdate = true;
     private final ArrayList<String> disButList = new ArrayList<>();
@@ -23,7 +26,7 @@ public class GetSetsJSON {
         if (exists) {
             IOStreamForInf sets = new IOStreamForInf(new File(Main.DATA_PATH + "setUp.json"));
 
-            JSONObject jsonObject;
+
             try {
                 jsonObject = new JSONObject(sets.GetInf()[0]);
             }catch (JSONException e){
@@ -76,4 +79,7 @@ public class GetSetsJSON {
         return disButList;
     }
 
+    public JSONObject getJsonObject() {
+        return jsonObject;
+    }
 }

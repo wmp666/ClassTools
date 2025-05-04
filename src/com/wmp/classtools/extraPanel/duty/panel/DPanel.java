@@ -1,13 +1,13 @@
-package com.wmp.extraPanel.duty.panel;
+package com.wmp.classTools.extraPanel.duty.panel;
 
-import com.wmp.CTColor;
+import com.wmp.PublicTools.CTColor;
 import com.wmp.PublicTools.InfProcess;
 import com.wmp.PublicTools.PeoPanelProcess;
 import com.wmp.PublicTools.io.IOStreamForInf;
 import com.wmp.PublicTools.printLog.Log;
 import com.wmp.classTools.CTComponent.CTButton;
 import com.wmp.classTools.CTComponent.CTPanel;
-import com.wmp.extraPanel.duty.type.DutyDay;
+import com.wmp.classTools.extraPanel.duty.type.DutyDay;
 
 import javax.swing.*;
 import java.awt.*;
