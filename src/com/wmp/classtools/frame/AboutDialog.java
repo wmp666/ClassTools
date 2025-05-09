@@ -2,6 +2,7 @@ package com.wmp.classTools.frame;
 
 import com.wmp.PublicTools.CTColor;
 import com.wmp.Main;
+import com.wmp.PublicTools.EasterEgg.EasterEgg;
 import com.wmp.PublicTools.GetIcon;
 import com.wmp.PublicTools.OpenInExp;
 import com.wmp.PublicTools.printLog.Log;

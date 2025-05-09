@@ -1,6 +1,7 @@
-package com.wmp.classTools.frame;
+package com.wmp.PublicTools.EasterEgg;
 
 import com.wmp.Main;
+import com.wmp.PublicTools.io.IOForInfo;
 import com.wmp.PublicTools.io.ResourceLocalizer;
 import com.wmp.PublicTools.printLog.Log;
 import com.wmp.PublicTools.videoView.VideoPlayer;
@@ -14,8 +15,10 @@ import java.awt.*;
 import java.io.IOException;
 import java.net.URISyntaxException;
 import java.util.Objects;
+import java.util.Random;
 
 public class EasterEgg {
+
 
     public static void getPin() {
         String s = Log.info.input(null, "祈愿", "请输入■■");
@@ -159,5 +162,26 @@ public class EasterEgg {
 
     private static String buildVideoPath(String pin) {
         return Main.TEMP_PATH + "video\\" + pin + ".mp4";
+    }
+
+    public static String getText(EETextStyle style){
+        String[] easterEggList = getAllText();
+        String s = easterEggList[new Random().nextInt(easterEggList.length)];
+        switch (style){
+            case DEFAULT -> {
+                return s;
+            }
+            case HTML -> {
+                String s1 = "<html>" + s.replace("\\n", "<br>") + "</html>";
+                Log.info.print("获取彩蛋文字", s1);
+                return s1 ;
+            }
+        }
+        return "error";
+    }
+
+    public static String[] getAllText(){
+        return IOForInfo.getInfo(EasterEgg.class.getResource("EasterEgg.txt"));
+
     }
 }

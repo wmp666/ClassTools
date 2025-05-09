@@ -2,7 +2,7 @@ package com.wmp.classTools.infSet.tools;
 
 import com.wmp.PublicTools.CTColor;
 import com.wmp.Main;
-import com.wmp.PublicTools.io.IOStreamForInf;
+import com.wmp.PublicTools.io.IOForInfo;
 import com.wmp.PublicTools.printLog.Log;
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -24,11 +24,11 @@ public class GetSetsJSON {
         boolean exists = new File(Main.DATA_PATH + "setUp.json").exists();
 
         if (exists) {
-            IOStreamForInf sets = new IOStreamForInf(new File(Main.DATA_PATH + "setUp.json"));
+            IOForInfo sets = new IOForInfo(new File(Main.DATA_PATH + "setUp.json"));
 
 
             try {
-                jsonObject = new JSONObject(sets.GetInf()[0]);
+                jsonObject = new JSONObject(sets.GetInfo()[0]);
             }catch (JSONException e){
                 Log.error.print("获取个性化数据", "数据获取发生错误:" + e.getMessage());
                 return;

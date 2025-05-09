@@ -1,10 +1,10 @@
 package com.wmp.classTools.extraPanel.attendance.panel;
 
 import com.wmp.PublicTools.CTColor;
+import com.wmp.PublicTools.io.IOForInfo;
 import com.wmp.PublicTools.printLog.Log;
 import com.wmp.classTools.CTComponent.CTPanel;
 import com.wmp.PublicTools.PeoPanelProcess;
-import com.wmp.PublicTools.io.IOStreamForInf;
 
 import javax.swing.*;
 import java.awt.*;
@@ -46,7 +46,7 @@ public class ATPanel extends CTPanel {
 
 
         this.setSize(250, ATPanelMixY + 5);
-        setNextPanelY( ATPanelMixY + 5);
+        appendNextPanelY( ATPanelMixY + 5);
 
     }
 
@@ -126,7 +126,7 @@ public class ATPanel extends CTPanel {
 
         initContainer();
 
-        nextPanelY(ATPanelMixY);
+        setNextPanelY(ATPanelMixY);
         this.setSize(250, ATPanelMixY + 5);
 
 
@@ -138,9 +138,9 @@ public class ATPanel extends CTPanel {
     private void initStuList(File AllStudentPath, File LeaveListPath) throws IOException {
         //获取所有学生名单
         {
-            IOStreamForInf ioStreamForInf = new IOStreamForInf(AllStudentPath);
+            IOForInfo ioForInfo = new IOForInfo(AllStudentPath);
 
-            String[] inf = ioStreamForInf.GetInf();
+            String[] inf = ioForInfo.GetInfo();
 
             //System.out.println(inf);
             if (inf[0].equals("error")) {
@@ -152,7 +152,7 @@ public class ATPanel extends CTPanel {
                     };
 
                     // 通过数组传递完整数据
-                    ioStreamForInf.SetInf(DEFAULT_NAMES);
+                    ioForInfo.SetInfo(DEFAULT_NAMES);
                 }
 
 
@@ -164,8 +164,8 @@ public class ATPanel extends CTPanel {
 
         //获取请假名单
         {
-            IOStreamForInf ioStreamForInf = new IOStreamForInf(LeaveListPath);
-            String[] inf = ioStreamForInf.GetInf();
+            IOForInfo ioForInfo = new IOForInfo(LeaveListPath);
+            String[] inf = ioForInfo.GetInfo();
 
             //遍历数组
             for (String s : inf) {
@@ -176,7 +176,7 @@ public class ATPanel extends CTPanel {
                 //leaveList.add(s);
             }
             if (inf[0].equals("error")) {
-                ioStreamForInf.SetInf("");
+                ioForInfo.SetInfo("");
                 studentLateLength = 0;
             }else{
                 //leaveList.clear();

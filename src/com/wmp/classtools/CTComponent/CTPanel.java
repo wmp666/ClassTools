@@ -25,11 +25,11 @@ public abstract class CTPanel extends JPanel{
         return nextPanelY;
     }
 
-    public void setNextPanelY(int nextPanelY) {
+    public void appendNextPanelY(int nextPanelY) {
         this.nextPanelY = nextPanelY + this.nextPanelY;
     }
 
-    public void nextPanelY(int nextPanelY) {
+    public void setNextPanelY(int nextPanelY) {
         this.nextPanelY = nextPanelY;
     }
 

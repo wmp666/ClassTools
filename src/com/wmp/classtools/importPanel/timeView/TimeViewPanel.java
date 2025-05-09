@@ -41,13 +41,13 @@ public class TimeViewPanel extends CTPanel {
     public TimeViewPanel(int nextPanelY) throws MalformedURLException {
 
 
-        setNextPanelY(nextPanelY);
+        appendNextPanelY(nextPanelY);
 
         initPanel();
 
         //时间刷新
 
-
+        timeThread.setDaemon(true);
         timeThread.start();
     }
 
@@ -64,7 +64,7 @@ public class TimeViewPanel extends CTPanel {
         timeView.setForeground(CTColor.mainColor);
         timeView.setBounds(5,3,180,32);
         this.add(timeView);
-        setNextPanelY(32);
+        appendNextPanelY(32);
 
         CTButton viewTimeButton = new CTButton("全屏显示时间",
                 "/image/%s/view_0.png",
@@ -131,8 +131,8 @@ public class TimeViewPanel extends CTPanel {
                 timeView.setBounds(5,3,180,32);
                 this.add(timeView);
             } else if (i == 1) {
-                //Log.exit(0);
-                System.exit(0);
+                window.setVisible(false);
+                Log.exit(0);
             }
         });
 

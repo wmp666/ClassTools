@@ -2,8 +2,9 @@ package com.wmp.classTools.frame;
 
 import com.wmp.PublicTools.CTColor;
 import com.wmp.Main;
-import com.wmp.PublicTools.io.IOStreamForInf;
+import com.wmp.PublicTools.io.IOForInfo;
 import com.wmp.classTools.CTComponent.CTPanel;
+import com.wmp.classTools.importPanel.eastereggtext.EEPanel;
 import com.wmp.classTools.importPanel.finalPanel.FinalPanel;
 import com.wmp.classTools.importPanel.timeView.TimeViewPanel;
 import com.wmp.classTools.extraPanel.attendance.panel.ATPanel;
@@ -41,9 +42,9 @@ public class MainWindow extends JDialog {
 
 
         //初始化
-        new IOStreamForInf(DutyListPath);
-        new IOStreamForInf(indexPath);
-        new IOStreamForInf(AllStuPath);
+        new IOForInfo(DutyListPath);
+        new IOForInfo(indexPath);
+        new IOForInfo(AllStuPath);
 
         AtomicInteger mixY = new AtomicInteger();
 
@@ -102,6 +103,9 @@ public class MainWindow extends JDialog {
             view.setVisible(true);
 
         }else {
+            EEPanel eEPanel = new EEPanel(mixY.get());
+            showPanelList.add(eEPanel);
+
             DPanel dPanel = new DPanel(mixY.get(),DutyListPath,indexPath);
             showPanelList.add(dPanel);
 
@@ -137,6 +141,7 @@ public class MainWindow extends JDialog {
                     //刷新窗口大小
                     AtomicInteger temp = new AtomicInteger(0);
                     AtomicInteger finalMixY = new AtomicInteger(mixY.get());
+                    AtomicInteger finalMixX = new AtomicInteger(250);
 
                     showPanelList.forEach(ctPanel -> {
                         temp.set(temp.get() + ctPanel.getHeight());
@@ -146,12 +151,15 @@ public class MainWindow extends JDialog {
 
                     if (temp.get() != finalMixY.get()) {
 
+
                         showPanelList.forEach(ctPanel -> {
                             ctPanel.setLocation(0, finalMixY.get());
                             ctPanel.setBackground(CTColor.backColor);
+
                             finalMixY.set(finalMixY.get() + ctPanel.getHeight());
+                            finalMixX.set(Math.max(finalMixX.get(), ctPanel.getWidth()));
                         });
-                        this.setSize(250, finalMixY.get() + 5);
+                        this.setBounds(Toolkit.getDefaultToolkit().getScreenSize().width - finalMixX.get(), 0, finalMixX.get(), finalMixY.get() + 5);
 
                     }
 

@@ -4,7 +4,7 @@ import com.wmp.Main;
 import com.wmp.PublicTools.StartupParameters;
 import com.wmp.PublicTools.printLog.Log;
 import com.wmp.PublicTools.update.GetNewerVersion;
-import com.wmp.classTools.frame.EasterEgg;
+import com.wmp.PublicTools.EasterEgg.EasterEgg;
 import com.wmp.classTools.frame.LoadingWindow;
 import com.wmp.classTools.frame.MainWindow;
 import com.wmp.classTools.frame.tools.cookie.StartCookie;

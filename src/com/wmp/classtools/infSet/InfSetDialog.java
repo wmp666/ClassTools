@@ -6,7 +6,7 @@ import com.wmp.PublicTools.GetIcon;
 import com.wmp.PublicTools.InfProcess;
 import com.wmp.PublicTools.OpenInExp;
 import com.wmp.PublicTools.io.GetPath;
-import com.wmp.PublicTools.io.IOStreamForInf;
+import com.wmp.PublicTools.io.IOForInfo;
 import com.wmp.PublicTools.io.ZipPack;
 import com.wmp.PublicTools.printLog.Log;
 import com.wmp.classTools.CTComponent.CTButton;
@@ -84,7 +84,7 @@ public class InfSetDialog extends JDialog implements WindowListener {
         this.studentList = getStudentList();
         this.dutyList = getDutyList(DutyListPath);
 
-        index.set(Integer.parseInt(new IOStreamForInf(indexPath).GetInf()[0]));
+        index.set(Integer.parseInt(new IOForInfo(indexPath).GetInfo()[0]));
         c.setLayout(new BorderLayout());// 设置布局为边界布局
 
         initSaveButton();
@@ -246,10 +246,10 @@ public class InfSetDialog extends JDialog implements WindowListener {
 
         //显示数据
         {
-            IOStreamForInf io = new IOStreamForInf(new File(Main.DATA_PATH + "setUp.json"));
+            IOForInfo io = new IOForInfo(new File(Main.DATA_PATH + "setUp.json"));
             JSONObject jsonObject;
             try {
-                jsonObject = new JSONObject(io.GetInf()[0]);
+                jsonObject = new JSONObject(io.GetInfo()[0]);
             }catch (Exception e){
                 Log.error.print("InfSetDialog", "读取设置文件失败: " + e.getMessage());
                 return tempPanel;
@@ -459,7 +459,7 @@ public class InfSetDialog extends JDialog implements WindowListener {
 
 
                 try {
-                    index.set(Integer.parseInt(new IOStreamForInf(indexPath).GetInf()[0]));
+                    index.set(Integer.parseInt(new IOForInfo(indexPath).GetInfo()[0]));
                 } catch (IOException e) {
                     throw new RuntimeException(e);
                 }
@@ -499,7 +499,7 @@ public class InfSetDialog extends JDialog implements WindowListener {
                 "/image/%s/delete_0.png",
                 "/image/%s/delete_1.png", 35, 150, () -> {
             try {
-                IOStreamForInf.deleteDirectoryRecursively(Paths.get(Main.TEMP_PATH));
+                IOForInfo.deleteDirectoryRecursively(Paths.get(Main.TEMP_PATH));
 
             } catch (IOException e) {
                 throw new RuntimeException(e);
@@ -511,7 +511,7 @@ public class InfSetDialog extends JDialog implements WindowListener {
                 "/image/%s/delete_0.png",
                 "/image/%s/delete_1.png", 35, 150, () -> {
             try {
-                IOStreamForInf.deleteDirectoryRecursively(Paths.get(Main.DATA_PATH + "Log\\"));
+                IOForInfo.deleteDirectoryRecursively(Paths.get(Main.DATA_PATH + "Log\\"));
 
             } catch (IOException e) {
                 throw new RuntimeException(e);
@@ -783,7 +783,7 @@ public class InfSetDialog extends JDialog implements WindowListener {
         // 初始化现有数据
         try {
             if (leaveListPath.exists()) {
-                String[] content = new IOStreamForInf(leaveListPath).GetInf();
+                String[] content = new IOForInfo(leaveListPath).GetInfo();
                 leaveList.addAll(Arrays.asList(content));
 
                 //leaveArea.setText(content.replace(",", "\n"));
@@ -800,9 +800,9 @@ public class InfSetDialog extends JDialog implements WindowListener {
 
         //获取所有学生名单
         {
-            IOStreamForInf ioStreamForInf = new IOStreamForInf(AllStuPath);
+            IOForInfo ioForInfo = new IOForInfo(AllStuPath);
 
-            String[] inf = ioStreamForInf.GetInf();
+            String[] inf = ioForInfo.GetInfo();
 
             //System.out.println(inf);
             if (!inf[0].equals("error")) {
@@ -814,14 +814,14 @@ public class InfSetDialog extends JDialog implements WindowListener {
 
     private String[][] getDutyList(File dutyPath) throws IOException {
         //获取inf
-        IOStreamForInf ioStreamForInf = new IOStreamForInf(dutyPath);
+        IOForInfo ioForInfo = new IOForInfo(dutyPath);
 
-        String[] inf = ioStreamForInf.GetInf();
+        String[] inf = ioForInfo.GetInfo();
 
         //System.out.println(inf);
         if (inf[0].equals("error")) {
             //总会有的
-            ioStreamForInf.SetInf("[尽快,设置] [请]",
+            ioForInfo.SetInfo("[尽快,设置] [请]",
                     "[尽快,设置,1] [请]");
             return new String[][]{{"error"}, {"null"}};
         }
@@ -876,8 +876,8 @@ public class InfSetDialog extends JDialog implements WindowListener {
                     //System.out.println("表格数据:" + sb);
                     //System.out.println("--index:" + index.get());
 
-                    new IOStreamForInf(DutyListPath).SetInf(sb.toString());
-                    new IOStreamForInf(indexPath).SetInf(String.valueOf(index.get()));
+                    new IOForInfo(DutyListPath).SetInfo(sb.toString());
+                    new IOForInfo(indexPath).SetInfo(String.valueOf(index.get()));
 
                 }
 
@@ -890,7 +890,7 @@ public class InfSetDialog extends JDialog implements WindowListener {
                         }
                     }
                     String names = sb.toString();
-                    new IOStreamForInf(leaveListPath).SetInf(names);
+                    new IOForInfo(leaveListPath).SetInfo(names);
 
 
                 }
@@ -910,14 +910,14 @@ public class InfSetDialog extends JDialog implements WindowListener {
                         sb.append("\n");
                     }
 
-                    new IOStreamForInf(AllStuPath).SetInf(sb.toString());
+                    new IOForInfo(AllStuPath).SetInfo(sb.toString());
 
 
                 }
 
                 //保存数据-个性化
                 {
-                    IOStreamForInf io = new IOStreamForInf(new File(Main.DATA_PATH + "setUp.json"));
+                    IOForInfo io = new IOForInfo(new File(Main.DATA_PATH + "setUp.json"));
 
                     //设置主题色
                     JSONObject jsonObject = new JSONObject();
@@ -967,7 +967,7 @@ public class InfSetDialog extends JDialog implements WindowListener {
                     }
 
                     Log.info.print("InfSetDialog", "保存数据: " + jsonObject.toString());
-                    io.SetInf(jsonObject.toString());
+                    io.SetInfo(jsonObject.toString());
 
                 }
 

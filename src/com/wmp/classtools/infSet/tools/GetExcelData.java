@@ -2,7 +2,7 @@ package com.wmp.classTools.infSet.tools;
 
 import com.alibaba.excel.EasyExcel;
 import com.alibaba.excel.read.builder.ExcelReaderBuilder;
-import com.wmp.PublicTools.io.IOStreamForInf;
+import com.wmp.PublicTools.io.IOForInfo;
 import com.wmp.classTools.infSet.DataStyle.BasicData;
 
 import java.io.File;
@@ -56,7 +56,7 @@ public class GetExcelData <T extends BasicData>{
         try {
             //将allStu转换为string[]
 
-            new IOStreamForInf(dataPath).SetInf(allStu.toArray(new String[0]));
+            new IOForInfo(dataPath).SetInfo(allStu.toArray(new String[0]));
 
         } catch (IOException ex) {
             throw new RuntimeException(ex);

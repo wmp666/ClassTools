@@ -136,7 +136,6 @@ public class GetNewerVersion {
 
             protected void done() {
                 if (latestVersion == null) {
-                    System.out.println("无法检查更新");
 
                     Log.error.print(dialog, "获取新版本", "无法获取版本信息");
 
@@ -168,10 +167,11 @@ public class GetNewerVersion {
                             System.exit(0);
                         }).start();
                     } else {
-                        System.out.println("当前已是最新版本");
                         if (showMessage) {
                             Log.info.message(dialog, "获取新版本", "当前已是最新版本");
 
+                        }else{
+                            Log.info.print("获取新版本", "当前已是最新版本");
                         }
 
                     }

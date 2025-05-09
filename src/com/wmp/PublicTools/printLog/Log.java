@@ -72,6 +72,7 @@ public class Log {
         Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
 
         JWindow window = new JWindow();
+        window.setAlwaysOnTop(true);
         window.setSize(screenSize);
         Container c = window.getContentPane();
         c.setLayout(new BorderLayout());
@@ -95,8 +96,6 @@ public class Log {
                 "■■只得学着独立行走，\n在跌倒爬起中度过碌碌■■。\n但失败的■■同样是■■，\n■■有权品尝至最后。",
                 "每一次移动后发生的变化，\n每一个不经意间弹出的话语，\n都在呈现■■■■时的所见所感……\n虽不如■■■■，\n但创造出了足够的情感冲击。",
                 "如果遇到了两难的情况，\n一方面是■■，\n一方面是■■，\n只能选一个……",
-                "■■回去失眠了",
-                "",
         };
         String exitStr = exitStrList[new Random().nextInt(exitStrList.length)];
         if (exitStr.contains("\n")) {

@@ -3,7 +3,7 @@ package com.wmp.classTools.extraPanel.duty.panel;
 import com.wmp.PublicTools.CTColor;
 import com.wmp.PublicTools.InfProcess;
 import com.wmp.PublicTools.PeoPanelProcess;
-import com.wmp.PublicTools.io.IOStreamForInf;
+import com.wmp.PublicTools.io.IOForInfo;
 import com.wmp.PublicTools.printLog.Log;
 import com.wmp.classTools.CTComponent.CTButton;
 import com.wmp.classTools.CTComponent.CTPanel;
@@ -28,7 +28,7 @@ public class DPanel extends CTPanel {
 
         this.DutyListPath = DutyListPath;
         this.indexPath = indexPath;
-        setNextPanelY(mixY);
+        appendNextPanelY(mixY);
 
         //设置容器布局- 绝对布局
         this.setLayout(null);
@@ -40,7 +40,7 @@ public class DPanel extends CTPanel {
         initContainer(DutyListPath);
 
         this.setSize(250,DPanelMixY + 5);
-        setNextPanelY(DPanelMixY);
+        appendNextPanelY(DPanelMixY);
 
     }
 
@@ -57,7 +57,7 @@ public class DPanel extends CTPanel {
         try {
             now = DutyList.get(index);
         } catch (Exception e) {
-            new IOStreamForInf(indexPath).SetInf("0");
+            new IOForInfo(indexPath).SetInfo("0");
             Log.error.print("CTPanel-DutyPanel", "数据异常,请检查数据文件\n问题:" + e.getMessage());
             //throw new RuntimeException(e);
         }
@@ -91,7 +91,7 @@ public class DPanel extends CTPanel {
 
 
                 try {
-                    new IOStreamForInf(indexPath).SetInf(String.valueOf(index));
+                    new IOForInfo(indexPath).SetInfo(String.valueOf(index));
                     refresh();
                 } catch (IOException ex) {
                     throw new RuntimeException(ex);
@@ -115,7 +115,7 @@ public class DPanel extends CTPanel {
 
 
                 try {
-                    new IOStreamForInf(indexPath).SetInf(String.valueOf(index));
+                    new IOForInfo(indexPath).SetInfo(String.valueOf(index));
                     refresh();
                 } catch (IOException ex) {
                     throw new RuntimeException(ex);
@@ -148,15 +148,15 @@ public class DPanel extends CTPanel {
 
     //初始化索引
     private void initIndex(File indexPath) throws IOException {
-        IOStreamForInf ioStreamForInf = new IOStreamForInf(indexPath);
+        IOForInfo ioForInfo = new IOForInfo(indexPath);
 
-        String[] inf = ioStreamForInf.GetInf();
+        String[] inf = ioForInfo.GetInfo();
 
         //System.out.println(inf);
         if(inf[0].equals("error")){
             //将数据改为默认-空,需要用户自行输入数据
             index = 0;
-            ioStreamForInf.SetInf("0");
+            ioForInfo.SetInfo("0");
         }else{
             index = Integer.parseInt(inf[0]);
         }
@@ -166,17 +166,17 @@ public class DPanel extends CTPanel {
     //初始化数据
     private void initDutyList(File dutyPath) throws IOException {
         //获取inf
-        IOStreamForInf ioStreamForInf = new IOStreamForInf(dutyPath);
+        IOForInfo ioForInfo = new IOForInfo(dutyPath);
 
         //System.out.println("DutyPath:" + dutyPath);
 
-        String[] inf = ioStreamForInf.GetInf();
+        String[] inf = ioForInfo.GetInfo();
 
 
         if(inf[0].equals("error")){
             //将数据改为默认-空,需要用户自行输入数据
 
-            ioStreamForInf.SetInf("[尽快,设置] [请]",
+            ioForInfo.SetInfo("[尽快,设置] [请]",
                     "[尽快,设置,0] [请]");
 
             inf = new String[]{"[尽快,设置] [请]",
@@ -220,7 +220,7 @@ public class DPanel extends CTPanel {
 
         this.setSize(250,DPanelMixY + 5);
 
-        setNextPanelY(DPanelMixY);
+        appendNextPanelY(DPanelMixY);
     }
 
     public int getIndex() {

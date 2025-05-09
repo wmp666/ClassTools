@@ -5,6 +5,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.*;
+import java.net.URI;
+import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.FileVisitResult;
 import java.nio.file.Files;
@@ -13,20 +15,66 @@ import java.nio.file.SimpleFileVisitor;
 import java.nio.file.attribute.BasicFileAttributes;
 import java.util.Arrays;
 
-public class IOStreamForInf {
+public class IOForInfo {
 
-    private static final Logger log = LoggerFactory.getLogger(IOStreamForInf.class);
+    private static final Logger log = LoggerFactory.getLogger(IOForInfo.class);
     private final File file;
 
-    public IOStreamForInf(File file) {
+    public IOForInfo(File file) {
         this.file = file;
     }
 
-    public String[] GetInf() throws IOException {
+    public IOForInfo(String file) {
+        this.file = new File(file);
+    }
+
+    public IOForInfo(URI file) {
+        this.file = new File(file);
+    }
+
+    public static String[] getInfo(URL file) {
+        String infos = getInfos(file);
+        if (infos.equals("error")){
+            return new String[]{"error"};
+        }
+        return infos.split("\n");
+    }
+    public static String getInfos(URL file) {
+        try { // 明确指定编码
+            BufferedReader reader = new BufferedReader(
+                    new InputStreamReader(
+                            file.openStream(), StandardCharsets.UTF_8));
+            StringBuilder sb = new StringBuilder();
+            for (String line; (line = reader.readLine()) != null; ) {
+                if (line.startsWith("#")){
+                    continue;
+                }
+                if (line.isEmpty()){
+                    continue;
+                }
+                sb.append(line).append("\n");
+            }
+
+            return sb.toString();// 读取第一行
+        } catch (IOException e) {
+            Log.error.print( "IOForInfo-获取数据", file.getPath() + "文件读取失败");
+            throw new RuntimeException(e);
+        }
+    }
+
+    public String[] GetInfo() throws IOException {
+        String s = GetInfos();
+        if (s.equals("error")){
+            return new String[]{"error"};
+        }
+        return s.split("\n");
+    }
+
+    public String GetInfos() throws IOException {
         if (!file.exists()) {
             if (!creativeFile(file)) {
-                Log.error.print("IOStreamForInf-获取数据", file.getPath() + "文件无法创建");
-                return new String[]{"error"};
+                Log.error.print("IOForInfo-获取数据", file.getPath() + "文件无法创建");
+                return "error";
             }
         }
 
@@ -35,7 +83,7 @@ public class IOStreamForInf {
                 new InputStreamReader(
                         new FileInputStream(file), StandardCharsets.UTF_8))) { // 明确指定编码
 
-            Log.info.print("IOStreamForInf-获取数据", file.getPath() + "文件开始读取");
+            Log.info.print("IOForInfo-获取数据", file.getPath() + "文件开始读取");
             StringBuilder content = new StringBuilder();
             String line;
             while ((line = reader.readLine()) != null) {
@@ -50,32 +98,30 @@ public class IOStreamForInf {
 
             String replace = s.replace("\n", "\\n");
 
-            Log.info.print("IOStreamForInf-获取数据", "数据内容: " + replace);
-            Log.info.print("IOStreamForInf-获取数据", file.getPath() + "文件读取完成");
-            return !s.isEmpty() ? s.split("\n") : new String[]{"error"};
+            Log.info.print("IOForInfo-获取数据", "数据内容: " + replace);
+            Log.info.print("IOForInfo-获取数据", file.getPath() + "文件读取完成");
+            return !s.isEmpty() ? s : "error";
         } catch (IOException e) {
-            Log.error.print("IOStreamForInf-获取数据", file.getPath() + "文件读取失败");
-            return new String[]{"error"};
+            Log.error.print("IOForInfo-获取数据", file.getPath() + "文件读取失败");
+            return "error";
         }
     }
-
-
-    public void SetInf(String... infos) throws IOException {
+    public void SetInfo(String... infos) throws IOException {
 
         if (!file.exists()) {
             if (!creativeFile(file)) {
-                Log.error.print("IOStreamForInf-设置数据", file.getPath() + "文件无法创建");
+                Log.error.print("IOForInfo-设置数据", file.getPath() + "文件无法创建");
                 return;
             }
         }
 
         try (Writer writer = new OutputStreamWriter(
                 new FileOutputStream(file), StandardCharsets.UTF_8)) {// 明确指定编码
-            Log.info.print("IOStreamForInf-设置数据", file.getPath() + "文件开始写入");
+            Log.info.print("IOForInfo-设置数据", file.getPath() + "文件开始写入");
 
             //判断内容是否为空
             if (infos.length == 0 || infos[0].isEmpty()) {
-                Log.warn.print("IOStreamForInf-设置数据", file.getPath() + "文件内容为空");
+                Log.warn.print("IOForInfo-设置数据", file.getPath() + "文件内容为空");
                 return;
             }
 
@@ -94,12 +140,12 @@ public class IOStreamForInf {
                 }
             }
         } catch (IOException e) {
-            Log.error.print("IOStreamForInf-设置数据", file.getPath() + "文件写入失败");
+            Log.error.print("IOForInfo-设置数据", file.getPath() + "文件写入失败");
         }
     }
 
     private boolean creativeFile(File file) throws IOException {
-        Log.info.print("IOStreamForInf-创建文件", file.getPath() + "文件创建");
+        Log.info.print("IOForInfo-创建文件", file.getPath() + "文件创建");
         file.getParentFile().mkdirs();
         return file.createNewFile();
     }
@@ -120,16 +166,16 @@ public class IOStreamForInf {
                 }
             });
         }
-        Log.info.message(null, "IOStreamForInf-删除文件", "删除文件/文件夹: " + path);
+        Log.info.message(null, "IOForInfo-删除文件", "删除文件/文件夹: " + path);
     }
 
     @Override
     public String toString() {
 
         try {
-            return "IOStreamForInf{" +
+            return "IOForInfo{" +
                     "file=" + file +
-                    " Inf=" + Arrays.toString(GetInf()) +
+                    " Inf=" + Arrays.toString(GetInfo()) +
                     '}';
         } catch (IOException e) {
             throw new RuntimeException(e);

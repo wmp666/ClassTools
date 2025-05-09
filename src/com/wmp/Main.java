@@ -28,7 +28,7 @@ public class Main{
     * d:只修复的问题,问题较少
     * e:测试版本号
      */
-    public static String version = "1.17.1";
+    public static String version = "1.18.0";
 
     public static ArrayList<String> list = new ArrayList<>();
 
@@ -64,31 +64,42 @@ public class Main{
     public static void main(String[] args) throws IOException {
 
 
-        GetSetsJSON setsJSON = new GetSetsJSON();
+        Log.info.print("Main", "正在初始化...");
+        boolean b = false;
+        boolean startUpdate = false;
+        try {
+            GetSetsJSON setsJSON = new GetSetsJSON();
 
-        boolean b = isImportDay();
+            b = isImportDay();
 
-        boolean startUpdate = setsJSON.isStartUpdate();
-        canExit = setsJSON.isCanExit();
-        disButList.addAll(setsJSON.getDisButList());
+            startUpdate = setsJSON.isStartUpdate();
+            canExit = setsJSON.isCanExit();
+            disButList.addAll(setsJSON.getDisButList());
 
 
-
-        for (int i = 0; i < args.length; i++) {
-            args[i] = args[i].replace("/", "-");
-        }
-        Log.info.print("Main", "启动参数:" + Arrays.toString(args));
-
-        if (args.length > 0) {
-            list = new ArrayList<>(Arrays.asList(args));
-            Log.info.print("Main", "使用的启动参数:" + Arrays.toString(args));
-        }
-            try {
-                SwingRun.show(b, allArgs, list, startUpdate);
-            } catch (URISyntaxException e) {
-                throw new RuntimeException(e);
+            for (int i = 0; i < args.length; i++) {
+                args[i] = args[i].replace("/", "-");
             }
+            Log.info.print("Main", "启动参数:" + Arrays.toString(args));
 
+            if (args.length > 0) {
+                list = new ArrayList<>(Arrays.asList(args));
+                Log.info.print("Main", "使用的启动参数:" + Arrays.toString(args));
+            }
+        } catch (IOException e) {
+            Log.error.print("Main", "初始化失败:" + e.getMessage());
+            Log.showLogDialog();
+            throw new RuntimeException(e);
+        }
+        try {
+            SwingRun.show(b, allArgs, list, startUpdate);
+        } catch (URISyntaxException e) {
+            Log.error.print("Main", "窗口初始化失败:" + e.getMessage());
+            Log.showLogDialog();
+            throw new RuntimeException(e);
+        }
+
+        Log.info.print("Main", "初始化完毕");
 
 
     }
