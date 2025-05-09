@@ -11,7 +11,7 @@ public class GetWebInf {
             // 获取原始JSON响应
             String webInf = Jsoup.connect(apiUrl)
                     .header("Accept", "application/vnd.github.v3+json")
-                    .timeout(10000)
+                    //.timeout(60000)
                     .ignoreContentType(true)
                     .execute()
                     .body();
