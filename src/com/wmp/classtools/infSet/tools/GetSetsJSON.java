@@ -1,7 +1,7 @@
 package com.wmp.classTools.infSet.tools;
 
-import com.wmp.PublicTools.CTColor;
 import com.wmp.Main;
+import com.wmp.PublicTools.UITools.CTColor;
 import com.wmp.PublicTools.io.IOForInfo;
 import com.wmp.PublicTools.printLog.Log;
 import org.json.JSONArray;

@@ -1,7 +1,7 @@
 package com.wmp.classTools.frame.tools.cookie;
 
 import com.wmp.Main;
-import com.wmp.PublicTools.GetIcon;
+import com.wmp.PublicTools.UITools.GetIcon;
 import com.wmp.PublicTools.printLog.Log;
 
 import javax.swing.*;

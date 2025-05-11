@@ -1,7 +1,7 @@
 package com.wmp.classTools.frame.tools.help;
 
 import com.wmp.Main;
-import com.wmp.PublicTools.GetIcon;
+import com.wmp.PublicTools.UITools.GetIcon;
 import com.wmp.PublicTools.io.ResourceLocalizer;
 import org.commonmark.parser.Parser;
 import org.commonmark.renderer.html.HtmlRenderer;

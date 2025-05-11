@@ -1,6 +1,6 @@
 package com.wmp.classTools.CTComponent;
 
-import com.wmp.PublicTools.CTColor;
+import com.wmp.PublicTools.UITools.CTColor;
 
 import javax.swing.*;
 import java.io.IOException;

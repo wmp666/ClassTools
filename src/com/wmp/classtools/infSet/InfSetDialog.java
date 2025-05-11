@@ -1,10 +1,10 @@
 package com.wmp.classTools.infSet;
 
-import com.wmp.PublicTools.CTColor;
 import com.wmp.Main;
-import com.wmp.PublicTools.GetIcon;
 import com.wmp.PublicTools.InfProcess;
 import com.wmp.PublicTools.OpenInExp;
+import com.wmp.PublicTools.UITools.CTColor;
+import com.wmp.PublicTools.UITools.GetIcon;
 import com.wmp.PublicTools.io.GetPath;
 import com.wmp.PublicTools.io.IOForInfo;
 import com.wmp.PublicTools.io.ZipPack;

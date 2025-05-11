@@ -1,7 +1,7 @@
 package com.wmp;
 
-import com.wmp.PublicTools.CTColor;
 import com.wmp.PublicTools.StartupParameters;
+import com.wmp.PublicTools.UITools.CTColor;
 import com.wmp.PublicTools.printLog.Log;
 import com.wmp.classTools.SwingRun;
 import com.wmp.classTools.infSet.tools.GetSetsJSON;
@@ -28,7 +28,7 @@ public class Main{
     * d:只修复的问题,问题较少
     * e:测试版本号
      */
-    public static String version = "1.18.1";
+    public static String version = "1.18.2";
 
     public static ArrayList<String> list = new ArrayList<>();
 

@@ -1,14 +1,14 @@
 package com.wmp.classTools.frame;
 
-import com.wmp.PublicTools.CTColor;
 import com.wmp.Main;
+import com.wmp.PublicTools.UITools.CTColor;
 import com.wmp.PublicTools.io.IOForInfo;
 import com.wmp.classTools.CTComponent.CTPanel;
-import com.wmp.classTools.importPanel.eastereggtext.EEPanel;
-import com.wmp.classTools.importPanel.finalPanel.FinalPanel;
-import com.wmp.classTools.importPanel.timeView.TimeViewPanel;
 import com.wmp.classTools.extraPanel.attendance.panel.ATPanel;
 import com.wmp.classTools.extraPanel.duty.panel.DPanel;
+import com.wmp.classTools.importPanel.eastereggtext.ETPanel;
+import com.wmp.classTools.importPanel.finalPanel.FinalPanel;
+import com.wmp.classTools.importPanel.timeView.TimeViewPanel;
 
 import javax.swing.*;
 import java.awt.*;
@@ -103,7 +103,7 @@ public class MainWindow extends JDialog {
             view.setVisible(true);
 
         }else {
-            EEPanel eEPanel = new EEPanel(mixY.get());
+            ETPanel eEPanel = new ETPanel(mixY.get());
             showPanelList.add(eEPanel);
 
             DPanel dPanel = new DPanel(mixY.get(),DutyListPath,indexPath);

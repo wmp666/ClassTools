@@ -1,4 +1,4 @@
-package com.wmp.PublicTools;
+package com.wmp.PublicTools.UITools;
 
 import javax.swing.*;
 import java.awt.*;

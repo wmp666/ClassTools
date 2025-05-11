@@ -1,8 +1,8 @@
 package com.wmp.PublicTools.io;
 
-import com.wmp.PublicTools.CTColor;
 import com.wmp.Main;
-import com.wmp.PublicTools.GetIcon;
+import com.wmp.PublicTools.UITools.CTColor;
+import com.wmp.PublicTools.UITools.GetIcon;
 import com.wmp.PublicTools.printLog.Log;
 
 import javax.swing.*;

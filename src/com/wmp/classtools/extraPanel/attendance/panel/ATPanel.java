@@ -1,10 +1,10 @@
 package com.wmp.classTools.extraPanel.attendance.panel;
 
-import com.wmp.PublicTools.CTColor;
+import com.wmp.PublicTools.UITools.CTColor;
+import com.wmp.PublicTools.UITools.PeoPanelProcess;
 import com.wmp.PublicTools.io.IOForInfo;
 import com.wmp.PublicTools.printLog.Log;
 import com.wmp.classTools.CTComponent.CTPanel;
-import com.wmp.PublicTools.PeoPanelProcess;
 
 import javax.swing.*;
 import java.awt.*;
@@ -22,9 +22,10 @@ public class ATPanel extends CTPanel {
     private final JLabel personLabel = new JLabel();
     private final File AllStudentPath;
     private final File LeaveListPath;
-    private int ATPanelMixY;
-    private int studentLength;
-    private int studentLateLength;
+    private int ATPanelMaxWidth = 250;
+    private int ATPanelMixY; //面板的高度
+    private int studentLength;// 应到人数
+    private int studentLateLength; // 请假人数
     private final ArrayList<String> studentList = new ArrayList<>();
     private final ArrayList<String> leaveList = new ArrayList<>();//迟到人员
 
@@ -44,8 +45,7 @@ public class ATPanel extends CTPanel {
         initContainer();
 
 
-
-        this.setSize(250, ATPanelMixY + 5);
+        this.setSize(ATPanelMaxWidth, ATPanelMixY + 5);
         appendNextPanelY( ATPanelMixY + 5);
 
     }
@@ -100,8 +100,11 @@ public class ATPanel extends CTPanel {
             personLabel.setText(String.valueOf(objects[0]));
             personLabel.setFont(new Font("微软雅黑", Font.BOLD, 23));
             personLabel.setForeground(CTColor.mainColor);
-            personLabel.setBounds(5, ATPanelMixY, 250, 30 * Integer.parseInt(String.valueOf(objects[1])));
+            personLabel.setBounds(5, ATPanelMixY,
+                    Integer.parseInt(String.valueOf(objects[2])) * 23 + 8,
+                    30 * Integer.parseInt(String.valueOf(objects[1])));
             ATPanelMixY = ATPanelMixY + personLabel.getHeight();
+            ATPanelMaxWidth = Math.max(ATPanelMaxWidth, personLabel.getWidth());
 
             this.add(personLabel);
         }
@@ -122,12 +125,13 @@ public class ATPanel extends CTPanel {
         // 更新UI组件
 
         this.removeAll();
+        ATPanelMaxWidth = 250;
         ATPanelMixY = 0;
 
         initContainer();
 
         setNextPanelY(ATPanelMixY);
-        this.setSize(250, ATPanelMixY + 5);
+        this.setSize(ATPanelMaxWidth, ATPanelMixY + 5);
 
 
         // 强制重绘

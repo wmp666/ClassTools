@@ -1,8 +1,8 @@
 package com.wmp.classTools.extraPanel.duty.panel;
 
-import com.wmp.PublicTools.CTColor;
 import com.wmp.PublicTools.InfProcess;
-import com.wmp.PublicTools.PeoPanelProcess;
+import com.wmp.PublicTools.UITools.CTColor;
+import com.wmp.PublicTools.UITools.PeoPanelProcess;
 import com.wmp.PublicTools.io.IOForInfo;
 import com.wmp.PublicTools.printLog.Log;
 import com.wmp.classTools.CTComponent.CTButton;
@@ -19,8 +19,9 @@ public class DPanel extends CTPanel {
 
 
     private final ArrayList<DutyDay> DutyList = new ArrayList<>();
-    private int DPanelMixY;
-    private int index;
+    private int DPanelMaxWidth = 250;
+    private int DPanelMixY; //面板的高度
+    private int index; //当前日期索引
     private final File DutyListPath;
     private final File indexPath;
 
@@ -37,14 +38,14 @@ public class DPanel extends CTPanel {
 
         initIndex(indexPath);
 
-        initContainer(DutyListPath);
+        initContainer();
 
-        this.setSize(250,DPanelMixY + 5);
+        this.setSize(DPanelMaxWidth, DPanelMixY + 5);
         appendNextPanelY(DPanelMixY);
 
     }
 
-    private void initContainer(File DutyListPath) throws IOException {
+    private void initContainer() throws IOException {
         JLabel CLBBLabel = new JLabel();
         CLBBLabel.setText("擦黑板:");
         CLBBLabel.setFont(new Font("微软雅黑",Font.BOLD,20));
@@ -59,10 +60,11 @@ public class DPanel extends CTPanel {
         } catch (Exception e) {
             new IOForInfo(indexPath).SetInfo("0");
             Log.error.print("CTPanel-DutyPanel", "数据异常,请检查数据文件\n问题:" + e.getMessage());
-            //throw new RuntimeException(e);
+            throw new RuntimeException(e);
         }
 
-        DPanelMixY = initPeople(now.getClBlackBroadList(), DPanelMixY);
+        int[] tempList01 = initPeople(now.getClBlackBroadList(), DPanelMixY);
+        DPanelMixY = tempList01[0];
 
         JLabel CLFLabel = new JLabel();
         CLFLabel.setText("扫地:");
@@ -73,7 +75,9 @@ public class DPanel extends CTPanel {
         DPanelMixY = DPanelMixY + CLFLabel.getHeight() + 2;
 
 
-        DPanelMixY = initPeople(now.getClFloorList(), DPanelMixY);
+        int[] tempList02 = initPeople(now.getClFloorList(), DPanelMixY);
+        DPanelMixY = tempList02[0];
+
 
         {
 
@@ -127,9 +131,9 @@ public class DPanel extends CTPanel {
 
     }
 
-    private int initPeople(ArrayList<String> array, int mixY) {
+    private int[] initPeople(ArrayList<String> array, int mixY) {
         if (array == null || array.isEmpty()) {
-            return mixY; // 空集合直接返回基准值（根据业务需求调整）
+            return new int[]{mixY, 0}; // 空集合直接返回基准值（根据业务需求调整）
         }
 
         Object[] o = PeoPanelProcess.getPeopleName(array);
@@ -138,11 +142,14 @@ public class DPanel extends CTPanel {
         personLabel.setFont(new Font("微软雅黑", Font.BOLD, 23));
         personLabel.setBackground(CTColor.backColor);
         personLabel.setForeground(CTColor.mainColor);
-        personLabel.setBounds(5, mixY + 3, 250, 30 * Integer.parseInt(String.valueOf(o[1])));
+        personLabel.setBounds(5, mixY + 3,
+                Integer.parseInt(String.valueOf(o[2])) * 23 + 8,
+                30 * Integer.parseInt(String.valueOf(o[1])));
 
+        DPanelMaxWidth = Math.max(DPanelMaxWidth, personLabel.getWidth());
         this.add(personLabel);
 
-        return personLabel.getY() + personLabel.getHeight(); // 可替换为常量提升可读性
+        return new int[]{personLabel.getY() + personLabel.getHeight(), personLabel.getHeight()}; // 可替换为常量提升可读性
     }
 
 
@@ -210,15 +217,16 @@ public class DPanel extends CTPanel {
     @Override
     public void refresh() throws IOException {
 
+        DPanelMaxWidth = 250;
         DPanelMixY = 0;
         this.removeAll();
         initDutyList(DutyListPath);
         initIndex(indexPath);
-        initContainer(DutyListPath);
+        initContainer();
         //repaint();
         //revalidate();
 
-        this.setSize(250,DPanelMixY + 5);
+        this.setSize(DPanelMaxWidth, DPanelMixY + 5);
 
         appendNextPanelY(DPanelMixY);
     }
