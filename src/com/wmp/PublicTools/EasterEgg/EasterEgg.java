@@ -11,10 +11,8 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 import javax.swing.*;
-import java.awt.*;
 import java.io.IOException;
 import java.net.URISyntaxException;
-import java.util.Objects;
 import java.util.Random;
 
 public class EasterEgg {
@@ -109,44 +107,13 @@ public class EasterEgg {
 
                     get(); // 获取执行结果（可捕获异常）
 
-                    new SwingWorker<Void, Void>() {
 
-                        @Override
-                        protected void done() {
                             String videoPath = buildVideoPath(pin);
                             try {
                                 VideoPlayer.playVideo(videoPath);
                             } catch (IOException e) {
                                 throw new RuntimeException(e);
                             }
-                        }
-
-                        @Override
-                        protected Void doInBackground() throws Exception {
-                            ImageIcon imageIcon = new ImageIcon(
-                                Objects.requireNonNull(Main.class.getResource("/image/openEasterEgg.gif")));
-                            int iconHeight = imageIcon.getIconHeight();
-                            int iconWidth = imageIcon.getIconWidth();
-                            Icon icon = new ImageIcon(
-                                    imageIcon.getImage().getScaledInstance(iconWidth, iconHeight, Image.SCALE_DEFAULT));
-                            JLabel label = new JLabel(icon);
-                            JWindow window = new JWindow();
-                            window.setSize(iconWidth, iconHeight);
-                            window.setLocationRelativeTo(null);
-                            window.setAlwaysOnTop(true);
-                            window.add(label);
-
-                            window.setVisible(true);
-                            try {
-                                Thread.sleep(6850);
-                            } catch (InterruptedException e) {
-                                throw new RuntimeException(e);
-                            }
-                            window.dispose();
-
-                            return null;
-                        }
-                    }.execute();
 
 
 

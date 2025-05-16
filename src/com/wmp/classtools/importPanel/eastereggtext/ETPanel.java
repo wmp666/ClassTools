@@ -4,6 +4,7 @@ import com.wmp.PublicTools.EasterEgg.EETextStyle;
 import com.wmp.PublicTools.EasterEgg.EasterEgg;
 import com.wmp.PublicTools.UITools.CTColor;
 import com.wmp.PublicTools.UITools.GetMaxSize;
+import com.wmp.PublicTools.printLog.Log;
 import com.wmp.classTools.CTComponent.CTPanel;
 
 import javax.swing.*;
@@ -52,7 +53,7 @@ public class ETPanel extends CTPanel {
 
                 String text = EasterEgg.getText(EETextStyle.HTML);
                 JLabel label = new JLabel(text);
-                label.setForeground(CTColor.textColor);
+                label.setForeground(CTColor.mainColor);
                 label.setBackground(CTColor.backColor);
                 label.setFont(new Font("微软雅黑", Font.BOLD, 20));
 
@@ -69,6 +70,8 @@ public class ETPanel extends CTPanel {
                 int maxShowHeight = 5 * 30;
                 int maxShowWidth = 16 * 20;
                 int minShowWidth = 13 * 20;
+
+                long waitTime = Math.max(10000, text.replaceAll("<html>|</html>|<br>", "").length() * 100L);
                 // 设置窗口大小
                 if (newHeight >= maxShowHeight || newWidth >= maxShowWidth) {
                     if (newWidth >= maxShowWidth) {
@@ -84,7 +87,7 @@ public class ETPanel extends CTPanel {
                     scrollPane.setBorder(BorderFactory.createEmptyBorder());
 
                     this.add(scrollPane, BorderLayout.CENTER);
-                    this.setSize(newWidth, newHeight + 30);
+                    this.setSize(newWidth, newHeight);
                 } else {
                     this.setSize(newWidth, newHeight);
 
@@ -94,8 +97,9 @@ public class ETPanel extends CTPanel {
                 this.revalidate();
                 this.repaint();
 
+                Log.info.print("ETPanel", String.format("内容: %s | 等待时间: %s 毫秒", text, waitTime));
                 try {
-                    Thread.sleep(10000);
+                    Thread.sleep(waitTime);
                 } catch (InterruptedException e) {
                     throw new RuntimeException(e);
                 }

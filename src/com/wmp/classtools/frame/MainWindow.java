@@ -103,8 +103,6 @@ public class MainWindow extends JDialog {
             view.setVisible(true);
 
         }else {
-            ETPanel eEPanel = new ETPanel(mixY.get());
-            showPanelList.add(eEPanel);
 
             DPanel dPanel = new DPanel(mixY.get(),DutyListPath,indexPath);
             showPanelList.add(dPanel);
@@ -112,9 +110,13 @@ public class MainWindow extends JDialog {
             ATPanel aTPanel = new ATPanel(mixY.get(),AllStuPath,LeaveListPath);
             showPanelList.add(aTPanel);
 
+            ETPanel eEPanel = new ETPanel(mixY.get());
+            showPanelList.add(eEPanel);
+
             FinalPanel finalPanel = new FinalPanel(mixY.get(), AllStuPath, LeaveListPath, DutyListPath, indexPath,
                     showPanelList);
             showPanelList.add(finalPanel);
+
 
             showPanelList.forEach(ctPanel -> {
                 ctPanel.setLocation(0, mixY.get());
@@ -122,6 +124,7 @@ public class MainWindow extends JDialog {
                 mixY.set(ctPanel.getNextPanelY());
                 contentPane.add(ctPanel);
             });
+
             contentPane.add(finalPanel);
 
             initFrame(mixY.get());
@@ -138,10 +141,11 @@ public class MainWindow extends JDialog {
                         e.printStackTrace();
                     }
 
+                    finalPanel.setSize(250, finalPanel.getHeight());
                     //刷新窗口大小
                     AtomicInteger temp = new AtomicInteger(0);
-                    AtomicInteger finalMixY = new AtomicInteger(mixY.get());
-                    AtomicInteger finalMixX = new AtomicInteger(250);
+                    AtomicInteger finalMaxY = new AtomicInteger(mixY.get());
+                    AtomicInteger finalMaxX = new AtomicInteger(250);
 
                     showPanelList.forEach(ctPanel -> {
                         temp.set(temp.get() + ctPanel.getHeight());
@@ -149,20 +153,22 @@ public class MainWindow extends JDialog {
                     });
                     temp.set(temp.get() + finalPanel.getHeight());
 
-                    if (temp.get() != finalMixY.get()) {
+                    if (temp.get() != finalMaxY.get()) {
 
 
                         showPanelList.forEach(ctPanel -> {
-                            ctPanel.setLocation(0, finalMixY.get());
+                            ctPanel.setLocation(0, finalMaxY.get());
                             ctPanel.setBackground(CTColor.backColor);
 
-                            finalMixY.set(finalMixY.get() + ctPanel.getHeight());
-                            finalMixX.set(Math.max(finalMixX.get(), ctPanel.getWidth()));
+                            finalMaxY.set(finalMaxY.get() + ctPanel.getHeight());
+                            finalMaxX.set(Math.max(finalMaxX.get(), ctPanel.getWidth()));
                         });
-                        this.setBounds(Toolkit.getDefaultToolkit().getScreenSize().width - finalMixX.get(), 0, finalMixX.get(), finalMixY.get() + 5);
+                        this.setBounds(Toolkit.getDefaultToolkit().getScreenSize().width - finalMaxX.get(), 0, finalMaxX.get(), finalMaxY.get() + 5);
 
+                        finalPanel.setSize(finalMaxX.get(), finalPanel.getHeight());
                     }
 
+                    this.setForeground(CTColor.backColor);
                     this.repaint();
                 }
             });
@@ -176,7 +182,7 @@ public class MainWindow extends JDialog {
         int screenWidth = (int) screenSize.getWidth();
         int screenHeight = (int) screenSize.getHeight();
 
-
+        this.setForeground(CTColor.backColor);
         this.setIconImage(new ImageIcon(getClass().getResource("/image/icon.png")).getImage());
         this.setSize(250, mixY + 5);
         this.setLocation(screenWidth - this.getWidth(), 0);

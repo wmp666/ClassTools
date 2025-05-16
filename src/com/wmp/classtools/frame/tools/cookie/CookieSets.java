@@ -99,6 +99,7 @@ public class CookieSets {
         styleComboBox.addItem("image");
         styleComboBox.addItem("directory");
         styleComboBox.addItem("file");
+        styleComboBox.addItem("url");
         styleComboBox.addItem("other");
         styleComboBox.setSelectedItem(cookiePriData.get("style"));// 设置默认选中
         JTextField iconTextField = new JTextField((String) cookiePriData.get("icon"));

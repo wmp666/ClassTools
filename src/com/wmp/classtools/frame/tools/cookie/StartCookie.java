@@ -40,8 +40,8 @@ public class StartCookie {
                 try {
                     switch (style){
                         case "image", "music", "other" ->{
-                            Desktop.getDesktop().browse(URI.create(run));
-                            //Desktop.getDesktop().open(RunFile);
+
+                            Desktop.getDesktop().open(RunFile);
                         }
                         case "video"->{
                             VideoPlayer.playVideo(RunFile.getPath());
@@ -66,6 +66,9 @@ public class StartCookie {
                             runtime.exec(cmdArray, null, RunFile.getParentFile());
                         }case "directory", "file" -> {
                             OpenInExp.open(RunFile.getPath());
+                        }
+                        case "url" -> {
+                            Desktop.getDesktop().browse(URI.create(run));
                         }
                         default -> {
                             Log.error.print("StartCookie", "未知的cookie类型");
