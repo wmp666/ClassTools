@@ -9,8 +9,6 @@ import com.wmp.classTools.CTComponent.CTButton;
 import com.wmp.classTools.frame.ShowCookieDialog;
 import org.json.JSONException;
 import org.json.JSONObject;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import javax.swing.*;
 import java.awt.*;
@@ -24,8 +22,6 @@ import java.nio.file.StandardOpenOption;
 import java.util.*;
 
 public class CookieSets {
-
-    private static final Logger log = LoggerFactory.getLogger(CookieSets.class);
 
     public static void CookieSetsDialog() throws IOException, JSONException {
         CookieSetsDialog(null);

@@ -1,11 +1,12 @@
 package com.wmp.PublicTools.io;
 
 import com.wmp.PublicTools.printLog.Log;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import javax.swing.*;
-import java.io.*;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.util.Arrays;
 import java.util.Objects;
 import java.util.zip.ZipEntry;
@@ -14,7 +15,6 @@ import java.util.zip.ZipOutputStream;
 
 public class ZipPack {
 
-    private static final Logger log = LoggerFactory.getLogger(ZipPack.class);
     private static JDialog dialog = new JDialog();
     private static JProgressBar progressBar = new JProgressBar(0,100);
     public static void unzip(String zipFilePath, String destDir) {

@@ -28,7 +28,7 @@ public class GetSetsJSON {
 
 
             try {
-                jsonObject = new JSONObject(sets.GetInfo()[0]);
+                jsonObject = new JSONObject(sets.GetInfos());
             }catch (JSONException e){
                 Log.error.print("获取个性化数据", "数据获取发生错误:" + e.getMessage());
                 return;

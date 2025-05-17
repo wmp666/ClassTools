@@ -1,10 +1,14 @@
 package com.wmp.classTools.extraPanel.attendance.panel;
 
+import com.wmp.Main;
 import com.wmp.PublicTools.UITools.CTColor;
 import com.wmp.PublicTools.UITools.PeoPanelProcess;
 import com.wmp.PublicTools.io.IOForInfo;
 import com.wmp.PublicTools.printLog.Log;
 import com.wmp.classTools.CTComponent.CTPanel;
+import com.wmp.classTools.CTComponent.CTSetsPanel;
+import com.wmp.classTools.extraPanel.attendance.settings.AllStuSetsPanel;
+import com.wmp.classTools.extraPanel.attendance.settings.LeaveListSetsPanel;
 
 import javax.swing.*;
 import java.awt.*;
@@ -34,6 +38,11 @@ public class ATPanel extends CTPanel {
 
         this.AllStudentPath = AllStudentPath;
         this.LeaveListPath = LeaveListPath;
+
+        ArrayList<CTSetsPanel> list = new ArrayList<>();
+        list.add(new LeaveListSetsPanel(Main.DATA_PATH));
+        list.add(new AllStuSetsPanel(Main.DATA_PATH));
+        this.setCtSetsPanelList(list);
 
         setLayout(null);
 

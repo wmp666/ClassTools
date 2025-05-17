@@ -1,8 +1,6 @@
 package com.wmp.PublicTools.io;
 
 import com.wmp.PublicTools.printLog.Log;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.io.*;
 import java.net.URI;
@@ -17,7 +15,6 @@ import java.util.Arrays;
 
 public class IOForInfo {
 
-    private static final Logger log = LoggerFactory.getLogger(IOForInfo.class);
     private final File file;
 
     public IOForInfo(File file) {

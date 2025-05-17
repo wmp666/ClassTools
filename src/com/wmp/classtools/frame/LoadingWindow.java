@@ -3,8 +3,6 @@ package com.wmp.classTools.frame;
 import com.wmp.PublicTools.EasterEgg.EETextStyle;
 import com.wmp.PublicTools.EasterEgg.EasterEgg;
 import com.wmp.PublicTools.printLog.Log;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import javax.swing.*;
 import java.awt.*;
@@ -15,7 +13,6 @@ public class LoadingWindow extends JWindow {
 
     public static final int STYLE_NORMAL = 0;
     public static final int STYLE_SCREEN = 1;
-    private static final Logger log = LoggerFactory.getLogger(LoadingWindow.class);
 
     public LoadingWindow() {
         this(LoadingWindow.class.getResource("/image/icon.png"),

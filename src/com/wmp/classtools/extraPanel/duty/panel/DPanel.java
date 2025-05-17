@@ -1,5 +1,6 @@
 package com.wmp.classTools.extraPanel.duty.panel;
 
+import com.wmp.Main;
 import com.wmp.PublicTools.InfProcess;
 import com.wmp.PublicTools.UITools.CTColor;
 import com.wmp.PublicTools.UITools.PeoPanelProcess;
@@ -7,6 +8,8 @@ import com.wmp.PublicTools.io.IOForInfo;
 import com.wmp.PublicTools.printLog.Log;
 import com.wmp.classTools.CTComponent.CTButton;
 import com.wmp.classTools.CTComponent.CTPanel;
+import com.wmp.classTools.CTComponent.CTSetsPanel;
+import com.wmp.classTools.extraPanel.duty.settings.DutyListSetsPanel;
 import com.wmp.classTools.extraPanel.duty.type.DutyDay;
 
 import javax.swing.*;
@@ -30,6 +33,10 @@ public class DPanel extends CTPanel {
         this.DutyListPath = DutyListPath;
         this.indexPath = indexPath;
         appendNextPanelY(mixY);
+
+        ArrayList<CTSetsPanel> setsPanelList = new ArrayList<>();
+        setsPanelList.add(new DutyListSetsPanel(Main.DATA_PATH));
+        this.setCtSetsPanelList(setsPanelList);
 
         //设置容器布局- 绝对布局
         this.setLayout(null);

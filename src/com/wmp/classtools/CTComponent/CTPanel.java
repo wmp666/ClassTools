@@ -4,10 +4,12 @@ import com.wmp.PublicTools.UITools.CTColor;
 
 import javax.swing.*;
 import java.io.IOException;
+import java.util.ArrayList;
 
 public abstract class CTPanel extends JPanel{
 
     private int nextPanelY;
+    private ArrayList<CTSetsPanel> ctSetsPanelList = new ArrayList<>();
 
     public CTPanel(int nextPanelY)
     {
@@ -31,6 +33,14 @@ public abstract class CTPanel extends JPanel{
 
     public void setNextPanelY(int nextPanelY) {
         this.nextPanelY = nextPanelY;
+    }
+
+    public ArrayList<CTSetsPanel> getCtSetsPanelList() {
+        return ctSetsPanelList;
+    }
+
+    public void setCtSetsPanelList(ArrayList<CTSetsPanel> ctSetsPanelList) {
+        this.ctSetsPanelList = ctSetsPanelList;
     }
 
     public abstract void refresh() throws IOException;

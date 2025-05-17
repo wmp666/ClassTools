@@ -25,6 +25,8 @@ import static com.wmp.Main.list;
 public class MainWindow extends JDialog {
     private final Container contentPane = this.getContentPane();
 
+    public static final ArrayList<CTPanel> showPanelList = new ArrayList<>();
+
     public MainWindow(String path) throws IOException {
 
         this.setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
@@ -46,11 +48,11 @@ public class MainWindow extends JDialog {
         new IOForInfo(indexPath);
         new IOForInfo(AllStuPath);
 
-        AtomicInteger mixY = new AtomicInteger();
 
-        ArrayList<CTPanel> showPanelList = new ArrayList<>();
+
+
         //添加组件
-        TimeViewPanel timeViewPanel = new TimeViewPanel(mixY.get());
+        TimeViewPanel timeViewPanel = new TimeViewPanel(0);
         showPanelList.add(timeViewPanel);
 
 
@@ -103,6 +105,7 @@ public class MainWindow extends JDialog {
             view.setVisible(true);
 
         }else {
+            AtomicInteger mixY = new AtomicInteger();
 
             DPanel dPanel = new DPanel(mixY.get(),DutyListPath,indexPath);
             showPanelList.add(dPanel);
@@ -116,7 +119,6 @@ public class MainWindow extends JDialog {
             FinalPanel finalPanel = new FinalPanel(mixY.get(), AllStuPath, LeaveListPath, DutyListPath, indexPath,
                     showPanelList);
             showPanelList.add(finalPanel);
-
 
             showPanelList.forEach(ctPanel -> {
                 ctPanel.setLocation(0, mixY.get());
