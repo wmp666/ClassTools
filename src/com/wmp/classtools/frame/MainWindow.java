@@ -116,8 +116,7 @@ public class MainWindow extends JDialog {
             ETPanel eEPanel = new ETPanel(mixY.get());
             showPanelList.add(eEPanel);
 
-            FinalPanel finalPanel = new FinalPanel(mixY.get(), AllStuPath, LeaveListPath, DutyListPath, indexPath,
-                    showPanelList);
+            FinalPanel finalPanel = new FinalPanel(mixY.get(), showPanelList);
             showPanelList.add(finalPanel);
 
             showPanelList.forEach(ctPanel -> {

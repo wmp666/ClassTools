@@ -40,13 +40,14 @@ public class InfSetDialog extends JDialog {
     private final JCheckBox canExit = new JCheckBox("防止被意外关闭");
     private final JCheckBox startUp = new JCheckBox("开机自启动");
 
+    private String openedPanel = "迟到人员";
     // 添加文件路径参数
-    public InfSetDialog(File AllStuPath, File leaveListPath, File DutyListPath, File indexPath, Runnable refreshCallback) throws IOException {
+    public InfSetDialog(Runnable refreshCallback) throws IOException {
 
         this.setBackground(CTColor.backColor);
         this.setIconImage(GetIcon.getImageIcon(getClass().getResource("/image/light/settings_0.png"), 32, 32).getImage());
         this.setTitle("设置");
-        this.setSize(400, 500);
+        this.setSize(400, 550);
         this.setLocationRelativeTo(null);
         this.setModal(true);
         //this.setLayout(null);
@@ -75,6 +76,7 @@ public class InfSetDialog extends JDialog {
             if (ctSetsPanel.getName().equals("迟到人员"))
                 c.add(ctSetsPanel, BorderLayout.CENTER);
         });
+        c.add(initSetsPanelSwitchBar(), BorderLayout.NORTH);
 
 
         initPersonalization();
@@ -338,6 +340,86 @@ public class InfSetDialog extends JDialog {
         return mainPanel;
     }
 
+    private JPanel initSetsPanelSwitchBar() {
+        JPanel mainPanel = new JPanel();
+        mainPanel.setBackground(Color.WHITE);
+        mainPanel.setLayout(new GridBagLayout());
+
+        {
+            JButton button = new JButton("个性化");
+            if (openedPanel.equals("个性化")) {
+                button.setForeground(new Color(0x0090FF));
+            } else {
+                button.setForeground(Color.BLACK);
+            }
+            button.setBackground(Color.WHITE);
+            button.setFont(new Font("微软雅黑", Font.BOLD, 12));
+            button.setBorderPainted(false);
+            button.setFocusPainted(false);// 去除按钮的焦点边框
+            button.addActionListener(e -> {
+                openedPanel = "个性化";
+                try {
+                    this.repaintSetsPanel(initPersonalization());
+                } catch (IOException ex) {
+                    throw new RuntimeException(ex);
+                }
+            });
+            mainPanel.add(button);
+        }
+
+
+        this.ctSetsPanelList.forEach(ctSetsPanel -> {
+            JButton button = new JButton(ctSetsPanel.getName());
+            if (openedPanel.equals(ctSetsPanel.getName())) {
+                button.setForeground(new Color(0x0090FF));
+            } else {
+                button.setForeground(Color.BLACK);
+            }
+            button.setBackground(Color.WHITE);
+            button.setFont(new Font("微软雅黑", Font.BOLD, 12));
+            button.setBorderPainted(false);
+            button.setFocusPainted(false);// 去除按钮的焦点边框
+            button.addActionListener(e -> {
+                openedPanel = ctSetsPanel.getName();
+                try {
+                    this.repaintSetsPanel(ctSetsPanel);
+                } catch (MalformedURLException ex) {
+                    throw new RuntimeException(ex);
+                }
+            });
+            mainPanel.add(button);
+        });
+        {
+            JButton button = new JButton("清除临时文件");
+            if (openedPanel.equals("清除临时文件")) {
+                button.setForeground(new Color(0xFF0000));
+            } else {
+                button.setForeground(Color.BLACK);
+            }
+            button.setBackground(Color.WHITE);
+            button.setFont(new Font("微软雅黑", Font.BOLD, 12));
+            button.setBorderPainted(false);
+            button.setFocusPainted(false);// 去除按钮的焦点边框
+            button.addActionListener(e -> {
+                openedPanel = "清除临时文件";
+                try {
+                    this.repaintSetsPanel(initClearTemp());
+                } catch (IOException ex) {
+                    throw new RuntimeException(ex);
+                }
+            });
+            mainPanel.add(button);
+        }
+        JScrollPane mainPanelScroll = new JScrollPane(mainPanel);
+        mainPanelScroll.setBorder(BorderFactory.createEmptyBorder());
+        mainPanelScroll.getViewport().setBackground(Color.WHITE);
+        mainPanelScroll.getVerticalScrollBar().setUnitIncrement(16);
+        JPanel tempPanel = new JPanel();
+        tempPanel.setBackground(Color.WHITE);
+        tempPanel.add(mainPanelScroll);
+        return tempPanel;
+    }
+
     private void initMenuBar() {
         JMenuBar menuBar = new JMenuBar();
         menuBar.setBackground(CTColor.backColor);
@@ -480,6 +562,7 @@ public class InfSetDialog extends JDialog {
     private void repaintSetsPanel(JPanel panel) throws MalformedURLException {
 
             c.removeAll();
+        c.add(initSetsPanelSwitchBar(), BorderLayout.NORTH);
             initMenuBar();
             initSaveButton();
             c.add(panel, BorderLayout.CENTER);

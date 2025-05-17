@@ -14,7 +14,6 @@ import com.wmp.classTools.infSet.tools.GetSetsJSON;
 
 import javax.swing.*;
 import java.awt.*;
-import java.io.File;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.util.ArrayList;
@@ -23,28 +22,20 @@ import static com.wmp.Main.disButList;
 
 public class FinalPanel extends CTPanel {
 
-    private final File AllStuPath;
-    private final File LeaveListPath;
-    private final File DutyListPath;
-    private final File indexPath;
 
     private final ArrayList<CTPanel> panelList;
 
 
-    public FinalPanel(int nextPanelY, File AllStuPath, File LeaveListPath, File DutyListPath, File indexPath, ArrayList<CTPanel> panelList) throws MalformedURLException {
+    public FinalPanel(int nextPanelY, ArrayList<CTPanel> panelList) throws MalformedURLException {
         super(nextPanelY);
 
-        this.AllStuPath = AllStuPath;
-        this.LeaveListPath = LeaveListPath;
-        this.DutyListPath = DutyListPath;
-        this.indexPath = indexPath;
+
         this.panelList = panelList;
 
 
         initPanel();
 
-        initButton(AllStuPath, LeaveListPath, DutyListPath, indexPath,
-                panelList);
+        initButton(panelList);
     }
 
     private void initPanel() {
@@ -55,8 +46,7 @@ public class FinalPanel extends CTPanel {
         this.setSize(250, 39);
     }
 
-    private void initButton(File AllStuPath, File LeaveListPath, File DutyListPath, File indexPath,
-                            ArrayList<CTPanel> panelList) throws MalformedURLException {
+    private void initButton(ArrayList<CTPanel> panelList) throws MalformedURLException {
         JDialog moreDialog = new JDialog();
         moreDialog.setTitle("已折叠的功能");
         moreDialog.setLayout(new FlowLayout(FlowLayout.CENTER));
@@ -76,7 +66,7 @@ public class FinalPanel extends CTPanel {
 
 
             try {
-                new InfSetDialog(AllStuPath, LeaveListPath, DutyListPath, indexPath, () -> {
+                new InfSetDialog(() -> {
 
                     GetSetsJSON setsJSON;
                     try {
@@ -202,7 +192,7 @@ public class FinalPanel extends CTPanel {
         this.removeAll();
 
         initPanel();
-        initButton(AllStuPath, LeaveListPath, DutyListPath, indexPath, panelList);
+        initButton(panelList);
 
         revalidate();
         repaint();

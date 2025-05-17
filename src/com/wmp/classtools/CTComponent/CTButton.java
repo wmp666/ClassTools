@@ -4,12 +4,14 @@ import com.wmp.PublicTools.UITools.CTColor;
 import com.wmp.PublicTools.UITools.GetIcon;
 
 import javax.swing.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.net.MalformedURLException;
 import java.net.URL;
 
-public class CTButton extends JButton implements MouseListener {
+public class CTButton extends JButton implements MouseListener, ActionListener {
 
     public static int ToolTipText = 0;
     public static int ButtonText = 1;
@@ -70,7 +72,9 @@ public class CTButton extends JButton implements MouseListener {
 
         // 设置按钮边框为透明
         this.setFocusPainted(false);
+        this.setContentAreaFilled(false);// 设置按钮背景透明
         this.setBorderPainted(false);
+
 
         this.setBackground(CTColor.backColor);
         this.setForeground(CTColor.textColor);
@@ -78,6 +82,7 @@ public class CTButton extends JButton implements MouseListener {
         this.callback = callback;
 
         this.addMouseListener(this);
+        this.addActionListener(this);
     }
 
     public void setCallback(Runnable callback) {
@@ -87,9 +92,7 @@ public class CTButton extends JButton implements MouseListener {
 
     @Override
     public void mouseClicked(MouseEvent e) {
-        if (this.isEnabled() && callback != null){
-            callback.run();
-        }
+
 
     }
 
@@ -120,5 +123,12 @@ public class CTButton extends JButton implements MouseListener {
             this.setIcon(defaultIcon);
         }
         this.repaint();
+    }
+
+    @Override
+    public void actionPerformed(ActionEvent e) {
+        if (this.isEnabled() && callback != null) {
+            callback.run();
+        }
     }
 }
