@@ -13,6 +13,9 @@ import java.io.IOException;
 import java.util.Arrays;
 
 public class ETPanel extends CTPanel {
+
+    private JLabel label;
+
     public ETPanel(int lastPanelY) {
         this.setLayout(new GridLayout(1, 1));
 
@@ -20,7 +23,7 @@ public class ETPanel extends CTPanel {
 
         {
             String text = EasterEgg.getText(EETextStyle.HTML);
-            JLabel label = new JLabel(text);
+            label = new JLabel(text);
             label.setForeground(CTColor.textColor);
             label.setBackground(CTColor.backColor);
             label.setFont(new Font("微软雅黑", Font.BOLD, 16));
@@ -52,7 +55,7 @@ public class ETPanel extends CTPanel {
                 this.removeAll();
 
                 String text = EasterEgg.getText(EETextStyle.HTML);
-                JLabel label = new JLabel(text);
+                label.setText(text);
                 label.setForeground(CTColor.mainColor);
                 label.setBackground(CTColor.backColor);
                 label.setFont(new Font("微软雅黑", Font.BOLD, 20));
@@ -114,6 +117,10 @@ public class ETPanel extends CTPanel {
 
     @Override
     public void refresh() throws IOException {
-
+        this.setBackground(CTColor.backColor);
+        label.setForeground(CTColor.mainColor);
+        label.setBackground(CTColor.backColor);
+        this.revalidate();
+        this.repaint();
     }
 }

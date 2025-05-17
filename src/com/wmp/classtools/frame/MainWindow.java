@@ -169,7 +169,8 @@ public class MainWindow extends JDialog {
                         finalPanel.setSize(finalMaxX.get(), finalPanel.getHeight());
                     }
 
-                    this.setForeground(CTColor.backColor);
+                    contentPane.setBackground(CTColor.backColor);
+
                     this.repaint();
                 }
             });

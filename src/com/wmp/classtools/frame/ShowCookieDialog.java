@@ -7,10 +7,7 @@ import com.wmp.PublicTools.io.GetPath;
 import com.wmp.PublicTools.io.ZipPack;
 import com.wmp.PublicTools.printLog.Log;
 import com.wmp.classTools.CTComponent.CTButton;
-import com.wmp.classTools.frame.tools.cookie.CookieSets;
-import com.wmp.classTools.frame.tools.cookie.FileDragDropLabel;
-import com.wmp.classTools.frame.tools.cookie.GetCookie;
-import com.wmp.classTools.frame.tools.cookie.StartCookie;
+import com.wmp.classTools.frame.tools.cookie.*;
 import com.wmp.classTools.frame.tools.help.ShowHelpDoc;
 import org.json.JSONException;
 
@@ -396,6 +393,16 @@ public class ShowCookieDialog extends JDialog implements WindowListener {
         JMenu editMenu = new JMenu("编辑");
         editMenu.setMnemonic('E');
 
+        JMenuItem cookieDownload = new JMenuItem("下载插件");
+        cookieDownload.setIcon(GetIcon.getIcon(getClass().getResource("/image/input.png"), 16, 16));
+        cookieDownload.addActionListener(e -> {
+            try {
+                new CookieDownload();
+            } catch (Exception ex) {
+                throw new RuntimeException(ex);
+            }
+        });
+
         JMenuItem cookieSets = new JMenuItem("修改插件");
         cookieSets.setIcon( GetIcon.getIcon(getClass().getResource("/image/light/settings_0.png"),16,16));
         cookieSets.addActionListener(e -> {
@@ -415,6 +422,7 @@ public class ShowCookieDialog extends JDialog implements WindowListener {
             CookieSets.deleteCookie(cookieMap.get(s[0]));
         });
 
+        editMenu.add(cookieDownload);
         editMenu.add(deleteCookie);
         editMenu.add(cookieSets);
 

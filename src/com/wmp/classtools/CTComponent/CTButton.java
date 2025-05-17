@@ -72,7 +72,6 @@ public class CTButton extends JButton implements MouseListener, ActionListener {
 
         // 设置按钮边框为透明
         this.setFocusPainted(false);
-        this.setContentAreaFilled(false);// 设置按钮背景透明
         this.setBorderPainted(false);
 
 
