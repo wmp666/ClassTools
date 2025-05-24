@@ -1,0 +1,14 @@
+<component name="libraryTable">
+  <library name="googlecode.soundlibs.jlayer" type="repository">
+    <properties maven-id="com.googlecode.soundlibs:jlayer:1.0.1.4" />
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/lib/mp3Player/jlayer-1.0.1.4.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/mp3Player/junit-3.8.2.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES>
+      <root url="jar://$PROJECT_DIR$/lib/mp3Player/jlayer-1.0.1.4-sources.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/mp3Player/junit-3.8.2-sources.jar!/" />
+    </SOURCES>
+  </library>
+</component>

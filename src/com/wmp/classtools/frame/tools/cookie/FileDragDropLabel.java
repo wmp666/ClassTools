@@ -57,7 +57,7 @@ public class FileDragDropLabel extends JLabel {
                         if (fileName.endsWith(".zip")){
                             fileList.add(file);
                         }else{
-                            Log.error.print("插件管理页-文件上传", "文件不是zip文件");
+                            Log.err.print("插件管理页-文件上传", "文件不是zip文件");
                         }
                     });
 

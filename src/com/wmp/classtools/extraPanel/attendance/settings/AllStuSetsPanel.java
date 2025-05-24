@@ -125,7 +125,7 @@ public class AllStuSetsPanel extends CTSetsPanel {
             }
 
             //System.out.println(inf);
-            if (!inf[0].equals("error")) {
+            if (!inf[0].equals("err")) {
                 studentList.addAll(Arrays.asList(inf));
             }
         }
@@ -155,5 +155,16 @@ public class AllStuSetsPanel extends CTSetsPanel {
         }
 
 
+    }
+
+    @Override
+    public void refresh() throws IOException {
+        this.removeAll();
+
+        ArrayList<String> studentList = getStudentList();
+        initAllStuSet(studentList);
+
+        this.revalidate();
+        this.repaint();
     }
 }

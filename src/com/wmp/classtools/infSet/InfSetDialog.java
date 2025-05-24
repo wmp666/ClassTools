@@ -5,26 +5,20 @@ import com.wmp.PublicTools.OpenInExp;
 import com.wmp.PublicTools.UITools.CTColor;
 import com.wmp.PublicTools.UITools.GetIcon;
 import com.wmp.PublicTools.io.GetPath;
-import com.wmp.PublicTools.io.IOForInfo;
 import com.wmp.PublicTools.io.ZipPack;
 import com.wmp.PublicTools.printLog.Log;
 import com.wmp.classTools.CTComponent.CTButton;
 import com.wmp.classTools.CTComponent.CTPanel;
 import com.wmp.classTools.CTComponent.CTSetsPanel;
 import com.wmp.classTools.frame.MainWindow;
-import com.wmp.classTools.infSet.tools.SetStartUp;
-import org.json.JSONArray;
-import org.json.JSONObject;
+import com.wmp.classTools.infSet.panel.ClearTempPanel;
+import com.wmp.classTools.infSet.panel.PersonalizationPanel;
 
 import javax.swing.*;
 import java.awt.*;
-import java.io.File;
 import java.io.IOException;
 import java.net.MalformedURLException;
-import java.nio.file.Paths;
 import java.util.ArrayList;
-import java.util.Objects;
-import java.util.TreeMap;
 
 public class InfSetDialog extends JDialog {
 
@@ -33,12 +27,6 @@ public class InfSetDialog extends JDialog {
 
     private final ArrayList<CTSetsPanel> ctSetsPanelList = new ArrayList<>();
 
-    private final JComboBox<String> mainColorComboBox = new JComboBox<>();
-    private final JComboBox<String> mainThemeComboBox = new JComboBox<>();
-    private final TreeMap<String, JCheckBox> disposeButton = new TreeMap<>();
-    private final JCheckBox StartUpdate = new JCheckBox("启动检查更新");
-    private final JCheckBox canExit = new JCheckBox("防止被意外关闭");
-    private final JCheckBox startUp = new JCheckBox("开机自启动");
 
     private String openedPanel = "迟到人员";
     // 添加文件路径参数
@@ -58,6 +46,8 @@ public class InfSetDialog extends JDialog {
         this.c = this.getContentPane();
         this.refreshCallback = refreshCallback;
 
+        ctSetsPanelList.add(new PersonalizationPanel(Main.DATA_PATH));
+
         ArrayList<CTPanel> showPanelList = MainWindow.showPanelList;
         showPanelList.forEach(ctPanel -> {
             ArrayList<CTSetsPanel> tempCTSetsPanelList = ctPanel.getCtSetsPanelList();
@@ -65,6 +55,8 @@ public class InfSetDialog extends JDialog {
                 ctSetsPanelList.addAll(tempCTSetsPanelList);
             }
         });
+
+        ctSetsPanelList.add(new ClearTempPanel(Main.DATA_PATH));
 
         initMenuBar();
 
@@ -79,295 +71,18 @@ public class InfSetDialog extends JDialog {
         c.add(initSetsPanelSwitchBar(), BorderLayout.NORTH);
 
 
-        initPersonalization();
-
     }
 
-    private JPanel initPersonalization() throws IOException {
-        JPanel SetsPanel = new JPanel();
-        JScrollPane mainPanelScroll = new JScrollPane(SetsPanel);
-        //调整滚动灵敏度
-        mainPanelScroll.getVerticalScrollBar().setUnitIncrement(16);
-        mainPanelScroll.setSize(400, 400);
-
-        SetsPanel.setBackground(CTColor.backColor);
-        SetsPanel.setLayout(new GridBagLayout());//new GridLayout(0,1)
-        GridBagConstraints gbc = new GridBagConstraints();
-
-
-        JPanel ColorPanel = new JPanel();
-        ColorPanel.setBackground(CTColor.backColor);
-        ColorPanel.setLayout(new GridLayout(1,2));
-        ColorPanel.setBorder(BorderFactory.createTitledBorder("颜色设置"));
-        //颜色设置
-        {
-            //主题色设置
-            JPanel MainColorSets = new JPanel();
-            {
-
-                MainColorSets.setLayout(new FlowLayout(FlowLayout.LEFT));
-                MainColorSets.setBackground(CTColor.backColor);
-
-                JLabel mainColorLabel = new JLabel("主题色:");
-                mainColorLabel.setFont(new Font("微软雅黑", -1, 15));
-                mainColorLabel.setForeground(CTColor.textColor);
-                //mainColorLabel.setSize(50, 30);
-
-
-                mainColorComboBox.setFont(new Font("微软雅黑", -1, 15));
-                mainColorComboBox.setForeground(CTColor.textColor);
-                mainColorComboBox.setBackground(CTColor.backColor);
-
-                //添加颜色项目
-                mainColorComboBox.removeAllItems();
-                mainColorComboBox.addItem("蓝色");
-                mainColorComboBox.addItem("红色");
-                mainColorComboBox.addItem("绿色");
-                mainColorComboBox.addItem("白色");
-                mainColorComboBox.addItem("黑色");
-
-                MainColorSets.add(mainColorLabel);
-                MainColorSets.add(mainColorComboBox);
-            }
-
-            //主题设置
-            JPanel MainThemeSets = new JPanel();
-            {
-
-                MainThemeSets.setLayout(new FlowLayout(FlowLayout.LEFT));
-                MainThemeSets.setBackground(CTColor.backColor);
-
-                JLabel mainThemeLabel = new JLabel("主题:");
-                mainThemeLabel.setFont(new Font("微软雅黑", -1, 15));
-                mainThemeLabel.setForeground(CTColor.textColor);
-                //mainThemeLabel.setSize(50, 30);
-
-                mainThemeComboBox.setFont(new Font("微软雅黑", -1, 15));
-                mainThemeComboBox.setForeground(CTColor.textColor);
-                mainThemeComboBox.setBackground(CTColor.backColor);
-
-                //添加主题项目
-                mainThemeComboBox.removeAllItems();
-                mainThemeComboBox.addItem("浅色");
-                mainThemeComboBox.addItem("深色");
-
-                MainThemeSets.add(mainThemeLabel);
-                MainThemeSets.add(mainThemeComboBox);
-            }
-
-            ColorPanel.add(MainColorSets);
-            ColorPanel.add(MainThemeSets);
-
-        }
-
-        JPanel disposePanel = new JPanel();
-        disposePanel.setBackground(CTColor.backColor);
-        disposePanel.setLayout(new GridLayout(0, 2));
-        //设置边框
-        disposePanel.setBorder(BorderFactory.createTitledBorder("隐藏部分按钮"));
-        {
-            JCheckBox cookie = new JCheckBox("插件管理页");
-            cookie.setFont(new Font("微软雅黑", -1, 15));
-            cookie.setBackground(CTColor.backColor);
-            cookie.setForeground(CTColor.textColor);
-            disposeButton.put("cookie", cookie);
-
-            JCheckBox about = new JCheckBox("软件信息");
-            about.setFont(new Font("微软雅黑", -1, 15));
-            about.setBackground(CTColor.backColor);
-            about.setForeground(CTColor.textColor);
-            disposeButton.put("about", about);
-
-            JCheckBox update = new JCheckBox("更新");
-            update.setFont(new Font("微软雅黑", -1, 15));
-            update.setBackground(CTColor.backColor);
-            update.setForeground(CTColor.textColor);
-            disposeButton.put("update", update);
-
-            JCheckBox settings = new JCheckBox("设置");
-            settings.setFont(new Font("微软雅黑", -1, 15));
-            settings.setBackground(CTColor.backColor);
-            settings.setForeground(CTColor.textColor);
-            disposeButton.put("settings", settings);
-
-            disposeButton.forEach((key, value) -> {
-                disposePanel.add(value);
-            });
-        }
-
-        JPanel otherPanel = new JPanel();
-        otherPanel.setBackground(CTColor.backColor);
-        otherPanel.setLayout(new GridLayout(0,2));
-        otherPanel.setBorder(BorderFactory.createTitledBorder("其他设置"));
-        //其他设置
-        {
-            startUp.setFont(new Font("微软雅黑", -1, 15));
-            startUp.setForeground(CTColor.textColor);
-            startUp.setBackground(CTColor.backColor);
-
-            canExit.setFont(new Font("微软雅黑", -1, 15));
-            canExit.setForeground(CTColor.textColor);
-            canExit.setBackground(CTColor.backColor);
-
-            StartUpdate.setFont(new Font("微软雅黑", -1, 15));
-            StartUpdate.setForeground(CTColor.textColor);
-            StartUpdate.setBackground(CTColor.backColor);
-            StartUpdate.setSelected(true);
-
-            otherPanel.add(startUp);
-            otherPanel.add(canExit);
-            otherPanel.add(StartUpdate);
-
-
-        }
-
-        gbc.fill = GridBagConstraints.HORIZONTAL;
-        gbc.weightx = 1.0;
-        gbc.gridx = 0;
-        gbc.gridy = 0;
-        SetsPanel.add(ColorPanel, gbc);
-        gbc.gridy = 1;
-        SetsPanel.add(disposePanel, gbc);
-        gbc.gridy = 2;
-        SetsPanel.add(otherPanel, gbc);
-
-        JPanel tempPanel = new JPanel();
-        tempPanel.setLayout(new BorderLayout());
-        tempPanel.setBackground(CTColor.backColor);
-        tempPanel.add(mainPanelScroll, BorderLayout.CENTER);
-
-        //显示数据
-        {
-            IOForInfo io = new IOForInfo(new File(Main.DATA_PATH + "setUp.json"));
-            JSONObject jsonObject;
-            try {
-                jsonObject = new JSONObject(io.GetInfo()[0]);
-            }catch (Exception e){
-                Log.error.print("InfSetDialog", "读取设置文件失败: " + e.getMessage());
-                return tempPanel;
-
-            }
-
-            //主题色设置
-            if (jsonObject.has("mainColor")) {
-                switch (jsonObject.getString("mainColor")) {
-                    case "black" -> mainColorComboBox.setSelectedIndex(4);
-                    case "white" -> mainColorComboBox.setSelectedIndex(3);
-                    case "green" -> mainColorComboBox.setSelectedIndex(2);
-                    case "red" -> mainColorComboBox.setSelectedIndex(1);
-                    default -> mainColorComboBox.setSelectedIndex(0);
-                }
-            }
-            //主题设置
-            if (jsonObject.has("mainTheme")) {
-                switch (jsonObject.getString("mainTheme")) {
-                    case "dark" -> mainThemeComboBox.setSelectedIndex(1);
-                    default -> mainThemeComboBox.setSelectedIndex(0);
-                }
-            }
-
-            if (jsonObject.has("disposeButton")){
-                JSONArray JSONArrdisButton = jsonObject.getJSONArray("disposeButton");
-                for (int i = 0; i < JSONArrdisButton.length(); i++) {
-                    String s = JSONArrdisButton.getString(i);
-                    if (disposeButton.containsKey(s)){
-                        disposeButton.get(s).setSelected(true);
-                    }
-                    /*switch (JSONArrdisButton.getString(i)) {
-                        case "cookie" -> disposeButton.get("cookie").setSelected(true);
-                        case "about" -> disposeButton.get("about").setSelected(true);
-                        case "update" -> disposeButton.get("update").setSelected(true);
-                        case "settings" -> disposeButton.get("settings").setSelected(true);
-                    }*/
-                }
-            }
-            //是否可关闭
-            if (jsonObject.has("canExit")) {
-                canExit.setSelected(!jsonObject.getBoolean("canExit"));
-
-            }
-            //是否自动更新
-            if (jsonObject.has("StartUpdate")) {
-                StartUpdate.setSelected(jsonObject.getBoolean("StartUpdate"));
-            }
-            //是否自动启动
-            startUp.setSelected(SetStartUp.isAutoStartEnabled());
-            /*if (jsonObject.has("isAutoStart")){
-                startUp.setSelected(jsonObject.getBoolean("isAutoStart"));
-            }*/
-        }
-
-        return tempPanel;
-    }
-
-
-    private JPanel initClearTemp() throws IOException {
-        JPanel mainPanel = new JPanel();
-        mainPanel.setBackground(Color.WHITE);
-        mainPanel.setLayout(new GridLayout( 0, 1, 5,5));
-
-        JPanel buttonPanel = new JPanel();
-        buttonPanel.setBackground(Color.WHITE);
-        buttonPanel.setLayout(new FlowLayout(FlowLayout.LEFT, 5, 5));
-        buttonPanel.setBounds(0, 0, 400, 45);
-
-        CTButton clearTemp = new CTButton(CTButton.ButtonText, "清除临时文件",
-                "/image/%s/delete_0.png",
-                "/image/%s/delete_1.png", 35, 150, () -> {
-            try {
-                IOForInfo.deleteDirectoryRecursively(Paths.get(Main.TEMP_PATH));
-
-            } catch (IOException e) {
-                throw new RuntimeException(e);
-            }
-        });
-        buttonPanel.add(clearTemp);
-
-        CTButton clearLog = new CTButton(CTButton.ButtonText, "清除日志",
-                "/image/%s/delete_0.png",
-                "/image/%s/delete_1.png", 35, 150, () -> {
-            try {
-                IOForInfo.deleteDirectoryRecursively(Paths.get(Main.DATA_PATH + "Log\\"));
-
-            } catch (IOException e) {
-                throw new RuntimeException(e);
-            }
-        });
-        buttonPanel.add(clearLog);
-
-        mainPanel.add(buttonPanel);
-
-        return mainPanel;
-    }
-
-    private JPanel initSetsPanelSwitchBar() {
+    private JScrollPane initSetsPanelSwitchBar() {
         JPanel mainPanel = new JPanel();
         mainPanel.setBackground(Color.WHITE);
         mainPanel.setLayout(new GridBagLayout());
 
-        {
-            JButton button = new JButton("个性化");
-            if (openedPanel.equals("个性化")) {
-                button.setForeground(new Color(0x0090FF));
-            } else {
-                button.setForeground(Color.BLACK);
-            }
-            button.setBackground(Color.WHITE);
-            button.setFont(new Font("微软雅黑", Font.BOLD, 12));
-            button.setBorderPainted(false);
-            button.setFocusPainted(false);// 去除按钮的焦点边框
-            button.addActionListener(e -> {
-                openedPanel = "个性化";
-                try {
-                    this.repaintSetsPanel(initPersonalization());
-                } catch (IOException ex) {
-                    throw new RuntimeException(ex);
-                }
-            });
-            mainPanel.add(button);
-        }
 
-
+        GridBagConstraints gbc = new GridBagConstraints();
+        gbc.fill = GridBagConstraints.HORIZONTAL;
+        gbc.weightx = 1.0;
+        gbc.insets = new Insets(10, 5, 20, 5); // 设置边距
         this.ctSetsPanelList.forEach(ctSetsPanel -> {
             JButton button = new JButton(ctSetsPanel.getName());
             if (openedPanel.equals(ctSetsPanel.getName())) {
@@ -385,39 +100,19 @@ public class InfSetDialog extends JDialog {
                     this.repaintSetsPanel(ctSetsPanel);
                 } catch (MalformedURLException ex) {
                     throw new RuntimeException(ex);
-                }
-            });
-            mainPanel.add(button);
-        });
-        {
-            JButton button = new JButton("清除临时文件");
-            if (openedPanel.equals("清除临时文件")) {
-                button.setForeground(new Color(0xFF0000));
-            } else {
-                button.setForeground(Color.BLACK);
-            }
-            button.setBackground(Color.WHITE);
-            button.setFont(new Font("微软雅黑", Font.BOLD, 12));
-            button.setBorderPainted(false);
-            button.setFocusPainted(false);// 去除按钮的焦点边框
-            button.addActionListener(e -> {
-                openedPanel = "清除临时文件";
-                try {
-                    this.repaintSetsPanel(initClearTemp());
                 } catch (IOException ex) {
                     throw new RuntimeException(ex);
                 }
             });
-            mainPanel.add(button);
-        }
+            mainPanel.add(button, gbc);
+        });
+
         JScrollPane mainPanelScroll = new JScrollPane(mainPanel);
         mainPanelScroll.setBorder(BorderFactory.createEmptyBorder());
         mainPanelScroll.getViewport().setBackground(Color.WHITE);
         mainPanelScroll.getVerticalScrollBar().setUnitIncrement(16);
-        JPanel tempPanel = new JPanel();
-        tempPanel.setBackground(Color.WHITE);
-        tempPanel.add(mainPanelScroll);
-        return tempPanel;
+
+        return mainPanelScroll;
     }
 
     private void initMenuBar() {
@@ -501,25 +196,6 @@ public class InfSetDialog extends JDialog {
         JMenu setMenu = new JMenu("设置界面");
         setMenu.setIcon(GetIcon.getIcon(getClass().getResource("/image/light/settings_0.png"), 16, 16));
 
-        JMenuItem PersonalizationMenuItem = new JMenuItem("个性化");
-        PersonalizationMenuItem.addActionListener(e -> {
-            try {
-                repaintSetsPanel(initPersonalization());
-            } catch (IOException ex) {
-                throw new RuntimeException(ex);
-            }
-        });
-
-        JMenuItem ClearTempMenuItem = new JMenuItem("清除临时文件");
-        ClearTempMenuItem.addActionListener(e -> {
-            try {
-                repaintSetsPanel(initClearTemp());
-            } catch (IOException ex) {
-                throw new RuntimeException(ex);
-            }
-        });
-
-
         ctSetsPanelList.forEach(ctSetsPanel -> {
             JMenuItem tempMenuItem = new JMenuItem(ctSetsPanel.getName());
             tempMenuItem.addActionListener(e -> {
@@ -540,9 +216,6 @@ public class InfSetDialog extends JDialog {
         });
 
 
-        setMenu.add(PersonalizationMenuItem);
-        setMenu.add(ClearTempMenuItem);
-
         editMenu.add(setMenu);
         editMenu.add(saveMenuItem);
 
@@ -559,90 +232,31 @@ public class InfSetDialog extends JDialog {
 
     }
 
-    private void repaintSetsPanel(JPanel panel) throws MalformedURLException {
+    private void repaintSetsPanel(CTSetsPanel panel) throws IOException {
 
-            c.removeAll();
+        c.removeAll();
         c.add(initSetsPanelSwitchBar(), BorderLayout.NORTH);
-            initMenuBar();
-            initSaveButton();
-            c.add(panel, BorderLayout.CENTER);
+        initMenuBar();
+        initSaveButton();
+        c.add(panel, BorderLayout.CENTER);
+        panel.refresh();
 
-            c.revalidate();
-            c.repaint();
+        c.revalidate();
+        c.repaint();
 
     }
 
     private void save() {
         int result = Log.info.inputInt(this, "InfSetDialog-保存", "是否保存？");
         if (result == JOptionPane.YES_OPTION) {
-            try {
 
 
-                ctSetsPanelList.forEach(CTSetsPanel::save);
+            ctSetsPanelList.forEach(CTSetsPanel::save);
 
-                //保存数据-个性化
-                {
-                    IOForInfo io = new IOForInfo(new File(Main.DATA_PATH + "setUp.json"));
+            // 保存成功后执行回调
+            refreshCallback.run();
+            //this.setVisible(false);
 
-                    //设置主题色
-                    JSONObject jsonObject = new JSONObject();
-                    String tempMainColor = switch (Objects.requireNonNull(mainColorComboBox.getSelectedItem()).toString()) {
-                        case "黑色" -> "black";
-                        case "白色" -> "white";
-                        case "绿色" -> "green";
-                        case "红色" -> "red";
-                        default -> "blue";
-                    };
-                    jsonObject.put("mainColor", tempMainColor);
-
-                    //设置主题
-                    String tempMainThemeColor = switch (Objects.requireNonNull(mainThemeComboBox.getSelectedItem()).toString()) {
-                        case "深色" -> "dark";
-                        default -> "light";
-                    };
-                    jsonObject.put("mainTheme", tempMainThemeColor);
-
-                    ArrayList<String> tempList = new ArrayList<>();
-                    disposeButton.forEach((key, value) -> {
-                        if (value.isSelected()) {
-                            tempList.add(key);
-                        }
-                    });
-                    jsonObject.put("disposeButton", tempList);
-                    //设置是否可退出
-                    jsonObject.put("canExit", !canExit.isSelected());
-
-                    //设置启动时是否更新
-                    jsonObject.put("StartUpdate", StartUpdate.isSelected());
-
-                    //设置是否自动启动
-                    jsonObject.put("isAutoStart", startUp.isSelected());
-                    String Path = SetStartUp.getFilePath();
-                    if (!startUp.isSelected()) {
-                        SetStartUp.disableAutoStart();// 移除自启动
-                    } else {
-                        if (Path != null){
-                            if (Path.endsWith(".jar")){
-                                SetStartUp.enableAutoStart("javaw -jar " + Path ); // 使用javaw避免黑窗口
-                            } else if (Path.endsWith(".exe")) {
-                                SetStartUp.enableAutoStart(Path);
-                            }
-                        }
-
-                    }
-
-                    Log.info.print("InfSetDialog", "保存数据: " + jsonObject.toString());
-                    io.SetInfo(jsonObject.toString());
-
-                }
-
-                // 保存成功后执行回调
-                refreshCallback.run();
-                //this.setVisible(false);
-
-            } catch (IOException ex) {
-                Log.error.print("InfSetDialog", "保存数据失败: " + ex.getMessage());
-            }
         }
     }
 

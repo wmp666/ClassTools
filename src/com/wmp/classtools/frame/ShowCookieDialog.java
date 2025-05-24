@@ -106,7 +106,7 @@ public class ShowCookieDialog extends JDialog implements WindowListener {
                     } catch (IOException e) {
                         throw new RuntimeException(e);
                     }catch (JSONException e){
-                        Log.error.print(c,"插件管理页", "插件设置文件格式错误");
+                        Log.err.print(c, "插件管理页", "插件设置文件格式错误");
                         throw new RuntimeException(e);
                     }
                 }
@@ -206,7 +206,7 @@ public class ShowCookieDialog extends JDialog implements WindowListener {
                 } catch (IOException ex) {
                     throw new RuntimeException(ex);
                 } catch (JSONException ex) {
-                    Log.error.print(c,"插件管理页", "插件设置文件格式错误");
+                    Log.err.print(c, "插件管理页", "插件设置文件格式错误");
                     throw new RuntimeException(ex);
                 }
             }
@@ -411,7 +411,7 @@ public class ShowCookieDialog extends JDialog implements WindowListener {
             } catch (IOException ex) {
                 throw new RuntimeException(ex);
             } catch (JSONException ex){
-                Log.error.print(this,"插件管理页", "插件设置文件格式错误");
+                Log.err.print(this, "插件管理页", "插件设置文件格式错误");
                 throw new RuntimeException(ex);
             }
         });

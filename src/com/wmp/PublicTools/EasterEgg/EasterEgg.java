@@ -33,13 +33,13 @@ public class EasterEgg {
                     } else if (split[0].equalsIgnoreCase("cookie")) {
                         StartCookie.showCookie(split[1].split(";"));
                     } else{
-                        Log.error.print(null, "祈愿", "请输入正确的格式");
+                        Log.err.print(null, "祈愿", "请输入正确的格式");
 
                     }
                 } else if (split.length == 1) {
                     showEasterEgg(s.split(";"));
                 }else{
-                    Log.error.print(null, "祈愿", "请输入正确的格式");
+                    Log.err.print(null, "祈愿", "请输入正确的格式");
                 }
 
 
@@ -144,7 +144,7 @@ public class EasterEgg {
                 return s1 ;
             }
         }
-        return "error";
+        return "err";
     }
 
     public static String[] getAllText(){

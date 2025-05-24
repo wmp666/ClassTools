@@ -90,10 +90,10 @@ public class CookieDownload {
         downloadButton.setFocusPainted(false);
         downloadButton.addActionListener(e -> {
             if (ref.openedButtonKey.isEmpty()) {
-                Log.error.print("CookieDownload", "请选择一个插件");
+                Log.err.print("CookieDownload", "请选择一个插件");
             } else {
                 if (cookieInfoMap.get(ref.openedButtonKey).getDownloadUrl().isEmpty()) {
-                    Log.error.print("CookieDownload", "该插件暂无下载地址");
+                    Log.err.print("CookieDownload", "该插件暂无下载地址");
                 } else {
 
                     JFileChooser fileChooser = new JFileChooser();
@@ -123,7 +123,7 @@ public class CookieDownload {
         showInfoButton.setFocusPainted(false);
         showInfoButton.addActionListener(e -> {
             if (ref.openedButtonKey.isEmpty()) {
-                Log.error.print("CookieDownload", "请选择一个插件");
+                Log.err.print("CookieDownload", "请选择一个插件");
             } else {
                 JDialog infoDialog = new JDialog();
                 infoDialog.setIconImage(GetIcon.getImageIcon(getClass().getResource("/image/light/about_0.png"), 300, 300).getImage());

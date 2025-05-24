@@ -44,7 +44,7 @@ public class CookieSets {
         } else {
             File setsFile = new File(file, "setUp.json");
             if (!setsFile.exists()) {
-                Log.error.print(dialog, "插件设置窗口", "此插件无配置文件");
+                Log.err.print(dialog, "插件设置窗口", "此插件无配置文件");
                 return;
             }
             JSONObject jsonObject;
@@ -305,7 +305,7 @@ public class CookieSets {
                         Log.info.message(dialog, "插件设置窗口", "设置完成");
 
                     } catch (IOException e) {
-                        Log.error.print(dialog, "插件设置窗口", "设置失败\n" + e.getMessage());
+                        Log.err.print(dialog, "插件设置窗口", "设置失败\n" + e.getMessage());
                         return;
                     }
 
@@ -314,7 +314,7 @@ public class CookieSets {
                     try {
                         refreshParentWindow();
                     } catch (IOException e) {
-                        Log.error.print(dialog, "插件设置窗口", "刷新失败\n" + e.getMessage());
+                        Log.err.print(dialog, "插件设置窗口", "刷新失败\n" + e.getMessage());
                         return;
                     }
                 }
@@ -388,7 +388,7 @@ public class CookieSets {
                 protected Void doInBackground() throws Exception {
                     try {
                         if (file == null || !file.exists()) {
-                            Log.error.print("删除 Cookie", "目标不存在");
+                            Log.err.print("删除 Cookie", "目标不存在");
                             return null;
                         }
 
@@ -403,12 +403,12 @@ public class CookieSets {
                             Log.info.message(null, "删除 Cookie", "删除成功");
                         } else {
                             String errorType = file.canWrite() ? "文件被占用" : "权限不足";
-                            Log.error.print("删除 Cookie", "删除失败：" + errorType);
+                            Log.err.print("删除 Cookie", "删除失败：" + errorType);
                         }
                     } catch (IOException e) {
-                        Log.error.print("删除 Cookie", "删除失败：文件遍历异常-" + e.getMessage());
+                        Log.err.print("删除 Cookie", "删除失败：文件遍历异常-" + e.getMessage());
                     } catch (SecurityException e) {
-                        Log.error.print("删除 Cookie", "删除失败：安全限制-" + e.getMessage());
+                        Log.err.print("删除 Cookie", "删除失败：安全限制-" + e.getMessage());
                     }
                     return null;
                 }

@@ -2,6 +2,8 @@ package com.wmp.PublicTools.printLog;
 
 import com.wmp.Main;
 import com.wmp.PublicTools.OpenInExp;
+import javazoom.jl.decoder.JavaLayerException;
+import javazoom.jl.player.Player;
 
 import javax.swing.*;
 import java.awt.*;
@@ -10,6 +12,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.io.IOException;
+import java.io.InputStream;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.nio.file.StandardOpenOption;
@@ -53,7 +56,7 @@ public class Log {
 
     public static InfoLogStyle info = new InfoLogStyle(LogStyle.INFO);
     public static PrintLogStyle warn = new PrintLogStyle(LogStyle.WARN);
-    public static PrintLogStyle error = new PrintLogStyle(LogStyle.ERROR);
+    public static PrintLogStyle err = new PrintLogStyle(LogStyle.ERROR);
 
     static {
         thread.setDaemon(true);
@@ -176,6 +179,30 @@ public class Log {
                         logInfo;
                 System.err.println(info);
 
+                InputStream inputStream;
+
+                Random r = new Random();
+                if (r.nextBoolean()) {
+                    inputStream = Log.class.getResourceAsStream("/music/error-kong.mp3");
+                } else {
+                    inputStream = Log.class.getResourceAsStream("/music/error-yin.mp3");
+                }
+
+
+                new Thread(() -> {
+
+                    if (inputStream != null) {
+                        try {
+                            Player player = new Player(inputStream);
+                            player.play();
+                        } catch (JavaLayerException e) {
+                            throw new RuntimeException(e);
+                        }
+                    }
+
+                }, "PlayerErrorMp3").start();
+
+
                 JOptionPane.showMessageDialog(c, logInfo, "世界拒绝了我", JOptionPane.ERROR_MESSAGE);
 
                 logInfList.add(info);
@@ -271,7 +298,7 @@ public class Log {
                 Log.info.message(null, "Log", "日志保存成功");
         } catch (IOException e) {
             if (showMessageDialog)
-                Log.error.print("Log", "日志保存失败");
+                Log.err.print("Log", "日志保存失败");
             throw new RuntimeException(e);
         }
     }

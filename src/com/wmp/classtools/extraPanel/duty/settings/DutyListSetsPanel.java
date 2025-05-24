@@ -18,7 +18,6 @@ import java.util.concurrent.atomic.AtomicInteger;
 public class DutyListSetsPanel extends CTSetsPanel {
 
     private final File DutyListPath;
-    private final File indexPath;
 
     private final JTable DutyTable = new JTable();
     private final AtomicInteger index = new AtomicInteger();
@@ -30,13 +29,6 @@ public class DutyListSetsPanel extends CTSetsPanel {
         File dataPath = new File(basicDataPath, "Duty");
 
         this.DutyListPath = new File(dataPath, "DutyList.txt");
-        this.indexPath = new File(dataPath, "index.txt");
-
-        try {
-            index.set(Integer.parseInt(new IOForInfo(indexPath).GetInfos()));
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
 
         //初始化
         try {
@@ -142,11 +134,11 @@ public class DutyListSetsPanel extends CTSetsPanel {
         String[] inf = ioForInfo.GetInfo();
 
         //System.out.println(inf);
-        if (inf[0].equals("error")) {
+        if (inf[0].equals("err")) {
             //总会有的
             ioForInfo.SetInfo("[尽快,设置] [请]",
                     "[尽快,设置,1] [请]");
-            return new String[][]{{"error"}, {"null"}};
+            return new String[][]{{"err"}, {"null"}};
         }
 
 
@@ -198,11 +190,25 @@ public class DutyListSetsPanel extends CTSetsPanel {
 
         try {
             new IOForInfo(DutyListPath).SetInfo(sb.toString());
-            new IOForInfo(indexPath).SetInfo(String.valueOf(index.get()));
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
 
 
+    }
+
+    @Override
+    public void refresh() throws IOException {
+
+        this.removeAll();
+        //初始化
+        try {
+            String[][] dutyList = getDutyList(this.DutyListPath);
+            initDuSet(dutyList);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+        this.revalidate();
+        this.repaint();
     }
 }

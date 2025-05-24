@@ -177,7 +177,7 @@ public class DownloadURLFile {
 
                 } catch (IOException e) {
                     //判断错误是否为拒绝访问
-                    Log.error.print("DownloadURLFile-下载", "下载失败: " + e.getMessage());
+                    Log.err.print("DownloadURLFile-下载", "下载失败: " + e.getMessage());
                     if (e.getMessage().contains("拒绝访问")) {
                         Log.info.message(parent, "DownloadURLFile-下载", "下载失败，请以管理员身份运行");
 
@@ -194,7 +194,7 @@ public class DownloadURLFile {
 
             }
         } catch (Exception ex) {
-                Log.error.print("DownloadURLFile-下载", "下载失败: " + ex.getMessage());
+            Log.err.print("DownloadURLFile-下载", "下载失败: " + ex.getMessage());
                 progressDialog.setVisible(false);
 
         }

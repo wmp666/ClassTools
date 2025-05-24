@@ -19,7 +19,7 @@ public class VideoPlayer {
             Desktop.getDesktop().open(videoFile);
         } catch (IOException e) {
             // 处理打开视频文件失败的情况
-            Log.error.print("VideoPlayer", "播放出现错误\n" + e.getMessage());
+            Log.err.print("VideoPlayer", "播放出现错误\n" + e.getMessage());
             throw new RuntimeException(e);
         }
     }

@@ -14,7 +14,7 @@ public class OpenInExp {
 
             // 校验父目录有效性
             if (targetDir == null || !targetDir.exists()) {
-                Log.error.print("OpenInExp", "不存在的位置");
+                Log.err.print("OpenInExp", "不存在的位置");
                 throw new IOException("Parent directory does not exist");
             }
             // 使用跨平台方式打开文件管理器

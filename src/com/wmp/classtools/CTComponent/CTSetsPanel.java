@@ -1,8 +1,6 @@
 package com.wmp.classTools.CTComponent;
 
-import javax.swing.*;
-
-public abstract class CTSetsPanel extends JPanel {
+public abstract class CTSetsPanel extends CTPanel {
 
     private String name;
     //基础数据路径
@@ -36,4 +34,6 @@ public abstract class CTSetsPanel extends JPanel {
      * @return String 信息
      */
     public abstract void save();
+
+
 }

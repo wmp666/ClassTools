@@ -28,7 +28,7 @@ public class Main{
     * d:只修复的问题,问题较少
     * e:测试版本号
      */
-    public static String version = "1.19.0";
+    public static String version = "1.20.0";
 
     public static ArrayList<String> list = new ArrayList<>();
 
@@ -87,14 +87,14 @@ public class Main{
                 Log.info.print("Main", "使用的启动参数:" + Arrays.toString(args));
             }
         } catch (IOException e) {
-            Log.error.print("Main", "初始化失败:" + e.getMessage());
+            Log.err.print("Main", "初始化失败:" + e.getMessage());
             Log.showLogDialog();
             throw new RuntimeException(e);
         }
         try {
             SwingRun.show(b, allArgs, list, startUpdate);
         } catch (URISyntaxException e) {
-            Log.error.print("Main", "窗口初始化失败:" + e.getMessage());
+            Log.err.print("Main", "窗口初始化失败:" + e.getMessage());
             Log.showLogDialog();
             throw new RuntimeException(e);
         }

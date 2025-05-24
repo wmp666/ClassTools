@@ -156,7 +156,7 @@ public class ATPanel extends CTPanel {
             String[] inf = ioForInfo.GetInfo();
 
             //System.out.println(inf);
-            if (inf[0].equals("error")) {
+            if (inf[0].equals("err")) {
                 {
                     //将数据改为默认
                     // 使用常量数组管理姓名数据
@@ -188,7 +188,7 @@ public class ATPanel extends CTPanel {
                 Log.info.print("ATPanel-initStuList", "请假名单:" + s);
                 //leaveList.add(s);
             }
-            if (inf[0].equals("error")) {
+            if (inf[0].equals("err")) {
                 ioForInfo.SetInfo("");
                 studentLateLength = 0;
             }else{

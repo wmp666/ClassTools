@@ -66,7 +66,7 @@ public class DPanel extends CTPanel {
             now = DutyList.get(index);
         } catch (Exception e) {
             new IOForInfo(indexPath).SetInfo("0");
-            Log.error.print("CTPanel-DutyPanel", "数据异常,请检查数据文件\n问题:" + e.getMessage());
+            Log.err.print("CTPanel-DutyPanel", "数据异常,请检查数据文件\n问题:" + e.getMessage());
             throw new RuntimeException(e);
         }
 
@@ -167,7 +167,7 @@ public class DPanel extends CTPanel {
         String[] inf = ioForInfo.GetInfo();
 
         //System.out.println(inf);
-        if(inf[0].equals("error")){
+        if (inf[0].equals("err")) {
             //将数据改为默认-空,需要用户自行输入数据
             index = 0;
             ioForInfo.SetInfo("0");
@@ -187,7 +187,7 @@ public class DPanel extends CTPanel {
         String[] inf = ioForInfo.GetInfo();
 
 
-        if(inf[0].equals("error")){
+        if (inf[0].equals("err")) {
             //将数据改为默认-空,需要用户自行输入数据
 
             ioForInfo.SetInfo("[尽快,设置] [请]",
@@ -210,7 +210,7 @@ public class DPanel extends CTPanel {
                         DutyDay.setDutyPersonList(strings.get(1))));
             } catch (Exception e) {
                 if (strings.size() <= 2){
-                    Log.error.print(this, "CTPanel-DutyPanel-初始化数据", "请检查数据格式是否正确");
+                    Log.err.print(this, "CTPanel-DutyPanel-初始化数据", "请检查数据格式是否正确");
                 }
                 throw new RuntimeException(e);
             }

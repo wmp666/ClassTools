@@ -17,7 +17,7 @@ public class ResourceLocalizer {
         }
         try (InputStream is = ResourceLocalizer.class.getResourceAsStream(inputPath + fileName)) {// 获取资源流
             if (is == null) {
-                Log.error.print("ResourceLocalizer-copyEmbeddedFile", "内置文件[" + ResourceLocalizer.class.getResource(inputPath + fileName) + "]未找到");
+                Log.err.print("ResourceLocalizer-copyEmbeddedFile", "内置文件[" + ResourceLocalizer.class.getResource(inputPath + fileName) + "]未找到");
                 return;
             }
 
@@ -26,7 +26,7 @@ public class ResourceLocalizer {
                     Paths.get(outputPath, fileName),
                     StandardCopyOption.REPLACE_EXISTING);
         } catch (IOException e) {
-            Log.error.print("ResourceLocalizer-copyEmbeddedFile", "文件[" + fileName + "]本地化失败");
+            Log.err.print("ResourceLocalizer-copyEmbeddedFile", "文件[" + fileName + "]本地化失败");
         }
     }
 

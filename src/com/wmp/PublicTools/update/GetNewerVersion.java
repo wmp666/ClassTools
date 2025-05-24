@@ -43,7 +43,7 @@ public class GetNewerVersion {
 
             protected void done() {
                 if (sourceURL == null) {
-                    Log.error.print(dialog, "获取新版本", "无法获取下载地址");
+                    Log.err.print(dialog, "获取新版本", "无法获取下载地址");
                     return;
                 }
 
@@ -53,7 +53,7 @@ public class GetNewerVersion {
                         try {
                             downloadSource(sourceURL);
                         } catch (URISyntaxException e) {
-                            Log.error.print(dialog, "获取新版本-下载", "下载失败");
+                            Log.err.print(dialog, "获取新版本-下载", "下载失败");
                             throw new RuntimeException(e);
                         } catch (IOException e) {
                             throw new RuntimeException(e);
@@ -137,7 +137,7 @@ public class GetNewerVersion {
             protected void done() {
                 if (latestVersion == null) {
 
-                    Log.error.print(dialog, "获取新版本", "无法获取版本信息");
+                    Log.err.print(dialog, "获取新版本", "无法获取版本信息");
 
                     return;
                 }

@@ -50,6 +50,8 @@ public class CTButton extends JButton implements MouseListener, ActionListener {
             this.setText(text);
         }
 
+        setName(text);
+
         //super(text);
 
         if (defaultIconPath != null){
