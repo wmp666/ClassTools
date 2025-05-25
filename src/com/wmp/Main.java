@@ -28,7 +28,7 @@ public class Main{
     * d:只修复的问题,问题较少
     * e:测试版本号
      */
-    public static String version = "1.20.0";
+    public static String version = "1.20.1";
 
     public static ArrayList<String> list = new ArrayList<>();
 

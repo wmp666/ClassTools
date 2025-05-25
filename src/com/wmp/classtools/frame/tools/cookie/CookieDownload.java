@@ -33,7 +33,7 @@ public class CookieDownload {
 
         initUI(dialog);
 
-        dialog.pack();
+        //dialog.pack();
         dialog.setVisible(true);
     }
 
@@ -50,6 +50,7 @@ public class CookieDownload {
         GridBagConstraints showCookieGbc = new GridBagConstraints();
         showCookieGbc.fill = GridBagConstraints.HORIZONTAL;//水平填充
         showCookieGbc.gridx = 0;//组件在网格中的x坐标
+        showCookieGbc.gridy = 0;//组件在网格中的y坐标
         showCookieGbc.insets = new Insets(5, 5, 5, 5);//组件之间的间距
         showCookieGbc.weighty = 0;
         //展示已有插件
@@ -154,6 +155,7 @@ public class CookieDownload {
 
                 infoDialog.add(infoPanel);
 
+
                 infoDialog.pack();
                 infoDialog.setVisible(true);
             }
@@ -165,9 +167,9 @@ public class CookieDownload {
 
     private void initDialog(JDialog dialog) {
         dialog.setIconImage(GetIcon.getImageIcon(getClass().getResource("/image/input.png"), 300, 300).getImage());
-        dialog.setSize(400, 400);
+        dialog.setSize(400, 350);
         dialog.setLocationRelativeTo(null);
-        dialog.setResizable(false);
+        //dialog.setResizable(false);
         dialog.setModal(true);
         dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
         dialog.setTitle("插件下载");
