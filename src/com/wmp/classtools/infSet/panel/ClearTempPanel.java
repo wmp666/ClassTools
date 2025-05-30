@@ -2,6 +2,7 @@ package com.wmp.classTools.infSet.panel;
 
 import com.wmp.Main;
 import com.wmp.PublicTools.io.IOForInfo;
+import com.wmp.PublicTools.printLog.Log;
 import com.wmp.classTools.CTComponent.CTButton;
 import com.wmp.classTools.CTComponent.CTSetsPanel;
 
@@ -46,7 +47,7 @@ public class ClearTempPanel extends CTSetsPanel {
         this.add(buttonPanel);
     }
 
-    private static CTButton getButton(String name, String DATA_PATH) throws MalformedURLException {
+    private CTButton getButton(String name, String DATA_PATH) throws MalformedURLException {
         return new CTButton(CTButton.ButtonText, name,
                 "/image/%s/delete_0.png",
                 "/image/%s/delete_1.png", 35, 150, () -> {
@@ -54,7 +55,13 @@ public class ClearTempPanel extends CTSetsPanel {
         });
     }
 
-    private static void deleteDir(String DATA_PATH) {
+    private void deleteDir(String DATA_PATH) {
+
+        int i = Log.info.inputInt(this, "清理临时文件", "是否清理?");
+        if (i == JOptionPane.NO_OPTION) {
+            return;
+        }
+
         try {
             IOForInfo.deleteDirectoryRecursively(Paths.get(DATA_PATH));
 

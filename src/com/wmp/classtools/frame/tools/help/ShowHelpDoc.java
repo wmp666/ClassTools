@@ -1,6 +1,7 @@
 package com.wmp.classTools.frame.tools.help;
 
 import com.wmp.Main;
+import com.wmp.PublicTools.OpenInExp;
 import com.wmp.PublicTools.UITools.GetIcon;
 import com.wmp.PublicTools.io.ResourceLocalizer;
 import org.commonmark.parser.Parser;
@@ -29,9 +30,12 @@ public class ShowHelpDoc extends JDialog {
     public ShowHelpDoc(String s) throws URISyntaxException, IOException {
 
         initDialog();
+
         c = this.getContentPane();
 
         c.add(getChooseHelpDoc(), BorderLayout.WEST);
+
+        c.add(getButtonPanel(), BorderLayout.SOUTH);
 
         copyDocImage("InputExcel-0.png", "InputExcel-1.png", "InputExcel-2.png","SM-0.png", "SM-1.png");
 
@@ -132,6 +136,23 @@ public class ShowHelpDoc extends JDialog {
         chooseHelpDoc.add(list);
 
         return new JScrollPane(chooseHelpDoc);
+    }
+
+    private JPanel getButtonPanel() {
+        JButton exitButton = new JButton("退出");
+        exitButton.addActionListener(e -> this.dispose());
+
+        JButton openInExpButton = new JButton("打开所在位置");
+        openInExpButton.addActionListener(e -> {
+            OpenInExp.open(Main.TEMP_PATH + "help\\");
+        });
+
+        JPanel buttonPanel = new JPanel();
+        buttonPanel.setLayout(new FlowLayout(FlowLayout.RIGHT));
+        buttonPanel.add(exitButton);
+        buttonPanel.add(openInExpButton);
+
+        return buttonPanel;
     }
 
     private static String initHelpDoc(String name) throws IOException, URISyntaxException {

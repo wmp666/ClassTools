@@ -2,6 +2,7 @@ package com.wmp.PublicTools.printLog;
 
 import com.wmp.Main;
 import com.wmp.PublicTools.OpenInExp;
+import com.wmp.PublicTools.UITools.GetIcon;
 import com.wmp.PublicTools.videoView.MediaPlayer;
 
 import javax.swing.*;
@@ -180,7 +181,12 @@ public class Log {
                 MediaPlayer.playMusic(MediaPlayer.MUSIC_STYLE_ERROR, true);
 
 
-                JOptionPane.showMessageDialog(c, logInfo, "世界拒绝了我", JOptionPane.ERROR_MESSAGE);
+                String title;
+                if (Main.isError) title = "骇客已入侵";
+                else title = "世界拒绝了我";
+                Icon icon = null;
+                if (Main.isError) icon = GetIcon.getIcon(Log.class.getResource("/image/error/icon.png"), 100, 100);
+                JOptionPane.showMessageDialog(c, logInfo, title, JOptionPane.ERROR_MESSAGE, icon);
 
                 logInfList.add(info);
             }

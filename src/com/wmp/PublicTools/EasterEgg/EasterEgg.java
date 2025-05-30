@@ -57,8 +57,15 @@ public class EasterEgg {
         }
     }
     public static void showEasterEgg(String pin){
+        String videoName;
+
 
         Log.info.print("EasterEgg-显示", "正在准备...");
+
+        if (Main.isError) videoName = "PV-yl";
+        else {
+            videoName = pin;
+        }
 
         new SwingWorker<Void, Void>() {
             @Override
@@ -80,7 +87,7 @@ public class EasterEgg {
                             JSONArray assets = jsonObject.getJSONArray("assets");
                             for (int j = 0; j < assets.length(); j++) {
                                 JSONObject asset = assets.getJSONObject(j);
-                                if (asset.getString("name").equals(pin + ".mp4")) {
+                                if (asset.getString("name").equals(videoName + ".mp4")) {
                                     downloadUrl = asset.getString("browser_download_url");
                                     break;
                                 }
@@ -96,7 +103,7 @@ public class EasterEgg {
                 }
                 Log.info.print("EasterEgg-下载", "下载链接: " + downloadUrl);
 
-                ResourceLocalizer.copyWebVideo(Main.TEMP_PATH + "EasterEgg\\video\\", downloadUrl, pin + ".mp4");
+                ResourceLocalizer.copyWebVideo(Main.TEMP_PATH + "EasterEgg\\video\\", downloadUrl, videoName + ".mp4");
                 return null;
             }
 
@@ -108,7 +115,7 @@ public class EasterEgg {
                     get(); // 获取执行结果（可捕获异常）
 
 
-                            String videoPath = buildVideoPath(pin);
+                    String videoPath = buildVideoPath(videoName);
                             try {
                                 MediaPlayer.playVideo(videoPath);
                             } catch (IOException e) {
@@ -118,6 +125,7 @@ public class EasterEgg {
 
 
                 } catch (Exception e) {
+                    Log.err.print(null, "EasterEgg-下载", "下载失败: " + e.getMessage());
                     throw new RuntimeException(e);
                 }
             }
@@ -128,7 +136,7 @@ public class EasterEgg {
     }
 
     private static String buildVideoPath(String pin) {
-        return Main.TEMP_PATH + "video\\" + pin + ".mp4";
+        return Main.TEMP_PATH + "EasterEgg\\video\\" + pin + ".mp4";
     }
 
     public static String getText(EETextStyle style){
@@ -148,6 +156,12 @@ public class EasterEgg {
     }
 
     public static String[] getAllText(){
+        if (Main.isError) return new String[]{
+                "骇客已入侵:\\n游戏就只是为了游戏\\n仅此而已！",
+                "骇客已入侵:\\n重要的不是数值\\n是体验，是操作！",
+                "骇客已入侵:\\n这次能让我玩得开心点么？"
+        };
+
         return IOForInfo.getInfo(EasterEgg.class.getResource("EasterEgg.txt"));
 
     }

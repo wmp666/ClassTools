@@ -13,12 +13,12 @@ import java.time.Month;
 import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Random;
 import java.util.TreeMap;
 
 public class Main{
 
     public static String DATA_PATH = "null";
-
     public static String TEMP_PATH = "null";
 
     /**a.b.c.d.e
@@ -28,10 +28,15 @@ public class Main{
     * d:只修复的问题,问题较少
     * e:测试版本号
      */
-    public static String version = "1.20.1";
+    public static String version = "1.21.0";
+    public static String appName = "ClassTools";
+    public static String author = "wmp";
 
-    public static ArrayList<String> list = new ArrayList<>();
+    public static String iconPath;
 
+    public static boolean isError = false;
+
+    public static ArrayList<String> argsList = new ArrayList<>();
     public static final TreeMap<String, StartupParameters> allArgs = new TreeMap<>();
 
     public static final ArrayList<String> disButList = new ArrayList<>();
@@ -47,11 +52,9 @@ public class Main{
         DATA_PATH = sb.append(path).append("\\ClassTools\\").toString();
 
         StringBuilder sb2 = new StringBuilder();
-
         TEMP_PATH = sb2.append(path).append("\\ClassToolsTemp\\").toString();
 
-        DATA_PATH = sb.toString();
-
+        iconPath = "/image/icon.png";
 
         allArgs.put("TimeView:screen", StartupParameters.creative("-TimeView:screen", "/TimeView:screen"));
         allArgs.put("StartUpdate:false", StartupParameters.creative("-StartUpdate:false", "/StartUpdate:false"));
@@ -83,7 +86,7 @@ public class Main{
             Log.info.print("Main", "启动参数:" + Arrays.toString(args));
 
             if (args.length > 0) {
-                list = new ArrayList<>(Arrays.asList(args));
+                argsList = new ArrayList<>(Arrays.asList(args));
                 Log.info.print("Main", "使用的启动参数:" + Arrays.toString(args));
             }
         } catch (IOException e) {
@@ -91,8 +94,24 @@ public class Main{
             Log.showLogDialog();
             throw new RuntimeException(e);
         }
+
+        isError = isError();
+        //Log.info.print("[Main]", "是否被骇客入侵:" + isError);
+        if (isError) {
+
+            Log.info.message(null, "[Main]", "这次能让我玩得开心点吗？");
+
+            version = "999.999.999";//错误版本号(无法更新)
+            appName = "班级病毒";
+            author = "银狼";
+            iconPath = "/image/error/icon.png";
+            b = false;
+            CTColor.setErrorColor();//修改颜色
+        }
+
+
         try {
-            SwingRun.show(b, allArgs, list, startUpdate);
+            SwingRun.show(b, allArgs, argsList, startUpdate);
         } catch (URISyntaxException e) {
             Log.err.print("Main", "窗口初始化失败:" + e.getMessage());
             Log.showLogDialog();
@@ -126,6 +145,34 @@ public class Main{
                 && currentDate.getDayOfMonth() == 25);
 
         return b;
+
+
+        //System.out.println(new CTColor());
+
+    }
+
+    private static boolean isError() {
+
+        // 明确指定时区
+        LocalDate currentDate = LocalDate.now(ZoneId.of("Asia/Shanghai"));
+        boolean b = currentDate.getMonth() == Month.APRIL
+                && currentDate.getDayOfMonth() == 7;
+        if (!b) {
+            if (currentDate.getMonth() == Month.APRIL //崩铁
+                    && currentDate.getDayOfMonth() == 25) {
+                Random r = new Random();
+                int i = r.nextInt(5);
+                System.out.println("崩铁:" + i);
+                return i == 0;
+            }
+            Random r = new Random();
+            int i = r.nextInt(20);
+            System.out.println("普通:" + i);
+            return i == 0;
+        }
+
+
+        return true;
 
 
         //System.out.println(new CTColor());

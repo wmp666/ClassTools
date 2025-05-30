@@ -1,5 +1,6 @@
 package com.wmp.PublicTools.videoView;
 
+import com.wmp.Main;
 import com.wmp.PublicTools.printLog.Log;
 import javazoom.jl.decoder.JavaLayerException;
 import javazoom.jl.player.Player;
@@ -36,10 +37,14 @@ public class MediaPlayer {
             case MUSIC_STYLE_ERROR -> {
                 Random r = new Random();
 
-                if (r.nextBoolean()) {
-                    inputStream = Log.class.getResourceAsStream("/music/error-kong.mp3");
+                if (Main.isError) {
+                    inputStream = Log.class.getResourceAsStream("/music/error-yl.mp3");
                 } else {
-                    inputStream = Log.class.getResourceAsStream("/music/error-yin.mp3");
+                    if (r.nextBoolean()) {
+                        inputStream = Log.class.getResourceAsStream("/music/error-kong.mp3");
+                    } else {
+                        inputStream = Log.class.getResourceAsStream("/music/error-yin.mp3");
+                    }
                 }
             }
             default -> {

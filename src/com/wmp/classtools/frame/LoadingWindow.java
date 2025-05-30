@@ -1,5 +1,6 @@
 package com.wmp.classTools.frame;
 
+import com.wmp.Main;
 import com.wmp.PublicTools.EasterEgg.EETextStyle;
 import com.wmp.PublicTools.EasterEgg.EasterEgg;
 import com.wmp.PublicTools.printLog.Log;
@@ -15,7 +16,7 @@ public class LoadingWindow extends JWindow {
     public static final int STYLE_SCREEN = 1;
 
     public LoadingWindow() {
-        this(LoadingWindow.class.getResource("/image/icon.png"),
+        this(LoadingWindow.class.getResource(Main.iconPath),
                 180, 180, "useLoadingText", false, 0, 0);
     }
 

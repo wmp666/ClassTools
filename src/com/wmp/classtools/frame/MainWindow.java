@@ -20,7 +20,7 @@ import java.util.ArrayList;
 import java.util.concurrent.atomic.AtomicInteger;
 
 import static com.wmp.Main.allArgs;
-import static com.wmp.Main.list;
+import static com.wmp.Main.argsList;
 
 public class MainWindow extends JDialog {
     private final Container contentPane = this.getContentPane();
@@ -30,7 +30,7 @@ public class MainWindow extends JDialog {
     public MainWindow(String path) throws IOException {
 
         this.setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
-        this.setTitle("ClassTools-V" + Main.version);
+        this.setTitle(Main.appName + "-V" + Main.version);
         //删除边框
         this.setUndecorated(true);
 
@@ -56,8 +56,7 @@ public class MainWindow extends JDialog {
         showPanelList.add(timeViewPanel);
 
 
-
-        if (allArgs.get("screenProduct:view").contains(list)){
+        if (allArgs.get("screenProduct:view").contains(argsList)) {
             JDialog view = new JDialog();
             view.setSize(timeViewPanel.getWidth() + 20, timeViewPanel.getHeight() + 40);
             view.setLocationRelativeTo(null);
@@ -185,7 +184,7 @@ public class MainWindow extends JDialog {
         int screenHeight = (int) screenSize.getHeight();
 
         this.setForeground(CTColor.backColor);
-        this.setIconImage(new ImageIcon(getClass().getResource("/image/icon.png")).getImage());
+        this.setIconImage(new ImageIcon(getClass().getResource(Main.iconPath)).getImage());
         this.setSize(250, mixY + 5);
         this.setLocation(screenWidth - this.getWidth(), 0);
 

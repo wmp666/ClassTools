@@ -145,7 +145,7 @@ public class FinalPanel extends CTPanel {
 
 
         //设置关闭按钮
-        if (Main.canExit) {
+        if (!Main.isError && Main.canExit) {
             CTButton exit = new CTButton("关闭",
                     "/image/%s/exit_0.png",
                     "/image/%s/exit_1.png", 30, () -> {

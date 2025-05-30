@@ -1,5 +1,6 @@
 package com.wmp.PublicTools.UITools;
 
+import com.wmp.Main;
 import com.wmp.PublicTools.printLog.Log;
 
 import java.awt.*;
@@ -20,6 +21,11 @@ public class CTColor {
     public static Color textColor = Color.BLACK;
     public static Color backColor = Color.WHITE;
 
+    public static void setErrorColor() {
+        textColor = mainColor;
+        backColor = new Color(246, 250, 255);
+        style = "error";
+    }
     public static void setAllColor(String mainColorStr, String tempStyle){
 
         setMainColorColor(mainColorStr);
@@ -28,6 +34,9 @@ public class CTColor {
     }
 
     public static void setMainColorColor(String mainColorStr){
+
+        if (Main.isError) return;
+
         switch (mainColorStr){
             case MAIN_COLOR_WHITE->{
                 mainColor = Color.WHITE;
@@ -51,6 +60,9 @@ public class CTColor {
     }
 
     public static void setMainTheme(String tempStyle){
+
+        if (Main.isError) return;
+
         style = tempStyle;
         switch (tempStyle){
             case STYLE_DARK->{

@@ -38,14 +38,14 @@ public class AboutDialog extends JDialog {
         this.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
         this.getContentPane().setBackground(CTColor.backColor);
 
-        ImageIcon defaultIcon = new ImageIcon( getClass().getResource("/image/icon.png"));
+        ImageIcon defaultIcon = new ImageIcon(getClass().getResource(Main.iconPath));
         defaultIcon.setImage(defaultIcon.getImage().getScaledInstance(100, 100, Image.SCALE_DEFAULT));
 
 
         JLabel icon = new JLabel(defaultIcon);
         icon.setBounds(10, 10, 100, 100);
 
-        JLabel title = new JLabel("程序名: ClassTools");
+        JLabel title = new JLabel("程序名: " + Main.appName);
         title.setBounds(120, 10, 200, 20);
         title.setFont(new Font("微软雅黑", Font.BOLD, 15));
         title.setForeground(CTColor.textColor);
@@ -56,7 +56,7 @@ public class AboutDialog extends JDialog {
         version.setFont(new Font("微软雅黑", Font.BOLD, 15));
         version.setForeground(CTColor.textColor);
 
-        JLabel author = new JLabel("作者: WMP");
+        JLabel author = new JLabel("作者: " + Main.author);
         author.setBounds(120, 70, 200, 20);
         author.setFont(new Font("微软雅黑", Font.BOLD, 15));
         author.setForeground(CTColor.textColor);

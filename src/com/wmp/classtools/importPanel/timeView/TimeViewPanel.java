@@ -13,7 +13,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 import static com.wmp.Main.allArgs;
-import static com.wmp.Main.list;
+import static com.wmp.Main.argsList;
 
 public class TimeViewPanel extends CTPanel {
 
@@ -79,11 +79,11 @@ public class TimeViewPanel extends CTPanel {
         viewTimeButton.setLocation(210, 5 );
         this.add(viewTimeButton);
 
-        if (allArgs.get("TimeView:screen").contains(list)) {
+        if (allArgs.get("TimeView:screen").contains(argsList)) {
             //执行你的代码
             viewTimeInDeskTop(0);
             Log.info.print("TimeView", "全屏显示时间");
-        }else if(allArgs.get("screenProduct:show").contains(list)){
+        } else if (allArgs.get("screenProduct:show").contains(argsList)) {
 
             Log.info.print("TimeView", "屏保模式");
             viewTimeInDeskTop(1);
