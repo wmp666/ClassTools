@@ -4,7 +4,7 @@ import com.wmp.Main;
 import com.wmp.PublicTools.io.IOForInfo;
 import com.wmp.PublicTools.io.ResourceLocalizer;
 import com.wmp.PublicTools.printLog.Log;
-import com.wmp.PublicTools.videoView.VideoPlayer;
+import com.wmp.PublicTools.videoView.MediaPlayer;
 import com.wmp.PublicTools.web.GetWebInf;
 import com.wmp.classTools.frame.tools.cookie.StartCookie;
 import org.json.JSONArray;
@@ -96,7 +96,7 @@ public class EasterEgg {
                 }
                 Log.info.print("EasterEgg-下载", "下载链接: " + downloadUrl);
 
-                ResourceLocalizer.copyWebVideo(Main.TEMP_PATH + "video\\", downloadUrl, pin + ".mp4");
+                ResourceLocalizer.copyWebVideo(Main.TEMP_PATH + "EasterEgg\\video\\", downloadUrl, pin + ".mp4");
                 return null;
             }
 
@@ -110,7 +110,7 @@ public class EasterEgg {
 
                             String videoPath = buildVideoPath(pin);
                             try {
-                                VideoPlayer.playVideo(videoPath);
+                                MediaPlayer.playVideo(videoPath);
                             } catch (IOException e) {
                                 throw new RuntimeException(e);
                             }

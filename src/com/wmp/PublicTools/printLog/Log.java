@@ -2,8 +2,7 @@ package com.wmp.PublicTools.printLog;
 
 import com.wmp.Main;
 import com.wmp.PublicTools.OpenInExp;
-import javazoom.jl.decoder.JavaLayerException;
-import javazoom.jl.player.Player;
+import com.wmp.PublicTools.videoView.MediaPlayer;
 
 import javax.swing.*;
 import java.awt.*;
@@ -12,7 +11,6 @@ import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.io.IOException;
-import java.io.InputStream;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.nio.file.StandardOpenOption;
@@ -179,28 +177,7 @@ public class Log {
                         logInfo;
                 System.err.println(info);
 
-                InputStream inputStream;
-
-                Random r = new Random();
-                if (r.nextBoolean()) {
-                    inputStream = Log.class.getResourceAsStream("/music/error-kong.mp3");
-                } else {
-                    inputStream = Log.class.getResourceAsStream("/music/error-yin.mp3");
-                }
-
-
-                new Thread(() -> {
-
-                    if (inputStream != null) {
-                        try {
-                            Player player = new Player(inputStream);
-                            player.play();
-                        } catch (JavaLayerException e) {
-                            throw new RuntimeException(e);
-                        }
-                    }
-
-                }, "PlayerErrorMp3").start();
+                MediaPlayer.playMusic(MediaPlayer.MUSIC_STYLE_ERROR, true);
 
 
                 JOptionPane.showMessageDialog(c, logInfo, "世界拒绝了我", JOptionPane.ERROR_MESSAGE);

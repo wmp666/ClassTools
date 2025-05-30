@@ -2,7 +2,7 @@ package com.wmp.classTools.frame.tools.cookie;
 
 import com.wmp.PublicTools.OpenInExp;
 import com.wmp.PublicTools.printLog.Log;
-import com.wmp.PublicTools.videoView.VideoPlayer;
+import com.wmp.PublicTools.videoView.MediaPlayer;
 
 import java.awt.*;
 import java.io.File;
@@ -44,7 +44,7 @@ public class StartCookie {
                             Desktop.getDesktop().open(RunFile);
                         }
                         case "video"->{
-                            VideoPlayer.playVideo(RunFile.getPath());
+                            MediaPlayer.playVideo(RunFile.getPath());
                         }
                         case "exe" -> {
 
