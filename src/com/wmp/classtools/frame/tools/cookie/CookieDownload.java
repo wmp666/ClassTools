@@ -4,7 +4,6 @@ import com.wmp.PublicTools.UITools.GetIcon;
 import com.wmp.PublicTools.io.DownloadURLFile;
 import com.wmp.PublicTools.printLog.Log;
 import com.wmp.PublicTools.web.GetWebInf;
-import org.json.JSONArray;
 import org.json.JSONObject;
 
 import javax.swing.*;
@@ -181,13 +180,24 @@ public class CookieDownload {
 
         JSONObject jsonObject = new JSONObject(GetWebInf.getWebInf(apiUrl));
 
-        JSONArray cookieInfo = new JSONArray(jsonObject.getString("body"));
+        /*JSONArray cookieInfo = new JSONArray(jsonObject.getString("assets"));
         cookieInfo.forEach(info -> {
             JSONObject infoJson = (JSONObject) info;
             String key = infoJson.getString("key");
             String name = infoJson.getString("name");
             String function = infoJson.getString("function");
             cookieInfoMap.put(key, new CookieInfo(name, function));
+        });*/
+        jsonObject.getJSONArray("assets").forEach(asset -> {
+            JSONObject info = (JSONObject) asset;
+            if (info.getString("name").equals("CookieInfo.json")) {
+
+                String key = info.getString("key");
+                String name = info.getString("name");
+                String function = info.getString("function");
+                cookieInfoMap.put(key, new CookieInfo(name, function));
+            }
+
         });
 
         jsonObject.getJSONArray("assets").forEach(asset -> {
