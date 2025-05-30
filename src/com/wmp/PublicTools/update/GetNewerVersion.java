@@ -151,7 +151,7 @@ public class GetNewerVersion {
 
                         if (result == JOptionPane.YES_OPTION) {
                             new Thread(() ->{
-                                DownloadURLFile.downloadWebFile(dialog, panel, downloadUrl, GetPath.getAppPath(1));
+                                DownloadURLFile.downloadWebFile(dialog, panel, downloadUrl, GetPath.getAppPath(GetPath.SOURCE_FILE_PATH));
                                 JOptionPane.showMessageDialog(dialog, "更新完成，即将退出程序...", "提示", JOptionPane.INFORMATION_MESSAGE);
                                 System.exit(0);
                             }).start();
@@ -163,7 +163,7 @@ public class GetNewerVersion {
 
 
                         new Thread(() ->{
-                            DownloadURLFile.downloadWebFile(dialog, panel, downloadUrl, GetPath.getAppPath(0));
+                            DownloadURLFile.downloadWebFile(dialog, panel, downloadUrl, GetPath.getAppPath(GetPath.SOURCE_FILE_PATH));
                             JOptionPane.showMessageDialog(dialog, "更新完成，即将退出程序...", "提示", JOptionPane.INFORMATION_MESSAGE);
                             System.exit(0);
                         }).start();

@@ -1,7 +1,5 @@
 package com.wmp.PublicTools.io;
 
-import com.wmp.classTools.test.UpdateDIrTest;
-
 import javax.swing.*;
 import javax.swing.filechooser.FileFilter;
 import java.awt.*;
@@ -10,19 +8,19 @@ import java.net.URISyntaxException;
 
 public class GetPath {
 
-    public static final int APPLICATION_PATH = 0;
-    public static final int SOURCE_FILE_PATH = 1;
+    public static final int APPLICATION_PATH = 1;
+    public static final int SOURCE_FILE_PATH = 0;
 
 
     /**
      * 获取应用程序路径
      *
-     * @param type 0: 应用程序路径 1: 源文件路径
+     * @param type 1: 应用程序路径 0: 源文件路径
      * @return
      */
     public static String getAppPath(int type) {
         try {
-            if (type == APPLICATION_PATH) return getProgramDirectory().getPath();
+            if (type == SOURCE_FILE_PATH) return getProgramDirectory().getPath();
             else return getProgramDirectory().getParent();
         } catch (URISyntaxException e) {
             throw new RuntimeException(e);
@@ -35,7 +33,7 @@ public class GetPath {
     private static File getProgramDirectory() throws URISyntaxException {
         // 通过类加载器获取代码源位置
         File jarFile = new File(
-                UpdateDIrTest.class
+                GetPath.class
                         .getProtectionDomain()
                         .getCodeSource()
                         .getLocation()

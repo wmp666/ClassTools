@@ -16,14 +16,14 @@ public class InfoLogStyle extends PrintLogStyle {
 
     public void message(Container c, String owner, String logInfo) {
         Log.print(getStyle(), owner, "弹窗信息->" + logInfo, c);
-        String title = getTitle(logInfo);
+        String title = getTitle(owner);
         JOptionPane.showMessageDialog(c, logInfo, title, JOptionPane.INFORMATION_MESSAGE, getIcon());
     }
 
-    private static String getTitle(String logInfo) {
+    private static String getTitle(String owner) {
         String title;
         if (Main.isError) title = "骇客已入侵";
-        else title = logInfo;
+        else title = owner;
         return title;
     }
 
@@ -34,7 +34,7 @@ public class InfoLogStyle extends PrintLogStyle {
 
     public String input(Container c, String owner, String logInfo) {
         Log.print(getStyle(), owner, "弹窗信息->" + logInfo, c);
-        String title = getTitle(logInfo);
+        String title = getTitle(owner);
         String s = JOptionPane.showInputDialog(c, logInfo, title, JOptionPane.QUESTION_MESSAGE, getIcon(),
                 null, null).toString();
         Log.print(getStyle(), owner, "输入信息->" + s, c);
@@ -43,7 +43,7 @@ public class InfoLogStyle extends PrintLogStyle {
 
     public int inputInt(Container c, String owner, String logInfo) {
         Log.print(getStyle(), owner, "弹窗信息->" + logInfo, c);
-        String title = getTitle(logInfo);
+        String title = getTitle(owner);
         int i = JOptionPane.showConfirmDialog(c, logInfo, title, JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, getIcon());
         String s ;
         if (i == JOptionPane.YES_OPTION) {

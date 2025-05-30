@@ -147,7 +147,7 @@ public class AboutDialog extends JDialog {
         JMenuItem appPath = new JMenuItem("程序路径");
         appPath.setIcon(GetIcon.getIcon(getClass().getResource("/image/openExp.png"), 20, 20));
         appPath.addActionListener(e -> {
-            OpenInExp.open(GetPath.getAppPath(0));
+            OpenInExp.open(GetPath.getAppPath(GetPath.APPLICATION_PATH));
 
         });
 
