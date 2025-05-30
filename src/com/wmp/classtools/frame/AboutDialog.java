@@ -5,6 +5,7 @@ import com.wmp.PublicTools.EasterEgg.EasterEgg;
 import com.wmp.PublicTools.OpenInExp;
 import com.wmp.PublicTools.UITools.CTColor;
 import com.wmp.PublicTools.UITools.GetIcon;
+import com.wmp.PublicTools.io.GetPath;
 import com.wmp.PublicTools.printLog.Log;
 import com.wmp.PublicTools.update.GetNewerVersion;
 import com.wmp.classTools.CTComponent.CTButton;
@@ -146,7 +147,8 @@ public class AboutDialog extends JDialog {
         JMenuItem appPath = new JMenuItem("程序路径");
         appPath.setIcon(GetIcon.getIcon(getClass().getResource("/image/openExp.png"), 20, 20));
         appPath.addActionListener(e -> {
-            OpenInExp.open(System.getProperty("user.dir"));
+            OpenInExp.open(GetPath.getAppPath(0));
+
         });
 
         menu.add(chat);

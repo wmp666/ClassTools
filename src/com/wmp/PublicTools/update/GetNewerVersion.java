@@ -2,6 +2,7 @@ package com.wmp.PublicTools.update;
 
 import com.wmp.Main;
 import com.wmp.PublicTools.io.DownloadURLFile;
+import com.wmp.PublicTools.io.GetPath;
 import com.wmp.PublicTools.printLog.Log;
 import com.wmp.PublicTools.web.GetWebInf;
 import org.json.JSONArray;
@@ -150,7 +151,7 @@ public class GetNewerVersion {
 
                         if (result == JOptionPane.YES_OPTION) {
                             new Thread(() ->{
-                                DownloadURLFile.downloadWebFile(dialog, panel, downloadUrl, "app");
+                                DownloadURLFile.downloadWebFile(dialog, panel, downloadUrl, GetPath.getAppPath(1));
                                 JOptionPane.showMessageDialog(dialog, "更新完成，即将退出程序...", "提示", JOptionPane.INFORMATION_MESSAGE);
                                 System.exit(0);
                             }).start();
@@ -162,7 +163,7 @@ public class GetNewerVersion {
 
 
                         new Thread(() ->{
-                            DownloadURLFile.downloadWebFile(dialog, panel, downloadUrl, "app");
+                            DownloadURLFile.downloadWebFile(dialog, panel, downloadUrl, GetPath.getAppPath(0));
                             JOptionPane.showMessageDialog(dialog, "更新完成，即将退出程序...", "提示", JOptionPane.INFORMATION_MESSAGE);
                             System.exit(0);
                         }).start();
