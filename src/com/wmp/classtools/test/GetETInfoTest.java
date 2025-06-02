@@ -2,7 +2,7 @@ package com.wmp.classTools.test;
 
 import com.wmp.PublicTools.EasterEgg.EasterEgg;
 
-public class Test06 {
+public class GetETInfoTest {
     public static void main(String[] args) {
         int max = 0;
         int line = 0;
@@ -11,8 +11,8 @@ public class Test06 {
             //统计text[i]中\n的数量
 
             int enterLength = text[i].split("\\\\n").length;
-            System.out.printf("行数:%s | 换行数量:%s | 内容:%s\n",i + 1, enterLength, text[i]);
-            if (max < enterLength){
+            System.out.printf("行数:%s | 换行数量:%s | 内容:%s\n", i + 1, enterLength, text[i]);
+            if (max < enterLength) {
                 line = i + 1;
                 max = enterLength;
             }
