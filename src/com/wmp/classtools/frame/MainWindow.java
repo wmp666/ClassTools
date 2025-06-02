@@ -12,8 +12,8 @@ import com.wmp.classTools.importPanel.timeView.TimeViewPanel;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
-import java.awt.event.WindowListener;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -61,41 +61,12 @@ public class MainWindow extends JDialog {
             view.setSize(timeViewPanel.getWidth() + 20, timeViewPanel.getHeight() + 40);
             view.setLocationRelativeTo(null);
             view.setLayout(null);
+            view.setAlwaysOnTop(true);
 
-            view.addWindowListener(new WindowListener() {
-                @Override
-                public void windowOpened(WindowEvent e) {
-
-                }
-
+            view.addWindowListener(new WindowAdapter() {
                 @Override
                 public void windowClosing(WindowEvent e) {
                     System.exit(0);
-                }
-
-                @Override
-                public void windowClosed(WindowEvent e) {
-                    System.exit(0);
-                }
-
-                @Override
-                public void windowIconified(WindowEvent e) {
-
-                }
-
-                @Override
-                public void windowDeiconified(WindowEvent e) {
-
-                }
-
-                @Override
-                public void windowActivated(WindowEvent e) {
-
-                }
-
-                @Override
-                public void windowDeactivated(WindowEvent e) {
-
                 }
             });
 
@@ -129,51 +100,66 @@ public class MainWindow extends JDialog {
 
             initFrame(mixY.get());
 
-            this.setVisible(true);
-            //刷新
-
-            Thread repaint = new Thread(() -> {
-
-                while (true) {
+            if (allArgs.get("screenProduct:show").contains(argsList)) {
+                CTColor.setAllColor(CTColor.MAIN_COLOR_WHITE, CTColor.STYLE_DARK);
+                showPanelList.forEach(ctPanel -> {
                     try {
-                        Thread.sleep(500);
-                    } catch (InterruptedException e) {
-                        e.printStackTrace();
+                        ctPanel.refresh();
+                    } catch (IOException e) {
+                        throw new RuntimeException(e);
                     }
+                });
 
-                    finalPanel.setSize(250, finalPanel.getHeight());
-                    //刷新窗口大小
-                    AtomicInteger temp = new AtomicInteger(0);
-                    AtomicInteger finalMaxY = new AtomicInteger(mixY.get());
-                    AtomicInteger finalMaxX = new AtomicInteger(250);
+                new ScreenProduct();
+            } else {
+                this.setVisible(true);
+                //刷新
+                Thread repaint = new Thread(() -> {
 
-                    showPanelList.forEach(ctPanel -> {
-                        temp.set(temp.get() + ctPanel.getHeight());
+                    while (true) {
+                        try {
+                            Thread.sleep(500);
+                        } catch (InterruptedException e) {
+                            e.printStackTrace();
+                        }
 
-                    });
-                    temp.set(temp.get() + finalPanel.getHeight());
-
-                    if (temp.get() != finalMaxY.get()) {
-
+                        finalPanel.setSize(250, finalPanel.getHeight());
+                        //刷新窗口大小
+                        AtomicInteger temp = new AtomicInteger(0);
+                        AtomicInteger finalMaxY = new AtomicInteger(mixY.get());
+                        AtomicInteger finalMaxX = new AtomicInteger(250);
 
                         showPanelList.forEach(ctPanel -> {
-                            ctPanel.setLocation(0, finalMaxY.get());
-                            ctPanel.setBackground(CTColor.backColor);
+                            temp.set(temp.get() + ctPanel.getHeight());
 
-                            finalMaxY.set(finalMaxY.get() + ctPanel.getHeight());
-                            finalMaxX.set(Math.max(finalMaxX.get(), ctPanel.getWidth()));
                         });
-                        this.setBounds(Toolkit.getDefaultToolkit().getScreenSize().width - finalMaxX.get(), 0, finalMaxX.get(), finalMaxY.get() + 5);
+                        temp.set(temp.get() + finalPanel.getHeight());
 
-                        finalPanel.setSize(finalMaxX.get(), finalPanel.getHeight());
+                        if (temp.get() != finalMaxY.get()) {
+
+
+                            showPanelList.forEach(ctPanel -> {
+                                ctPanel.setLocation(0, finalMaxY.get());
+                                ctPanel.setBackground(CTColor.backColor);
+
+                                finalMaxY.set(finalMaxY.get() + ctPanel.getHeight());
+                                finalMaxX.set(Math.max(finalMaxX.get(), ctPanel.getWidth()));
+                            });
+                            this.setBounds(Toolkit.getDefaultToolkit().getScreenSize().width - finalMaxX.get(), 0, finalMaxX.get(), finalMaxY.get() + 5);
+
+                            finalPanel.setSize(finalMaxX.get(), finalPanel.getHeight());
+                        }
+
+                        contentPane.setBackground(CTColor.backColor);
+
+                        this.repaint();
                     }
+                });
+                repaint.start();
+            }
 
-                    contentPane.setBackground(CTColor.backColor);
 
-                    this.repaint();
-                }
-            });
-            repaint.start();
+
         }
     }
 

@@ -18,7 +18,7 @@ public class ETPanel extends CTPanel {
 
     public ETPanel(int lastPanelY) {
         this.setLayout(new GridLayout(1, 1));
-
+        this.setName("ETPanel");
         this.setNextPanelY(lastPanelY);
 
         {
@@ -90,7 +90,7 @@ public class ETPanel extends CTPanel {
                     scrollPane.setBorder(BorderFactory.createEmptyBorder());
 
                     this.add(scrollPane, BorderLayout.CENTER);
-                    this.setSize(newWidth, newHeight);
+                    this.setSize(newWidth, newHeight + 20);
                 } else {
                     this.setSize(newWidth, newHeight);
 

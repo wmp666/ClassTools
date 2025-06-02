@@ -37,7 +37,7 @@ public class DPanel extends CTPanel {
         ArrayList<CTSetsPanel> setsPanelList = new ArrayList<>();
         setsPanelList.add(new DutyListSetsPanel(Main.DATA_PATH));
         this.setCtSetsPanelList(setsPanelList);
-
+        this.setName("DPanel");
         //设置容器布局- 绝对布局
         this.setLayout(null);
 

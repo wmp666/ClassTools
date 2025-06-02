@@ -39,10 +39,9 @@ public class TimeViewPanel extends CTPanel {
     });
 
     public TimeViewPanel(int nextPanelY) throws MalformedURLException {
-
-
         appendNextPanelY(nextPanelY);
 
+        this.setName("TimeViewPanel");
         initPanel();
 
         //时间刷新
@@ -70,7 +69,7 @@ public class TimeViewPanel extends CTPanel {
                 "/image/%s/view_0.png",
                 "/image/%s/view_1.png", 30, () -> {
             try {
-                viewTimeInDeskTop(0);
+                viewTimeInDeskTop();
             } catch (MalformedURLException e) {
                 throw new RuntimeException(e);
             }
@@ -81,19 +80,20 @@ public class TimeViewPanel extends CTPanel {
 
         if (allArgs.get("TimeView:screen").contains(argsList)) {
             //执行你的代码
-            viewTimeInDeskTop(0);
+            viewTimeInDeskTop();
             Log.info.print("TimeView", "全屏显示时间");
-        } else if (allArgs.get("screenProduct:show").contains(argsList)) {
+        }
+        /*else if (allArgs.get("screenProduct:show").contains(argsList)) {
 
             Log.info.print("TimeView", "屏保模式");
             viewTimeInDeskTop(1);
-        }
+        }*/
 
         this.setLayout(null);
         this.setSize(250, 37);
     }
 
-    private void viewTimeInDeskTop(int i) throws MalformedURLException {
+    private void viewTimeInDeskTop() throws MalformedURLException {
         //设置屏幕大小
         Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
         int screenWidth = (int) screenSize.getWidth();
@@ -114,31 +114,16 @@ public class TimeViewPanel extends CTPanel {
 
         c.add(timeView, BorderLayout.CENTER);
 
-         if (i == 1) {
-            timeView.setForeground(Color.WHITE);
-            c.setBackground(Color.BLACK);
-
-        }
-
 
         CTButton exitButton = new CTButton(
                 "/image/%s/exit_0.png",
                 "/image/%s/exit_1.png", 1, () -> {
-            if (i == 0) {
                 window.setVisible(false);
 
                 timeView.setFont(new Font("微软雅黑", Font.BOLD, 23));
                 timeView.setBounds(5,3,180,32);
                 this.add(timeView);
-            } else if (i == 1) {
-                window.setVisible(false);
-                Log.exit(0);
-            }
         });
-
-         if (i == 1){
-             exitButton.setBackground(Color.BLACK);
-         }
 
         c.add(exitButton, BorderLayout.WEST);
 

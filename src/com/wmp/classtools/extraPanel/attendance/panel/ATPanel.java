@@ -43,6 +43,7 @@ public class ATPanel extends CTPanel {
         list.add(new LeaveListSetsPanel(Main.DATA_PATH));
         list.add(new AllStuSetsPanel(Main.DATA_PATH));
         this.setCtSetsPanelList(list);
+        this.setName("ATPanel");
 
         setLayout(null);
 
