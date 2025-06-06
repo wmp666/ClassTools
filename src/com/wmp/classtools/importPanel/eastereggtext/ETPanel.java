@@ -16,10 +16,9 @@ public class ETPanel extends CTPanel {
 
     private JLabel label;
 
-    public ETPanel(int lastPanelY) {
+    public ETPanel() {
         this.setLayout(new GridLayout(1, 1));
         this.setName("ETPanel");
-        this.setNextPanelY(lastPanelY);
 
         {
             String text = EasterEgg.getText(EETextStyle.HTML);
@@ -46,7 +45,6 @@ public class ETPanel extends CTPanel {
             // 设置窗口大小
             this.setSize(newWidth, newHeight);
 
-            this.appendNextPanelY(newHeight);
         }
 
 
@@ -90,7 +88,7 @@ public class ETPanel extends CTPanel {
                     scrollPane.setBorder(BorderFactory.createEmptyBorder());
 
                     this.add(scrollPane, BorderLayout.CENTER);
-                    this.setSize(newWidth, newHeight + 20);
+                    scrollPane.setMaximumSize(new Dimension(newWidth, newHeight + 20));
                 } else {
                     this.setSize(newWidth, newHeight);
 
@@ -110,10 +108,6 @@ public class ETPanel extends CTPanel {
         }).start();
     }
 
-    public ETPanel() {
-
-
-    }
 
     @Override
     public void refresh() throws IOException {

@@ -49,7 +49,7 @@ public class CookieDownload {
         panel.setLayout(new GridBagLayout());
 
         GridBagConstraints showCookieGbc = new GridBagConstraints();
-        showCookieGbc.fill = GridBagConstraints.HORIZONTAL;//水平填充
+        showCookieGbc.fill = GridBagConstraints.BOTH;//水平填充
         showCookieGbc.gridx = 0;//组件在网格中的x坐标
         showCookieGbc.gridy = 0;//组件在网格中的y坐标
         showCookieGbc.insets = new Insets(5, 5, 5, 5);//组件之间的间距

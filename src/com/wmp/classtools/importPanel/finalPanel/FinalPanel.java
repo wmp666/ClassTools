@@ -28,12 +28,12 @@ public class FinalPanel extends CTPanel {
     public static final ArrayList<CTButton> buttonList = new ArrayList<>();
 
 
-    public FinalPanel(int nextPanelY, ArrayList<CTPanel> panelList) throws MalformedURLException {
-        super(nextPanelY);
+    public FinalPanel(ArrayList<CTPanel> panelList) throws MalformedURLException {
+        super();
 
 
         this.panelList = panelList;
-
+        this.setName("FinalPanel");
 
         initPanel();
 
@@ -41,11 +41,8 @@ public class FinalPanel extends CTPanel {
     }
 
     private void initPanel() {
-        this.setLayout(new GridLayout(1, 6));
+        this.setLayout(new GridBagLayout());
         this.setBackground(CTColor.backColor);
-        //this.setLayout(null);
-
-        this.setSize(250, 39);
     }
 
     private void initButton(ArrayList<CTPanel> panelList) throws MalformedURLException {
