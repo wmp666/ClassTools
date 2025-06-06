@@ -22,24 +22,21 @@ public class DPanel extends CTPanel {
 
 
     private final ArrayList<DutyDay> DutyList = new ArrayList<>();
-    private int DPanelMaxWidth = 250;
-    private int DPanelMixY; //面板的高度
     private int index; //当前日期索引
     private final File DutyListPath;
     private final File indexPath;
 
-    public DPanel(int mixY,File DutyListPath, File indexPath) throws IOException {
+    public DPanel(File DutyListPath, File indexPath) throws IOException {
 
         this.DutyListPath = DutyListPath;
         this.indexPath = indexPath;
-        appendNextPanelY(mixY);
 
         ArrayList<CTSetsPanel> setsPanelList = new ArrayList<>();
         setsPanelList.add(new DutyListSetsPanel(Main.DATA_PATH));
         this.setCtSetsPanelList(setsPanelList);
         this.setName("DPanel");
         //设置容器布局- 绝对布局
-        this.setLayout(null);
+        this.setLayout(new BorderLayout());
 
         initDutyList(DutyListPath);
 
@@ -47,19 +44,26 @@ public class DPanel extends CTPanel {
 
         initContainer();
 
-        this.setSize(DPanelMaxWidth, DPanelMixY + 5);
-        appendNextPanelY(DPanelMixY);
+
 
     }
 
     private void initContainer() throws IOException {
+        JPanel InfoPanel = new JPanel();
+        InfoPanel.setLayout(new GridBagLayout());
+        InfoPanel.setOpaque(false);
+        GridBagConstraints gbc = new GridBagConstraints();
+        gbc.gridx = 0;
+        gbc.gridy = 0;
+        //gbc.fill = GridBagConstraints.VERTICAL;
+        gbc.anchor = GridBagConstraints.WEST;// 左对齐
+
         JLabel CLBBLabel = new JLabel();
         CLBBLabel.setText("擦黑板:");
         CLBBLabel.setFont(new Font("微软雅黑",Font.BOLD,20));
         CLBBLabel.setForeground(CTColor.textColor);
-        CLBBLabel.setBounds(5,5,100,22);
-        this.add(CLBBLabel);
-        DPanelMixY = DPanelMixY + CLBBLabel.getHeight() + 2;
+
+        InfoPanel.add(CLBBLabel, gbc);
 
         DutyDay now = new DutyDay(DutyDay.setDutyPersonList("数据异常"), DutyDay.setDutyPersonList("数据异常"));
         try {
@@ -70,21 +74,45 @@ public class DPanel extends CTPanel {
             throw new RuntimeException(e);
         }
 
-        int[] tempList01 = initPeople(now.getClBlackBroadList(), DPanelMixY);
-        DPanelMixY = tempList01[0];
+        initPeople(now.getClBlackBroadList(), gbc, InfoPanel);
+
 
         JLabel CLFLabel = new JLabel();
         CLFLabel.setText("扫地:");
         CLFLabel.setFont(new Font("微软雅黑",Font.BOLD,20));
         CLFLabel.setForeground(CTColor.textColor);
-        CLFLabel.setBounds(5,DPanelMixY + 2,100,22);
-        this.add(CLFLabel);
-        DPanelMixY = DPanelMixY + CLFLabel.getHeight() + 2;
+        gbc.gridy++;
+        InfoPanel.add(CLFLabel, gbc);
 
 
-        int[] tempList02 = initPeople(now.getClFloorList(), DPanelMixY);
-        DPanelMixY = tempList02[0];
+        initPeople(now.getClFloorList(), gbc, InfoPanel);
 
+
+        JPanel buttonPanel = new JPanel();
+        buttonPanel.setLayout(new BorderLayout());
+        buttonPanel.setOpaque(false);
+
+        {
+
+            CTButton last = new CTButton("上一天",
+                    "/image/%s/last_0.png",
+                    "/image/%s/last_1.png", 30, () -> {
+                int i = Log.info.inputInt(this, "CTPanel-DutyPanel-日期切换", "确认切换至上一天");
+                if (i == 0) {
+                    if (index > 0) index--;
+                    else index = DutyList.size() - 1;
+                }
+
+
+                try {
+                    new IOForInfo(indexPath).SetInfo(String.valueOf(index));
+                    refresh();
+                } catch (IOException ex) {
+                    throw new RuntimeException(ex);
+                }
+            });
+            buttonPanel.add(last, BorderLayout.WEST);
+        }
 
         {
 
@@ -109,38 +137,17 @@ public class DPanel extends CTPanel {
                 }
             });
             //next.setFont(new Font("微软雅黑", -1, 10));
-            next.setLocation(215, 0);
-            this.add(next);
+            buttonPanel.add(next, BorderLayout.EAST);
         }
 
-        {
 
-            CTButton last = new CTButton("上一天",
-                    "/image/%s/last_0.png",
-                    "/image/%s/last_1.png", 30, () -> {
-                int i = Log.info.inputInt(this, "CTPanel-DutyPanel-日期切换", "确认切换至上一天");
-                if (i == 0) {
-                    if (index > 0) index--;
-                    else index = DutyList.size() - 1;
-                }
-
-
-                try {
-                    new IOForInfo(indexPath).SetInfo(String.valueOf(index));
-                    refresh();
-                } catch (IOException ex) {
-                    throw new RuntimeException(ex);
-                }
-            });
-            last.setLocation(175, 0);
-            this.add(last);
-        }
-
+        this.add(InfoPanel, BorderLayout.CENTER);
+        this.add(buttonPanel, BorderLayout.NORTH);
     }
 
-    private int[] initPeople(ArrayList<String> array, int mixY) {
+    private void initPeople(ArrayList<String> array, GridBagConstraints gbc, Container c) {
         if (array == null || array.isEmpty()) {
-            return new int[]{mixY, 0}; // 空集合直接返回基准值（根据业务需求调整）
+            return;
         }
 
         Object[] o = PeoPanelProcess.getPeopleName(array);
@@ -149,14 +156,10 @@ public class DPanel extends CTPanel {
         personLabel.setFont(new Font("微软雅黑", Font.BOLD, 23));
         personLabel.setBackground(CTColor.backColor);
         personLabel.setForeground(CTColor.mainColor);
-        personLabel.setBounds(5, mixY + 3,
-                Integer.parseInt(String.valueOf(o[2])) * 23 + 8,
-                30 * Integer.parseInt(String.valueOf(o[1])));
 
-        DPanelMaxWidth = Math.max(DPanelMaxWidth, personLabel.getWidth());
-        this.add(personLabel);
+        gbc.gridy++;
+        c.add(personLabel, gbc);
 
-        return new int[]{personLabel.getY() + personLabel.getHeight(), personLabel.getHeight()}; // 可替换为常量提升可读性
     }
 
 
@@ -224,8 +227,6 @@ public class DPanel extends CTPanel {
     @Override
     public void refresh() throws IOException {
 
-        DPanelMaxWidth = 250;
-        DPanelMixY = 0;
         this.removeAll();
         initDutyList(DutyListPath);
         initIndex(indexPath);
@@ -233,9 +234,7 @@ public class DPanel extends CTPanel {
         //repaint();
         //revalidate();
 
-        this.setSize(DPanelMaxWidth, DPanelMixY + 5);
 
-        appendNextPanelY(DPanelMixY);
     }
 
     public int getIndex() {

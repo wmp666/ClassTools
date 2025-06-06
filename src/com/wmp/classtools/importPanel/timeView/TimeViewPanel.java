@@ -38,10 +38,10 @@ public class TimeViewPanel extends CTPanel {
         }
     });
 
-    public TimeViewPanel(int nextPanelY) throws MalformedURLException {
-        appendNextPanelY(nextPanelY);
+    public TimeViewPanel() throws MalformedURLException {
 
         this.setName("TimeViewPanel");
+        this.setLayout(new BorderLayout());
         initPanel();
 
         //时间刷新
@@ -61,9 +61,7 @@ public class TimeViewPanel extends CTPanel {
         timeView.setFont(new Font("微软雅黑", Font.BOLD, 23));
         //timeView.setBackground(new Color(0x0ECECED, true));
         timeView.setForeground(CTColor.mainColor);
-        timeView.setBounds(5,3,180,32);
-        this.add(timeView);
-        appendNextPanelY(32);
+        this.add(timeView, BorderLayout.CENTER);
 
         CTButton viewTimeButton = new CTButton("全屏显示时间",
                 "/image/%s/view_0.png",
@@ -75,22 +73,14 @@ public class TimeViewPanel extends CTPanel {
             }
         });
 
-        viewTimeButton.setLocation(210, 5 );
-        this.add(viewTimeButton);
+        this.add(viewTimeButton, BorderLayout.EAST);
 
         if (allArgs.get("TimeView:screen").contains(argsList)) {
             //执行你的代码
             viewTimeInDeskTop();
             Log.info.print("TimeView", "全屏显示时间");
         }
-        /*else if (allArgs.get("screenProduct:show").contains(argsList)) {
 
-            Log.info.print("TimeView", "屏保模式");
-            viewTimeInDeskTop(1);
-        }*/
-
-        this.setLayout(null);
-        this.setSize(250, 37);
     }
 
     private void viewTimeInDeskTop() throws MalformedURLException {
@@ -98,11 +88,12 @@ public class TimeViewPanel extends CTPanel {
         Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
         int screenWidth = (int) screenSize.getWidth();
         int screenHeight = (int) screenSize.getHeight();
-        JWindow window = new JWindow();
+        JDialog window = new JDialog();
         window.setIconImage(new ImageIcon(getClass().getResource("/image/icon.png")).getImage());
         window.setSize(screenWidth, screenHeight);
         window.setLocation(0, 0);
         window.setAlwaysOnTop(true);
+        window.setUndecorated(true);
 
         Container c = window.getContentPane();
         c.setLayout(new BorderLayout());
@@ -121,10 +112,9 @@ public class TimeViewPanel extends CTPanel {
                 window.setVisible(false);
 
                 timeView.setFont(new Font("微软雅黑", Font.BOLD, 23));
-                timeView.setBounds(5,3,180,32);
-                this.add(timeView);
-        });
+            this.add(timeView, BorderLayout.CENTER);
 
+        });
         c.add(exitButton, BorderLayout.WEST);
 
         window.setVisible(true);

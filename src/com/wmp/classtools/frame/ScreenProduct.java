@@ -43,15 +43,30 @@ public class ScreenProduct extends JWindow {
         exitButton.setBackground(Color.BLACK);
         c.add(exitButton, BorderLayout.WEST);
 
-        //添加ETPanel
+
+        JPanel panel = new JPanel(new GridBagLayout());
+        panel.setOpaque(false);
+        GridBagConstraints gbc = new GridBagConstraints();
+        gbc.gridx = 0;
+        gbc.gridy = 0;
+        gbc.fill = GridBagConstraints.VERTICAL;
+        gbc.anchor = GridBagConstraints.WEST;// 左对齐
         for (CTPanel ctPanel : MainWindow.showPanelList) {
 
             String name = Objects.isNull(ctPanel.getName()) ? "CTPanel" : ctPanel.getName();
 
-            if (name.equals("ETPanel")) {
-                c.add(ctPanel, BorderLayout.SOUTH);
+            if (name.equals("TimeViewPanel")) continue;
+
+            //添加ETPanel - 下方
+            if (name.equals("ETPanel")) c.add(ctPanel, BorderLayout.SOUTH);
+            else {
+                gbc.gridy++;
+                ctPanel.setOpaque(false);
+                panel.add(ctPanel, gbc);
             }
+
         }
+        c.add(panel, BorderLayout.EAST);
 
         this.setVisible(true);
 
@@ -90,7 +105,6 @@ public class ScreenProduct extends JWindow {
         this.setIconImage(new ImageIcon(getClass().getResource("/image/icon.png")).getImage());
         this.setSize(screenWidth, screenHeight);
         this.setLocation(0, 0);
-        this.setAlwaysOnTop(true);
     }
 
 

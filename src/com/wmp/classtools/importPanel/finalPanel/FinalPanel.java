@@ -25,15 +25,15 @@ public class FinalPanel extends CTPanel {
 
 
     private final ArrayList<CTPanel> panelList;
-    public static final ArrayList<CTButton> buttonList = new ArrayList<>();
+    public static final ArrayList<CTButton> allButList = new ArrayList<>();
 
 
-    public FinalPanel(int nextPanelY, ArrayList<CTPanel> panelList) throws MalformedURLException {
-        super(nextPanelY);
+    public FinalPanel(ArrayList<CTPanel> panelList) throws MalformedURLException {
+        super();
 
 
         this.panelList = panelList;
-
+        this.setName("FinalPanel");
 
         initPanel();
 
@@ -41,11 +41,13 @@ public class FinalPanel extends CTPanel {
     }
 
     private void initPanel() {
-        this.setLayout(new GridLayout(1, 6));
+        this.setLayout(new BoxLayout(this, BoxLayout.X_AXIS));
         this.setBackground(CTColor.backColor);
-        //this.setLayout(null);
+        // 添加弹性空间
+        this.add(Box.createHorizontalGlue()); // 左侧弹簧
+        this.add(Box.createRigidArea(new Dimension(5, 0))); // 按钮间距
+        this.add(Box.createHorizontalGlue()); // 右侧弹簧
 
-        this.setSize(250, 39);
     }
 
     private void initButton(ArrayList<CTPanel> panelList) throws MalformedURLException {
@@ -61,8 +63,10 @@ public class FinalPanel extends CTPanel {
         CTButton moreButton = new CTButton("更多功能",
                 "/image/%s/more.png",
                 "/image/%s/more.png", 30, () -> moreDialog.setVisible(true));
-
-        buttonList.clear();
+        moreButton.setPreferredSize(moreButton.getSize());
+        moreButton.setMaximumSize(moreButton.getSize());
+        moreButton.setMinimumSize(moreButton.getSize());
+        allButList.clear();
 
         CTButton settings = new CTButton("设置",
                 "/image/%s/settings_0.png",
@@ -78,7 +82,7 @@ public class FinalPanel extends CTPanel {
             }
 
         });
-        buttonList.add(settings);
+        allButList.add(settings);
 
         CTButton cookie = new CTButton("插件库",
                 "/image/%s/cookie_0.png",
@@ -89,7 +93,7 @@ public class FinalPanel extends CTPanel {
                 throw new RuntimeException(e);
             }
         });
-        buttonList.add(cookie);
+        allButList.add(cookie);
 
 
         CTButton about = new CTButton("软件信息",
@@ -101,12 +105,12 @@ public class FinalPanel extends CTPanel {
                 throw new RuntimeException(e);
             }
         });
-        buttonList.add(about);
+        allButList.add(about);
 
         CTButton update = new CTButton("检查更新",
                 "/image/%s/update_0.png",
                 "/image/%s/update_1.png", 30, () -> GetNewerVersion.checkForUpdate(null, null, true));
-        buttonList.add(update);
+        allButList.add(update);
 
         CTButton refresh = new CTButton("刷新",
                 "/image/%s/refresh_0.png",
@@ -115,34 +119,43 @@ public class FinalPanel extends CTPanel {
                 refreshPanel(panelList);
             });// 自定义刷新方法
         });
-        buttonList.add(refresh);
+        allButList.add(refresh);
 
         CTButton showLog = new CTButton("查看日志",
                 "/image/%s/showLog_0.png",
                 "/image/%s/showLog_1.png", 30, Log::showLogDialog);
-
-
+        showLog.setPreferredSize(showLog.getSize());
+        showLog.setMaximumSize(showLog.getSize());
+        showLog.setMinimumSize(showLog.getSize());
 
         this.add(moreButton);
-        buttonList.forEach(this::add);
-        this.add(showLog);
-
         AtomicInteger length = new AtomicInteger();
 
-        buttonList.forEach(ctButton -> {
+        allButList.forEach(ctButton -> {
             if (disButList.contains(ctButton.getName())) {
                 ctButton.setText(ctButton.getToolTipText());
                 moreDialog.add(ctButton);
                 length.getAndIncrement();
+            } else {
+                CTButton temp = null;
+                try {
+                    temp = ctButton.copy();
+                    temp.setPreferredSize(ctButton.getSize());
+                    temp.setMaximumSize(ctButton.getSize());
+                    temp.setMinimumSize(ctButton.getSize());
+                    this.add(temp);
+                } catch (MalformedURLException e) {
+                    Log.err.print("FinalPanel", "初始化按钮时出错\n" + e);
+                    throw new RuntimeException(e);
+                }
             }
         });
+
+        this.add(showLog);
 
         if (length.get() == 0) {
             this.remove(moreButton);
         }
-
-
-
 
         //设置关闭按钮
         if (!Main.isError && Main.canExit) {
@@ -155,6 +168,9 @@ public class FinalPanel extends CTPanel {
                 }
 
             });
+            exit.setPreferredSize(exit.getSize());
+            exit.setMaximumSize(exit.getSize());
+            exit.setMinimumSize(exit.getSize());
 
             //exit.setLocation(210, 0);
             this.add(exit);

@@ -18,7 +18,11 @@ public class CTButton extends JButton implements MouseListener, ActionListener {
 
     private Runnable callback;
     private Icon defaultIcon ;
+    private String defaultIconPath;
     private Icon rolloverIcon ;
+    private String rolloverIconPath;
+    private int textType = ToolTipText;
+    private String text;
 
     public CTButton() {
     }
@@ -43,6 +47,8 @@ public class CTButton extends JButton implements MouseListener, ActionListener {
     }
 
     public CTButton(int textType, String text, String defaultIconPath, String rolloverIconPath, int weight, int height, Runnable callback) throws MalformedURLException {
+        this.textType = textType;
+        this.text = text;
         if (textType == ToolTipText) {
             this.setToolTipText(text);
         }
@@ -60,6 +66,9 @@ public class CTButton extends JButton implements MouseListener, ActionListener {
 
             String modifiedPath = defaultIconPath.replace("%s", CTColor.style);
             String rolloverPath = rolloverIconPath.replace("%s", CTColor.style);
+
+            this.defaultIconPath = defaultIconPath;
+            this.rolloverIconPath = rolloverIconPath;
 
             URL tempPath = getClass().getResource(modifiedPath);
             URL tempPath2 = getClass().getResource(rolloverPath);
@@ -89,6 +98,10 @@ public class CTButton extends JButton implements MouseListener, ActionListener {
     public void setCallback(Runnable callback) {
         this.callback = callback;
 
+    }
+
+    public CTButton copy() throws MalformedURLException {
+        return new CTButton(this.textType, this.text, this.defaultIconPath, this.rolloverIconPath, this.getWidth(), this.getHeight(), this.callback);
     }
 
     @Override

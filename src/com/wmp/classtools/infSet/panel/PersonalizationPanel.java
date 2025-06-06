@@ -123,7 +123,7 @@ public class PersonalizationPanel extends CTSetsPanel {
         disposePanel.setBorder(BorderFactory.createTitledBorder("隐藏部分按钮"));
         {
 
-            FinalPanel.buttonList.forEach(button -> {
+            FinalPanel.allButList.forEach(button -> {
                 JCheckBox checkBox = new JCheckBox(button.getName());
                 checkBox.setFont(new Font("微软雅黑", -1, 15));
                 checkBox.setBackground(CTColor.backColor);
