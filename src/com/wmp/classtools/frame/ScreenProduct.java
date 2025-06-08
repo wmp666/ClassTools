@@ -33,7 +33,7 @@ public class ScreenProduct extends JWindow {
         c.setBackground(Color.BLACK);
         c.add(timeView, BorderLayout.CENTER);
 
-        //添加退出按钮
+        //添加退出按钮 - 左侧
         CTButton exitButton = new CTButton(
                 "/image/%s/exit_0.png",
                 "/image/%s/exit_1.png", 1, () -> {
@@ -44,6 +44,7 @@ public class ScreenProduct extends JWindow {
         c.add(exitButton, BorderLayout.WEST);
 
 
+        //添加CTPanel - 右侧
         JPanel panel = new JPanel(new GridBagLayout());
         panel.setOpaque(false);
         GridBagConstraints gbc = new GridBagConstraints();
@@ -59,7 +60,7 @@ public class ScreenProduct extends JWindow {
 
             //添加ETPanel - 下方
             if (name.equals("ETPanel")) c.add(ctPanel, BorderLayout.SOUTH);
-            else {
+            else if (!name.equals("FinalPanel")) {
                 gbc.gridy++;
                 ctPanel.setOpaque(false);
                 panel.add(ctPanel, gbc);
