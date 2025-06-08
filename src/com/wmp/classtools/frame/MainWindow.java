@@ -36,7 +36,8 @@ public class MainWindow extends JDialog {
         contentPane.setBackground(CTColor.backColor);
         contentPane.setLayout(new GridBagLayout());
         GridBagConstraints gbc = new GridBagConstraints();
-        gbc.fill = GridBagConstraints.BOTH;
+
+        gbc.anchor = GridBagConstraints.WEST;
         gbc.gridx = 0;
 
         File DutyListPath = new File( path + "Duty\\DutyList.txt");
