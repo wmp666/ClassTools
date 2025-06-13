@@ -1,5 +1,6 @@
 package com.wmp;
 
+import com.wmp.PublicTools.EasterEgg.EasterEgg;
 import com.wmp.PublicTools.StartupParameters;
 import com.wmp.PublicTools.UITools.CTColor;
 import com.wmp.PublicTools.printLog.Log;
@@ -8,12 +9,8 @@ import com.wmp.classTools.infSet.tools.GetSetsJSON;
 
 import java.io.IOException;
 import java.net.URISyntaxException;
-import java.time.LocalDate;
-import java.time.Month;
-import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Random;
 import java.util.TreeMap;
 
 public class Main{
@@ -28,7 +25,7 @@ public class Main{
     * d:只修复的问题,问题较少
     * e:测试版本号
      */
-    public static String version = "1.22.1";
+    public static String version = "1.23.1";
     public static String appName = "ClassTools";
     public static String author = "wmp";
 
@@ -48,11 +45,9 @@ public class Main{
         //加载基础目录
         String path = System.getenv("LOCALAPPDATA");
 
-        StringBuilder sb = new StringBuilder();
-        DATA_PATH = sb.append(path).append("\\ClassTools\\").toString();
+        DATA_PATH = path + "\\ClassTools\\";
 
-        StringBuilder sb2 = new StringBuilder();
-        TEMP_PATH = sb2.append(path).append("\\ClassToolsTemp\\").toString();
+        TEMP_PATH = path + "\\ClassToolsTemp\\";
 
         iconPath = "/image/icon.png";
 
@@ -68,12 +63,12 @@ public class Main{
 
 
         Log.info.print("Main", "正在初始化...");
-        boolean b = false;
-        boolean startUpdate = false;
+        boolean b;
+        boolean startUpdate;
         try {
             GetSetsJSON setsJSON = new GetSetsJSON();
 
-            b = isImportDay();
+            b = EasterEgg.startEasterEgg(EasterEgg.STYLE_IMPORT_DAY);
 
             startUpdate = setsJSON.isStartUpdate();
             canExit = setsJSON.isCanExit();
@@ -95,7 +90,7 @@ public class Main{
             throw new RuntimeException(e);
         }
 
-        isError = isError();
+        isError = EasterEgg.startEasterEgg(EasterEgg.STYLE_ERROR);
         //Log.info.print("[Main]", "是否被骇客入侵:" + isError);
         if (isError) {
 
@@ -120,62 +115,6 @@ public class Main{
 
         Log.info.print("Main", "初始化完毕");
 
-
-    }
-
-    private static boolean isImportDay() {
-        //加载颜色(CTColor)数据
-        //判断当前时间是否是4月1日
-        // 明确指定时区
-        LocalDate currentDate = LocalDate.now(ZoneId.of("Asia/Shanghai"));
-        boolean b = currentDate.getMonth() == Month.APRIL
-                && currentDate.getDayOfMonth() == 1;
-        if (b){
-            CTColor.setAllColor(CTColor.MAIN_COLOR_GREEN, CTColor.STYLE_LIGHT);
-            return b;
-        }
-
-        b = (currentDate.getMonth() == Month.SEPTEMBER //原神周年庆
-                && currentDate.getDayOfMonth() == 28) ||
-                (currentDate.getMonth() == Month.NOVEMBER //author birthday
-                && currentDate.getDayOfMonth() == 3) ||
-                (currentDate.getMonth() == Month.SEPTEMBER //mc
-                && currentDate.getDayOfMonth() == 3) ||
-                (currentDate.getMonth() == Month.APRIL //崩铁
-                && currentDate.getDayOfMonth() == 25);
-
-        return b;
-
-
-        //System.out.println(new CTColor());
-
-    }
-
-    private static boolean isError() {
-
-        // 明确指定时区
-        LocalDate currentDate = LocalDate.now(ZoneId.of("Asia/Shanghai"));
-        boolean b = currentDate.getMonth() == Month.APRIL
-                && currentDate.getDayOfMonth() == 7;
-        if (!b) {
-            if (currentDate.getMonth() == Month.APRIL //崩铁
-                    && currentDate.getDayOfMonth() == 25) {
-                Random r = new Random();
-                int i = r.nextInt(5);
-                System.out.println("崩铁:" + i);
-                return i == 0;
-            }
-            Random r = new Random();
-            int i = r.nextInt(20);
-            System.out.println("普通:" + i);
-            return i == 0;
-        }
-
-
-        return true;
-
-
-        //System.out.println(new CTColor());
 
     }
 

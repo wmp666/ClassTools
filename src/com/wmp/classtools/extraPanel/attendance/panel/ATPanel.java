@@ -86,12 +86,24 @@ public class ATPanel extends CTPanel {
         this.add(AttendStuLabel, gbc);
         gbc.gridy = 2;// 列
         this.add(LateStuLabel, gbc);
-        initLateList(gbc);
+
+        if (leaveList.isEmpty()) {
+
+            ArrayList<String> temp = new ArrayList<>();
+            temp.add("无请假人员");
+            JScrollPane showPeoPanel = PeoPanelProcess.getShowPeoPanel(temp);
+            gbc.gridy++;// 列
+            this.add(showPeoPanel, gbc);
+        } else {
+            JScrollPane showPeoPanel = PeoPanelProcess.getShowPeoPanel(leaveList);
+            gbc.gridy++;// 列
+            this.add(showPeoPanel, gbc);
+        }
 
 
     }
 
-    private void initLateList(GridBagConstraints gbc) {
+    /*private void initLateList(GridBagConstraints gbc) {
 
 
         gbc.gridy++;// 列
@@ -112,7 +124,7 @@ public class ATPanel extends CTPanel {
         }
 
 
-    }
+    }*/
 
     @Override
     public void refresh() throws IOException {

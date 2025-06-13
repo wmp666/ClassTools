@@ -101,7 +101,7 @@ public class MainWindow extends JDialog {
             initFrame();
 
             if (allArgs.get("screenProduct:show").contains(argsList)) {
-                CTColor.setAllColor(CTColor.MAIN_COLOR_WHITE, CTColor.STYLE_DARK);
+                CTColor.setScreenProductColor();
                 showPanelList.forEach(ctPanel -> {
                     try {
                         ctPanel.refresh();
@@ -118,7 +118,7 @@ public class MainWindow extends JDialog {
 
                     while (true) {
                         try {
-                            Thread.sleep(500);
+                            Thread.sleep(100);
                         } catch (InterruptedException e) {
                             e.printStackTrace();
                         }

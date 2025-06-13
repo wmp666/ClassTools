@@ -1,8 +1,8 @@
 package com.wmp.classTools.extraPanel.duty.settings;
 
-import com.wmp.PublicTools.InfProcess;
 import com.wmp.PublicTools.UITools.CTColor;
 import com.wmp.PublicTools.io.IOForInfo;
+import com.wmp.PublicTools.io.InfProcess;
 import com.wmp.PublicTools.printLog.Log;
 import com.wmp.classTools.CTComponent.CTButton;
 import com.wmp.classTools.CTComponent.CTSetsPanel;

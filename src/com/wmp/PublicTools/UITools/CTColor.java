@@ -1,11 +1,11 @@
 package com.wmp.PublicTools.UITools;
 
-import com.wmp.Main;
 import com.wmp.PublicTools.printLog.Log;
 
 import java.awt.*;
 
 public class CTColor {
+    private static boolean canRemove = true;
 
     public static final String MAIN_COLOR_WHITE = "white";
     public static final String MAIN_COLOR_BLUE = "blue";
@@ -21,7 +21,15 @@ public class CTColor {
     public static Color textColor = Color.BLACK;
     public static Color backColor = Color.WHITE;
 
+
+    public static void setScreenProductColor() {
+        setAllColor(CTColor.MAIN_COLOR_WHITE, CTColor.STYLE_DARK);
+        canRemove = false;
+
+    }
     public static void setErrorColor() {
+        canRemove = false;
+
         textColor = mainColor;
         backColor = new Color(246, 250, 255);
         style = "error";
@@ -35,7 +43,8 @@ public class CTColor {
 
     public static void setMainColorColor(String mainColorStr){
 
-        if (Main.isError) return;
+
+        if (!canRemove) return;
 
         switch (mainColorStr){
             case MAIN_COLOR_WHITE->{
@@ -61,7 +70,7 @@ public class CTColor {
 
     public static void setMainTheme(String tempStyle){
 
-        if (Main.isError) return;
+        if (!canRemove) return;
 
         style = tempStyle;
         switch (tempStyle){

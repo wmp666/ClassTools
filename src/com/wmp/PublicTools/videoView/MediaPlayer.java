@@ -35,6 +35,13 @@ public class MediaPlayer {
 
         switch (style) {
             case MUSIC_STYLE_ERROR -> {
+
+                // 1/100概率播放
+                {
+                    Random r = new Random();
+                    if (!(r.nextInt(100) == 0)) return;
+                }
+
                 Random r = new Random();
 
                 if (Main.isError) {

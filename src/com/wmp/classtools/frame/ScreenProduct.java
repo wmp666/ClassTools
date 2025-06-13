@@ -60,7 +60,7 @@ public class ScreenProduct extends JWindow {
 
             //添加ETPanel - 下方
             if (name.equals("ETPanel")) c.add(ctPanel, BorderLayout.SOUTH);
-            else if (!name.equals("FinalPanel")) {
+            else {
                 gbc.gridy++;
                 ctPanel.setOpaque(false);
                 panel.add(ctPanel, gbc);

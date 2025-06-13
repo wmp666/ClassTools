@@ -65,7 +65,7 @@ public class GetNewerVersion {
         }.execute();
     }
 
-    public static String getLatestVersion(){
+    private static String getLatestVersion() {
         try {
             // 获取原始JSON响应
             String json = GetWebInf.getWebInf(apiUrl);
@@ -92,7 +92,7 @@ public class GetNewerVersion {
         }
     }
 
-    public static String getSourceURL() throws Exception {
+    private static String getSourceURL() throws Exception {
         SslUtils.ignoreSsl();
         try {
             // 获取原始JSON响应
@@ -118,6 +118,11 @@ public class GetNewerVersion {
     }
 
     public static void checkForUpdate(Window dialog, JPanel panel, boolean showMessage) {
+
+        if (Main.allArgs.get("screenProduct:show").contains(Main.argsList)) {
+            Log.err.print(null, "获取新版本", "屏保状态,无法更新");
+            return;
+        }
 
         if (panel != null) {
             /*view = panel;
@@ -209,7 +214,7 @@ public class GetNewerVersion {
     }
 
 
-    public static void downloadSource(String downloadUrl) throws URISyntaxException, IOException {
+    private static void downloadSource(String downloadUrl) throws URISyntaxException, IOException {
         Desktop.getDesktop().browse(new URI(downloadUrl));
     }
 

@@ -119,7 +119,6 @@ public class IOForInfo {
             //判断内容是否为空
             if (infos.length == 0 || infos[0].isEmpty()) {
                 Log.warn.print("IOForInfo-设置数据", file.getPath() + "文件内容为空");
-                return;
             }
 
             String inf = String.join("\n", infos);

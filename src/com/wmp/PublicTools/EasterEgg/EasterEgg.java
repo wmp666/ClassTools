@@ -1,6 +1,7 @@
 package com.wmp.PublicTools.EasterEgg;
 
 import com.wmp.Main;
+import com.wmp.PublicTools.UITools.CTColor;
 import com.wmp.PublicTools.io.IOForInfo;
 import com.wmp.PublicTools.io.ResourceLocalizer;
 import com.wmp.PublicTools.printLog.Log;
@@ -13,10 +14,69 @@ import org.json.JSONObject;
 import javax.swing.*;
 import java.io.IOException;
 import java.net.URISyntaxException;
+import java.time.LocalDate;
+import java.time.Month;
+import java.time.ZoneId;
 import java.util.Random;
 
 public class EasterEgg {
 
+    public static final int STYLE_IMPORT_DAY = 1;
+    public static final int STYLE_ERROR = 2;
+
+    public static boolean startEasterEgg(int style) {
+
+        if (Main.allArgs.get("screenProduct:show").contains(Main.argsList)) return false;
+
+        switch (style) {
+            case STYLE_IMPORT_DAY -> {
+                //加载颜色(CTColor)数据
+                //判断当前时间是否是4月1日
+                // 明确指定时区
+                LocalDate currentDate = LocalDate.now(ZoneId.of("Asia/Shanghai"));
+                boolean b = currentDate.getMonth() == Month.APRIL
+                        && currentDate.getDayOfMonth() == 1;
+                if (b) {
+                    CTColor.setAllColor(CTColor.MAIN_COLOR_GREEN, CTColor.STYLE_LIGHT);
+                    return b;
+                }
+
+                b = (currentDate.getMonth() == Month.SEPTEMBER //原神周年庆
+                        && currentDate.getDayOfMonth() == 28) ||
+                        (currentDate.getMonth() == Month.NOVEMBER //author birthday
+                                && currentDate.getDayOfMonth() == 3) ||
+                        (currentDate.getMonth() == Month.SEPTEMBER //mc
+                                && currentDate.getDayOfMonth() == 3) ||
+                        (currentDate.getMonth() == Month.APRIL //崩铁
+                                && currentDate.getDayOfMonth() == 25);
+
+                return b;
+            }
+            case STYLE_ERROR -> {
+                // 明确指定时区
+                LocalDate currentDate = LocalDate.now(ZoneId.of("Asia/Shanghai"));
+                boolean b = currentDate.getMonth() == Month.APRIL
+                        && currentDate.getDayOfMonth() == 7;
+                if (!b) {
+                    if (currentDate.getMonth() == Month.APRIL //崩铁
+                            && currentDate.getDayOfMonth() == 25) {
+                        Random r = new Random();
+                        int i = r.nextInt(5);
+                        System.out.println("崩铁:" + i);
+                        return i == 0;
+                    }
+                    Random r = new Random();
+                    int i = r.nextInt(20);
+                    System.out.println("普通:" + i);
+                    return i == 0;
+                }
+
+
+                return true;
+            }
+        }
+        return false;
+    }
 
     public static void getPin() {
         String s = Log.info.input(null, "祈愿", "请输入■■");

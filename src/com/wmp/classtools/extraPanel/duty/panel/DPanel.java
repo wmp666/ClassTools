@@ -1,10 +1,10 @@
 package com.wmp.classTools.extraPanel.duty.panel;
 
 import com.wmp.Main;
-import com.wmp.PublicTools.InfProcess;
 import com.wmp.PublicTools.UITools.CTColor;
 import com.wmp.PublicTools.UITools.PeoPanelProcess;
 import com.wmp.PublicTools.io.IOForInfo;
+import com.wmp.PublicTools.io.InfProcess;
 import com.wmp.PublicTools.printLog.Log;
 import com.wmp.classTools.CTComponent.CTButton;
 import com.wmp.classTools.CTComponent.CTPanel;
@@ -150,15 +150,10 @@ public class DPanel extends CTPanel {
             return;
         }
 
-        Object[] o = PeoPanelProcess.getPeopleName(array);
-
-        JLabel personLabel = new JLabel(String.valueOf(o[0]));
-        personLabel.setFont(new Font("微软雅黑", Font.BOLD, 23));
-        personLabel.setBackground(CTColor.backColor);
-        personLabel.setForeground(CTColor.mainColor);
+        JScrollPane showPeoPanel = PeoPanelProcess.getShowPeoPanel(array);
 
         gbc.gridy++;
-        c.add(personLabel, gbc);
+        c.add(showPeoPanel, gbc);
 
     }
 
