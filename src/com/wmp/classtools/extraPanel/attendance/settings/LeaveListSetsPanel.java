@@ -36,6 +36,9 @@ public class LeaveListSetsPanel extends CTSetsPanel {
 
     private void initATSet(ArrayList<String> studentList, ArrayList<String> leaveList) throws IOException {
 
+        this.removeAll();
+        checkBoxList.clear();
+
         this.setBackground(CTColor.backColor);
         this.setLayout(null);
 

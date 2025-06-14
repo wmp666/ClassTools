@@ -121,7 +121,9 @@ public class IOForInfo {
                 Log.warn.print("IOForInfo-设置数据", file.getPath() + "文件内容为空");
             }
 
+
             String inf = String.join("\n", infos);
+            Log.info.print("IOForInfo-设置数据", "数据内容: " + inf);
             writer.write(inf);
             writer.flush();
 

@@ -37,6 +37,8 @@ public class AllStuSetsPanel extends CTSetsPanel {
 
     private void initAllStuSet(ArrayList<String> studentList) throws IOException {
 
+        this.removeAll();
+
         this.setBackground(CTColor.backColor);
         this.setLayout(null);
 

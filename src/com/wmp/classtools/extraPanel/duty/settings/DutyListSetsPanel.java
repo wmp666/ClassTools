@@ -44,6 +44,8 @@ public class DutyListSetsPanel extends CTSetsPanel {
 
     private void initDuSet(String[][] dutyList) throws IOException {
 
+        this.removeAll();
+
         this.setBackground(CTColor.backColor);
         this.setLayout(null);
 
