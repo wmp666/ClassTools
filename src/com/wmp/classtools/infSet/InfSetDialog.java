@@ -93,7 +93,7 @@ public class InfSetDialog extends JDialog {
                 button.setForeground(Color.BLACK);
             }
             button.setBackground(Color.WHITE);
-            button.setFont(CTFont.getCTFont(Font.BOLD, CTFontSizeStyle.MORE_SMALL));
+            button.setFont(CTFont.getCTFont(-1, CTFontSizeStyle.MORE_SMALL));
             button.setBorderPainted(false);
             button.setFocusPainted(false);// 去除按钮的焦点边框
             button.addActionListener(e -> {

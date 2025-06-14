@@ -24,6 +24,8 @@ public class PersonalizationPanel extends CTSetsPanel {
 
     private final JComboBox<String> mainColorComboBox = new JComboBox<>();
     private final JComboBox<String> mainThemeComboBox = new JComboBox<>();
+    private final JComboBox<String> FontNameComboBox = new JComboBox<>();
+    private final ArrayList<JTextField> FontSizeList = new ArrayList<>();
     private final TreeMap<String, JCheckBox> disposeButton = new TreeMap<>();
     private final JCheckBox StartUpdate = new JCheckBox("启动检查更新");
     private final JCheckBox canExit = new JCheckBox("防止被意外关闭");
@@ -118,10 +120,61 @@ public class PersonalizationPanel extends CTSetsPanel {
 
         }
 
+        JPanel reSetFontPanel = new JPanel();
+        reSetFontPanel.setBackground(CTColor.backColor);
+        reSetFontPanel.setLayout(new GridLayout(1, 2));
+        reSetFontPanel.setBorder(BorderFactory.createTitledBorder("字体设置"));
+        //字体设置
+        {
+            //字体设置
+            JPanel setFontName = new JPanel();
+            {
+
+                setFontName.setLayout(new FlowLayout(FlowLayout.LEFT));
+                setFontName.setBackground(CTColor.backColor);
+
+                JLabel FontNameLabel = new JLabel("字体:");
+                FontNameLabel.setFont(CTFont.getCTFont(-1, CTFontSizeStyle.SMALL));
+                FontNameLabel.setForeground(CTColor.textColor);
+                //mainColorLabel.setSize(50, 30);
+
+
+                FontNameComboBox.setFont(CTFont.getCTFont(-1, CTFontSizeStyle.SMALL));
+                FontNameComboBox.setForeground(CTColor.textColor);
+                FontNameComboBox.setBackground(CTColor.backColor);
+
+                //添加颜色项目
+                FontNameComboBox.removeAllItems();
+                for (String s : CTFont.getAllFontName()) {
+                    FontNameComboBox.addItem(s);
+                }
+
+
+                setFontName.add(FontNameLabel);
+                setFontName.add(FontNameComboBox);
+            }
+            //字体大小设置
+            JPanel setFontSize = new JPanel();
+            {
+                setFontSize.setLayout(new FlowLayout(FlowLayout.LEFT));
+                setFontSize.setBackground(CTColor.backColor);
+                JLabel FontSizeLabel = new JLabel("字体大小-大:");
+                FontSizeLabel.setFont(CTFont.getCTFont(-1, CTFontSizeStyle.SMALL));
+                FontSizeLabel.setForeground(CTColor.textColor);
+                JTextField FontSizeTextField = new JTextField(5);
+                FontSizeTextField.setFont(CTFont.getCTFont(-1, CTFontSizeStyle.SMALL));
+                FontSizeTextField.setForeground(CTColor.textColor);
+            }
+
+            reSetFontPanel.add(setFontName);
+
+
+        }
+
         JPanel disposePanel = new JPanel();
         disposePanel.setBackground(CTColor.backColor);
         disposePanel.setLayout(new GridLayout(0, 2));
-        //设置边框
+        //设置按钮隐藏
         disposePanel.setBorder(BorderFactory.createTitledBorder("隐藏部分按钮"));
         {
 
@@ -169,9 +222,11 @@ public class PersonalizationPanel extends CTSetsPanel {
         gbc.gridx = 0;
         gbc.gridy = 0;
         SetsPanel.add(ColorPanel, gbc);
-        gbc.gridy = 1;
+        gbc.gridy++;
+        SetsPanel.add(reSetFontPanel, gbc);
+        gbc.gridy++;
         SetsPanel.add(disposePanel, gbc);
-        gbc.gridy = 2;
+        gbc.gridy++;
         SetsPanel.add(otherPanel, gbc);
 
         this.setLayout(new BorderLayout());
@@ -206,7 +261,8 @@ public class PersonalizationPanel extends CTSetsPanel {
                     default -> mainThemeComboBox.setSelectedIndex(0);
                 }
             }
-
+            //字体设置
+            FontNameComboBox.setSelectedItem(CTFont.getFontName());
             if (jsonObject.has("disposeButton")) {
                 JSONArray JSONArrdisButton = jsonObject.getJSONArray("disposeButton");
                 for (int i = 0; i < JSONArrdisButton.length(); i++) {
@@ -214,12 +270,6 @@ public class PersonalizationPanel extends CTSetsPanel {
                     if (disposeButton.containsKey(s)) {
                         disposeButton.get(s).setSelected(true);
                     }
-                    /*switch (JSONArrdisButton.getString(i)) {
-                        case "cookie" -> disposeButton.get("cookie").setSelected(true);
-                        case "about" -> disposeButton.get("about").setSelected(true);
-                        case "update" -> disposeButton.get("update").setSelected(true);
-                        case "settings" -> disposeButton.get("settings").setSelected(true);
-                    }*/
                 }
             }
             //是否可关闭
@@ -233,9 +283,7 @@ public class PersonalizationPanel extends CTSetsPanel {
             }
             //是否自动启动
             startUp.setSelected(SetStartUp.isAutoStartEnabled());
-            /*if (jsonObject.has("isAutoStart")){
-                startUp.setSelected(jsonObject.getBoolean("isAutoStart"));
-            }*/
+
         }
     }
 
@@ -263,6 +311,10 @@ public class PersonalizationPanel extends CTSetsPanel {
             };
             jsonObject.put("mainTheme", tempMainThemeColor);
 
+            //设置字体
+            String tempFontName = Objects.requireNonNull(FontNameComboBox.getSelectedItem(), "微软雅黑").toString();
+            jsonObject.put("FontName", tempFontName);
+            //设置隐藏按钮
             ArrayList<String> tempList = new ArrayList<>();
             disposeButton.forEach((key, value) -> {
                 if (value.isSelected()) {

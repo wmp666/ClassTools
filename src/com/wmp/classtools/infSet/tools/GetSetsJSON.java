@@ -2,6 +2,7 @@ package com.wmp.classTools.infSet.tools;
 
 import com.wmp.Main;
 import com.wmp.PublicTools.UITools.CTColor;
+import com.wmp.PublicTools.UITools.CTFont;
 import com.wmp.PublicTools.io.IOForInfo;
 import com.wmp.PublicTools.printLog.Log;
 import org.json.JSONArray;
@@ -34,6 +35,7 @@ public class GetSetsJSON {
                 return;
             }
 
+            //设置颜色
             if (jsonObject.has("mainColor")) {
                 switch (jsonObject.getString("mainColor")) {
                     case "black" -> CTColor.setMainColorColor(CTColor.MAIN_COLOR_BLACK);
@@ -43,6 +45,7 @@ public class GetSetsJSON {
                     default -> CTColor.setMainColorColor(CTColor.MAIN_COLOR_BLUE);
                 }
             }
+            //设置主题
             if (jsonObject.has("mainTheme")) {
                 if (jsonObject.getString("mainTheme").equals("dark")) {
                     CTColor.setMainTheme(CTColor.STYLE_DARK);
@@ -50,15 +53,22 @@ public class GetSetsJSON {
                     CTColor.setMainTheme(CTColor.STYLE_LIGHT);
                 }
             }
+            //设置字体
+            if (jsonObject.has("FontName")) {
+                CTFont.setFontName(jsonObject.getString("FontName"));
+            }
+            //设置隐藏按钮
             if (jsonObject.has("disposeButton")){
                 JSONArray disButtonList = jsonObject.getJSONArray("disposeButton");
                 disButtonList.forEach(object -> {
                     disButList.add(object.toString());
                 });
             }
+            //设置是否可以退出
             if (jsonObject.has("canExit")) {
                 canExit = jsonObject.getBoolean("canExit");
             }
+            //设置是否可以更新
             if (jsonObject.has("StartUpdate")) {
                 StartUpdate = jsonObject.getBoolean("StartUpdate");
             }
