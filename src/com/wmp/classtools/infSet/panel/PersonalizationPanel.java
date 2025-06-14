@@ -2,6 +2,8 @@ package com.wmp.classTools.infSet.panel;
 
 import com.wmp.Main;
 import com.wmp.PublicTools.UITools.CTColor;
+import com.wmp.PublicTools.UITools.CTFont;
+import com.wmp.PublicTools.UITools.CTFontSizeStyle;
 import com.wmp.PublicTools.io.IOForInfo;
 import com.wmp.PublicTools.printLog.Log;
 import com.wmp.classTools.CTComponent.CTSetsPanel;
@@ -65,12 +67,12 @@ public class PersonalizationPanel extends CTSetsPanel {
                 MainColorSets.setBackground(CTColor.backColor);
 
                 JLabel mainColorLabel = new JLabel("主题色:");
-                mainColorLabel.setFont(new Font("微软雅黑", -1, 15));
+                mainColorLabel.setFont(CTFont.getCTFont(-1, CTFontSizeStyle.SMALL));
                 mainColorLabel.setForeground(CTColor.textColor);
                 //mainColorLabel.setSize(50, 30);
 
 
-                mainColorComboBox.setFont(new Font("微软雅黑", -1, 15));
+                mainColorComboBox.setFont(CTFont.getCTFont(-1, CTFontSizeStyle.SMALL));
                 mainColorComboBox.setForeground(CTColor.textColor);
                 mainColorComboBox.setBackground(CTColor.backColor);
 
@@ -94,11 +96,11 @@ public class PersonalizationPanel extends CTSetsPanel {
                 MainThemeSets.setBackground(CTColor.backColor);
 
                 JLabel mainThemeLabel = new JLabel("主题:");
-                mainThemeLabel.setFont(new Font("微软雅黑", -1, 15));
+                mainThemeLabel.setFont(CTFont.getCTFont(-1, CTFontSizeStyle.SMALL));
                 mainThemeLabel.setForeground(CTColor.textColor);
                 //mainThemeLabel.setSize(50, 30);
 
-                mainThemeComboBox.setFont(new Font("微软雅黑", -1, 15));
+                mainThemeComboBox.setFont(CTFont.getCTFont(-1, CTFontSizeStyle.SMALL));
                 mainThemeComboBox.setForeground(CTColor.textColor);
                 mainThemeComboBox.setBackground(CTColor.backColor);
 
@@ -125,7 +127,7 @@ public class PersonalizationPanel extends CTSetsPanel {
 
             FinalPanel.allButList.forEach(button -> {
                 JCheckBox checkBox = new JCheckBox(button.getName());
-                checkBox.setFont(new Font("微软雅黑", -1, 15));
+                checkBox.setFont(CTFont.getCTFont(-1, CTFontSizeStyle.SMALL));
                 checkBox.setBackground(CTColor.backColor);
                 checkBox.setForeground(CTColor.textColor);
                 disposeButton.put(button.getName(), checkBox);
@@ -142,15 +144,15 @@ public class PersonalizationPanel extends CTSetsPanel {
         otherPanel.setBorder(BorderFactory.createTitledBorder("其他设置"));
         //其他设置
         {
-            startUp.setFont(new Font("微软雅黑", -1, 15));
+            startUp.setFont(CTFont.getCTFont(-1, CTFontSizeStyle.SMALL));
             startUp.setForeground(CTColor.textColor);
             startUp.setBackground(CTColor.backColor);
 
-            canExit.setFont(new Font("微软雅黑", -1, 15));
+            canExit.setFont(CTFont.getCTFont(-1, CTFontSizeStyle.SMALL));
             canExit.setForeground(CTColor.textColor);
             canExit.setBackground(CTColor.backColor);
 
-            StartUpdate.setFont(new Font("微软雅黑", -1, 15));
+            StartUpdate.setFont(CTFont.getCTFont(-1, CTFontSizeStyle.SMALL));
             StartUpdate.setForeground(CTColor.textColor);
             StartUpdate.setBackground(CTColor.backColor);
             StartUpdate.setSelected(true);

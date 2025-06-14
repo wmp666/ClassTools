@@ -3,6 +3,8 @@ package com.wmp.classTools.frame;
 import com.wmp.Main;
 import com.wmp.PublicTools.EasterEgg.EETextStyle;
 import com.wmp.PublicTools.EasterEgg.EasterEgg;
+import com.wmp.PublicTools.UITools.CTFont;
+import com.wmp.PublicTools.UITools.CTFontSizeStyle;
 import com.wmp.PublicTools.printLog.Log;
 
 import javax.swing.*;
@@ -68,7 +70,7 @@ public class LoadingWindow extends JWindow {
 
         JLabel label = new JLabel(showText,defaultIcon, SwingConstants.CENTER);
         label.setBackground(Color.WHITE);
-        label.setFont(new Font("微软雅黑", Font.BOLD, 20));
+        label.setFont(CTFont.getCTFont(Font.BOLD, CTFontSizeStyle.NORMAL));
 
         this.getContentPane().setBackground(Color.WHITE);
         this.add(label);

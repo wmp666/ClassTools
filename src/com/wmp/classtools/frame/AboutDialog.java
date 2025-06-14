@@ -4,6 +4,8 @@ import com.wmp.Main;
 import com.wmp.PublicTools.EasterEgg.EasterEgg;
 import com.wmp.PublicTools.OpenInExp;
 import com.wmp.PublicTools.UITools.CTColor;
+import com.wmp.PublicTools.UITools.CTFont;
+import com.wmp.PublicTools.UITools.CTFontSizeStyle;
 import com.wmp.PublicTools.UITools.GetIcon;
 import com.wmp.PublicTools.io.GetPath;
 import com.wmp.PublicTools.printLog.Log;
@@ -48,18 +50,18 @@ public class AboutDialog extends JDialog {
 
         JLabel title = new JLabel("程序名: " + Main.appName);
         title.setBounds(120, 10, 200, 20);
-        title.setFont(new Font("微软雅黑", Font.BOLD, 15));
+        title.setFont(CTFont.getCTFont(Font.BOLD, CTFontSizeStyle.SMALL));
         title.setForeground(CTColor.textColor);
 
         //将图标显示在文字上方
         JLabel version = new JLabel("版本: " + Main.version);
         version.setBounds(120, 40, 200, 20);
-        version.setFont(new Font("微软雅黑", Font.BOLD, 15));
+        version.setFont(CTFont.getCTFont(Font.BOLD, CTFontSizeStyle.SMALL));
         version.setForeground(CTColor.textColor);
 
         JLabel author = new JLabel("作者: " + Main.author);
         author.setBounds(120, 70, 200, 20);
-        author.setFont(new Font("微软雅黑", Font.BOLD, 15));
+        author.setFont(CTFont.getCTFont(Font.BOLD, CTFontSizeStyle.SMALL));
         author.setForeground(CTColor.textColor);
 
         //view = new JPanel();

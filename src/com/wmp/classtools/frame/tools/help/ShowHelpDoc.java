@@ -2,6 +2,8 @@ package com.wmp.classTools.frame.tools.help;
 
 import com.wmp.Main;
 import com.wmp.PublicTools.OpenInExp;
+import com.wmp.PublicTools.UITools.CTFont;
+import com.wmp.PublicTools.UITools.CTFontSizeStyle;
 import com.wmp.PublicTools.UITools.GetIcon;
 import com.wmp.PublicTools.io.ResourceLocalizer;
 import org.commonmark.parser.Parser;
@@ -86,56 +88,13 @@ public class ShowHelpDoc extends JDialog {
         ResourceLocalizer.copyEmbeddedFile(dataPath, "/help/images/", imageName);
 
     }
-    private JScrollPane getChooseHelpDoc() {
-        JPanel chooseHelpDoc = new JPanel();
-        chooseHelpDoc.setLayout(new FlowLayout());
-        chooseHelpDoc.setBackground(Color.WHITE);
+    private static JEditorPane getHelpDocPane(String html) {
+        JEditorPane editorPane = new JEditorPane("text/html", html);
+        editorPane.setFont(CTFont.getCTFont(-1, CTFontSizeStyle.SMALL));
+        editorPane.setAutoscrolls(true);// 设置是否允许自动滚动
+        editorPane.setEditable(false);
 
-        JList<String> list = new JList<>();
-        list.setListData(new String[]{"如何导入表格数据", "启动参数", "如何配置插件"});
-        list.setFont(new Font("微软雅黑", Font.BOLD, 25));
-        list.addListSelectionListener(e -> {
-            if (!list.isSelectionEmpty()) {
-                String s = list.getSelectedValue();
-                try {
-                    switch (s){
-                        case "如何导入表格数据"->{
-                            //URL resource = getClass().getResource("/help/如何导入表格数据.md");
-                            String html = initHelpDoc("如何导入表格数据.md");
-                            this.helpDocPane.setViewportView(getHelpDocPane(html));
-                            this.helpDocPane.repaint();
-                            //c.remove(this.helpDocPane);
-                            //this.helpDocPane = helpDocPane;
-                            //c.add(this.helpDocPane, BorderLayout.CENTER);
-
-                        }
-                        case "启动参数"->{
-                            //URL resource = getClass().getResource("/help/启动参数.md");
-                            String html = initHelpDoc("启动参数.md");
-                            this.helpDocPane.setViewportView(getHelpDocPane(html));
-                            this.helpDocPane.repaint();
-                            //JScrollPane helpDocPane = getHelpDocPane(html);
-                            //c.remove(this.helpDocPane);
-                            //this.helpDocPane = helpDocPane;
-                            //c.add(helpDocPane, BorderLayout.CENTER);
-                        }
-                        case "如何配置插件"->{
-                            //URL resource = getClass().getResource("/help/如何配置插件.md");
-                            String html = initHelpDoc("如何配置插件.md");
-                            this.helpDocPane.setViewportView(getHelpDocPane(html));
-                            this.helpDocPane.repaint();
-                        }
-                    }
-                    this.repaint();
-                } catch (IOException | URISyntaxException ex) {
-                throw new RuntimeException(ex);
-            }
-            }
-        });
-
-        chooseHelpDoc.add(list);
-
-        return new JScrollPane(chooseHelpDoc);
+        return editorPane;
     }
 
     private JPanel getButtonPanel() {
@@ -193,13 +152,56 @@ public class ShowHelpDoc extends JDialog {
         this.setLocationRelativeTo(null);
     }
 
-    private static JEditorPane getHelpDocPane(String html) {
-        JEditorPane editorPane = new JEditorPane("text/html", html);
-        editorPane.setFont(new Font("微软雅黑", -1, 16));
-        editorPane.setAutoscrolls(true);// 设置是否允许自动滚动
-        editorPane.setEditable(false);
+    private JScrollPane getChooseHelpDoc() {
+        JPanel chooseHelpDoc = new JPanel();
+        chooseHelpDoc.setLayout(new FlowLayout());
+        chooseHelpDoc.setBackground(Color.WHITE);
 
-        return editorPane;
+        JList<String> list = new JList<>();
+        list.setListData(new String[]{"如何导入表格数据", "启动参数", "如何配置插件"});
+        list.setFont(CTFont.getCTFont(Font.BOLD, CTFontSizeStyle.BIG));
+        list.addListSelectionListener(e -> {
+            if (!list.isSelectionEmpty()) {
+                String s = list.getSelectedValue();
+                try {
+                    switch (s){
+                        case "如何导入表格数据"->{
+                            //URL resource = getClass().getResource("/help/如何导入表格数据.md");
+                            String html = initHelpDoc("如何导入表格数据.md");
+                            this.helpDocPane.setViewportView(getHelpDocPane(html));
+                            this.helpDocPane.repaint();
+                            //c.remove(this.helpDocPane);
+                            //this.helpDocPane = helpDocPane;
+                            //c.add(this.helpDocPane, BorderLayout.CENTER);
+
+                        }
+                        case "启动参数"->{
+                            //URL resource = getClass().getResource("/help/启动参数.md");
+                            String html = initHelpDoc("启动参数.md");
+                            this.helpDocPane.setViewportView(getHelpDocPane(html));
+                            this.helpDocPane.repaint();
+                            //JScrollPane helpDocPane = getHelpDocPane(html);
+                            //c.remove(this.helpDocPane);
+                            //this.helpDocPane = helpDocPane;
+                            //c.add(helpDocPane, BorderLayout.CENTER);
+                        }
+                        case "如何配置插件"->{
+                            //URL resource = getClass().getResource("/help/如何配置插件.md");
+                            String html = initHelpDoc("如何配置插件.md");
+                            this.helpDocPane.setViewportView(getHelpDocPane(html));
+                            this.helpDocPane.repaint();
+                        }
+                    }
+                    this.repaint();
+                } catch (IOException | URISyntaxException ex) {
+                throw new RuntimeException(ex);
+            }
+            }
+        });
+
+        chooseHelpDoc.add(list);
+
+        return new JScrollPane(chooseHelpDoc);
     }
 
 

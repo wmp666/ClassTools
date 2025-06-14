@@ -3,6 +3,8 @@ package com.wmp.classTools.importPanel.eastereggtext;
 import com.wmp.PublicTools.EasterEgg.EETextStyle;
 import com.wmp.PublicTools.EasterEgg.EasterEgg;
 import com.wmp.PublicTools.UITools.CTColor;
+import com.wmp.PublicTools.UITools.CTFont;
+import com.wmp.PublicTools.UITools.CTFontSizeStyle;
 import com.wmp.PublicTools.UITools.GetMaxSize;
 import com.wmp.PublicTools.printLog.Log;
 import com.wmp.classTools.CTComponent.CTPanel;
@@ -25,7 +27,6 @@ public class ETPanel extends CTPanel {
             label = new JLabel(text);
             label.setForeground(CTColor.textColor);
             label.setBackground(CTColor.backColor);
-            label.setFont(new Font("微软雅黑", Font.BOLD, 16));
             this.add(label);
 
             // 根据文字数量调整窗口大小
@@ -56,7 +57,7 @@ public class ETPanel extends CTPanel {
                 label.setText(text);
                 label.setForeground(CTColor.mainColor);
                 label.setBackground(CTColor.backColor);
-                label.setFont(new Font("微软雅黑", Font.BOLD, 20));
+                label.setFont(CTFont.getCTFont(Font.BOLD, CTFontSizeStyle.NORMAL));
 
 
                 int[] maxSize = GetMaxSize.getMaxSize(text, GetMaxSize.STYLE_HTML);

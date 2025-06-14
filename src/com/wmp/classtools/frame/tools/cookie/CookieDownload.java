@@ -1,5 +1,7 @@
 package com.wmp.classTools.frame.tools.cookie;
 
+import com.wmp.PublicTools.UITools.CTFont;
+import com.wmp.PublicTools.UITools.CTFontSizeStyle;
 import com.wmp.PublicTools.UITools.GetIcon;
 import com.wmp.PublicTools.io.DownloadURLFile;
 import com.wmp.PublicTools.printLog.Log;
@@ -59,7 +61,7 @@ public class CookieDownload {
             JButton button = new JButton(value.getName());
             button.setBackground(Color.WHITE);
             button.setForeground(Color.BLACK);
-            button.setFont(new Font("微软雅黑", Font.BOLD, 20));
+            button.setFont(CTFont.getCTFont(Font.BOLD, CTFontSizeStyle.NORMAL));
             button.setFocusPainted(false);
             button.addActionListener(e -> {
                 button.setForeground(new Color(0x0090FF));
@@ -88,7 +90,7 @@ public class CookieDownload {
         JButton downloadButton = new JButton("下载");
         downloadButton.setBackground(Color.WHITE);
         downloadButton.setForeground(Color.BLACK);
-        downloadButton.setFont(new Font("微软雅黑", Font.BOLD, 15));
+        downloadButton.setFont(CTFont.getCTFont(Font.BOLD, CTFontSizeStyle.SMALL));
         downloadButton.setFocusPainted(false);
         downloadButton.addActionListener(e -> {
             if (ref.openedButtonKey.isEmpty()) {
@@ -121,7 +123,7 @@ public class CookieDownload {
         JButton showInfoButton = new JButton("详细信息");
         showInfoButton.setBackground(Color.WHITE);
         showInfoButton.setForeground(Color.BLACK);
-        showInfoButton.setFont(new Font("微软雅黑", Font.BOLD, 15));
+        showInfoButton.setFont(CTFont.getCTFont(Font.BOLD, CTFontSizeStyle.SMALL));
         showInfoButton.setFocusPainted(false);
         showInfoButton.addActionListener(e -> {
             if (ref.openedButtonKey.isEmpty()) {
@@ -138,11 +140,11 @@ public class CookieDownload {
                 JPanel infoPanel = new JPanel();
                 infoPanel.setLayout(new GridBagLayout());
                 JLabel nameLabel = new JLabel("插件名称:" + cookieInfoMap.get(ref.openedButtonKey).getName());
-                nameLabel.setFont(new Font("微软雅黑", Font.BOLD, 12));
+                nameLabel.setFont(CTFont.getCTFont(Font.BOLD, CTFontSizeStyle.SMALL));
                 JLabel functionLabel = new JLabel("<html>插件功能:" + cookieInfoMap.get(ref.openedButtonKey).getFunction() + "</html>");
-                functionLabel.setFont(new Font("微软雅黑", Font.BOLD, 12));
+                functionLabel.setFont(CTFont.getCTFont(Font.BOLD, CTFontSizeStyle.SMALL));
                 JLabel downloadUrlLabel = new JLabel("<html>插件下载地址:<br>" + cookieInfoMap.get(ref.openedButtonKey).getDownloadUrl() + "</html>");
-                downloadUrlLabel.setFont(new Font("微软雅黑", Font.BOLD, 12));
+                downloadUrlLabel.setFont(CTFont.getCTFont(Font.BOLD, CTFontSizeStyle.SMALL));
 
                 GridBagConstraints gbc = new GridBagConstraints();
                 gbc.gridx = 0;

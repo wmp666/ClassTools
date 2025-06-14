@@ -48,7 +48,7 @@ public class PeoPanelProcess {
         Object[] objects = getPeopleName(peo);
 
         personLabel.setText(String.valueOf(objects[0]));
-        personLabel.setFont(new Font("微软雅黑", Font.BOLD, 23));
+        personLabel.setFont(CTFont.getCTFont(Font.BOLD, CTFontSizeStyle.BIG));
         personLabel.setForeground(CTColor.mainColor);
 
         JScrollPane scrollPane = new JScrollPane(personLabel);

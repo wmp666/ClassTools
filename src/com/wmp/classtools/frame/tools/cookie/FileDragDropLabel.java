@@ -1,5 +1,7 @@
 package com.wmp.classTools.frame.tools.cookie;
 
+import com.wmp.PublicTools.UITools.CTFont;
+import com.wmp.PublicTools.UITools.CTFontSizeStyle;
 import com.wmp.PublicTools.printLog.Log;
 
 import javax.swing.*;
@@ -23,7 +25,7 @@ public class FileDragDropLabel extends JLabel {
         this.setBorder(BorderFactory.createLineBorder(Color.GRAY, 2));
         
         this.setText("添加");
-        this.setFont(new Font("微软雅黑", Font.BOLD, 16));
+        this.setFont(CTFont.getCTFont(Font.BOLD, CTFontSizeStyle.SMALL));
 
         JLabel temp = this;
         // 设置拖拽支持

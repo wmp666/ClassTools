@@ -2,6 +2,8 @@ package com.wmp.classTools.extraPanel.duty.panel;
 
 import com.wmp.Main;
 import com.wmp.PublicTools.UITools.CTColor;
+import com.wmp.PublicTools.UITools.CTFont;
+import com.wmp.PublicTools.UITools.CTFontSizeStyle;
 import com.wmp.PublicTools.UITools.PeoPanelProcess;
 import com.wmp.PublicTools.io.IOForInfo;
 import com.wmp.PublicTools.io.InfProcess;
@@ -60,7 +62,7 @@ public class DPanel extends CTPanel {
 
         JLabel CLBBLabel = new JLabel();
         CLBBLabel.setText("擦黑板:");
-        CLBBLabel.setFont(new Font("微软雅黑",Font.BOLD,20));
+        CLBBLabel.setFont(CTFont.getCTFont(Font.BOLD, CTFontSizeStyle.NORMAL));
         CLBBLabel.setForeground(CTColor.textColor);
 
         InfoPanel.add(CLBBLabel, gbc);
@@ -79,7 +81,7 @@ public class DPanel extends CTPanel {
 
         JLabel CLFLabel = new JLabel();
         CLFLabel.setText("扫地:");
-        CLFLabel.setFont(new Font("微软雅黑",Font.BOLD,20));
+        CLFLabel.setFont(CTFont.getCTFont(Font.BOLD, CTFontSizeStyle.NORMAL));
         CLFLabel.setForeground(CTColor.textColor);
         gbc.gridy++;
         InfoPanel.add(CLFLabel, gbc);

@@ -2,6 +2,8 @@ package com.wmp.classTools.extraPanel.attendance.panel;
 
 import com.wmp.Main;
 import com.wmp.PublicTools.UITools.CTColor;
+import com.wmp.PublicTools.UITools.CTFont;
+import com.wmp.PublicTools.UITools.CTFontSizeStyle;
 import com.wmp.PublicTools.UITools.PeoPanelProcess;
 import com.wmp.PublicTools.io.IOForInfo;
 import com.wmp.PublicTools.printLog.Log;
@@ -66,15 +68,15 @@ public class ATPanel extends CTPanel {
         String TextColor = "style='color: " + StrTextColor + ";'";
 
         AllStuLabel.setText("<html><span " + TextColor + ">" + "应到：<span " + NumColor + ">" + studentLength + "人</html>");
-        AllStuLabel.setFont(new Font("微软雅黑", Font.BOLD, 25));
+        AllStuLabel.setFont(CTFont.getCTFont(Font.BOLD, CTFontSizeStyle.BIG));
 
 
         AttendStuLabel.setText("<html><span " + TextColor + ">" + "实到：<span " + NumColor + ">" + (studentLength - studentLateLength) + "人</html>");
-        AttendStuLabel.setFont(new Font("微软雅黑", Font.BOLD, 25));
+        AttendStuLabel.setFont(CTFont.getCTFont(Font.BOLD, CTFontSizeStyle.BIG));
 
 
         LateStuLabel.setText("<html><span " + TextColor + ">" + "请假：<span style='color: red;'>" + studentLateLength + "人</html>");
-        LateStuLabel.setFont(new Font("微软雅黑", Font.BOLD, 25));
+        LateStuLabel.setFont(CTFont.getCTFont(Font.BOLD, CTFontSizeStyle.BIG));
 
         GridBagConstraints gbc = new GridBagConstraints();
         gbc.gridx = 0;// 列
@@ -103,28 +105,7 @@ public class ATPanel extends CTPanel {
 
     }
 
-    /*private void initLateList(GridBagConstraints gbc) {
 
-
-        gbc.gridy++;// 列
-        if (leaveList.isEmpty()) {
-            personLabel.setText("<html>无请假人员</html>");
-            personLabel.setFont(new Font("微软雅黑", Font.BOLD, 23));
-            personLabel.setForeground(CTColor.mainColor);
-
-            this.add(personLabel, gbc);
-       }else {
-            Object[] objects = PeoPanelProcess.getPeopleName(leaveList);
-
-            personLabel.setText(String.valueOf(objects[0]));
-            personLabel.setFont(new Font("微软雅黑", Font.BOLD, 23));
-            personLabel.setForeground(CTColor.mainColor);
-
-            this.add(personLabel, gbc);
-        }
-
-
-    }*/
 
     @Override
     public void refresh() throws IOException {

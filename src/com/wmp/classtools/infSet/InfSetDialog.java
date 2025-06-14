@@ -3,6 +3,8 @@ package com.wmp.classTools.infSet;
 import com.wmp.Main;
 import com.wmp.PublicTools.OpenInExp;
 import com.wmp.PublicTools.UITools.CTColor;
+import com.wmp.PublicTools.UITools.CTFont;
+import com.wmp.PublicTools.UITools.CTFontSizeStyle;
 import com.wmp.PublicTools.UITools.GetIcon;
 import com.wmp.PublicTools.io.GetPath;
 import com.wmp.PublicTools.io.ZipPack;
@@ -91,7 +93,7 @@ public class InfSetDialog extends JDialog {
                 button.setForeground(Color.BLACK);
             }
             button.setBackground(Color.WHITE);
-            button.setFont(new Font("微软雅黑", Font.BOLD, 12));
+            button.setFont(CTFont.getCTFont(Font.BOLD, CTFontSizeStyle.MORE_SMALL));
             button.setBorderPainted(false);
             button.setFocusPainted(false);// 去除按钮的焦点边框
             button.addActionListener(e -> {

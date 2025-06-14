@@ -1,6 +1,8 @@
 package com.wmp.classTools.extraPanel.attendance.settings;
 
 import com.wmp.PublicTools.UITools.CTColor;
+import com.wmp.PublicTools.UITools.CTFont;
+import com.wmp.PublicTools.UITools.CTFontSizeStyle;
 import com.wmp.PublicTools.io.IOForInfo;
 import com.wmp.PublicTools.printLog.Log;
 import com.wmp.classTools.CTComponent.CTButton;
@@ -48,7 +50,7 @@ public class AllStuSetsPanel extends CTSetsPanel {
                 new String[]{"序号", "姓名"});
 
         allStuTable.getTableHeader().setReorderingAllowed(false);
-        allStuTable.setFont(new Font("微软雅黑", -1, 12));
+        allStuTable.setFont(CTFont.getCTFont(-1, CTFontSizeStyle.MORE_SMALL));
         allStuTable.setModel(model);
 
         JScrollPane scrollPane = new JScrollPane(allStuTable);

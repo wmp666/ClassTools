@@ -2,6 +2,8 @@ package com.wmp.classTools.frame.tools.cookie;
 
 import com.wmp.Main;
 import com.wmp.PublicTools.OpenInExp;
+import com.wmp.PublicTools.UITools.CTFont;
+import com.wmp.PublicTools.UITools.CTFontSizeStyle;
 import com.wmp.PublicTools.UITools.GetIcon;
 import com.wmp.PublicTools.io.ZipPack;
 import com.wmp.PublicTools.printLog.Log;
@@ -112,7 +114,7 @@ public class CookieSets {
             JPanel helloPanel = new JPanel(new BorderLayout());
 
             JLabel helloLabel = new JLabel("请按下一步开始设置!");
-            helloLabel.setFont(new Font("微软雅黑", -1, 25));
+            helloLabel.setFont(CTFont.getCTFont(-1, CTFontSizeStyle.BIG));
             helloPanel.add(helloLabel, BorderLayout.CENTER);
 
             JLabel iconLabel = new JLabel(GetIcon.getIcon(Main.class.getResource("/image/icon.png"), 100, 100));
@@ -137,7 +139,7 @@ public class CookieSets {
                 JPanel stylePanel = new JPanel();
                 stylePanel.setLayout(new GridLayout(1,2));
                 stylePanel.add(new JLabel("插件样式:"));
-                styleComboBox.setFont(new Font("微软雅黑", -1, 15));
+                styleComboBox.setFont(CTFont.getCTFont(-1, CTFontSizeStyle.SMALL));
                 stylePanel.add(styleComboBox);
 
                 JPanel iconPanel = new JPanel();
@@ -185,7 +187,7 @@ public class CookieSets {
             {
                 step2Panel.setBorder(BorderFactory.createTitledBorder("添加必要文件"));
                 JLabel label = new JLabel("将点击打开插件目录,将必要文件添加至目录");
-                label.setFont(new Font("微软雅黑", -1, 16));
+                label.setFont(CTFont.getCTFont(-1, CTFontSizeStyle.SMALL));
                 step2Panel.add(label, BorderLayout.NORTH);
 
                 CTButton openDirButton = new CTButton(CTButton.ButtonText, "打开插件目录",
@@ -206,7 +208,7 @@ public class CookieSets {
                 });
                 openDirButton.setBackground(Color.WHITE);
                 openDirButton.setForeground(Color.BLACK);
-                openDirButton.setFont(new Font("微软雅黑", Font.BOLD, 16));
+                openDirButton.setFont(CTFont.getCTFont(-1, CTFontSizeStyle.SMALL));
                 step2Panel.add(openDirButton, BorderLayout.CENTER);
 
                 setsPanelList.add(step2Panel);
@@ -214,7 +216,7 @@ public class CookieSets {
 
             JPanel step3Panel = new JPanel(new BorderLayout());
             JLabel label = new JLabel("设置完成");
-            label.setFont(new Font("微软雅黑", -1, 25));
+            label.setFont(CTFont.getCTFont(-1, CTFontSizeStyle.BIG));
             label.setHorizontalAlignment(JLabel.CENTER);
             step3Panel.add(label, BorderLayout.CENTER);
 
@@ -235,7 +237,7 @@ public class CookieSets {
 
             lastButton.setBackground(Color.WHITE);
             lastButton.setForeground(Color.BLACK);
-            lastButton.setFont(new Font("微软雅黑", -1, 16));
+            lastButton.setFont(CTFont.getCTFont(-1, CTFontSizeStyle.SMALL));
             lastButton.setBorderPainted(true);
             lastButton.setEnabled(false);
             lastButton.setCallback(() -> {
@@ -261,7 +263,7 @@ public class CookieSets {
 
             nextButton.setBackground(Color.WHITE);
             nextButton.setForeground(Color.BLACK);
-            nextButton.setFont(new Font("微软雅黑", -1, 16));
+            nextButton.setFont(CTFont.getCTFont(-1, CTFontSizeStyle.SMALL));
             nextButton.setCallback(() -> {
                 if (index[0] < setsPanelList.size() - 1) {
                     container.remove(setsPanelList.get(index[0]));

@@ -1,6 +1,8 @@
 package com.wmp.classTools.extraPanel.duty.settings;
 
 import com.wmp.PublicTools.UITools.CTColor;
+import com.wmp.PublicTools.UITools.CTFont;
+import com.wmp.PublicTools.UITools.CTFontSizeStyle;
 import com.wmp.PublicTools.io.IOForInfo;
 import com.wmp.PublicTools.io.InfProcess;
 import com.wmp.PublicTools.printLog.Log;
@@ -49,7 +51,7 @@ public class DutyListSetsPanel extends CTSetsPanel {
                 new String[]{"扫地", "擦黑板"});
         //设置表格的两列不可以修改顺序
         DutyTable.getTableHeader().setReorderingAllowed(false);
-        DutyTable.setFont(new Font("微软雅黑", -1, 15));
+        DutyTable.setFont(CTFont.getCTFont(-1, CTFontSizeStyle.SMALL));
         DutyTable.setModel(model);
 
         JScrollPane scrollPane = new JScrollPane(DutyTable);

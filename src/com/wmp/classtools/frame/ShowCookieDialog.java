@@ -2,6 +2,8 @@ package com.wmp.classTools.frame;
 
 import com.wmp.Main;
 import com.wmp.PublicTools.OpenInExp;
+import com.wmp.PublicTools.UITools.CTFont;
+import com.wmp.PublicTools.UITools.CTFontSizeStyle;
 import com.wmp.PublicTools.UITools.GetIcon;
 import com.wmp.PublicTools.io.GetPath;
 import com.wmp.PublicTools.io.ZipPack;
@@ -154,7 +156,7 @@ public class ShowCookieDialog extends JDialog implements WindowListener {
                 cookieButton.setIcon(getCookie.getCookieMap().get(key).getIcon());
             }
             cookieButton.setBorder(BorderFactory.createLineBorder(Color.BLACK, 1));//显示边框
-            cookieButton.setFont(new Font("微软雅黑", Font.BOLD, 18));
+            cookieButton.setFont(CTFont.getCTFont(Font.BOLD, CTFontSizeStyle.NORMAL));
             cookieButton.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));// 设置鼠标样式 - 箭头
             cookieButton.addActionListener(e->{
 
@@ -196,7 +198,7 @@ public class ShowCookieDialog extends JDialog implements WindowListener {
                 30, 30));
         addCookie.setHorizontalAlignment(JLabel.CENTER);
         //addCookie.setBorder(BorderFactory.createLineBorder(Color.BLACK, 1));//显示边框
-        addCookie.setFont(new Font("微软雅黑", Font.BOLD, 18));
+        addCookie.setFont(CTFont.getCTFont(Font.BOLD, CTFontSizeStyle.NORMAL));
         addCookie.addMouseListener(new MouseListener() {
             @Override
             public void mouseClicked(MouseEvent e) {

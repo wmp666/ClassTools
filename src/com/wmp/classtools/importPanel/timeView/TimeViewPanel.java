@@ -1,6 +1,8 @@
 package com.wmp.classTools.importPanel.timeView;
 
 import com.wmp.PublicTools.UITools.CTColor;
+import com.wmp.PublicTools.UITools.CTFont;
+import com.wmp.PublicTools.UITools.CTFontSizeStyle;
 import com.wmp.PublicTools.printLog.Log;
 import com.wmp.classTools.CTComponent.CTButton;
 import com.wmp.classTools.CTComponent.CTPanel;
@@ -58,7 +60,7 @@ public class TimeViewPanel extends CTPanel {
 
 
         timeView.setText(dateFormat.format(date));
-        timeView.setFont(new Font("微软雅黑", Font.BOLD, 23));
+        timeView.setFont(CTFont.getCTFont(Font.BOLD, CTFontSizeStyle.BIG));
         //timeView.setBackground(new Color(0x0ECECED, true));
         timeView.setForeground(CTColor.mainColor);
         this.add(timeView, BorderLayout.CENTER);
@@ -111,7 +113,7 @@ public class TimeViewPanel extends CTPanel {
                 "/image/%s/exit_1.png", 1, () -> {
                 window.setVisible(false);
 
-                timeView.setFont(new Font("微软雅黑", Font.BOLD, 23));
+            timeView.setFont(CTFont.getCTFont(Font.BOLD, CTFontSizeStyle.BIG));
             this.add(timeView, BorderLayout.CENTER);
 
         });
