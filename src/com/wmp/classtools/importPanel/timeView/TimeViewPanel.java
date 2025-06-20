@@ -102,7 +102,7 @@ public class TimeViewPanel extends CTPanel {
 
         //让时间在组件中央显示
         timeView.setHorizontalAlignment(JLabel.CENTER);
-        timeView.setFont(new Font("微软雅黑", Font.BOLD, 100));
+        timeView.setFont(CTFont.getCTFont(Font.BOLD, CTFontSizeStyle.BIG_BIG));
         c.setBackground(CTColor.backColor);
 
         c.add(timeView, BorderLayout.CENTER);

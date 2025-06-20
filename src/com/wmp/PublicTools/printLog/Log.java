@@ -2,6 +2,8 @@ package com.wmp.PublicTools.printLog;
 
 import com.wmp.Main;
 import com.wmp.PublicTools.OpenInExp;
+import com.wmp.PublicTools.UITools.CTFont;
+import com.wmp.PublicTools.UITools.CTFontSizeStyle;
 import com.wmp.PublicTools.UITools.GetIcon;
 import com.wmp.PublicTools.videoView.MediaPlayer;
 
@@ -106,7 +108,7 @@ public class Log {
         //String result = "<html>" + exitStr.replaceAll("\\n", "<br>") + "</html>";
         JLabel label = new JLabel(exitStr);// 创建标签
         label.setForeground(Color.WHITE);
-        label.setFont(new Font("微软雅黑", Font.BOLD, 60));
+        label.setFont(CTFont.getCTFont(Font.BOLD, CTFontSizeStyle.MORE_BIG));
         label.setHorizontalAlignment(SwingConstants.CENTER);
 
         c.add(label, BorderLayout.CENTER);

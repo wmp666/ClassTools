@@ -1,6 +1,5 @@
 package com.wmp.classTools.extraPanel.duty.settings;
 
-import com.wmp.PublicTools.UITools.CTColor;
 import com.wmp.PublicTools.UITools.CTFont;
 import com.wmp.PublicTools.UITools.CTFontSizeStyle;
 import com.wmp.PublicTools.io.IOForInfo;
@@ -46,7 +45,7 @@ public class DutyListSetsPanel extends CTSetsPanel {
 
         this.removeAll();
 
-        this.setBackground(CTColor.backColor);
+        //this.setBackground(CTColor.backColor);
         this.setLayout(null);
 
         DefaultTableModel model = new DefaultTableModel(dutyList,
@@ -58,11 +57,11 @@ public class DutyListSetsPanel extends CTSetsPanel {
 
         JScrollPane scrollPane = new JScrollPane(DutyTable);
         scrollPane.setBounds(20, 30, 340, 300);
-        scrollPane.setBackground(CTColor.backColor);
+        //scrollPane.setBackground(CTColor.backColor);
         this.add(scrollPane);
 
         JPanel buttonPanel = new JPanel();
-        buttonPanel.setBackground(CTColor.backColor);
+        //buttonPanel.setBackground(CTColor.backColor);
         buttonPanel.setLayout(new FlowLayout(FlowLayout.LEFT, 5, 5));
         buttonPanel.setBounds(0, 340, 400, 45);
 

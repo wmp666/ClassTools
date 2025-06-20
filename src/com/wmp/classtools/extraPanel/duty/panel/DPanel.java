@@ -138,7 +138,7 @@ public class DPanel extends CTPanel {
                     throw new RuntimeException(ex);
                 }
             });
-            //next.setFont(new Font("微软雅黑", -1, 10));
+
             buttonPanel.add(next, BorderLayout.EAST);
         }
 

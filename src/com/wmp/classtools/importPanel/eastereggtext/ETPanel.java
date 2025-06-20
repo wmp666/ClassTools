@@ -66,12 +66,12 @@ public class ETPanel extends CTPanel {
                 int maxLength = maxSize[0];
 
                 // 计算新的窗口尺寸（基础尺寸 + 动态调整）
-                int newWidth = maxLength * 20; // 每个字符约20像素宽度
-                int newHeight = lineCount * 30;  // 每多一行增加30像素高度
+                int newWidth = maxLength * label.getFont().getSize(); // 每个字符约20像素宽度
+                int newHeight = lineCount * label.getFont().getSize() + 5;  // 每多一行增加30像素高度
 
-                int maxShowHeight = 4 * 30;
-                int maxShowWidth = 16 * 20;
-                int minShowWidth = 13 * 20;
+                int maxShowHeight = 4 * label.getFont().getSize() + 5;
+                int maxShowWidth = 16 * label.getFont().getSize();
+                int minShowWidth = 13 * label.getFont().getSize();
 
                 long waitTime = Math.max(10000, text.replaceAll("<html>|</html>|<br>", "").length() * 100L);
                 // 设置窗口大小

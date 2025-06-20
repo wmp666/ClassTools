@@ -1,6 +1,8 @@
 package com.wmp.classTools.frame;
 
 import com.wmp.PublicTools.UITools.CTColor;
+import com.wmp.PublicTools.UITools.CTFont;
+import com.wmp.PublicTools.UITools.CTFontSizeStyle;
 import com.wmp.PublicTools.printLog.Log;
 import com.wmp.classTools.CTComponent.CTButton;
 import com.wmp.classTools.CTComponent.CTPanel;
@@ -13,7 +15,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Objects;
 
-public class ScreenProduct extends JWindow {
+public class ScreenProduct extends JDialog {
 
     private final JLabel timeView = new JLabel();
 
@@ -28,7 +30,7 @@ public class ScreenProduct extends JWindow {
 
         //让时间在组件中央显示
         timeView.setHorizontalAlignment(JLabel.CENTER);
-        timeView.setFont(new Font("微软雅黑", Font.BOLD, 100));
+        timeView.setFont(CTFont.getCTFont(Font.BOLD, CTFontSizeStyle.BIG_BIG));
         timeView.setForeground(Color.WHITE);
         c.setBackground(Color.BLACK);
         c.add(timeView, BorderLayout.CENTER);
@@ -45,8 +47,10 @@ public class ScreenProduct extends JWindow {
 
 
         //添加CTPanel - 右侧
-        JPanel panel = new JPanel(new GridBagLayout());
-        panel.setOpaque(false);
+        JScrollPane scrollPane = new JScrollPane();
+
+        JPanel tempPanel = new JPanel(new GridBagLayout());
+        tempPanel.setOpaque(false);
         GridBagConstraints gbc = new GridBagConstraints();
         gbc.gridx = 0;
         gbc.gridy = 0;
@@ -63,11 +67,16 @@ public class ScreenProduct extends JWindow {
             else {
                 gbc.gridy++;
                 ctPanel.setOpaque(false);
-                panel.add(ctPanel, gbc);
+                tempPanel.add(ctPanel, gbc);
             }
 
         }
-        c.add(panel, BorderLayout.EAST);
+        //隐藏边框
+        scrollPane.setBorder(null);
+        scrollPane.setOpaque(false);
+        scrollPane.getViewport().setOpaque(false);
+        scrollPane.setViewportView(tempPanel);
+        c.add(scrollPane, BorderLayout.EAST);
 
         this.setVisible(true);
 
@@ -103,6 +112,7 @@ public class ScreenProduct extends JWindow {
         int screenWidth = (int) screenSize.getWidth();
         int screenHeight = (int) screenSize.getHeight();
 
+        this.setUndecorated(true);
         this.setIconImage(new ImageIcon(getClass().getResource("/image/icon.png")).getImage());
         this.setSize(screenWidth, screenHeight);
         this.setLocation(0, 0);
@@ -112,7 +122,7 @@ public class ScreenProduct extends JWindow {
     private void initTimePanel() {
 
         timeView.setText("初始化...");
-        timeView.setFont(new Font("微软雅黑", Font.BOLD, 23));
+        //timeView.setFont(new Font("微软雅黑", Font.BOLD, 23));
         //timeView.setBackground(new Color(0x0ECECED, true));
         timeView.setForeground(CTColor.mainColor);
         timeView.setBounds(5, 3, 180, 32);

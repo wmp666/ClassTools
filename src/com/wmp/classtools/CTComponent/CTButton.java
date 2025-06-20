@@ -1,6 +1,8 @@
 package com.wmp.classTools.CTComponent;
 
 import com.wmp.PublicTools.UITools.CTColor;
+import com.wmp.PublicTools.UITools.CTFont;
+import com.wmp.PublicTools.UITools.CTFontSizeStyle;
 import com.wmp.PublicTools.UITools.GetIcon;
 
 import javax.swing.*;
@@ -86,6 +88,7 @@ public class CTButton extends JButton implements MouseListener, ActionListener {
         this.setBorderPainted(false);
 
 
+        this.setFont(CTFont.getCTFont(-1, CTFontSizeStyle.MORE_SMALL));
         this.setBackground(CTColor.backColor);
         this.setForeground(CTColor.textColor);
         this.setSize(weight, height);

@@ -39,18 +39,18 @@ public class LeaveListSetsPanel extends CTSetsPanel {
         this.removeAll();
         checkBoxList.clear();
 
-        this.setBackground(CTColor.backColor);
+        //this.setBackground(CTColor.backColor);
         this.setLayout(null);
 
         // 请假人员设置组件
         JLabel leaveLabel = new JLabel("请假人员:");
         leaveLabel.setBounds(20, 0, 300, 25);
-        leaveLabel.setForeground(CTColor.textColor);
+        //leaveLabel.setForeground(CTColor.textColor);
         this.add(leaveLabel);
 
         JPanel leavePanel = new JPanel();
         leavePanel.setBounds(20, 0, 340, 300);
-        leavePanel.setBackground(CTColor.backColor);
+        //leavePanel.setBackground(CTColor.backColor);
         leavePanel.setLayout(new GridLayout(studentList.size() / 4 + 1, 4, 10, 10));
         //leavePanel.setBackground(Color.WHITE);
 
@@ -58,7 +58,7 @@ public class LeaveListSetsPanel extends CTSetsPanel {
         //JTextArea leaveArea = new JTextArea();
         JScrollPane scrollPane = new JScrollPane(leavePanel);
         scrollPane.setBounds(20, 30, 340, 300);
-        scrollPane.setBackground(CTColor.backColor);
+        //scrollPane.setBackground(CTColor.backColor);
         //修改滚轮的灵敏度
         scrollPane.getVerticalScrollBar().setUnitIncrement(12);
         //scrollPane.setLayout(null);

@@ -59,10 +59,10 @@ public class PeoPanelProcess {
         int maxLength = maxSize[0];// 最大长度
 
         // 计算新的窗口尺寸（基础尺寸 + 动态调整）
-        int newWidth = maxLength * 23; // 每个字符约23像素宽度
-        int newHeight = lineCount * 30;  // 每多一行增加30像素高度
+        int newWidth = maxLength * personLabel.getFont().getSize(); // 每个字符约23像素宽度
+        int newHeight = lineCount * personLabel.getFont().getSize() + 5;  // 每多一行增加30像素高度
 
-        int maxShowHeight = 4 * 23; // 最大显示高度
+        int maxShowHeight = 4 * personLabel.getFont().getSize(); // 最大显示高度
 
         // 设置窗口大小
         if (newHeight >= maxShowHeight) {

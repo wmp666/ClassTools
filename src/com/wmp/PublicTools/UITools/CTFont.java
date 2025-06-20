@@ -9,6 +9,8 @@ public class CTFont {
 
     private static String fontName = "微软雅黑";
 
+    private static int BigBigSize = 100;
+    private static int moreBigSize = 60;
     private static int bigSize = 24;
     private static int normalSize = 19;
     private static int smallSize = 15;
@@ -17,6 +19,8 @@ public class CTFont {
     public static Font getCTFont(int fontStyle, CTFontSizeStyle sizeStyle) {
         int size = 0;
         switch (sizeStyle) {
+            case BIG_BIG -> size = BigBigSize;
+            case MORE_BIG -> size = moreBigSize;
             case BIG -> size = bigSize;
             case NORMAL -> size = normalSize;
             case SMALL -> size = smallSize;
@@ -49,7 +53,9 @@ public class CTFont {
         CTFont.fontName = fontName;
     }
 
-    public static void setSize(int bigSize, int normalSize, int smallSize, int moreSmallSize) {
+    public static void setSize(int bigBigSize, int moreBigSize, int bigSize, int normalSize, int smallSize, int moreSmallSize) {
+        CTFont.BigBigSize = bigBigSize;
+        CTFont.moreBigSize = moreBigSize;
         CTFont.bigSize = bigSize;
         CTFont.normalSize = normalSize;
         CTFont.smallSize = smallSize;
@@ -62,6 +68,6 @@ public class CTFont {
      * @return 大  中  小  更小
      */
     public static int[] getSize() {
-        return new int[]{bigSize, normalSize, smallSize, moreSmallSize};
+        return new int[]{BigBigSize, moreBigSize, bigSize, normalSize, smallSize, moreSmallSize};
     }
 }
