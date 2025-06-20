@@ -249,7 +249,7 @@ public class InfSetDialog extends JDialog {
     }
 
     private void save() {
-        int result = Log.info.inputInt(this, "InfSetDialog-保存", "是否保存？");
+        int result = Log.info.showChooseDialog(this, "InfSetDialog-保存", "是否保存？");
         if (result == JOptionPane.YES_OPTION) {
 
 

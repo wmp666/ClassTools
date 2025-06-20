@@ -358,7 +358,7 @@ public class CookieSets {
 
     public static void deleteCookie(File file) {
         Log.info.print("删除插件", "询问是否删除");
-        final int CONFIRM = Log.info.inputInt(null,
+        final int CONFIRM = Log.info.showChooseDialog(null,
                 "删除插件",
                 "确认删除该 Cookie 配置？");
 

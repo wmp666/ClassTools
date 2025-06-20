@@ -10,7 +10,7 @@ public class GetIcon {
             return null;
         }
         ImageIcon icon = new ImageIcon(path);
-        icon.setImage(icon.getImage().getScaledInstance( width, height, Image.SCALE_DEFAULT));
+        icon.setImage(icon.getImage().getScaledInstance(width, height, Image.SCALE_SMOOTH));
         return icon;
 
     }

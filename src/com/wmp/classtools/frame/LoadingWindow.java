@@ -5,6 +5,7 @@ import com.wmp.PublicTools.EasterEgg.EETextStyle;
 import com.wmp.PublicTools.EasterEgg.EasterEgg;
 import com.wmp.PublicTools.UITools.CTFont;
 import com.wmp.PublicTools.UITools.CTFontSizeStyle;
+import com.wmp.PublicTools.UITools.GetIcon;
 import com.wmp.PublicTools.printLog.Log;
 
 import javax.swing.*;
@@ -39,8 +40,6 @@ public class LoadingWindow extends JWindow {
 
         Log.info.print("LoadingWindow-窗口", "开始初始化加载窗口");
 
-        ImageIcon defaultIcon = new ImageIcon(url);
-        defaultIcon.setImage(defaultIcon.getImage().getScaledInstance(width, height, Image.SCALE_DEFAULT));
 
         String showText = text;
         if (showText.equals("useLoadingText")){
@@ -68,7 +67,7 @@ public class LoadingWindow extends JWindow {
             this.setSize(newWidth, newHeight); // 应用新尺寸
         }
 
-        JLabel label = new JLabel(showText,defaultIcon, SwingConstants.CENTER);
+        JLabel label = new JLabel(showText, GetIcon.getIcon(url, width, height), SwingConstants.CENTER);
         label.setBackground(Color.WHITE);
         label.setFont(CTFont.getCTFont(Font.BOLD, CTFontSizeStyle.NORMAL));
 

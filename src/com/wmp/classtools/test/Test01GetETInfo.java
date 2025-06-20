@@ -2,7 +2,7 @@ package com.wmp.classTools.test;
 
 import com.wmp.PublicTools.EasterEgg.EasterEgg;
 
-public class GetETInfoTest {
+public class Test01GetETInfo {
     public static void main(String[] args) {
         int max = 0;
         int line = 0;

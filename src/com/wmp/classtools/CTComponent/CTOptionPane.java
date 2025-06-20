@@ -1,0 +1,240 @@
+package com.wmp.classTools.CTComponent;
+
+import com.wmp.Main;
+import com.wmp.PublicTools.UITools.GetIcon;
+import com.wmp.PublicTools.UITools.GetMaxSize;
+
+import javax.swing.*;
+import java.awt.*;
+import java.util.concurrent.atomic.AtomicInteger;
+import java.util.concurrent.atomic.AtomicReference;
+
+public class CTOptionPane {
+    public static final int YES_OPTION = 0;
+    public static final int NO_OPTION = 1;
+
+    public static final int ERROR_MESSAGE = 0;
+    public static final int INFORMATION_MESSAGE = 1;
+    public static final int WARNING_MESSAGE = 2;
+
+    private static final int YES_NO_BUTTONS = 0;
+    private static final int YES_BUTTONS = 1;
+
+    private static final int MESSAGE_TEXT = 0;
+    private static final int MESSAGE_INPUT = 1;
+
+    /**
+     * 显示消息对话框
+     *
+     * @param owner         对话框的父组件
+     * @param title         对话框标题
+     * @param message       显示的消息
+     * @param icon          对话框图标
+     * @param iconType      对话框图标类型
+     * @param isAlwaysOnTop 是否始终置顶
+     */
+    public static void showMessageDialog(Component owner, String title, String message, Icon icon, int iconType, boolean isAlwaysOnTop) {
+
+        showDefaultDialog(owner, title, message, icon, iconType, YES_BUTTONS, MESSAGE_TEXT, isAlwaysOnTop);
+
+    }
+
+    /**
+     * 显示确认对话框
+     *
+     * @param owner         对话框的父组件
+     * @param title         对话框标题
+     * @param message       显示的消息
+     * @param icon          对话框图标
+     * @param isAlwaysOnTop 是否始终置顶
+     * @return 用户选择的选项 YES_OPTION, NO_OPTION, 按取消返回-1
+     */
+    public static int showConfirmDialog(Container owner, String title, String message, Icon icon, boolean isAlwaysOnTop) {
+        Object o = showDefaultDialog(owner, title, message, icon, INFORMATION_MESSAGE, YES_NO_BUTTONS, MESSAGE_TEXT, isAlwaysOnTop);
+        if (o != null) {
+            return (int) o;
+        }
+        return NO_OPTION;
+    }
+
+    /**
+     * 显示输入对话框
+     *
+     * @param owner         对话框的父组件
+     * @param title         对话框标题
+     * @param message       显示的消息
+     * @param icon          对话框图标
+     * @param isAlwaysOnTop 是否始终置顶
+     * @return 用户输入的字符串
+     */
+    public static String showInputDialog(Container owner, String title, String message, Icon icon, boolean isAlwaysOnTop) {
+        Object o = showDefaultDialog(owner, title, message, icon, INFORMATION_MESSAGE, YES_NO_BUTTONS, MESSAGE_INPUT, isAlwaysOnTop);
+        if (o != null) {
+            return o.toString();
+        }
+        return null;
+    }
+
+    /**
+     * @param owner         对话框的父组件
+     * @param title         对话框标题
+     * @param message       显示的消息
+     * @param icon          对话框图标
+     * @param iconType      对话框图标类型
+     * @param optionType    对话框选项类型
+     * @param messageType   对话框消息类型
+     * @param isAlwaysOnTop 是否始终置顶
+     * @return 根据showComponent的类型返回不同的对象
+     */
+    private static Object showDefaultDialog(Component owner, String title, String message, Icon icon, int iconType, int optionType, int messageType, boolean isAlwaysOnTop) {
+        JDialog dialog = new JDialog();
+        dialog.setSize(380, 200);
+        dialog.setLocationRelativeTo(owner);//设置对话框的位置相对于父组件
+        dialog.setModal(true);
+        dialog.setAlwaysOnTop(isAlwaysOnTop);
+        dialog.setTitle(title);
+        dialog.setResizable(false);
+        dialog.setLayout(new BorderLayout(10, 10));
+        //dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
+
+        // 创建图标标签
+        {
+            if (icon == null) {
+                Icon tempIcon = null;
+                switch (iconType) {
+
+                    case ERROR_MESSAGE:
+                        tempIcon = GetIcon.getIcon(Main.class.getResource("/image/optionDialogIcon/error.png"), 50, 50);
+                        break;
+                    case INFORMATION_MESSAGE:
+                        tempIcon = GetIcon.getIcon(Main.class.getResource("/image/optionDialogIcon/information.png"), 50, 50);
+                        break;
+                    case WARNING_MESSAGE:
+                        tempIcon = GetIcon.getIcon(Main.class.getResource("/image/optionDialogIcon/warn.png"), 50, 50);
+                        break;
+                }
+                JLabel iconLabel = new JLabel(tempIcon);
+                dialog.add(iconLabel, BorderLayout.WEST);//设置图标标签的位置 - 左
+            } else {
+                JLabel iconLabel = new JLabel(icon);
+                dialog.add(iconLabel, BorderLayout.WEST);//设置图标标签的位置 - 左
+            }
+        }
+
+
+        // 创建消息文本区域
+        AtomicReference<String> inputStr = new AtomicReference<>("");
+        JTextField inputField = new JTextField();
+        {
+            JPanel panel = new JPanel(new BorderLayout(10, 10));
+            // 创建消息文本区域
+            JScrollPane messagePanel;
+
+            //处理数据
+            if (message == null) {
+                message = "";
+            } else {
+                if (message.contains("\\n")) {
+                    message = message.replace("\\n", "\n");
+                }
+                int maxLength = GetMaxSize.getMaxLength(message, GetMaxSize.STYLE_PLAIN);
+                while (maxLength > 21) {
+                    String[] lines = message.split("\n");
+                    for (int i = 0; i < lines.length; i++) {
+                        if (lines[i].length() > 21) {
+                            //在第21个字符后插入换行符
+                            lines[i] = lines[i].substring(0, 21) + "\n" + lines[i].substring(21);//在第21个字符后插入换行符
+
+                        }
+                    }
+                    message = String.join("\n", lines);
+
+                    System.out.println(message);
+                    System.out.println("----------------");
+                    maxLength = GetMaxSize.getMaxLength(message, GetMaxSize.STYLE_PLAIN);
+                }
+            }
+            //创建一个文本区域
+            JTextArea messageArea = new JTextArea();
+            messageArea.setText(message);
+            messageArea.setEditable(false);//设置文本区域不可编辑
+            messageArea.setFocusable(false);//设置文本区域可聚焦
+            messageArea.setOpaque(false);//设置文本区域不透明
+            //messageArea.setLineWrap(true);//设置文本区域自动换行
+            //messageArea.setWrapStyleWord(true);//设置文本区域自动换行时单词不被分割
+            messageArea.setFont(new Font("Microsoft YaHei UI", Font.PLAIN, 14));
+            messagePanel = new JScrollPane(messageArea);
+            messagePanel.setBorder(null);
+
+            panel.add(messagePanel, BorderLayout.CENTER);
+            if (messageType == MESSAGE_INPUT) {
+                inputField.setBorder(BorderFactory.createLineBorder(new Color(179, 179, 179), 2));
+                inputField.setFont(new Font("Microsoft YaHei UI", Font.PLAIN, 14));
+                panel.add(inputField, BorderLayout.SOUTH);
+            }
+
+            dialog.add(panel, BorderLayout.CENTER);//设置消息文本区域的位置 - 中间
+
+        }
+
+        AtomicInteger choose = new AtomicInteger(2);
+
+        // 创建按钮面板
+        {
+            if (optionType == YES_NO_BUTTONS) {
+                JButton yesButton = new JButton("是");
+                yesButton.setBorder(BorderFactory.createLineBorder(Color.BLACK, 2, true));//设置按钮的边框 - 5px 实线
+                yesButton.setBackground(new Color(255, 255, 255));
+                yesButton.setFont(new Font("Microsoft YaHei UI", Font.PLAIN, 20));
+                yesButton.addActionListener(e -> {
+                    choose.set(YES_OPTION);
+                    if (messageType == MESSAGE_INPUT) {
+                        inputStr.set(inputField.getText());
+                    }
+                    dialog.dispose();
+                });
+                JButton noButton = new JButton("否");
+                noButton.setBorder(BorderFactory.createLineBorder(Color.BLACK, 2, true));//设置按钮的边框 - 5px 实线
+                noButton.setBackground(new Color(255, 255, 255));
+                noButton.setFont(new Font("Microsoft YaHei UI", Font.PLAIN, 20));
+                noButton.addActionListener(e -> {
+                    choose.set(NO_OPTION);
+                    dialog.dispose();
+                });
+                JPanel buttonPanel = new JPanel(new GridLayout(1, 2, 10, 10));
+                buttonPanel.add(yesButton);
+                buttonPanel.add(noButton);
+                dialog.add(buttonPanel, BorderLayout.SOUTH);//设置按钮面板的位置 - 下
+
+            } else if (optionType == YES_BUTTONS) {
+                JButton yesButton = new JButton("确定");
+                yesButton.setBorder(BorderFactory.createLineBorder(Color.BLACK, 2, false));
+                yesButton.setBackground(new Color(255, 255, 255));
+                yesButton.setFont(new Font("Microsoft YaHei UI", Font.PLAIN, 20));
+                yesButton.addActionListener(e -> {
+                    choose.set(YES_OPTION);
+                    dialog.dispose();
+                });
+                JPanel buttonPanel = new JPanel(new GridLayout(1, 1, 10, 10));
+                buttonPanel.add(yesButton);
+                dialog.add(buttonPanel, BorderLayout.SOUTH);//设置按钮面板的位置 - 下
+
+            }
+        }
+
+
+        dialog.setVisible(true);
+
+
+        if (optionType == YES_NO_BUTTONS) {
+            if (messageType == MESSAGE_TEXT) {
+                return choose.get();
+            } else if (messageType == MESSAGE_INPUT) {
+                return inputStr.get();
+            }
+
+        }
+
+        return null;
+    }
+}

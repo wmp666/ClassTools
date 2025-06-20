@@ -38,7 +38,7 @@ public class GetMaxSize {
 
         // 计算最长行的长度.mapToInt(String::length) 将每个字符串映射为其长度，然后使用 max() 方法找到最大值
         //.orElse(0) 如果数组为空，返回默认值 0
-        String[] lines = temp.split("\n");
+        String[] lines = temp.split("\n|\\\\n");
         return Arrays.stream(lines).mapToInt(String::length).max().orElse(0);
     }
 }

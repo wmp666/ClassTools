@@ -8,7 +8,7 @@ import java.awt.*;
 import java.io.InputStream;
 import java.util.Random;
 
-public class MP3PlayerTest {
+public class Test01MP3Player {
     public static void main(String[] args) {
         Toolkit.getDefaultToolkit().beep(); // 测试系统声音是否正常
         System.out.println("音频格式支持状态：" + Player.class.getProtectionDomain().getCodeSource().getLocation());

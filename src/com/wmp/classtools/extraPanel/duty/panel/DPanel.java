@@ -99,7 +99,7 @@ public class DPanel extends CTPanel {
             CTButton last = new CTButton("上一天",
                     "/image/%s/last_0.png",
                     "/image/%s/last_1.png", 30, () -> {
-                int i = Log.info.inputInt(this, "CTPanel-DutyPanel-日期切换", "确认切换至上一天");
+                int i = Log.info.showChooseDialog(this, "CTPanel-DutyPanel-日期切换", "确认切换至上一天");
                 if (i == 0) {
                     if (index > 0) index--;
                     else index = DutyList.size() - 1;
@@ -122,7 +122,7 @@ public class DPanel extends CTPanel {
                     "/image/%s/next_0.png",
                     "/image/%s/next_1.png", 30, () -> {
 
-                int i = Log.info.inputInt(this, "CTPanel-DutyPanel-日期切换", "确认切换至下一天");
+                int i = Log.info.showChooseDialog(this, "CTPanel-DutyPanel-日期切换", "确认切换至下一天");
 
                 if (i == 0) {
                     if (index < DutyList.size() - 1) index++;

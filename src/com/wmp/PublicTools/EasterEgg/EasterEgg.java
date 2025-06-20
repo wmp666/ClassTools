@@ -79,7 +79,7 @@ public class EasterEgg {
     }
 
     public static void getPin() {
-        String s = Log.info.input(null, "祈愿", "请输入■■");
+        String s = Log.info.showInputDialog(null, "祈愿", "请输入■■");
 
 
 

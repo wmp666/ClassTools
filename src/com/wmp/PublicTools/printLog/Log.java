@@ -6,6 +6,7 @@ import com.wmp.PublicTools.UITools.CTFont;
 import com.wmp.PublicTools.UITools.CTFontSizeStyle;
 import com.wmp.PublicTools.UITools.GetIcon;
 import com.wmp.PublicTools.videoView.MediaPlayer;
+import com.wmp.classTools.CTComponent.CTOptionPane;
 
 import javax.swing.*;
 import java.awt.*;
@@ -188,7 +189,7 @@ public class Log {
                 else title = "世界拒绝了我";
                 Icon icon = null;
                 if (Main.isError) icon = GetIcon.getIcon(Log.class.getResource("/image/error/icon.png"), 100, 100);
-                JOptionPane.showMessageDialog(c, logInfo, title, JOptionPane.ERROR_MESSAGE, icon);
+                CTOptionPane.showMessageDialog(c, title, logInfo, icon, CTOptionPane.ERROR_MESSAGE, false);
 
                 logInfList.add(info);
             }
@@ -218,7 +219,7 @@ public class Log {
 
         JButton clearButton = new JButton("清空");
         clearButton.addActionListener(e -> {
-            int i = Log.info.inputInt(dialog, "日志-清空", "是否清空并保存?");
+            int i = Log.info.showChooseDialog(dialog, "日志-清空", "是否清空并保存?");
             if (i == JOptionPane.YES_OPTION){
                 saveLog();
             }

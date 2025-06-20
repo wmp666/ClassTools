@@ -4,7 +4,7 @@ import com.wmp.PublicTools.io.GetPath;
 
 import java.io.File;
 
-public class UpdateDIrTest {
+public class Test01UpdateDIr {
     public static void main(String[] args) {
         try {
             File programDir = new File(GetPath.getAppPath(0));

@@ -14,7 +14,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.Scanner;
 
-public class CTPanelTest {
+public class Test01CTPanel {
     public static void main(String[] args) throws IOException {
         while (true) {
             Scanner scanner = new Scanner(System.in);

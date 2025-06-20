@@ -2,6 +2,7 @@ package com.wmp.PublicTools.printLog;
 
 import com.wmp.Main;
 import com.wmp.PublicTools.UITools.GetIcon;
+import com.wmp.classTools.CTComponent.CTOptionPane;
 
 import javax.swing.*;
 import java.awt.*;
@@ -17,7 +18,7 @@ public class InfoLogStyle extends PrintLogStyle {
     public void message(Container c, String owner, String logInfo) {
         Log.print(getStyle(), owner, "弹窗信息->" + logInfo, c);
         String title = getTitle(owner);
-        JOptionPane.showMessageDialog(c, logInfo, title, JOptionPane.INFORMATION_MESSAGE, getIcon());
+        CTOptionPane.showMessageDialog(c, title, logInfo, getIcon(), CTOptionPane.INFORMATION_MESSAGE, true);
     }
 
     private static String getTitle(String owner) {
@@ -32,23 +33,23 @@ public class InfoLogStyle extends PrintLogStyle {
         return null;
     }
 
-    public String input(Container c, String owner, String logInfo) {
+    public String showInputDialog(Container c, String owner, String logInfo) {
         Log.print(getStyle(), owner, "弹窗信息->" + logInfo, c);
         String title = getTitle(owner);
-        String s = JOptionPane.showInputDialog(c, logInfo, title, JOptionPane.QUESTION_MESSAGE, getIcon(),
-                null, null).toString();
+        String s = CTOptionPane.showInputDialog(c, title, logInfo, getIcon(),
+                false);
         Log.print(getStyle(), owner, "输入信息->" + s, c);
         return s;
     }
 
-    public int inputInt(Container c, String owner, String logInfo) {
+    public int showChooseDialog(Container c, String owner, String logInfo) {
         Log.print(getStyle(), owner, "弹窗信息->" + logInfo, c);
         String title = getTitle(owner);
-        int i = JOptionPane.showConfirmDialog(c, logInfo, title, JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, getIcon());
+        int i = CTOptionPane.showConfirmDialog(c, title, logInfo, getIcon(), false);
         String s ;
-        if (i == JOptionPane.YES_OPTION) {
+        if (i == CTOptionPane.YES_OPTION) {
             s = "是";
-        } else if (i == JOptionPane.NO_OPTION) {
+        } else if (i == CTOptionPane.NO_OPTION) {
             s = "否";
         }else {
             s = "取消";

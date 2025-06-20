@@ -57,7 +57,7 @@ public class ClearTempPanel extends CTSetsPanel {
 
     private void deleteDir(String DATA_PATH) {
 
-        int i = Log.info.inputInt(this, "清理临时文件", "是否清理?");
+        int i = Log.info.showChooseDialog(this, "清理临时文件", "是否清理?");
         if (i == JOptionPane.NO_OPTION) {
             return;
         }

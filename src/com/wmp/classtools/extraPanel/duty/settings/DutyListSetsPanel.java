@@ -76,7 +76,7 @@ public class DutyListSetsPanel extends CTSetsPanel {
                 String s1 = "null";
                 String s2 = "null";
                 while (b) {
-                    s1 = Log.info.input(this, "InfSetDialog-新建", "请输入擦黑板人员");
+                    s1 = Log.info.showInputDialog(this, "InfSetDialog-新建", "请输入擦黑板人员");
 
                     if (s1 != null && !s1.trim().isEmpty() && !(s1.indexOf('[') != -1 || s1.indexOf(']') != -1)) {
                         b = false;
@@ -87,7 +87,7 @@ public class DutyListSetsPanel extends CTSetsPanel {
 
                 b = true;
                 while (b) {
-                    s2 = Log.info.input(this, "InfSetDialog-新建", "请输入扫地人员");
+                    s2 = Log.info.showInputDialog(this, "InfSetDialog-新建", "请输入扫地人员");
                     if (s2 != null && !s2.trim().isEmpty() && !(s2.indexOf('[') != -1 || s2.indexOf(']') != -1)) {
                         b = false;
                     } else if (s2 == null) {

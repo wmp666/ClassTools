@@ -74,7 +74,7 @@ public class AllStuSetsPanel extends CTSetsPanel {
                 boolean b = true;
                 String s1 = "null";
                 while (b) {
-                    s1 = Log.info.input(this, "InfSetDialog-新建", "请输入姓名");
+                    s1 = Log.info.showInputDialog(this, "InfSetDialog-新建", "请输入姓名");
                     if (s1 != null && !s1.trim().isEmpty()) {
                         b = false;
                     } else if (s1 == null) {

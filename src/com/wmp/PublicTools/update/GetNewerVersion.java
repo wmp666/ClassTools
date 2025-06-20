@@ -48,7 +48,7 @@ public class GetNewerVersion {
                     return;
                 }
 
-                    int result = Log.info.inputInt(dialog, "发现新版本", "检测到源代码文件，是否下载？");
+                int result = Log.info.showChooseDialog(dialog, "发现新版本", "检测到源代码文件，是否下载？");
 
                     if (result == JOptionPane.YES_OPTION) {
                         try {
@@ -150,7 +150,7 @@ public class GetNewerVersion {
                 int i = isNewerVersion(latestVersion, Main.version);
                     if (i == 1) {
                         Log.info.print( "发现新版本", "发现新版本 " + latestVersion);
-                        int result = Log.info.inputInt(dialog, "发现新版本",
+                        int result = Log.info.showChooseDialog(dialog, "发现新版本",
                                 "发现新版本 " + latestVersion + "，是否下载？\n" + versionContent);
 
 
