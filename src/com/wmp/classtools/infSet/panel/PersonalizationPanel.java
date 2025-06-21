@@ -169,7 +169,7 @@ public class PersonalizationPanel extends CTSetsPanel {
             JButton button = new JButton("改为默认");
             //button.setFont(new Font("Microsoft YaHei UI", Font.PLAIN, 12));
             button.addActionListener(e -> {
-                CTFont.setSize(24, 20, 19, 15, 12, 10);
+                CTFont.setSize(100, 60, 29, 24, 15, 12);
                 CTFont.setFontName("微软雅黑");
                 FontNameComboBox.setSelectedItem("微软雅黑");
                 FontSizeList.forEach(textField -> textField.setText(String.valueOf(CTFont.getSize()[0])));
