@@ -25,7 +25,7 @@ public class Main{
     * d:只修复的问题,问题较少
     * e:测试版本号
      */
-    public static String version = "1.25.1";
+    public static String version = "1.25.2";
     public static String appName = "ClassTools";
     public static String author = "wmp";
 
@@ -68,7 +68,7 @@ public class Main{
         try {
             GetSetsJSON setsJSON = new GetSetsJSON();
 
-            b = EasterEgg.startEasterEgg(EasterEgg.STYLE_IMPORT_DAY);
+            b = EasterEgg.getEasterEggItem(EasterEgg.STYLE_IMPORT_DAY);
 
             startUpdate = setsJSON.isStartUpdate();
             canExit = setsJSON.isCanExit();
@@ -90,7 +90,7 @@ public class Main{
             throw new RuntimeException(e);
         }
 
-        isError = EasterEgg.startEasterEgg(EasterEgg.STYLE_ERROR);
+        isError = EasterEgg.getEasterEggItem(EasterEgg.STYLE_ERROR);
         //Log.info.print("[Main]", "是否被骇客入侵:" + isError);
         if (isError) {
 

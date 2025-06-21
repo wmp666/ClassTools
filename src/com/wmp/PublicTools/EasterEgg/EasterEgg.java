@@ -7,7 +7,6 @@ import com.wmp.PublicTools.io.ResourceLocalizer;
 import com.wmp.PublicTools.printLog.Log;
 import com.wmp.PublicTools.videoView.MediaPlayer;
 import com.wmp.PublicTools.web.GetWebInf;
-import com.wmp.classTools.frame.tools.cookie.StartCookie;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
@@ -24,7 +23,7 @@ public class EasterEgg {
     public static final int STYLE_IMPORT_DAY = 1;
     public static final int STYLE_ERROR = 2;
 
-    public static boolean startEasterEgg(int style) {
+    public static boolean getEasterEggItem(int style) {
 
         if (Main.allArgs.get("screenProduct:show").contains(Main.argsList)) return false;
 
@@ -88,10 +87,9 @@ public class EasterEgg {
 
                 String[] split = s.split(":");
                 if (split.length == 2) {
-                    if (split[0].equalsIgnoreCase("EasterEgg")) {
+                    String s2 = split[0];
+                    if (s2.equalsIgnoreCase("EasterEgg")) {
                         showEasterEgg(split[1].split(";"));
-                    } else if (split[0].equalsIgnoreCase("cookie")) {
-                        StartCookie.showCookie(split[1].split(";"));
                     } else{
                         Log.err.print(null, "祈愿", "请输入正确的格式");
 

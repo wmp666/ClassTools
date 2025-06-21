@@ -189,7 +189,7 @@ public class Log {
                 else title = "世界拒绝了我";
                 Icon icon = null;
                 if (Main.isError) icon = GetIcon.getIcon(Log.class.getResource("/image/error/icon.png"), 100, 100);
-                CTOptionPane.showMessageDialog(c, title, logInfo, icon, CTOptionPane.ERROR_MESSAGE, false);
+                CTOptionPane.showMessageDialog(c, title, logInfo, icon, CTOptionPane.ERROR_MESSAGE, true);
 
                 logInfList.add(info);
             }
