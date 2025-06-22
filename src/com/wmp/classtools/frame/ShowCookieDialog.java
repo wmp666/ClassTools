@@ -8,7 +8,7 @@ import com.wmp.PublicTools.UITools.GetIcon;
 import com.wmp.PublicTools.io.GetPath;
 import com.wmp.PublicTools.io.ZipPack;
 import com.wmp.PublicTools.printLog.Log;
-import com.wmp.classTools.CTComponent.CTButton;
+import com.wmp.classTools.CTComponent.CTProButton;
 import com.wmp.classTools.frame.tools.cookie.*;
 import com.wmp.classTools.frame.tools.help.ShowHelpDoc;
 import org.json.JSONException;
@@ -99,36 +99,32 @@ public class ShowCookieDialog extends JDialog implements WindowListener {
         cookieSettingPanel.setBackground(Color.WHITE);
         cookieSettingPanel.setLayout(new GridLayout(6, 1, 20, 5));
 
-        CTButton removeCookie = new CTButton(CTButton.ButtonText, "修改插件",
-                "/image/light/settings_0.png", "/image/light/settings_1.png", 30,100,
-                () -> {
+        CTProButton removeCookie = new CTProButton("修改插件", GetIcon.getIcon(getClass().getResource("/image/light/settings_0.png"), 30, 30));
+        removeCookie.addActionListener(e -> {
+
                     String cookiePin = s[0];
                     try {
                         CookieSets.CookieSetsDialog(cookieMap.get(cookiePin));
-                    } catch (IOException e) {
-                        throw new RuntimeException(e);
-                    }catch (JSONException e){
+                    } catch (IOException ex) {
+                        Log.err.print(c, "插件管理页", "插件设置文件打开失败");
+                        throw new RuntimeException(ex);
+
+                    } catch (JSONException ex) {
                         Log.err.print(c, "插件管理页", "插件设置文件格式错误");
-                        throw new RuntimeException(e);
+                        throw new RuntimeException(ex);
                     }
                 }
         );
-        removeCookie.setBorderPainted(true);
-        removeCookie.setBackground(Color.WHITE);
-        removeCookie.setForeground(Color.BLACK);
+        removeCookie.setFont(CTFont.getCTFont(Font.PLAIN, CTFontSizeStyle.NORMAL));
         removeCookie.setEnabled(false);
         cookieSettingPanel.add(removeCookie);
 
-        CTButton deleteCookie = new CTButton(CTButton.ButtonText, "删除插件",
-                "/image/light/delete_0.png", "/image/light/delete_1.png", 30,100,
-                () -> {
-                    String cookiePin = s[0];
-                    CookieSets.deleteCookie(cookieMap.get(cookiePin));
-                }
-        );
-        deleteCookie.setBorderPainted(true);
-        deleteCookie.setBackground(Color.WHITE);
-        deleteCookie.setForeground(Color.BLACK);
+        CTProButton deleteCookie = new CTProButton("删除插件", GetIcon.getIcon(getClass().getResource("/image/light/delete_0.png"), 30, 30));
+        deleteCookie.addActionListener(e -> {
+            String cookiePin = s[0];
+            CookieSets.deleteCookie(cookieMap.get(cookiePin));
+        });
+        deleteCookie.setFont(CTFont.getCTFont(Font.PLAIN, CTFontSizeStyle.NORMAL));
         deleteCookie.setEnabled(false);
         cookieSettingPanel.add(deleteCookie);
 
@@ -150,12 +146,10 @@ public class ShowCookieDialog extends JDialog implements WindowListener {
         GetCookie getCookie = new GetCookie();
 
         getCookie.getCookieMap().forEach((key, value) -> {
-            JButton cookieButton = new JButton(getCookie.getName(key));
-            cookieButton.setBackground(Color.WHITE);
+            CTProButton cookieButton = new CTProButton(getCookie.getName(key));
             if (getCookie.getCookieMap().get(key).getIcon() != null){
                 cookieButton.setIcon(getCookie.getCookieMap().get(key).getIcon());
             }
-            cookieButton.setBorder(BorderFactory.createLineBorder(Color.BLACK, 1));//显示边框
             cookieButton.setFont(CTFont.getCTFont(Font.BOLD, CTFontSizeStyle.NORMAL));
             cookieButton.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));// 设置鼠标样式 - 箭头
             cookieButton.addActionListener(e->{
@@ -254,47 +248,37 @@ public class ShowCookieDialog extends JDialog implements WindowListener {
         controlPanel.setBackground(Color.WHITE);
         controlPanel.setLayout(new FlowLayout(FlowLayout.LEFT, 5, 15));
 
-        CTButton openInExp = new CTButton(CTButton.ButtonText, "打开所在目录",
-                "/image/openExp.png",
-                "/image/openExp.png", 30, 100, () -> {
+        CTProButton openInExp = new CTProButton("打开所在目录", GetIcon.getIcon(Main.class.getResource("/image/openExp.png"), 30, 30));
+        openInExp.addActionListener(e -> {
             OpenInExp.open(cookieMap.get(s[0]).getPath());
         });
-        openInExp.setBorderPainted(true);
-        openInExp.setForeground(Color.BLACK);
-        openInExp.setBackground(Color.WHITE);
+        openInExp.setFont(CTFont.getCTFont(Font.PLAIN, CTFontSizeStyle.NORMAL));
         openInExp.setEnabled(false);
         controlPanel.add(openInExp);
 
-        CTButton outputBtn = new CTButton(CTButton.ButtonText, "导出",
-                "/image/light/update_0.png",
-                "/image/light/update_0.png", 30, 100, () -> {
+        CTProButton outputBtn = new CTProButton("导出", GetIcon.getIcon(Main.class.getResource("/image/light/update_0.png"), 30, 30));
+        outputBtn.addActionListener(e -> {
             String path = GetPath.getDirectoryPath(this, "请选择导出目录");
             //将选中的插件文件夹打包为.zip
             ZipPack.createZip(path, cookieMap.get(s[0]).getParent(), s[0] + ".zip", cookieMap.get(s[0]).getName());
 
         });
-        outputBtn.setBorderPainted(true);
-        outputBtn.setForeground(Color.BLACK);
-        outputBtn.setBackground(Color.WHITE);
+        outputBtn.setFont(CTFont.getCTFont(Font.PLAIN, CTFontSizeStyle.NORMAL));
         outputBtn.setEnabled(false);
         controlPanel.add(outputBtn);
 
-        CTButton runCookie = new CTButton(CTButton.ButtonText, "运行",
-                "/image/wish.png",
-                "/image/wish.png",30,100, () -> {
+        CTProButton runCookie = new CTProButton("运行", GetIcon.getIcon(Main.class.getResource("/image/wish.png"), 30, 30));
+        runCookie.addActionListener(e -> {
             StartCookie.showCookie(s[0]);
         });
-        runCookie.setBorderPainted(true);
-        runCookie.setForeground(Color.BLACK);
-        runCookie.setBackground(Color.WHITE);
+        runCookie.setFont(CTFont.getCTFont(Font.PLAIN, CTFontSizeStyle.NORMAL));
         runCookie.setEnabled(false);
         controlPanel.add(runCookie);
 
         JScrollPane controlScrollPane = new JScrollPane(controlPanel);
 
         c.add(controlScrollPane, BorderLayout.SOUTH);
-        initControlPanel result = new initControlPanel(openInExp, outputBtn, runCookie);
-        return result;
+        return new initControlPanel(openInExp, outputBtn, runCookie);
     }
 
     @Override
@@ -333,10 +317,10 @@ public class ShowCookieDialog extends JDialog implements WindowListener {
 
     }
 
-    private record initControlPanel(CTButton openInExp, CTButton outputBtn, CTButton runCookie) {
+    private record initControlPanel(CTProButton openInExp, CTProButton outputBtn, CTProButton runCookie) {
     }
 
-    private record initCookieSetsPanel(CTButton removeCookie, CTButton deleteCookie) {
+    private record initCookieSetsPanel(CTProButton removeCookie, CTProButton deleteCookie) {
     }
     private void initMenuBar() {
         JMenuBar menuBar = new JMenuBar();

@@ -6,6 +6,7 @@ import com.wmp.PublicTools.UITools.GetIcon;
 import com.wmp.PublicTools.io.DownloadURLFile;
 import com.wmp.PublicTools.printLog.Log;
 import com.wmp.PublicTools.web.GetWebInf;
+import com.wmp.classTools.CTComponent.CTProButton;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
@@ -58,11 +59,8 @@ public class CookieDownload {
         showCookieGbc.weighty = 0;
         //展示已有插件
         cookieInfoMap.forEach((key, value) -> {
-            JButton button = new JButton(value.getName());
-            button.setBackground(Color.WHITE);
-            button.setForeground(Color.BLACK);
+            CTProButton button = new CTProButton(value.getName());
             button.setFont(CTFont.getCTFont(Font.BOLD, CTFontSizeStyle.NORMAL));
-            button.setFocusPainted(false);
             button.addActionListener(e -> {
                 button.setForeground(new Color(0x0090FF));
                 ref.openedButtonKey = key;
@@ -87,11 +85,8 @@ public class CookieDownload {
         JPanel buttonPanel = new JPanel();
         buttonPanel.setLayout(new FlowLayout(FlowLayout.TRAILING));
 
-        JButton downloadButton = new JButton("下载");
-        downloadButton.setBackground(Color.WHITE);
-        downloadButton.setForeground(Color.BLACK);
+        CTProButton downloadButton = new CTProButton("下载");
         downloadButton.setFont(CTFont.getCTFont(Font.BOLD, CTFontSizeStyle.SMALL));
-        downloadButton.setFocusPainted(false);
         downloadButton.addActionListener(e -> {
             if (ref.openedButtonKey.isEmpty()) {
                 Log.err.print("CookieDownload", "请选择一个插件");
@@ -120,11 +115,8 @@ public class CookieDownload {
         });
         buttonPanel.add(downloadButton);
 
-        JButton showInfoButton = new JButton("详细信息");
-        showInfoButton.setBackground(Color.WHITE);
-        showInfoButton.setForeground(Color.BLACK);
+        CTProButton showInfoButton = new CTProButton("详细信息");
         showInfoButton.setFont(CTFont.getCTFont(Font.BOLD, CTFontSizeStyle.SMALL));
-        showInfoButton.setFocusPainted(false);
         showInfoButton.addActionListener(e -> {
             if (ref.openedButtonKey.isEmpty()) {
                 Log.err.print("CookieDownload", "请选择一个插件");

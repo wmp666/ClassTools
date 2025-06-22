@@ -7,7 +7,8 @@ import com.wmp.PublicTools.UITools.CTFontSizeStyle;
 import com.wmp.PublicTools.UITools.GetIcon;
 import com.wmp.PublicTools.io.ZipPack;
 import com.wmp.PublicTools.printLog.Log;
-import com.wmp.classTools.CTComponent.CTButton;
+import com.wmp.classTools.CTComponent.CTProButton;
+import com.wmp.classTools.CTComponent.CTTextField;
 import com.wmp.classTools.frame.ShowCookieDialog;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -84,12 +85,12 @@ public class CookieSets {
         ArrayList<JPanel> setsPanelList = new ArrayList<>();
         final int[] index = {0};
 
-        JTextField nameTextField = new JTextField();
+        CTTextField nameTextField = new CTTextField();
         if (cookie.getName() != null){
             nameTextField.setText(cookie.getName());
         }
 
-        JTextField pinTextField = new JTextField(pin);
+        CTTextField pinTextField = new CTTextField(pin);
         JComboBox<String> styleComboBox = new JComboBox<>();
         styleComboBox.addItem("exe");
         styleComboBox.addItem("video");
@@ -100,14 +101,14 @@ public class CookieSets {
         styleComboBox.addItem("url");
         styleComboBox.addItem("other");
         styleComboBox.setSelectedItem(cookiePriData.get("style"));// 设置默认选中
-        JTextField iconTextField = new JTextField((String) cookiePriData.get("icon"));
-        JTextField runTextField = new JTextField((String) cookiePriData.get("RunPath"));
+        CTTextField iconTextField = new CTTextField((String) cookiePriData.get("icon"));
+        CTTextField runTextField = new CTTextField((String) cookiePriData.get("RunPath"));
 
         StringBuilder parameters = new StringBuilder();
         ((ArrayList<String>) cookiePriData.get("parameters")).forEach(s -> {
             parameters.append(s).append(";");
         });
-        JTextField parametersTextField = new JTextField(parameters.toString());
+        CTTextField parametersTextField = new CTTextField(parameters.toString());
 
         //设置界面
         {
@@ -127,34 +128,34 @@ public class CookieSets {
                 step1Panel.setBorder(BorderFactory.createTitledBorder("设置插件配置文件"));
 
                 JPanel namePanel = new JPanel();
-                namePanel.setLayout(new GridLayout(1,2));
+                namePanel.setLayout(new GridLayout(1, 2));
                 namePanel.add(new JLabel("插件名称:"));
                 namePanel.add(nameTextField);
 
                 JPanel pinPanel = new JPanel();
-                pinPanel.setLayout(new GridLayout(1,2));
+                pinPanel.setLayout(new GridLayout(1, 2));
                 pinPanel.add(new JLabel("插件pin:"));
                 pinPanel.add(pinTextField);
 
                 JPanel stylePanel = new JPanel();
-                stylePanel.setLayout(new GridLayout(1,2));
+                stylePanel.setLayout(new GridLayout(1, 2));
                 stylePanel.add(new JLabel("插件样式:"));
                 styleComboBox.setFont(CTFont.getCTFont(-1, CTFontSizeStyle.SMALL));
                 stylePanel.add(styleComboBox);
 
                 JPanel iconPanel = new JPanel();
-                iconPanel.setLayout(new GridLayout(1,2));
+                iconPanel.setLayout(new GridLayout(1, 2));
                 iconPanel.add(new JLabel("插件图标路径:"));
                 iconPanel.add(iconTextField);
 
 
                 JPanel runPanel = new JPanel();
-                runPanel.setLayout(new GridLayout(1,2));
+                runPanel.setLayout(new GridLayout(1, 2));
                 runPanel.add(new JLabel("运行指令:"));
                 runPanel.add(runTextField);
 
                 JPanel parametersPanel = new JPanel();
-                parametersPanel.setLayout(new GridLayout(1,2));
+                parametersPanel.setLayout(new GridLayout(1, 2));
                 parametersPanel.add(new JLabel("运行参数:"));
                 parametersPanel.add(parametersTextField);
 
@@ -165,7 +166,7 @@ public class CookieSets {
                 step1Panel.add(runPanel);
                 step1Panel.add(parametersPanel);
                 if (!(styleComboBox.getSelectedItem() != null &&
-                        styleComboBox.getSelectedItem().toString().equals("exe"))){
+                        styleComboBox.getSelectedItem().toString().equals("exe"))) {
                     parametersPanel.setVisible(false);
                 }
                 styleComboBox.addItemListener(s -> {
@@ -190,7 +191,7 @@ public class CookieSets {
                 label.setFont(CTFont.getCTFont(-1, CTFontSizeStyle.SMALL));
                 step2Panel.add(label, BorderLayout.NORTH);
 
-                CTButton openDirButton = new CTButton(CTButton.ButtonText, "打开插件目录",
+                /*CTButton openDirButton = new CTButton(CTButton.ButtonText, "打开插件目录",
                         "/image/openExp.png", "/image/openExp.png", 30, 100, () -> {
                     File cookiePath = cookie.getCookiePath();
                     if (cookiePath == null || !cookiePath.exists()) {
@@ -208,7 +209,23 @@ public class CookieSets {
                 });
                 openDirButton.setBackground(Color.WHITE);
                 openDirButton.setForeground(Color.BLACK);
-                openDirButton.setFont(CTFont.getCTFont(-1, CTFontSizeStyle.SMALL));
+                openDirButton.setFont(CTFont.getCTFont(-1, CTFontSizeStyle.SMALL));*/
+                CTProButton openDirButton = new CTProButton("打开插件目录", GetIcon.getIcon(Main.class.getResource("/image/openExp.png"), 30, 30));
+                openDirButton.addActionListener(e -> {
+                    File cookiePath = cookie.getCookiePath();
+                    if (cookiePath == null || !cookiePath.exists()) {
+                        try {
+                            String finalPin = pinTextField.getText();
+                            System.out.println(Main.DATA_PATH + "Cookie\\" + finalPin + "\\");
+                            cookiePath = new File(Main.DATA_PATH + "Cookie\\" + finalPin + "\\");
+                        } catch (Exception ex) {
+                            Log.err.print(dialog, "插件设置窗口", "打开插件目录失败:" + ex.getMessage());
+                        }
+                        cookiePath.mkdirs();
+                        System.out.println(cookiePath.getPath());
+                    }
+                    OpenInExp.open(cookiePath.getPath());
+                });
                 step2Panel.add(openDirButton, BorderLayout.CENTER);
 
                 setsPanelList.add(step2Panel);
@@ -229,18 +246,13 @@ public class CookieSets {
             JPanel buttonPanel = new JPanel();
             buttonPanel.setLayout(new FlowLayout(FlowLayout.RIGHT));
 
-            CTButton lastButton = new CTButton("上一步", 30, 100, () -> {
-            });
-            CTButton nextButton = new CTButton("下一步", 30, 100, () -> {
-            });
+            CTProButton lastButton = new CTProButton("上一步");
+            CTProButton nextButton = new CTProButton("下一步");
 
 
-            lastButton.setBackground(Color.WHITE);
-            lastButton.setForeground(Color.BLACK);
-            lastButton.setFont(CTFont.getCTFont(-1, CTFontSizeStyle.SMALL));
-            lastButton.setBorderPainted(true);
+            lastButton.setFont(CTFont.getCTFont(Font.PLAIN, CTFontSizeStyle.NORMAL));
             lastButton.setEnabled(false);
-            lastButton.setCallback(() -> {
+            lastButton.addActionListener(e -> {
                 if (index[0] > 0) {
                     container.remove(setsPanelList.get(index[0]));
                     index[0]--;
@@ -261,10 +273,8 @@ public class CookieSets {
             });
 
 
-            nextButton.setBackground(Color.WHITE);
-            nextButton.setForeground(Color.BLACK);
-            nextButton.setFont(CTFont.getCTFont(-1, CTFontSizeStyle.SMALL));
-            nextButton.setCallback(() -> {
+            nextButton.setFont(CTFont.getCTFont(Font.PLAIN, CTFontSizeStyle.NORMAL));
+            nextButton.addActionListener(e -> {
                 if (index[0] < setsPanelList.size() - 1) {
                     container.remove(setsPanelList.get(index[0]));
                     index[0]++;
@@ -306,8 +316,8 @@ public class CookieSets {
                         );
                         Log.info.message(dialog, "插件设置窗口", "设置完成");
 
-                    } catch (IOException e) {
-                        Log.err.print(dialog, "插件设置窗口", "设置失败\n" + e.getMessage());
+                    } catch (IOException ex) {
+                        Log.err.print(dialog, "插件设置窗口", "设置失败\n" + ex.getMessage());
                         return;
                     }
 
@@ -315,8 +325,8 @@ public class CookieSets {
                     dialog.setVisible(false);
                     try {
                         refreshParentWindow();
-                    } catch (IOException e) {
-                        Log.err.print(dialog, "插件设置窗口", "刷新失败\n" + e.getMessage());
+                    } catch (IOException ex) {
+                        Log.err.print(dialog, "插件设置窗口", "刷新失败\n" + ex.getMessage());
                         return;
                     }
                 }
@@ -332,7 +342,6 @@ public class CookieSets {
                 container.revalidate();
                 container.repaint();
             });
-            nextButton.setBorderPainted(true);
 
             buttonPanel.add(lastButton);
             buttonPanel.add(nextButton);

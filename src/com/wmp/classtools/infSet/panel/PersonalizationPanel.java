@@ -6,6 +6,7 @@ import com.wmp.PublicTools.UITools.CTFontSizeStyle;
 import com.wmp.PublicTools.io.IOForInfo;
 import com.wmp.PublicTools.printLog.Log;
 import com.wmp.classTools.CTComponent.CTSetsPanel;
+import com.wmp.classTools.CTComponent.CTTextField;
 import com.wmp.classTools.frame.MainWindow;
 import com.wmp.classTools.importPanel.finalPanel.FinalPanel;
 import com.wmp.classTools.infSet.tools.SetStartUp;
@@ -25,7 +26,7 @@ public class PersonalizationPanel extends CTSetsPanel {
     private final JComboBox<String> mainColorComboBox = new JComboBox<>();
     private final JComboBox<String> mainThemeComboBox = new JComboBox<>();
     private final JComboBox<String> FontNameComboBox = new JComboBox<>();
-    private final ArrayList<JTextField> FontSizeList = new ArrayList<>();
+    private final ArrayList<CTTextField> FontSizeList = new ArrayList<>();
     private final TreeMap<String, JCheckBox> disposeButton = new TreeMap<>();
     private final JCheckBox StartUpdate = new JCheckBox("启动检查更新");
     private final JCheckBox canExit = new JCheckBox("防止被意外关闭");
@@ -161,7 +162,7 @@ public class PersonalizationPanel extends CTSetsPanel {
                 JLabel FontSizeLabel = new JLabel("字体大小-大:");
                 FontSizeLabel.setFont(CTFont.getCTFont(-1, CTFontSizeStyle.SMALL));
                 //FontSizeLabel.setForeground(CTColor.textColor);
-                JTextField FontSizeTextField = new JTextField(5);
+                CTTextField FontSizeTextField = new CTTextField();
                 FontSizeTextField.setFont(CTFont.getCTFont(-1, CTFontSizeStyle.SMALL));
                 //FontSizeTextField.setForeground(CTColor.textColor);
             }
@@ -169,7 +170,7 @@ public class PersonalizationPanel extends CTSetsPanel {
             JButton button = new JButton("改为默认");
             //button.setFont(new Font("Microsoft YaHei UI", Font.PLAIN, 12));
             button.addActionListener(e -> {
-                CTFont.setSize(100, 60, 29, 24, 15, 12);
+                CTFont.setSize(100, 60, 24, 19, 15, 12);
                 CTFont.setFontName("微软雅黑");
                 FontNameComboBox.setSelectedItem("微软雅黑");
                 FontSizeList.forEach(textField -> textField.setText(String.valueOf(CTFont.getSize()[0])));

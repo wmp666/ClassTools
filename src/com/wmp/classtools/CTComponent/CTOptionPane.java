@@ -2,15 +2,12 @@ package com.wmp.classTools.CTComponent;
 
 import com.wmp.Main;
 import com.wmp.PublicTools.UITools.GetIcon;
-import com.wmp.PublicTools.UITools.GetMaxSize;
 
 import javax.swing.*;
 import javax.swing.border.Border;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.FocusEvent;
-import java.awt.event.FocusListener;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicReference;
 
@@ -132,7 +129,7 @@ public class CTOptionPane {
 
         // 创建消息文本区域
         AtomicReference<String> inputStr = new AtomicReference<>("");
-        InputTextField inputField = new InputTextField();
+        CTTextField inputField = new CTTextField();
         {
             JPanel panel = new JPanel(new BorderLayout(10, 10));
 
@@ -147,7 +144,7 @@ public class CTOptionPane {
                     if (message.contains("\\n")) {
                         message = message.replace("\\n", "\n");
                     }
-                    int maxLength = GetMaxSize.getMaxLength(message, GetMaxSize.STYLE_PLAIN);
+                    /*int maxLength = GetMaxSize.getMaxLength(message, GetMaxSize.STYLE_PLAIN);
                     while (maxLength > 21) {
                         String[] lines = message.split("\n");
                         for (int i = 0; i < lines.length; i++) {
@@ -162,16 +159,16 @@ public class CTOptionPane {
                         System.out.println(message);
                         System.out.println("----------------");
                         maxLength = GetMaxSize.getMaxLength(message, GetMaxSize.STYLE_PLAIN);
-                    }
+                    }*/
                 }
                 //创建一个文本区域
                 JTextArea messageArea = new JTextArea();
                 messageArea.setText(message);
                 messageArea.setEditable(false);//设置文本区域不可编辑
-                messageArea.setFocusable(false);//设置文本区域可聚焦
+                //messageArea.setFocusable(false);//设置文本区域可聚焦
                 messageArea.setOpaque(false);//设置文本区域不透明
-                //messageArea.setLineWrap(true);//设置文本区域自动换行
-                //messageArea.setWrapStyleWord(true);//设置文本区域自动换行时单词不被分割
+                messageArea.setLineWrap(true);//设置文本区域自动换行
+                messageArea.setWrapStyleWord(true);//设置文本区域自动换行时单词不被分割
                 messageArea.setFont(new Font("Microsoft YaHei UI", Font.PLAIN, 15));
                 messagePanel = new JScrollPane(messageArea);
                 messagePanel.setBorder(null);
@@ -248,66 +245,10 @@ public class CTOptionPane {
     }
 }
 
-abstract class ChooseButton extends JButton implements ActionListener {
-
-
+abstract class ChooseButton extends CTProButton implements ActionListener {
     public ChooseButton(String text) {
-        this.setContentAreaFilled(false);
-        this.setBorder(CTOptionPane.BASIC_LINE_BORDER);
-
-        this.setText(text);
-        this.setBackground(new Color(255, 255, 255));
-        this.setFont(new Font("Microsoft YaHei UI", Font.PLAIN, 20));
-        this.setFocusPainted(false);
-        this.setOpaque(true);
-
-        JButton button = this;
-        this.addFocusListener(new FocusListener() {
-            @Override
-            public void focusGained(FocusEvent e) {
-                button.setBorder(CTOptionPane.FOCUS_GAINTED_BORDER);
-            }
-
-            @Override
-            public void focusLost(FocusEvent e) {
-                button.setBorder(CTOptionPane.BASIC_LINE_BORDER);
-            }
-        });
+        super(text);
         this.addActionListener(this);
-        this.addChangeListener(e -> {
-            ButtonModel model = button.getModel();
-            if (model.isPressed()) {//鼠标按下
-                button.setBackground(new Color(179, 179, 179));
-            } else if (model.isRollover()) {//鼠标移入
-                button.setBackground(new Color(218, 218, 218));
-            } else {
-                button.setBackground(new Color(255, 255, 255));
-            }
-        });
     }
-
 }
 
-class InputTextField extends JTextField {
-
-
-    public InputTextField() {
-        this.setBorder(CTOptionPane.BASIC_LINE_BORDER);//设置按钮的边框 - 5px 实线
-        this.setBackground(new Color(255, 255, 255));
-        this.setFont(new Font("Microsoft YaHei UI", Font.PLAIN, 18));
-        JTextField textField = this;
-        this.addFocusListener(new FocusListener() {
-            @Override
-            public void focusGained(FocusEvent e) {
-                textField.setBorder(CTOptionPane.FOCUS_GAINTED_BORDER);
-            }
-
-            @Override
-            public void focusLost(FocusEvent e) {
-                textField.setBorder(CTOptionPane.BASIC_LINE_BORDER);
-            }
-        });
-    }
-
-
-}
