@@ -195,7 +195,7 @@ public class CTOptionPane {
         // 创建消息文本区域
         AtomicReference<String> inputStr = new AtomicReference<>("");
 
-        JPanel toolsPanel = new JPanel(new GridLayout(0, 1));
+        JPanel toolsPanel = new JPanel(new GridLayout(0, 1, 5, 5));
 
         CTTextField inputField = new CTTextField();
         CTComboBox choiceBox = new CTComboBox();

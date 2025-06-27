@@ -7,6 +7,7 @@ import com.wmp.PublicTools.UITools.CTFontSizeStyle;
 import com.wmp.PublicTools.UITools.GetIcon;
 import com.wmp.PublicTools.io.ZipPack;
 import com.wmp.PublicTools.printLog.Log;
+import com.wmp.classTools.CTComponent.CTComboBox;
 import com.wmp.classTools.CTComponent.CTTextButton;
 import com.wmp.classTools.CTComponent.CTTextField;
 import com.wmp.classTools.frame.ShowCookieDialog;
@@ -91,15 +92,8 @@ public class CookieSets {
         }
 
         CTTextField pinTextField = new CTTextField(pin);
-        JComboBox<String> styleComboBox = new JComboBox<>();
-        styleComboBox.addItem("exe");
-        styleComboBox.addItem("video");
-        styleComboBox.addItem("music");
-        styleComboBox.addItem("image");
-        styleComboBox.addItem("directory");
-        styleComboBox.addItem("file");
-        styleComboBox.addItem("url");
-        styleComboBox.addItem("other");
+        CTComboBox styleComboBox = new CTComboBox();
+        styleComboBox.addItems("exe", "video", "music", "image", "directory", "file", "url", "other");
         styleComboBox.setSelectedItem(cookiePriData.get("style"));// 设置默认选中
         CTTextField iconTextField = new CTTextField((String) cookiePriData.get("icon"));
         CTTextField runTextField = new CTTextField((String) cookiePriData.get("RunPath"));

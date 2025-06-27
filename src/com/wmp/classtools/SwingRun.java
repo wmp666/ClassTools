@@ -60,7 +60,7 @@ public class SwingRun {
             int i = list.indexOf("-EasterEgg:") + 1;
             Log.info.print("Main", "-EasterEgg:" + list.get(i));
             //System.out.println();
-            EasterEgg.showEasterEgg(list.get(i).split(";"));
+            EasterEgg.showEasterEgg(EasterEgg.STYLE_EE_VIDEO, list.get(i));
         }
         if (allArgs.get("Cookie:StartUp").contains(list)) {
             int i = list.indexOf("-OpenCookie:") + 1;

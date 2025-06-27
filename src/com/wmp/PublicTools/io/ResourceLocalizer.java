@@ -10,6 +10,7 @@ import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
 
 public class ResourceLocalizer {
+    // 将内置文件复制到指定目录
     public static void copyEmbeddedFile(String outputPath, String inputPath, String fileName) {
         File file = new File(outputPath);
         if (!file.exists()) {
@@ -30,7 +31,7 @@ public class ResourceLocalizer {
         }
     }
 
-    public static void copyWebVideo(String outputPath, String webPath, String fileName) {
+    public static void copyWebFile(String outputPath, String webPath, String fileName) {
 
         File file = new File(outputPath);
         if (!file.exists()) {
@@ -40,7 +41,7 @@ public class ResourceLocalizer {
         if (targetFile.exists()) {
             return;
         }
-        Log.info.print("ResourceLocalizer-下载视频", "开始下载视频:" + webPath);
+        Log.info.print("ResourceLocalizer-下载文件", "开始下载文件:" + webPath);
         DownloadURLFile.downloadWebFile(null, null, webPath, outputPath);
     }
 }

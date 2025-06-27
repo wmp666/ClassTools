@@ -30,6 +30,20 @@ public class MediaPlayer {
         }
     }
 
+    public static void playMusic(String filePath) throws IOException {
+        File musicFile = new File(filePath);
+
+
+        //newStyleToShowVideo(videoFile);
+        try {
+            Desktop.getDesktop().open(musicFile);
+        } catch (IOException e) {
+            // 处理打开视频文件失败的情况
+            Log.err.print("MediaPlayer", "播放出现错误\n" + e.getMessage());
+            throw new RuntimeException(e);
+        }
+    }
+
     public static void playMusic(int style, boolean inThread) {
         InputStream inputStream = null;
 

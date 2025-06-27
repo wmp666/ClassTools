@@ -12,7 +12,6 @@ import org.json.JSONObject;
 
 import javax.swing.*;
 import java.io.IOException;
-import java.net.URISyntaxException;
 import java.time.LocalDate;
 import java.time.Month;
 import java.time.ZoneId;
@@ -23,6 +22,8 @@ public class EasterEgg {
     public static final int STYLE_IMPORT_DAY = 1;
     public static final int STYLE_ERROR = 2;
 
+    public static final int STYLE_EE_VIDEO = 0;
+    public static final int STYLE_EE_MUSIC = 1;
     public static boolean getEasterEggItem(int style) {
 
         if (Main.allArgs.get("screenProduct:show").contains(Main.argsList)) return false;
@@ -78,51 +79,49 @@ public class EasterEgg {
     }
 
     public static void getPin() {
-        String s = Log.info.showInputDialog(null, "祈愿", "请输入■■");
+        String[] ss = Log.info.showInputDialog(null, "祈愿", "请输入■■", "视频", "音乐");
 
+        String s = ss[1];
 
+        int style = 0;
+        String s1 = ss[0];
+        if (s1.equals("视频")) {
+            style = STYLE_EE_VIDEO;
+        } else if (s1.equals("音乐")) {
+            style = STYLE_EE_MUSIC;
+        } else {
+            Log.err.print(null, "祈愿", "请输入正确的格式");
+            return;
+        }
 
         if (s != null) {
-            try {
-
                 String[] split = s.split(":");
                 if (split.length == 2) {
                     String s2 = split[0];
                     if (s2.equalsIgnoreCase("EasterEgg")) {
-                        showEasterEgg(split[1].split(";"));
+                        showEasterEgg(style, split[1]);
                     } else{
                         Log.err.print(null, "祈愿", "请输入正确的格式");
-
                     }
                 } else if (split.length == 1) {
-                    showEasterEgg(s.split(";"));
+                    showEasterEgg(style, s);
                 }else{
                     Log.err.print(null, "祈愿", "请输入正确的格式");
                 }
-
-
-            } catch (URISyntaxException | IOException e) {
-                throw new RuntimeException(e);
-            }
         }
 
 
     }
 
-    public static void showEasterEgg(String... pins) throws URISyntaxException, IOException {
-        for (String pin : pins) {
-            showEasterEgg(pin);
-        }
-    }
-    public static void showEasterEgg(String pin){
-        String videoName;
+    public static void showEasterEgg(int style, String pin) {
+        String mediaName;
 
 
         Log.info.print("EasterEgg-显示", "正在准备...");
 
-        if (Main.isError) videoName = "PV-yl";
+        if (Main.isError) mediaName = "PV-yl";
         else {
-            videoName = pin;
+            mediaName = pin;
         }
 
         new SwingWorker<Void, Void>() {
@@ -139,16 +138,23 @@ public class EasterEgg {
                     JSONArray jsonArray = new JSONArray(temp);
                     for (int i = 0; i < jsonArray.length(); i++) {
                         JSONObject jsonObject = jsonArray.getJSONObject(i);
-                        if (jsonObject.getString("tag_name").equalsIgnoreCase("0.0.1")
-                                && jsonObject.getString("name").equalsIgnoreCase("视频专用")){
+                        if (jsonObject.getString("tag_name").equalsIgnoreCase("0.0.1")) {
 
                             JSONArray assets = jsonObject.getJSONArray("assets");
                             for (int j = 0; j < assets.length(); j++) {
                                 JSONObject asset = assets.getJSONObject(j);
-                                if (asset.getString("name").equals(videoName + ".mp4")) {
-                                    downloadUrl = asset.getString("browser_download_url");
-                                    break;
+                                if (style == STYLE_EE_VIDEO) {
+                                    if (asset.getString("name").equals(mediaName + ".mp4")) {
+                                        downloadUrl = asset.getString("browser_download_url");
+                                        break;
+                                    }
+                                } else if (style == STYLE_EE_MUSIC) {
+                                    if (asset.getString("name").equals(mediaName + ".mp3")) {
+                                        downloadUrl = asset.getString("browser_download_url");
+                                        break;
+                                    }
                                 }
+
                             }
                         }
                     }
@@ -156,12 +162,14 @@ public class EasterEgg {
 
                     //webInf = GetWebInf.getWebInf("https://api.github.com/repos/wmp666/ClassTools/contents/video/" + pin + ".mp4");
                 } catch (Exception e) {
-                    downloadUrl = "{\"message\":\"Not Found\"}";
                     throw new RuntimeException(e);
                 }
                 Log.info.print("EasterEgg-下载", "下载链接: " + downloadUrl);
 
-                ResourceLocalizer.copyWebVideo(Main.TEMP_PATH + "EasterEgg\\video\\", downloadUrl, videoName + ".mp4");
+                if (style == STYLE_EE_VIDEO)
+                    ResourceLocalizer.copyWebFile(Main.TEMP_PATH + "EasterEgg\\video\\", downloadUrl, mediaName + ".mp4");
+                else if (style == STYLE_EE_MUSIC)
+                    ResourceLocalizer.copyWebFile(Main.TEMP_PATH + "EasterEgg\\music\\", downloadUrl, mediaName + ".mp3");
                 return null;
             }
 
@@ -173,12 +181,18 @@ public class EasterEgg {
                     get(); // 获取执行结果（可捕获异常）
 
 
-                    String videoPath = buildVideoPath(videoName);
-                            try {
-                                MediaPlayer.playVideo(videoPath);
-                            } catch (IOException e) {
-                                throw new RuntimeException(e);
-                            }
+                    try {
+                        if (style == STYLE_EE_MUSIC) {
+                            String path = Main.TEMP_PATH + "EasterEgg\\music\\" + mediaName + ".mp3";
+                            MediaPlayer.playMusic(path);
+                        } else if (style == STYLE_EE_VIDEO) {
+                            String path = Main.TEMP_PATH + "EasterEgg\\video\\" + mediaName + ".mp4";
+                            MediaPlayer.playVideo(path);
+                        }
+
+                    } catch (IOException e) {
+                        throw new RuntimeException(e);
+                    }
 
 
 
@@ -193,9 +207,6 @@ public class EasterEgg {
 
     }
 
-    private static String buildVideoPath(String pin) {
-        return Main.TEMP_PATH + "EasterEgg\\video\\" + pin + ".mp4";
-    }
 
     public static String getText(EETextStyle style){
         String[] easterEggList = getAllText();
