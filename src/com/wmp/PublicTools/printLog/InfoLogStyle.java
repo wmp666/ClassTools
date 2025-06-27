@@ -16,6 +16,10 @@ public class InfoLogStyle extends PrintLogStyle {
         super(style);
     }
 
+    public void systemPrint(String owner, String logInfo) {
+        Log.systemPrint(LogStyle.INFO, owner, logInfo);
+    }
+
     public void message(Container c, String owner, String logInfo) {
         Log.print(getStyle(), owner, "弹窗信息->" + logInfo, c);
         String title = getTitle(owner);

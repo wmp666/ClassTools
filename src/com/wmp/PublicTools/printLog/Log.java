@@ -22,12 +22,15 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.Objects;
 import java.util.Random;
 
 public class Log {
     private static final ArrayList<String> logInfList = new ArrayList<>();
     private static int index = 0;
 
+
+    private static final TrayIcon trayIcon = new TrayIcon(GetIcon.getImageIcon(Main.class.getResource("/image/icon.png"), 16, 16).getImage(), "ClassTools");
 
     private static final JTextArea textArea = new JTextArea();
 
@@ -61,6 +64,13 @@ public class Log {
     public static PrintLogStyle err = new PrintLogStyle(LogStyle.ERROR);
 
     static {
+        SystemTray systemTray = SystemTray.getSystemTray();
+        try {
+            systemTray.add(trayIcon);
+        } catch (AWTException e) {
+            throw new RuntimeException(e);
+        }
+
         thread.setDaemon(true);
         thread.start();  // 确保启动线程
     }
@@ -146,6 +156,13 @@ public class Log {
         saveLog(false);
     }
 
+    public static void systemPrint(LogStyle style, String owner, String logInfo) {
+
+        if (SystemTray.isSupported() && Objects.requireNonNull(style) == LogStyle.INFO) {
+            trayIcon.displayMessage(owner, logInfo, TrayIcon.MessageType.INFO);
+        }
+        Log.print(style, owner, logInfo, null);
+    }
     public static void print(LogStyle style, String owner, String logInfo, Container c) {
         Date date = new Date();
         DateFormat dateFormat = new SimpleDateFormat("MM.dd HH:mm:ss");
@@ -169,6 +186,7 @@ public class Log {
                         "[警告]" +
                         "[" + owner + "] :" +
                         logInfo;
+                trayIcon.displayMessage(owner, logInfo, TrayIcon.MessageType.WARNING);
                 System.out.println(info);
                 logInfList.add(info);
             }
@@ -179,6 +197,7 @@ public class Log {
                         "[错误]" +
                         "[" + owner + "] :" +
                         logInfo;
+                trayIcon.displayMessage(owner, logInfo, TrayIcon.MessageType.ERROR);
                 System.err.println(info);
 
                 MediaPlayer.playMusic(MediaPlayer.MUSIC_STYLE_ERROR, true);

@@ -62,7 +62,7 @@ public class Main{
     public static void main(String[] args) throws IOException {
 
 
-        Log.info.print("Main", "正在初始化...");
+        Log.info.systemPrint("Main", "正在初始化...");
         boolean b;
         boolean startUpdate;
         try {

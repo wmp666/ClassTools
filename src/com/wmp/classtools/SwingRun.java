@@ -19,6 +19,8 @@ public class SwingRun {
 
     public static void show(boolean b, TreeMap<String, StartupParameters> allArgs, ArrayList<String> list, boolean StartUpdate) throws URISyntaxException, IOException {
 
+        Log.info.systemPrint("SwingRun", "开始初始化UI...");
+
         try {
             //使用系统UI
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());

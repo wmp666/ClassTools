@@ -33,6 +33,7 @@ public class InfSetDialog extends JDialog {
     private String openedPanel = "迟到人员";
     // 添加文件路径参数
     public InfSetDialog(Runnable refreshCallback) throws IOException {
+        Log.info.systemPrint("设置", "正在初始化设置...");
 
         this.setBackground(CTColor.backColor);
         this.setIconImage(GetIcon.getImageIcon(getClass().getResource("/image/light/settings_0.png"), 32, 32).getImage());
@@ -48,6 +49,8 @@ public class InfSetDialog extends JDialog {
         this.c = this.getContentPane();
         this.refreshCallback = refreshCallback;
 
+        Log.info.systemPrint("设置", "正在获取设置页面...");
+
         ctSetsPanelList.add(new PersonalizationPanel(Main.DATA_PATH));
 
         ArrayList<CTPanel> showPanelList = MainWindow.showPanelList;
@@ -60,6 +63,7 @@ public class InfSetDialog extends JDialog {
 
         ctSetsPanelList.add(new ClearTempPanel(Main.DATA_PATH));
 
+        Log.info.systemPrint("设置", "正在完成后续工作...");
         initMenuBar();
 
 

@@ -2,7 +2,6 @@ package com.wmp.classTools.frame;
 
 import com.wmp.Main;
 import com.wmp.PublicTools.UITools.CTColor;
-import com.wmp.PublicTools.io.IOForInfo;
 import com.wmp.classTools.CTComponent.CTPanel;
 import com.wmp.classTools.extraPanel.attendance.panel.ATPanel;
 import com.wmp.classTools.extraPanel.duty.panel.DPanel;
@@ -44,13 +43,6 @@ public class MainWindow extends JDialog {
         File indexPath = new File(path + "Duty\\index.txt");
         File AllStuPath = new File(path + "Att\\AllStu.txt");
         File LeaveListPath = new File(path + "Att\\LeaveList.txt");
-
-
-        //初始化
-        new IOForInfo(DutyListPath);
-        new IOForInfo(indexPath);
-        new IOForInfo(AllStuPath);
-
 
 
 

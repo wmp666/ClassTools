@@ -34,14 +34,18 @@ public class CookieDownload {
      * 下载官方插件
      */
     public CookieDownload() throws Exception {
+        Log.info.systemPrint("CookieDownload", "正在初始化插件下载页");
 
+        Log.info.systemPrint("CookieDownload", "正在获取数据");
         getInfo();
 
+        Log.info.systemPrint("CookieDownload", "正在初始化UI");
         JDialog dialog = new JDialog();
         initDialog(dialog);
 
         initUI(dialog);
 
+        Log.info.systemPrint("CookieDownload", "完成");
         //dialog.pack();
         dialog.setVisible(true);
     }

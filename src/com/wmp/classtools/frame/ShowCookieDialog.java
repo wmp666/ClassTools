@@ -62,12 +62,13 @@ public class ShowCookieDialog extends JDialog implements WindowListener {
     });
 
     public ShowCookieDialog() throws IOException {
+        Log.info.systemPrint("ShowCookieDialog", "正在初始化插件展示页...");
+
         initDialog();
 
         Container c = this.getContentPane();
 
         c.setLayout(new BorderLayout());
-
 
         initShowCookies(c);
 
