@@ -4,7 +4,7 @@ import com.wmp.PublicTools.UITools.CTColor;
 import com.wmp.PublicTools.UITools.CTFont;
 import com.wmp.PublicTools.UITools.CTFontSizeStyle;
 import com.wmp.PublicTools.printLog.Log;
-import com.wmp.classTools.CTComponent.CTButton;
+import com.wmp.classTools.CTComponent.CTIconButton;
 import com.wmp.classTools.CTComponent.CTPanel;
 
 import javax.swing.*;
@@ -65,7 +65,7 @@ public class TimeViewPanel extends CTPanel {
         timeView.setForeground(CTColor.mainColor);
         this.add(timeView, BorderLayout.CENTER);
 
-        CTButton viewTimeButton = new CTButton("全屏显示时间",
+        CTIconButton viewTimeButton = new CTIconButton("全屏显示时间",
                 "/image/%s/view_0.png",
                 "/image/%s/view_1.png", 30, () -> {
             try {
@@ -108,7 +108,7 @@ public class TimeViewPanel extends CTPanel {
         c.add(timeView, BorderLayout.CENTER);
 
 
-        CTButton exitButton = new CTButton(
+        CTIconButton exitButton = new CTIconButton(
                 "/image/%s/exit_0.png",
                 "/image/%s/exit_1.png", 1, () -> {
                 window.setVisible(false);

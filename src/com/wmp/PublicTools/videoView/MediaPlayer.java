@@ -31,7 +31,7 @@ public class MediaPlayer {
     }
 
     public static void playMusic(int style, boolean inThread) {
-        InputStream inputStream;
+        InputStream inputStream = null;
 
         switch (style) {
             case MUSIC_STYLE_ERROR -> {
@@ -47,26 +47,29 @@ public class MediaPlayer {
                 if (Main.isError) {
                     inputStream = Log.class.getResourceAsStream("/music/error-yl.mp3");
                 } else {
-                    if (r.nextBoolean()) {
-                        inputStream = Log.class.getResourceAsStream("/music/error-kong.mp3");
-                    } else {
-                        inputStream = Log.class.getResourceAsStream("/music/error-yin.mp3");
+                    int i = r.nextInt(3);
+                    switch (i) {
+                        case 0 -> inputStream = Log.class.getResourceAsStream("/music/error-kong.mp3");
+                        case 1 -> inputStream = Log.class.getResourceAsStream("/music/error-yin.mp3");
+                        case 2 -> inputStream = Log.class.getResourceAsStream("/music/error-oll.mp3");
+
                     }
                 }
+
             }
-            default -> {
-                inputStream = Log.class.getResourceAsStream("/music/error-yin.mp3");
-            }
+
+            default -> inputStream = Log.class.getResourceAsStream("/music/error-kong.mp3");
         }
 
 
         if (inputStream != null) {
             if (inThread) {
+                InputStream finalInputStream = inputStream;
                 new Thread(() -> {
 
 
                     try {
-                        Player player = new Player(inputStream);
+                        Player player = new Player(finalInputStream);
                         player.play();
                     } catch (JavaLayerException e) {
                         throw new RuntimeException(e);

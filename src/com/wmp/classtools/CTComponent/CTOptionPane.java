@@ -63,6 +63,25 @@ public class CTOptionPane {
     }
 
     /**
+     * 显示确认对话框
+     *
+     * @param owner         对话框的父组件
+     * @param title         对话框标题
+     * @param message       显示的消息
+     * @param icon          对话框图标
+     * @param isAlwaysOnTop 是否始终置顶
+     * @param choices       显示的选项
+     * @return 用户选择的选项 , 按取消返回"NULL"
+     */
+    public static String showConfirmDialog(Container owner, String title, String message, Icon icon, boolean isAlwaysOnTop, String... choices) {
+        Object[] o = showDefaultDialog(owner, title, message, icon, INFORMATION_MESSAGE, YES_NO_BUTTONS, MESSAGE_TEXT, isAlwaysOnTop, choices);
+        if (o != null && o.length > 0 && o[0] != null) {
+            return o[0].toString();
+        }
+        return "NULL";
+    }
+
+    /**
      * 显示输入对话框
      *
      * @param owner         对话框的父组件
@@ -81,6 +100,32 @@ public class CTOptionPane {
     }
 
     /**
+     * 显示选择输入对话框
+     *
+     * @param owner         对话框的父组件
+     * @param title         对话框标题
+     * @param message       显示的消息
+     * @param icon          对话框图标
+     * @param isAlwaysOnTop 是否始终置顶
+     * @param choices       显示的选项
+     * @return 0-选择的选项  1-用户输入的字符串
+     */
+    public static String[] showConfirmInputDialog(Container owner, String title, String message, Icon icon, boolean isAlwaysOnTop, String... choices) {
+        Object[] o = showDefaultDialog(owner, title, message, icon, INFORMATION_MESSAGE, YES_NO_BUTTONS, MESSAGE_INPUT, isAlwaysOnTop, choices);
+        if (o != null) {
+            String[] ss = new String[o.length];
+            for (int i = 0; i < o.length; i++) {
+
+
+                String string = o[i].toString();
+                ss[i] = string;
+            }
+            return ss;
+        }
+        return new String[]{"NULL", ""};
+    }
+
+    /**
      * @param owner         对话框的父组件
      * @param title         对话框标题
      * @param message       显示的消息
@@ -92,6 +137,26 @@ public class CTOptionPane {
      * @return 根据showComponent的类型返回不同的对象
      */
     private static Object showDefaultDialog(Component owner, String title, String message, Icon icon, int iconType, int optionType, int messageType, boolean isAlwaysOnTop) {
+
+        Object[] objects = showDefaultDialog(owner, title, message, icon, iconType, optionType, messageType, isAlwaysOnTop, "");
+        if (objects != null) {
+            return objects[0];
+        }
+        return null;
+    }
+
+    /**
+     * @param owner         对话框的父组件
+     * @param title         对话框标题
+     * @param message       显示的消息
+     * @param icon          对话框图标
+     * @param iconType      对话框图标类型
+     * @param optionType    对话框选项类型
+     * @param messageType   对话框消息类型
+     * @param isAlwaysOnTop 是否始终置顶
+     * @return 根据showComponent的类型返回不同的对象
+     */
+    private static Object[] showDefaultDialog(Component owner, String title, String message, Icon icon, int iconType, int optionType, int messageType, boolean isAlwaysOnTop, String... choices) {
         JDialog dialog = new JDialog();
         dialog.setSize(380, 200);
         dialog.setLocationRelativeTo(owner);//设置对话框的位置相对于父组件
@@ -129,7 +194,14 @@ public class CTOptionPane {
 
         // 创建消息文本区域
         AtomicReference<String> inputStr = new AtomicReference<>("");
+
+        JPanel toolsPanel = new JPanel(new GridLayout(0, 1));
+
         CTTextField inputField = new CTTextField();
+        CTComboBox choiceBox = new CTComboBox();
+        if (choices != null && choices.length > 0 && !choices[0].isEmpty()) {
+            choiceBox.addItems(choices);
+        }
         {
             JPanel panel = new JPanel(new BorderLayout(10, 10));
 
@@ -144,22 +216,7 @@ public class CTOptionPane {
                     if (message.contains("\\n")) {
                         message = message.replace("\\n", "\n");
                     }
-                    /*int maxLength = GetMaxSize.getMaxLength(message, GetMaxSize.STYLE_PLAIN);
-                    while (maxLength > 21) {
-                        String[] lines = message.split("\n");
-                        for (int i = 0; i < lines.length; i++) {
-                            if (lines[i].length() > 21) {
-                                //在第21个字符后插入换行符
-                                lines[i] = lines[i].substring(0, 21) + "\n" + lines[i].substring(21);//在第21个字符后插入换行符
 
-                            }
-                        }
-                        message = String.join("\n", lines);
-
-                        System.out.println(message);
-                        System.out.println("----------------");
-                        maxLength = GetMaxSize.getMaxLength(message, GetMaxSize.STYLE_PLAIN);
-                    }*/
                 }
                 //创建一个文本区域
                 JTextArea messageArea = new JTextArea();
@@ -175,12 +232,17 @@ public class CTOptionPane {
 
                 panel.add(messagePanel, BorderLayout.CENTER);
             }
+            //选择框
+            if (choiceBox.getItemCount() > 0) {
+                toolsPanel.add(choiceBox);
+            }
             // 输入框
             if (messageType == MESSAGE_INPUT) {
 
-                panel.add(inputField, BorderLayout.SOUTH);
+                toolsPanel.add(inputField);
             }
 
+            panel.add(toolsPanel, BorderLayout.SOUTH);
             dialog.add(panel, BorderLayout.CENTER);//设置消息文本区域的位置 - 中间
 
         }
@@ -233,19 +295,32 @@ public class CTOptionPane {
 
 
         if (optionType == YES_NO_BUTTONS) {
-            if (messageType == MESSAGE_TEXT) {
-                return choose.get();
-            } else if (messageType == MESSAGE_INPUT) {
-                return inputStr.get();
+            if (choices != null && choices.length > 0 && !choices[0].isEmpty()) {//如果有特殊选项
+                if (messageType == MESSAGE_TEXT) {// 没有输入框
+                    if (choose.get() == YES_OPTION)
+                        return new Object[]{choiceBox.getSelectedItem()};
+                    else
+                        return new Object[]{null};
+                } else if (messageType == MESSAGE_INPUT) {// 有输入框
+                    return new Object[]{choiceBox.getSelectedItem(), inputStr.get()};
+                }
+            } else {
+                if (messageType == MESSAGE_TEXT) {// 没有输入框
+                    return new Object[]{choose.get()};
+                } else if (messageType == MESSAGE_INPUT) {// 有输入框
+                    return new Object[]{inputStr.get()};
+                }
             }
+
 
         }
 
         return null;
     }
+
 }
 
-abstract class ChooseButton extends CTProButton implements ActionListener {
+abstract class ChooseButton extends CTTextButton implements ActionListener {
     public ChooseButton(String text) {
         super(text);
         this.addActionListener(this);

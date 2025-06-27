@@ -4,7 +4,7 @@ import com.wmp.PublicTools.UITools.CTColor;
 import com.wmp.PublicTools.UITools.CTFont;
 import com.wmp.PublicTools.UITools.CTFontSizeStyle;
 import com.wmp.PublicTools.printLog.Log;
-import com.wmp.classTools.CTComponent.CTButton;
+import com.wmp.classTools.CTComponent.CTIconButton;
 import com.wmp.classTools.CTComponent.CTPanel;
 
 import javax.swing.*;
@@ -36,7 +36,7 @@ public class ScreenProduct extends JDialog {
         c.add(timeView, BorderLayout.CENTER);
 
         //添加退出按钮 - 左侧
-        CTButton exitButton = new CTButton(
+        CTIconButton exitButton = new CTIconButton(
                 "/image/%s/exit_0.png",
                 "/image/%s/exit_1.png", 1, () -> {
             this.setVisible(false);

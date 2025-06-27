@@ -7,7 +7,7 @@ import com.wmp.PublicTools.UITools.CTFontSizeStyle;
 import com.wmp.PublicTools.UITools.GetIcon;
 import com.wmp.PublicTools.io.ZipPack;
 import com.wmp.PublicTools.printLog.Log;
-import com.wmp.classTools.CTComponent.CTProButton;
+import com.wmp.classTools.CTComponent.CTTextButton;
 import com.wmp.classTools.CTComponent.CTTextField;
 import com.wmp.classTools.frame.ShowCookieDialog;
 import org.json.JSONException;
@@ -191,7 +191,7 @@ public class CookieSets {
                 label.setFont(CTFont.getCTFont(-1, CTFontSizeStyle.SMALL));
                 step2Panel.add(label, BorderLayout.NORTH);
 
-                /*CTButton openDirButton = new CTButton(CTButton.ButtonText, "打开插件目录",
+                /*CTIconButton openDirButton = new CTIconButton(CTIconButton.ButtonText, "打开插件目录",
                         "/image/openExp.png", "/image/openExp.png", 30, 100, () -> {
                     File cookiePath = cookie.getCookiePath();
                     if (cookiePath == null || !cookiePath.exists()) {
@@ -210,7 +210,7 @@ public class CookieSets {
                 openDirButton.setBackground(Color.WHITE);
                 openDirButton.setForeground(Color.BLACK);
                 openDirButton.setFont(CTFont.getCTFont(-1, CTFontSizeStyle.SMALL));*/
-                CTProButton openDirButton = new CTProButton("打开插件目录", GetIcon.getIcon(Main.class.getResource("/image/openExp.png"), 30, 30));
+                CTTextButton openDirButton = new CTTextButton("打开插件目录", GetIcon.getIcon(Main.class.getResource("/image/openExp.png"), 30, 30));
                 openDirButton.addActionListener(e -> {
                     File cookiePath = cookie.getCookiePath();
                     if (cookiePath == null || !cookiePath.exists()) {
@@ -246,8 +246,8 @@ public class CookieSets {
             JPanel buttonPanel = new JPanel();
             buttonPanel.setLayout(new FlowLayout(FlowLayout.RIGHT));
 
-            CTProButton lastButton = new CTProButton("上一步");
-            CTProButton nextButton = new CTProButton("下一步");
+            CTTextButton lastButton = new CTTextButton("上一步");
+            CTTextButton nextButton = new CTTextButton("下一步");
 
 
             lastButton.setFont(CTFont.getCTFont(Font.PLAIN, CTFontSizeStyle.NORMAL));

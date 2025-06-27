@@ -5,7 +5,7 @@ import com.wmp.PublicTools.UITools.CTColor;
 import com.wmp.PublicTools.UITools.GetIcon;
 import com.wmp.PublicTools.printLog.Log;
 import com.wmp.PublicTools.update.GetNewerVersion;
-import com.wmp.classTools.CTComponent.CTButton;
+import com.wmp.classTools.CTComponent.CTIconButton;
 import com.wmp.classTools.CTComponent.CTPanel;
 import com.wmp.classTools.frame.AboutDialog;
 import com.wmp.classTools.frame.ShowCookieDialog;
@@ -25,7 +25,7 @@ public class FinalPanel extends CTPanel {
 
 
     private final ArrayList<CTPanel> panelList;
-    public static final ArrayList<CTButton> allButList = new ArrayList<>();
+    public static final ArrayList<CTIconButton> allButList = new ArrayList<>();
 
 
     public FinalPanel(ArrayList<CTPanel> panelList) throws MalformedURLException {
@@ -60,7 +60,7 @@ public class FinalPanel extends CTPanel {
         moreDialog.getContentPane().setBackground(CTColor.backColor);
         moreDialog.setIconImage(GetIcon.getImageIcon(getClass().getResource("/image/light/more.png"), 32, 32).getImage());
 
-        CTButton moreButton = new CTButton("更多功能",
+        CTIconButton moreButton = new CTIconButton("更多功能",
                 "/image/%s/more.png",
                 "/image/%s/more.png", 30, () -> moreDialog.setVisible(true));
         moreButton.setPreferredSize(moreButton.getSize());
@@ -68,7 +68,7 @@ public class FinalPanel extends CTPanel {
         moreButton.setMinimumSize(moreButton.getSize());
         allButList.clear();
 
-        CTButton settings = new CTButton("设置",
+        CTIconButton settings = new CTIconButton("设置",
                 "/image/%s/settings_0.png",
                 "/image/%s/settings_1.png", 30, () -> {
 
@@ -84,7 +84,7 @@ public class FinalPanel extends CTPanel {
         });
         allButList.add(settings);
 
-        CTButton cookie = new CTButton("插件库",
+        CTIconButton cookie = new CTIconButton("插件库",
                 "/image/%s/cookie_0.png",
                 "/image/%s/cookie_1.png", 30, () -> {
             try {
@@ -96,7 +96,7 @@ public class FinalPanel extends CTPanel {
         allButList.add(cookie);
 
 
-        CTButton about = new CTButton("软件信息",
+        CTIconButton about = new CTIconButton("软件信息",
                 "/image/%s/about_0.png",
                 "/image/%s/about_1.png", 30, () -> {
             try {
@@ -107,12 +107,12 @@ public class FinalPanel extends CTPanel {
         });
         allButList.add(about);
 
-        CTButton update = new CTButton("检查更新",
+        CTIconButton update = new CTIconButton("检查更新",
                 "/image/%s/update_0.png",
                 "/image/%s/update_1.png", 30, () -> GetNewerVersion.checkForUpdate(null, null, true));
         allButList.add(update);
 
-        CTButton refresh = new CTButton("刷新",
+        CTIconButton refresh = new CTIconButton("刷新",
                 "/image/%s/refresh_0.png",
                 "/image/%s/refresh_1.png", 30, () -> {
             panelList.forEach(panel -> {
@@ -121,7 +121,7 @@ public class FinalPanel extends CTPanel {
         });
         allButList.add(refresh);
 
-        CTButton showLog = new CTButton("查看日志",
+        CTIconButton showLog = new CTIconButton("查看日志",
                 "/image/%s/showLog_0.png",
                 "/image/%s/showLog_1.png", 30, Log::showLogDialog);
         showLog.setPreferredSize(showLog.getSize());
@@ -137,7 +137,7 @@ public class FinalPanel extends CTPanel {
                 moreDialog.add(ctButton);
                 length.getAndIncrement();
             } else {
-                CTButton temp = null;
+                CTIconButton temp = null;
                 try {
                     temp = ctButton.copy();
                     temp.setPreferredSize(ctButton.getSize());
@@ -159,7 +159,7 @@ public class FinalPanel extends CTPanel {
 
         //设置关闭按钮
         if (!Main.isError && Main.canExit && !Main.allArgs.get("screenProduct:show").contains(Main.argsList)) {
-            CTButton exit = new CTButton("关闭",
+            CTIconButton exit = new CTIconButton("关闭",
                     "/image/%s/exit_0.png",
                     "/image/%s/exit_1.png", 30, () -> {
                 int i = Log.info.showChooseDialog(null, "CTPanel-按钮组", "确认退出?");

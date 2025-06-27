@@ -10,7 +10,7 @@ import com.wmp.PublicTools.UITools.GetIcon;
 import com.wmp.PublicTools.io.GetPath;
 import com.wmp.PublicTools.printLog.Log;
 import com.wmp.PublicTools.update.GetNewerVersion;
-import com.wmp.classTools.CTComponent.CTButton;
+import com.wmp.classTools.CTComponent.CTIconButton;
 import com.wmp.classTools.frame.tools.help.ShowHelpDoc;
 
 import javax.swing.*;
@@ -64,7 +64,7 @@ public class AboutDialog extends JDialog {
         //view = new JPanel();
 
 
-        CTButton getNew = new CTButton(CTButton.ButtonText, "检查更新",
+        CTIconButton getNew = new CTIconButton(CTIconButton.ButtonText, "检查更新",
                 "/image/%s/update_0.png",
                 "/image/%s/update_1.png", 150, 35,
                 () -> GetNewerVersion.checkForUpdate(this, view, true));

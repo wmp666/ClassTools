@@ -8,7 +8,7 @@ import com.wmp.PublicTools.UITools.GetIcon;
 import com.wmp.PublicTools.io.GetPath;
 import com.wmp.PublicTools.io.ZipPack;
 import com.wmp.PublicTools.printLog.Log;
-import com.wmp.classTools.CTComponent.CTProButton;
+import com.wmp.classTools.CTComponent.CTTextButton;
 import com.wmp.classTools.frame.tools.cookie.*;
 import com.wmp.classTools.frame.tools.help.ShowHelpDoc;
 import org.json.JSONException;
@@ -99,7 +99,7 @@ public class ShowCookieDialog extends JDialog implements WindowListener {
         cookieSettingPanel.setBackground(Color.WHITE);
         cookieSettingPanel.setLayout(new GridLayout(6, 1, 20, 5));
 
-        CTProButton removeCookie = new CTProButton("修改插件", GetIcon.getIcon(getClass().getResource("/image/light/settings_0.png"), 30, 30));
+        CTTextButton removeCookie = new CTTextButton("修改插件", GetIcon.getIcon(getClass().getResource("/image/light/settings_0.png"), 30, 30));
         removeCookie.addActionListener(e -> {
 
                     String cookiePin = s[0];
@@ -119,7 +119,7 @@ public class ShowCookieDialog extends JDialog implements WindowListener {
         removeCookie.setEnabled(false);
         cookieSettingPanel.add(removeCookie);
 
-        CTProButton deleteCookie = new CTProButton("删除插件", GetIcon.getIcon(getClass().getResource("/image/light/delete_0.png"), 30, 30));
+        CTTextButton deleteCookie = new CTTextButton("删除插件", GetIcon.getIcon(getClass().getResource("/image/light/delete_0.png"), 30, 30));
         deleteCookie.addActionListener(e -> {
             String cookiePin = s[0];
             CookieSets.deleteCookie(cookieMap.get(cookiePin));
@@ -146,7 +146,7 @@ public class ShowCookieDialog extends JDialog implements WindowListener {
         GetCookie getCookie = new GetCookie();
 
         getCookie.getCookieMap().forEach((key, value) -> {
-            CTProButton cookieButton = new CTProButton(getCookie.getName(key));
+            CTTextButton cookieButton = new CTTextButton(getCookie.getName(key));
             if (getCookie.getCookieMap().get(key).getIcon() != null){
                 cookieButton.setIcon(getCookie.getCookieMap().get(key).getIcon());
             }
@@ -248,7 +248,7 @@ public class ShowCookieDialog extends JDialog implements WindowListener {
         controlPanel.setBackground(Color.WHITE);
         controlPanel.setLayout(new FlowLayout(FlowLayout.LEFT, 5, 15));
 
-        CTProButton openInExp = new CTProButton("打开所在目录", GetIcon.getIcon(Main.class.getResource("/image/openExp.png"), 30, 30));
+        CTTextButton openInExp = new CTTextButton("打开所在目录", GetIcon.getIcon(Main.class.getResource("/image/openExp.png"), 30, 30));
         openInExp.addActionListener(e -> {
             OpenInExp.open(cookieMap.get(s[0]).getPath());
         });
@@ -256,7 +256,7 @@ public class ShowCookieDialog extends JDialog implements WindowListener {
         openInExp.setEnabled(false);
         controlPanel.add(openInExp);
 
-        CTProButton outputBtn = new CTProButton("导出", GetIcon.getIcon(Main.class.getResource("/image/light/update_0.png"), 30, 30));
+        CTTextButton outputBtn = new CTTextButton("导出", GetIcon.getIcon(Main.class.getResource("/image/light/update_0.png"), 30, 30));
         outputBtn.addActionListener(e -> {
             String path = GetPath.getDirectoryPath(this, "请选择导出目录");
             //将选中的插件文件夹打包为.zip
@@ -267,7 +267,7 @@ public class ShowCookieDialog extends JDialog implements WindowListener {
         outputBtn.setEnabled(false);
         controlPanel.add(outputBtn);
 
-        CTProButton runCookie = new CTProButton("运行", GetIcon.getIcon(Main.class.getResource("/image/wish.png"), 30, 30));
+        CTTextButton runCookie = new CTTextButton("运行", GetIcon.getIcon(Main.class.getResource("/image/wish.png"), 30, 30));
         runCookie.addActionListener(e -> {
             StartCookie.showCookie(s[0]);
         });
@@ -317,10 +317,10 @@ public class ShowCookieDialog extends JDialog implements WindowListener {
 
     }
 
-    private record initControlPanel(CTProButton openInExp, CTProButton outputBtn, CTProButton runCookie) {
+    private record initControlPanel(CTTextButton openInExp, CTTextButton outputBtn, CTTextButton runCookie) {
     }
 
-    private record initCookieSetsPanel(CTProButton removeCookie, CTProButton deleteCookie) {
+    private record initCookieSetsPanel(CTTextButton removeCookie, CTTextButton deleteCookie) {
     }
     private void initMenuBar() {
         JMenuBar menuBar = new JMenuBar();

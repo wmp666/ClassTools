@@ -5,7 +5,7 @@ import com.wmp.PublicTools.UITools.CTFontSizeStyle;
 import com.wmp.PublicTools.io.IOForInfo;
 import com.wmp.PublicTools.io.InfProcess;
 import com.wmp.PublicTools.printLog.Log;
-import com.wmp.classTools.CTComponent.CTButton;
+import com.wmp.classTools.CTComponent.CTIconButton;
 import com.wmp.classTools.CTComponent.CTSetsPanel;
 
 import javax.swing.*;
@@ -68,7 +68,7 @@ public class DutyListSetsPanel extends CTSetsPanel {
         //新建
         {
 
-            CTButton newBtn = new CTButton("添加新的值日生记录",
+            CTIconButton newBtn = new CTIconButton("添加新的值日生记录",
                     "/image/%s/new_0.png",
                     "/image/%s/new_1.png", 30, () -> {
                 //检测内容是否为空
@@ -106,7 +106,7 @@ public class DutyListSetsPanel extends CTSetsPanel {
         // 删除
         {
 
-            CTButton deleteBtn = new CTButton("删除选中的值日生记录",
+            CTIconButton deleteBtn = new CTIconButton("删除选中的值日生记录",
                     "/image/%s/delete_0.png",
                     "/image/%s/delete_1.png", 35, () -> {
 

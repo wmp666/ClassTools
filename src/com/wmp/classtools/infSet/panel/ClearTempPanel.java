@@ -5,7 +5,7 @@ import com.wmp.PublicTools.UITools.CTFont;
 import com.wmp.PublicTools.UITools.CTFontSizeStyle;
 import com.wmp.PublicTools.io.IOForInfo;
 import com.wmp.PublicTools.printLog.Log;
-import com.wmp.classTools.CTComponent.CTProButton;
+import com.wmp.classTools.CTComponent.CTTextButton;
 import com.wmp.classTools.CTComponent.CTSetsPanel;
 
 import javax.swing.*;
@@ -49,8 +49,8 @@ public class ClearTempPanel extends CTSetsPanel {
         this.add(buttonPanel);
     }
 
-    private CTProButton getButton(String name, String DATA_PATH) throws MalformedURLException {
-        CTProButton button = new CTProButton(name/*, GetIcon.getIcon(Main.class.getResource("/image/light/delete_0.png"), 30, 30)*/);
+    private CTTextButton getButton(String name, String DATA_PATH) throws MalformedURLException {
+        CTTextButton button = new CTTextButton(name/*, GetIcon.getIcon(Main.class.getResource("/image/light/delete_0.png"), 30, 30)*/);
         button.setFont(CTFont.getCTFont(Font.PLAIN, CTFontSizeStyle.SMALL));
         button.addActionListener(e -> {
             deleteDir(DATA_PATH);

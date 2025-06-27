@@ -1,5 +1,10 @@
 package com.wmp.classTools.frame.tools.cookie;
 
+/**
+ * name 名称<br>
+ * function 功能<br>
+ * downloadUrl 下载地址<br>
+ */
 public class CookieInfo {
     private String name;
     private String function;

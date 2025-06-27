@@ -9,7 +9,7 @@ import com.wmp.PublicTools.UITools.GetIcon;
 import com.wmp.PublicTools.io.GetPath;
 import com.wmp.PublicTools.io.ZipPack;
 import com.wmp.PublicTools.printLog.Log;
-import com.wmp.classTools.CTComponent.CTButton;
+import com.wmp.classTools.CTComponent.CTIconButton;
 import com.wmp.classTools.CTComponent.CTPanel;
 import com.wmp.classTools.CTComponent.CTSetsPanel;
 import com.wmp.classTools.frame.MainWindow;
@@ -227,7 +227,7 @@ public class InfSetDialog extends JDialog {
     }
 
     private void initSaveButton() throws MalformedURLException {
-        CTButton saveButton = new CTButton(CTButton.ButtonText, "保存数据",
+        CTIconButton saveButton = new CTIconButton(CTIconButton.ButtonText, "保存数据",
                 "/image/%s/save_0.png",
                 "/image/%s/save_1.png", 200, 50, this::save);
         c.add(saveButton, BorderLayout.SOUTH);

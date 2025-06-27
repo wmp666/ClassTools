@@ -6,7 +6,7 @@ import com.wmp.PublicTools.UITools.GetIcon;
 import com.wmp.PublicTools.io.DownloadURLFile;
 import com.wmp.PublicTools.printLog.Log;
 import com.wmp.PublicTools.web.GetWebInf;
-import com.wmp.classTools.CTComponent.CTProButton;
+import com.wmp.classTools.CTComponent.CTTextButton;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
@@ -19,6 +19,11 @@ import java.util.concurrent.atomic.AtomicReference;
 
 public class CookieDownload {
 
+    /**
+     * Cookie信息<br>
+     * String key<br>
+     * CookieInfo 插件信息
+     */
     private final TreeMap<String, CookieInfo> cookieInfoMap = new TreeMap<>();
 
     private static final String downloadUrl = "https://github.com/wmp666/ClassTools/releases/tag/0.0.2";
@@ -59,7 +64,7 @@ public class CookieDownload {
         showCookieGbc.weighty = 0;
         //展示已有插件
         cookieInfoMap.forEach((key, value) -> {
-            CTProButton button = new CTProButton(value.getName());
+            CTTextButton button = new CTTextButton(value.getName());
             button.setFont(CTFont.getCTFont(Font.BOLD, CTFontSizeStyle.NORMAL));
             button.addActionListener(e -> {
                 button.setForeground(new Color(0x0090FF));
@@ -85,7 +90,7 @@ public class CookieDownload {
         JPanel buttonPanel = new JPanel();
         buttonPanel.setLayout(new FlowLayout(FlowLayout.TRAILING));
 
-        CTProButton downloadButton = new CTProButton("下载");
+        CTTextButton downloadButton = new CTTextButton("下载");
         downloadButton.setFont(CTFont.getCTFont(Font.BOLD, CTFontSizeStyle.SMALL));
         downloadButton.addActionListener(e -> {
             if (ref.openedButtonKey.isEmpty()) {
@@ -115,7 +120,7 @@ public class CookieDownload {
         });
         buttonPanel.add(downloadButton);
 
-        CTProButton showInfoButton = new CTProButton("详细信息");
+        CTTextButton showInfoButton = new CTTextButton("详细信息");
         showInfoButton.setFont(CTFont.getCTFont(Font.BOLD, CTFontSizeStyle.SMALL));
         showInfoButton.addActionListener(e -> {
             if (ref.openedButtonKey.isEmpty()) {
@@ -176,7 +181,20 @@ public class CookieDownload {
 
         JSONObject jsonObject = new JSONObject(GetWebInf.getWebInf(apiUrl));
 
+        //从仓库直接获取数据
+        jsonObject.getJSONArray("assets").forEach(asset -> {
+            JSONObject assetJson = (JSONObject) asset;
 
+            String key = assetJson.getString("name");
+            String browser_download_url = assetJson.getString("browser_download_url");
+            /*if (cookieInfoMap.containsKey(key))
+                cookieInfoMap.get(key).setDownloadUrl(browser_download_url);*/
+            if (!key.equals("CookieInfo.json"))
+                cookieInfoMap.put(key, new CookieInfo(key, "无", browser_download_url));
+        });
+
+        //从CookieInfo.json获取数据
+        //1.获取文件信息
         AtomicReference<String> StrInfo = new AtomicReference<>();
         jsonObject.getJSONArray("assets").forEach(asset -> {
             JSONObject info = (JSONObject) asset;
@@ -189,22 +207,17 @@ public class CookieDownload {
             }
 
         });
+        //2.获取数据
         JSONArray cookieInfo = new JSONArray(StrInfo.get());
         cookieInfo.forEach(info -> {
             JSONObject infoJson = (JSONObject) info;
             String key = infoJson.getString("key");
             String name = infoJson.getString("name");
             String function = infoJson.getString("function");
-            cookieInfoMap.put(key, new CookieInfo(name, function));
-        });
-
-        jsonObject.getJSONArray("assets").forEach(asset -> {
-            JSONObject assetJson = (JSONObject) asset;
-
-            String key = assetJson.getString("name");
-            String browser_download_url = assetJson.getString("browser_download_url");
-            if (cookieInfoMap.containsKey(key))
-                cookieInfoMap.get(key).setDownloadUrl(browser_download_url);
+            if (cookieInfoMap.containsKey(key)) {//匹配正确的Cookie Key
+                cookieInfoMap.get(key).setName(name);
+                cookieInfoMap.get(key).setFunction(function);
+            }
         });
 
 

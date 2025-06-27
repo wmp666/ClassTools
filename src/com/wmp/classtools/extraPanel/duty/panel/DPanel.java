@@ -8,7 +8,7 @@ import com.wmp.PublicTools.UITools.PeoPanelProcess;
 import com.wmp.PublicTools.io.IOForInfo;
 import com.wmp.PublicTools.io.InfProcess;
 import com.wmp.PublicTools.printLog.Log;
-import com.wmp.classTools.CTComponent.CTButton;
+import com.wmp.classTools.CTComponent.CTIconButton;
 import com.wmp.classTools.CTComponent.CTPanel;
 import com.wmp.classTools.CTComponent.CTSetsPanel;
 import com.wmp.classTools.extraPanel.duty.settings.DutyListSetsPanel;
@@ -96,7 +96,7 @@ public class DPanel extends CTPanel {
 
         {
 
-            CTButton last = new CTButton("上一天",
+            CTIconButton last = new CTIconButton("上一天",
                     "/image/%s/last_0.png",
                     "/image/%s/last_1.png", 30, () -> {
                 int i = Log.info.showChooseDialog(this, "CTPanel-DutyPanel-日期切换", "确认切换至上一天");
@@ -118,7 +118,7 @@ public class DPanel extends CTPanel {
 
         {
 
-            CTButton next = new CTButton("下一天",
+            CTIconButton next = new CTIconButton("下一天",
                     "/image/%s/next_0.png",
                     "/image/%s/next_1.png", 30, () -> {
 
