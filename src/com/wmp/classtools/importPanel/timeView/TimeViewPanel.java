@@ -1,18 +1,22 @@
 package com.wmp.classTools.importPanel.timeView;
 
+import com.wmp.Main;
 import com.wmp.PublicTools.UITools.CTColor;
 import com.wmp.PublicTools.UITools.CTFont;
 import com.wmp.PublicTools.UITools.CTFontSizeStyle;
 import com.wmp.PublicTools.printLog.Log;
 import com.wmp.classTools.CTComponent.CTIconButton;
 import com.wmp.classTools.CTComponent.CTPanel;
+import com.wmp.classTools.importPanel.timeView.settings.ScreenProductSetsPanel;
 
 import javax.swing.*;
 import java.awt.*;
+import java.io.IOException;
 import java.net.MalformedURLException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.List;
 
 import static com.wmp.Main.allArgs;
 import static com.wmp.Main.argsList;
@@ -40,10 +44,11 @@ public class TimeViewPanel extends CTPanel {
         }
     });
 
-    public TimeViewPanel() throws MalformedURLException {
+    public TimeViewPanel() throws IOException {
 
         this.setName("TimeViewPanel");
         this.setLayout(new BorderLayout());
+        this.setCtSetsPanelList(List.of(new ScreenProductSetsPanel(Main.DATA_PATH)));
         initPanel();
 
         //时间刷新

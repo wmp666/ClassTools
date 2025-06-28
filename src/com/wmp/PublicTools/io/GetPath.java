@@ -5,6 +5,7 @@ import javax.swing.filechooser.FileFilter;
 import java.awt.*;
 import java.io.File;
 import java.net.URISyntaxException;
+import java.util.List;
 
 public class GetPath {
 
@@ -62,7 +63,7 @@ public class GetPath {
                 } else {
                     String fileName = f.getName();
                     String fileSuffix = fileName.substring(fileName.lastIndexOf("."));
-                    return fileSuffix.equals(fileType);
+                    return List.of(fileType.split("\\|")).contains(fileSuffix);
                 }
             }
 

@@ -55,7 +55,7 @@ public class InfSetDialog extends JDialog {
 
         ArrayList<CTPanel> showPanelList = MainWindow.showPanelList;
         showPanelList.forEach(ctPanel -> {
-            ArrayList<CTSetsPanel> tempCTSetsPanelList = ctPanel.getCtSetsPanelList();
+            java.util.List<CTSetsPanel> tempCTSetsPanelList = ctPanel.getCtSetsPanelList();
             if (tempCTSetsPanelList != null) {
                 ctSetsPanelList.addAll(tempCTSetsPanelList);
             }

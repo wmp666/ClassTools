@@ -5,10 +5,11 @@ import com.wmp.PublicTools.UITools.CTColor;
 import javax.swing.*;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.List;
 
 public abstract class CTPanel extends JPanel{
 
-    private ArrayList<CTSetsPanel> ctSetsPanelList = new ArrayList<>();
+    private List<CTSetsPanel> ctSetsPanelList = new ArrayList<>();
 
     public CTPanel()
     {
@@ -16,11 +17,11 @@ public abstract class CTPanel extends JPanel{
         this.setBackground(CTColor.backColor);
     }
 
-    public ArrayList<CTSetsPanel> getCtSetsPanelList() {
+    public List<CTSetsPanel> getCtSetsPanelList() {
         return ctSetsPanelList;
     }
 
-    public void setCtSetsPanelList(ArrayList<CTSetsPanel> ctSetsPanelList) {
+    public void setCtSetsPanelList(List<CTSetsPanel> ctSetsPanelList) {
         this.ctSetsPanelList = ctSetsPanelList;
     }
 
