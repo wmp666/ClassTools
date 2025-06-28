@@ -6,10 +6,11 @@ import com.wmp.PublicTools.UITools.CTFontSizeStyle;
 import com.wmp.PublicTools.printLog.Log;
 import com.wmp.classTools.CTComponent.CTIconButton;
 import com.wmp.classTools.CTComponent.CTPanel;
+import com.wmp.classTools.frame.tools.screenProduct.SetsScrInfo;
 
 import javax.swing.*;
 import java.awt.*;
-import java.net.MalformedURLException;
+import java.io.IOException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -19,11 +20,22 @@ public class ScreenProduct extends JDialog {
 
     private final JLabel timeView = new JLabel();
 
-    public ScreenProduct() throws MalformedURLException {
+    public ScreenProduct() throws IOException {
 
         initTimePanel();
 
         initWindow();
+
+        Timer updateBG = new Timer(1000, e -> {
+            try {
+                initBackground();
+                initColor();
+            } catch (IOException ex) {
+                throw new RuntimeException(ex);
+            }
+        });
+        updateBG.start();
+
 
         Container c = this.getContentPane();
         c.setLayout(new BorderLayout());
@@ -84,26 +96,17 @@ public class ScreenProduct extends JDialog {
         //获取时间
         //格式化 11.22 23:05
         //让时间在组件左侧显示
-        Thread timeThread = new Thread(() -> {
-
-            while (true) {
-                //获取时间
-                Date date02 = new Date();
-                //格式化 11.22 23:05
-                DateFormat dateFormat02 = new SimpleDateFormat("MM.dd HH:mm:ss");
-                //让时间在组件左侧显示
-                timeView.setHorizontalAlignment(JLabel.CENTER);
-                timeView.setText(dateFormat02.format(date02));
-                try {
-                    Thread.sleep(300);
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
-                repaint();
-            }
+        Timer timer = new Timer(300, e -> {
+            //获取时间
+            Date date = new Date();
+            //格式化 11.22 23:05
+            DateFormat dateFormat = new SimpleDateFormat("MM.dd HH:mm:ss");
+            timeView.setText(dateFormat.format(date));
+            timeView.setForeground(CTColor.mainColor);
+            repaint();
         });
-        timeThread.setDaemon(true);
-        timeThread.start();
+        timer.start();
+        timer.setRepeats(true);//循环
     }
 
     private void initWindow() {
@@ -118,6 +121,43 @@ public class ScreenProduct extends JDialog {
         this.setLocation(0, 0);
     }
 
+    private void initBackground() throws IOException {
+        JPanel panel = (JPanel) this.getContentPane();
+        panel.setOpaque(false);
+
+        SetsScrInfo setsScrInfo = new SetsScrInfo();
+
+
+        Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+
+        //背景
+        {
+            JLabel viewLabel = new JLabel();
+            viewLabel.setBounds(0, 0, screenSize.width, screenSize.height);
+
+            String bgImagePath = setsScrInfo.getBGImagePath();
+            if (bgImagePath != null) {
+                ImageIcon icon = new ImageIcon(bgImagePath);
+
+                icon.setImage(icon.getImage().getScaledInstance(screenSize.width, screenSize.height, Image.SCALE_SMOOTH));
+
+                viewLabel.setIcon(icon);
+            } else {
+                viewLabel.setBackground(CTColor.backColor);
+                panel.setOpaque(true);
+            }
+
+            //JPanel jPanel = new JPanel(null);
+            //jPanel.add(viewLabel);
+
+            this.getLayeredPane().add(viewLabel, Integer.valueOf(Integer.MIN_VALUE));
+        }
+    }
+
+    private void initColor() throws IOException {
+        CTColor.setScreenProductColor();
+        this.getContentPane().setBackground(CTColor.backColor);
+    }
 
     private void initTimePanel() {
 

@@ -68,7 +68,8 @@ public class PeoPanelProcess {
         if (newHeight >= maxShowHeight) {
             newHeight = maxShowHeight;
         }
-        scrollPane.getViewport().setBackground(CTColor.backColor);
+        scrollPane.setOpaque(false);
+        scrollPane.getViewport().setOpaque(false);
         scrollPane.setBorder(BorderFactory.createEmptyBorder());
 
         scrollPane.setPreferredSize(new Dimension(newWidth + 18, newHeight + 18));

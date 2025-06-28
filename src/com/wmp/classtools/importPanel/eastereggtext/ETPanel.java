@@ -21,6 +21,7 @@ public class ETPanel extends CTPanel {
     public ETPanel() {
         this.setLayout(new BorderLayout());
         this.setName("ETPanel");
+        this.setOpaque(false);
 
         {
             String text = EasterEgg.getText(EETextStyle.HTML);
@@ -49,6 +50,7 @@ public class ETPanel extends CTPanel {
         }
 
 
+        //刷新
         new Thread(() -> {
             while (true) {
                 this.removeAll();
@@ -85,12 +87,14 @@ public class ETPanel extends CTPanel {
                     newHeight = maxShowHeight;
                 }
                 JScrollPane scrollPane = new JScrollPane(label);
-                scrollPane.getViewport().setBackground(CTColor.backColor);
+                scrollPane.getViewport().setOpaque(false);
+                scrollPane.setOpaque(false);
                 scrollPane.setBorder(BorderFactory.createEmptyBorder());
 
                 this.add(scrollPane, BorderLayout.CENTER);
                 System.out.printf("大小:%s|%s\n", newWidth, newHeight + 20);
                 scrollPane.setPreferredSize(new Dimension(newWidth, newHeight + 20));
+
 
                 this.revalidate();
                 this.repaint();
@@ -108,9 +112,8 @@ public class ETPanel extends CTPanel {
 
     @Override
     public void refresh() throws IOException {
-        this.setBackground(CTColor.backColor);
         label.setForeground(CTColor.mainColor);
-        label.setBackground(CTColor.backColor);
+
         this.revalidate();
         this.repaint();
     }

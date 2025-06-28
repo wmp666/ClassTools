@@ -232,8 +232,8 @@ public class InfSetDialog extends JDialog {
 
     private void initSaveButton() throws MalformedURLException {
         CTIconButton saveButton = new CTIconButton(CTIconButton.ButtonText, "保存数据",
-                "/image/%s/save_0.png",
-                "/image/%s/save_1.png", 200, 50, this::save);
+                "/image/light/save_0.png",
+                "/image/light/save_1.png", 200, 50, this::save);
         c.add(saveButton, BorderLayout.SOUTH);
 
     }
@@ -257,7 +257,14 @@ public class InfSetDialog extends JDialog {
         if (result == JOptionPane.YES_OPTION) {
 
 
-            ctSetsPanelList.forEach(CTSetsPanel::save);
+            ctSetsPanelList.forEach(panel -> {
+                try {
+                    panel.save();
+                } catch (Exception e) {
+                    Log.err.print("InfSetDialog-保存", "保存失败：" + e);
+                    throw new RuntimeException(e);
+                }
+            });
 
             // 保存成功后执行回调
             refreshCallback.run();

@@ -33,7 +33,7 @@ public abstract class CTSetsPanel extends CTPanel {
      *
      * @return String 信息
      */
-    public abstract void save();
+    public abstract void save() throws Exception;
 
 
 }

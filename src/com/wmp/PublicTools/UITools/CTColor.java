@@ -1,8 +1,10 @@
 package com.wmp.PublicTools.UITools;
 
 import com.wmp.PublicTools.printLog.Log;
+import com.wmp.classTools.frame.tools.screenProduct.SetsScrInfo;
 
 import java.awt.*;
+import java.io.IOException;
 
 public class CTColor {
     private static boolean canRemove = true;
@@ -22,8 +24,17 @@ public class CTColor {
     public static Color backColor = Color.WHITE;
 
 
-    public static void setScreenProductColor() {
+    public static void setScreenProductColor() throws IOException {
         setAllColor(CTColor.MAIN_COLOR_WHITE, CTColor.STYLE_DARK);
+
+        SetsScrInfo setsScrInfo = new SetsScrInfo();
+        if (setsScrInfo.getMainColor() != null) {
+            setMainColor(setsScrInfo.getMainColor(), true);
+        }
+        if (setsScrInfo.getMainTheme() != null) {
+            setMainTheme(setsScrInfo.getMainTheme(), true);
+        }
+
         canRemove = false;
 
     }
@@ -36,15 +47,19 @@ public class CTColor {
     }
     public static void setAllColor(String mainColorStr, String tempStyle){
 
-        setMainColorColor(mainColorStr);
+        setMainColor(mainColorStr);
         setMainTheme(tempStyle);
 
     }
 
-    public static void setMainColorColor(String mainColorStr){
+    public static void setMainColor(String mainColorStr) {
+        setMainColor(mainColorStr, false);
+    }
+
+    private static void setMainColor(String mainColorStr, boolean mustRemove) {
 
 
-        if (!canRemove) return;
+        if (!mustRemove && !canRemove) return;
 
         switch (mainColorStr){
             case MAIN_COLOR_WHITE->{
@@ -69,8 +84,12 @@ public class CTColor {
     }
 
     public static void setMainTheme(String tempStyle){
+        setMainTheme(tempStyle, false);
+    }
 
-        if (!canRemove) return;
+    private static void setMainTheme(String tempStyle, boolean mustRemove) {
+
+        if (!mustRemove && !canRemove) return;
 
         style = tempStyle;
         switch (tempStyle){

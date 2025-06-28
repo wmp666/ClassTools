@@ -5,6 +5,7 @@ import com.wmp.PublicTools.UITools.CTFont;
 import com.wmp.PublicTools.UITools.CTFontSizeStyle;
 import com.wmp.PublicTools.io.IOForInfo;
 import com.wmp.PublicTools.printLog.Log;
+import com.wmp.classTools.CTComponent.CTComboBox;
 import com.wmp.classTools.CTComponent.CTSetsPanel;
 import com.wmp.classTools.CTComponent.CTTextField;
 import com.wmp.classTools.frame.MainWindow;
@@ -23,9 +24,9 @@ import java.util.TreeMap;
 
 public class PersonalizationPanel extends CTSetsPanel {
 
-    private final JComboBox<String> mainColorComboBox = new JComboBox<>();
-    private final JComboBox<String> mainThemeComboBox = new JComboBox<>();
-    private final JComboBox<String> FontNameComboBox = new JComboBox<>();
+    private final CTComboBox mainColorComboBox = new CTComboBox();
+    private final CTComboBox mainThemeComboBox = new CTComboBox();
+    private final CTComboBox FontNameComboBox = new CTComboBox();
     private final ArrayList<CTTextField> FontSizeList = new ArrayList<>();
     private final TreeMap<String, JCheckBox> disposeButton = new TreeMap<>();
     private final JCheckBox StartUpdate = new JCheckBox("启动检查更新");
@@ -51,13 +52,11 @@ public class PersonalizationPanel extends CTSetsPanel {
         mainPanelScroll.getVerticalScrollBar().setUnitIncrement(16);
         mainPanelScroll.setSize(400, 400);
 
-        //SetsPanel.setBackground(CTColor.backColor);
         SetsPanel.setLayout(new GridBagLayout());//new GridLayout(0,1)
         GridBagConstraints gbc = new GridBagConstraints();
 
 
         JPanel ColorPanel = new JPanel();
-        //ColorPanel.setBackground(CTColor.backColor);
         ColorPanel.setLayout(new GridLayout(1, 2));
         ColorPanel.setBorder(BorderFactory.createTitledBorder("颜色设置"));
         //颜色设置
@@ -67,25 +66,16 @@ public class PersonalizationPanel extends CTSetsPanel {
             {
 
                 MainColorSets.setLayout(new FlowLayout(FlowLayout.LEFT));
-                //MainColorSets.setBackground(CTColor.backColor);
 
                 JLabel mainColorLabel = new JLabel("主题色:");
                 mainColorLabel.setFont(CTFont.getCTFont(-1, CTFontSizeStyle.SMALL));
-                //mainColorLabel.setForeground(CTColor.textColor);
-                //mainColorLabel.setSize(50, 30);
 
 
                 mainColorComboBox.setFont(CTFont.getCTFont(-1, CTFontSizeStyle.SMALL));
-                //mainColorComboBox.setForeground(CTColor.textColor);
-                //mainColorComboBox.setBackground(CTColor.backColor);
 
                 //添加颜色项目
                 mainColorComboBox.removeAllItems();
-                mainColorComboBox.addItem("蓝色");
-                mainColorComboBox.addItem("红色");
-                mainColorComboBox.addItem("绿色");
-                mainColorComboBox.addItem("白色");
-                mainColorComboBox.addItem("黑色");
+                mainColorComboBox.addItems("蓝色", "红色", "绿色", "白色", "黑色");
 
                 MainColorSets.add(mainColorLabel);
                 MainColorSets.add(mainColorComboBox);
@@ -109,8 +99,7 @@ public class PersonalizationPanel extends CTSetsPanel {
 
                 //添加主题项目
                 mainThemeComboBox.removeAllItems();
-                mainThemeComboBox.addItem("浅色");
-                mainThemeComboBox.addItem("深色");
+                mainThemeComboBox.addItems("浅色", "深色");
 
                 MainThemeSets.add(mainThemeLabel);
                 MainThemeSets.add(mainThemeComboBox);
@@ -136,19 +125,14 @@ public class PersonalizationPanel extends CTSetsPanel {
 
                 JLabel FontNameLabel = new JLabel("字体:");
                 FontNameLabel.setFont(CTFont.getCTFont(-1, CTFontSizeStyle.SMALL));
-                //FontNameLabel.setForeground(CTColor.textColor);
-                //mainColorLabel.setSize(50, 30);
 
 
                 FontNameComboBox.setFont(CTFont.getCTFont(-1, CTFontSizeStyle.SMALL));
-                //FontNameComboBox.setForeground(CTColor.textColor);
-                //FontNameComboBox.setBackground(CTColor.backColor);
+
 
                 //添加颜色项目
                 FontNameComboBox.removeAllItems();
-                for (String s : CTFont.getAllFontName()) {
-                    FontNameComboBox.addItem(s);
-                }
+                FontNameComboBox.addItems(CTFont.getAllFontName());
 
 
                 setFontName.add(FontNameLabel);
@@ -185,6 +169,7 @@ public class PersonalizationPanel extends CTSetsPanel {
             });
 
 
+
             reSetFontPanel.add(setFontName);
 
             reSetFontPanel.add(button);
@@ -218,16 +203,10 @@ public class PersonalizationPanel extends CTSetsPanel {
         //其他设置
         {
             startUp.setFont(CTFont.getCTFont(-1, CTFontSizeStyle.SMALL));
-            //startUp.setForeground(CTColor.textColor);
-            //startUp.setBackground(CTColor.backColor);
 
             canExit.setFont(CTFont.getCTFont(-1, CTFontSizeStyle.SMALL));
-            //canExit.setForeground(CTColor.textColor);
-            //canExit.setBackground(CTColor.backColor);
 
             StartUpdate.setFont(CTFont.getCTFont(-1, CTFontSizeStyle.SMALL));
-            //StartUpdate.setForeground(CTColor.textColor);
-            //StartUpdate.setBackground(CTColor.backColor);
             StartUpdate.setSelected(true);
 
             otherPanel.add(startUp);
@@ -267,18 +246,18 @@ public class PersonalizationPanel extends CTSetsPanel {
             //主题色设置
             if (jsonObject.has("mainColor")) {
                 switch (jsonObject.getString("mainColor")) {
-                    case "black" -> mainColorComboBox.setSelectedIndex(4);
-                    case "white" -> mainColorComboBox.setSelectedIndex(3);
-                    case "green" -> mainColorComboBox.setSelectedIndex(2);
-                    case "red" -> mainColorComboBox.setSelectedIndex(1);
-                    default -> mainColorComboBox.setSelectedIndex(0);
+                    case "black" -> mainColorComboBox.setSelectedItem("黑色");
+                    case "white" -> mainColorComboBox.setSelectedItem("白色");
+                    case "green" -> mainColorComboBox.setSelectedItem("绿色");
+                    case "red" -> mainColorComboBox.setSelectedItem("红色");
+                    default -> mainColorComboBox.setSelectedItem("蓝色");
                 }
             }
             //主题设置
             if (jsonObject.has("mainTheme")) {
                 switch (jsonObject.getString("mainTheme")) {
-                    case "dark" -> mainThemeComboBox.setSelectedIndex(1);
-                    default -> mainThemeComboBox.setSelectedIndex(0);
+                    case "dark" -> mainThemeComboBox.setSelectedItem("深色");
+                    default -> mainThemeComboBox.setSelectedItem("浅色");
                 }
             }
             //字体设置
@@ -312,9 +291,9 @@ public class PersonalizationPanel extends CTSetsPanel {
         //保存数据-个性化
         {
             IOForInfo io = new IOForInfo(new File(Main.DATA_PATH + "setUp.json"));
+            JSONObject jsonObject = new JSONObject();
 
             //设置主题色
-            JSONObject jsonObject = new JSONObject();
             String tempMainColor = switch (Objects.requireNonNull(mainColorComboBox.getSelectedItem()).toString()) {
                 case "黑色" -> "black";
                 case "白色" -> "white";

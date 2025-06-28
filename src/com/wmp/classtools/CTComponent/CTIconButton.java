@@ -82,9 +82,10 @@ public class CTIconButton extends JButton implements MouseListener, ActionListen
             this.setIcon(defaultIcon);
         }
 
-        // 设置按钮边框为透明
+        // 设置按钮为透明
         this.setFocusPainted(false);
         this.setBorderPainted(false);
+        this.setOpaque(false);
 
 
         this.setFont(CTFont.getCTFont(-1, CTFontSizeStyle.MORE_SMALL));

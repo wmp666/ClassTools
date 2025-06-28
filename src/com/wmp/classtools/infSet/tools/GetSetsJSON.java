@@ -38,11 +38,11 @@ public class GetSetsJSON {
             //设置颜色
             if (jsonObject.has("mainColor")) {
                 switch (jsonObject.getString("mainColor")) {
-                    case "black" -> CTColor.setMainColorColor(CTColor.MAIN_COLOR_BLACK);
-                    case "white" -> CTColor.setMainColorColor(CTColor.MAIN_COLOR_WHITE);
-                    case "green" -> CTColor.setMainColorColor(CTColor.MAIN_COLOR_GREEN);
-                    case "red" -> CTColor.setMainColorColor(CTColor.MAIN_COLOR_RED);
-                    default -> CTColor.setMainColorColor(CTColor.MAIN_COLOR_BLUE);
+                    case "black" -> CTColor.setMainColor(CTColor.MAIN_COLOR_BLACK);
+                    case "white" -> CTColor.setMainColor(CTColor.MAIN_COLOR_WHITE);
+                    case "green" -> CTColor.setMainColor(CTColor.MAIN_COLOR_GREEN);
+                    case "red" -> CTColor.setMainColor(CTColor.MAIN_COLOR_RED);
+                    default -> CTColor.setMainColor(CTColor.MAIN_COLOR_BLUE);
                 }
             }
             //设置主题
