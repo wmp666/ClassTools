@@ -40,7 +40,12 @@ public class ScreenProductSetsPanel extends CTSetsPanel {
 
         setName("屏保设置");
 
-        initUI();
+        try {
+            initUI();
+        } catch (IOException e) {
+            Log.err.print("ScreenProductPanel-initUI", "初始化失败:" + e.getMessage());
+            throw new RuntimeException(e);
+        }
 
     }
 

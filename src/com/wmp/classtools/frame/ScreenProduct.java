@@ -20,13 +20,16 @@ public class ScreenProduct extends JDialog {
 
     private final JLabel timeView = new JLabel();
 
+    private final JLabel viewLabel = new JLabel();
+
     public ScreenProduct() throws IOException {
 
         initTimePanel();
 
         initWindow();
 
-        Timer updateBG = new Timer(1000, e -> {
+        this.getLayeredPane().add(viewLabel, Integer.valueOf(Integer.MIN_VALUE));
+        Timer updateBG = new Timer(3000, e -> {
             try {
                 initBackground();
                 initColor();
@@ -132,7 +135,7 @@ public class ScreenProduct extends JDialog {
 
         //背景
         {
-            JLabel viewLabel = new JLabel();
+
             viewLabel.setBounds(0, 0, screenSize.width, screenSize.height);
 
             String bgImagePath = setsScrInfo.getBGImagePath();
@@ -142,6 +145,9 @@ public class ScreenProduct extends JDialog {
                 icon.setImage(icon.getImage().getScaledInstance(screenSize.width, screenSize.height, Image.SCALE_SMOOTH));
 
                 viewLabel.setIcon(icon);
+
+                viewLabel.revalidate();
+                viewLabel.repaint();
             } else {
                 viewLabel.setBackground(CTColor.backColor);
                 panel.setOpaque(true);
@@ -150,7 +156,9 @@ public class ScreenProduct extends JDialog {
             //JPanel jPanel = new JPanel(null);
             //jPanel.add(viewLabel);
 
-            this.getLayeredPane().add(viewLabel, Integer.valueOf(Integer.MIN_VALUE));
+
+            /*this.getLayeredPane().revalidate();
+            this.getLayeredPane().repaint();*/
         }
     }
 
