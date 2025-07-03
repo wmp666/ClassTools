@@ -188,16 +188,13 @@ public class ScreenProductSetsPanel extends CTSetsPanel {
             {
 
                 MainThemeSets.setLayout(new FlowLayout(FlowLayout.LEFT));
-                //MainThemeSets.setBackground(CTColor.backColor);
 
                 JLabel mainThemeLabel = new JLabel("主题:");
                 mainThemeLabel.setFont(CTFont.getCTFont(-1, CTFontSizeStyle.SMALL));
-                //mainThemeLabel.setForeground(CTColor.textColor);
-                //mainThemeLabel.setSize(50, 30);
+
 
                 mainThemeComboBox.setFont(CTFont.getCTFont(-1, CTFontSizeStyle.SMALL));
-                //mainThemeComboBox.setForeground(CTColor.textColor);
-                //mainThemeComboBox.setBackground(CTColor.backColor);
+
 
                 //添加主题项目
                 mainThemeComboBox.removeAllItems();
@@ -223,15 +220,15 @@ public class ScreenProductSetsPanel extends CTSetsPanel {
             if (mainColor != null) {
                 switch (mainColor) {
                     case "black" -> mainColorComboBox.setSelectedItem("黑色");
-                    case "white" -> mainColorComboBox.setSelectedItem("白色");
-                    default -> mainColorComboBox.setSelectedItem("蓝色");
+                    case "blue" -> mainColorComboBox.setSelectedItem("蓝色");
+                    default -> mainColorComboBox.setSelectedItem("白色");
                 }
             }
             //主题设置
             if (mainTheme != null) {
                 switch (mainTheme) {
-                    case "dark" -> mainThemeComboBox.setSelectedItem("深色");
-                    default -> mainThemeComboBox.setSelectedItem("浅色");
+                    case "light" -> mainThemeComboBox.setSelectedItem("浅色");
+                    default -> mainThemeComboBox.setSelectedItem("黑色");
                 }
             }
         }
