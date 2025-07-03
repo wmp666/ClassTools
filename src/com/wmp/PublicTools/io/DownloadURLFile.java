@@ -2,6 +2,8 @@ package com.wmp.PublicTools.io;
 
 import com.wmp.Main;
 import com.wmp.PublicTools.UITools.CTColor;
+import com.wmp.PublicTools.UITools.CTFont;
+import com.wmp.PublicTools.UITools.CTFontSizeStyle;
 import com.wmp.PublicTools.UITools.GetIcon;
 import com.wmp.PublicTools.printLog.Log;
 
@@ -20,6 +22,7 @@ public class DownloadURLFile {
 
         JDialog progressDialog = new JDialog();
         JLabel label = new JLabel("正在下载文件，请稍候...");
+        label.setFont(CTFont.getCTFont(Font.PLAIN, CTFontSizeStyle.MORE_SMALL));
         JProgressBar progressBar = new JProgressBar(0, 100);
 
         if (panel == null) {
