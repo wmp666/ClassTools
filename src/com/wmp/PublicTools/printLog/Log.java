@@ -30,7 +30,7 @@ public class Log {
     private static int index = 0;
 
 
-    private static final TrayIcon trayIcon = new TrayIcon(GetIcon.getImageIcon(Main.class.getResource("/image/icon.png"), 16, 16).getImage(), "ClassTools");
+    private static final TrayIcon trayIcon = new TrayIcon(GetIcon.getImageIcon(Main.class.getResource(Main.iconPath), 16, 16).getImage(), "ClassTools");
 
     private static final JTextArea textArea = new JTextArea();
 

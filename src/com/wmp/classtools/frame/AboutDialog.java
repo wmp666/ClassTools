@@ -42,7 +42,7 @@ public class AboutDialog extends JDialog {
         this.getContentPane().setBackground(CTColor.backColor);
 
 
-        JLabel icon = new JLabel(GetIcon.getIcon(Main.class.getResource("/image/icon.png"), 100, 100));
+        JLabel icon = new JLabel(GetIcon.getIcon(Main.class.getResource(Main.iconPath), 100, 100));
         icon.setBounds(10, 10, 100, 100);
 
         JLabel title = new JLabel("程序名: " + Main.appName);

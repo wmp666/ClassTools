@@ -25,7 +25,7 @@ public class Main{
     * d:只修复的问题,问题较少
     * e:测试版本号
      */
-    public static String version = "1.28.0.0.1";
+    public static String version = "1.28.0.0.2";
     public static String appName = "ClassTools";
     public static String author = "wmp";
 
@@ -49,7 +49,8 @@ public class Main{
 
         TEMP_PATH = path + "\\ClassToolsTemp\\";
 
-        iconPath = "/image/icon.png";
+        if (version.split("\\.").length < 5) iconPath = "/image/icon.png";
+        else iconPath = "/image/icon_bate.png";
 
         allArgs.put("TimeView:screen", StartupParameters.creative("-TimeView:screen", "/TimeView:screen"));
         allArgs.put("StartUpdate:false", StartupParameters.creative("-StartUpdate:false", "/StartUpdate:false"));
