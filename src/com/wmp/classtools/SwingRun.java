@@ -54,7 +54,7 @@ public class SwingRun {
                         allArgs.get("screenProduct:view").contains(list))) {
             Log.info.print("Main", "开始启动自动检查更新");
             GetNewerVersion.checkForUpdate(
-                    loadingWindow, null, true);
+                    loadingWindow, null, true, false);
 
         }
 

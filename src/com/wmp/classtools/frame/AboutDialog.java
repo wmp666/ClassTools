@@ -80,7 +80,7 @@ public class AboutDialog extends JDialog {
 
         initMenuBar();
 
-        GetNewerVersion.checkForUpdate(this, view, false);
+        GetNewerVersion.checkForUpdate(this, view, false, false);
 
     }
 

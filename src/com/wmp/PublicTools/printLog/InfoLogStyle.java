@@ -42,7 +42,7 @@ public class InfoLogStyle extends PrintLogStyle {
         Log.print(getStyle(), owner, "弹窗信息->" + logInfo, c);
         String title = getTitle(owner);
         String s = CTOptionPane.showInputDialog(c, title, logInfo, getIcon(),
-                false);
+                true);
         Log.print(getStyle(), owner, "输入信息->" + s, c);
         return s;
     }
@@ -60,7 +60,7 @@ public class InfoLogStyle extends PrintLogStyle {
         Log.print(getStyle(), owner, "弹窗信息->" + logInfo, c);
         String title = getTitle(owner);
         String[] ss = CTOptionPane.showConfirmInputDialog(c, title, logInfo, getIcon(),
-                false, choices);
+                true, choices);
         Log.print(getStyle(), owner, "输入信息->" + Arrays.toString(ss), c);
         return ss;
     }
@@ -68,7 +68,7 @@ public class InfoLogStyle extends PrintLogStyle {
     public int showChooseDialog(Container c, String owner, String logInfo) {
         Log.print(getStyle(), owner, "弹窗信息->" + logInfo, c);
         String title = getTitle(owner);
-        int i = CTOptionPane.showConfirmDialog(c, title, logInfo, getIcon(), false);
+        int i = CTOptionPane.showConfirmDialog(c, title, logInfo, getIcon(), true);
         String s ;
         if (i == CTOptionPane.YES_OPTION) {
             s = "是";
@@ -85,7 +85,7 @@ public class InfoLogStyle extends PrintLogStyle {
     public String showChooseDialog(Container c, String owner, String logInfo, String... choices) {
         Log.print(getStyle(), owner, "弹窗信息->" + logInfo, c);
         String title = getTitle(owner);
-        String s = CTOptionPane.showConfirmDialog(c, title, logInfo, getIcon(), false, choices);
+        String s = CTOptionPane.showConfirmDialog(c, title, logInfo, getIcon(), true, choices);
 
         Log.print(getStyle(), owner, "输入信息->" + s, c);
         return s;
