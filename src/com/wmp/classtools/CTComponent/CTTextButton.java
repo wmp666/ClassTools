@@ -50,3 +50,4 @@ public class CTTextButton extends JButton {
         });
     }
 }
+

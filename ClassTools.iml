@@ -13,5 +13,7 @@
     <orderEntry type="library" exported="" name="json-20210307" level="project" />
     <orderEntry type="library" exported="" name="atlassian.commonmark" level="project" />
     <orderEntry type="library" name="googlecode.soundlibs.jlayer" level="project" />
+    <orderEntry type="library" name="WComponent" level="project" />
+    <orderEntry type="library" name="WComponent (2)" level="project" />
   </component>
 </module>

@@ -19,15 +19,13 @@ public class CTOptionPane {
     public static final int ERROR_MESSAGE = 0;
     public static final int INFORMATION_MESSAGE = 1;
     public static final int WARNING_MESSAGE = 2;
-
+    protected static final Border BASIC_LINE_BORDER = BorderFactory.createLineBorder(new Color(200, 200, 200), 2);
+    protected static final Border FOCUS_GAINTED_BORDER = BorderFactory.createLineBorder(new Color(112, 112, 112), 2);
     private static final int YES_NO_BUTTONS = 0;
     private static final int YES_BUTTONS = 1;
-
     private static final int MESSAGE_TEXT = 0;
     private static final int MESSAGE_INPUT = 1;
 
-    protected static final Border BASIC_LINE_BORDER = BorderFactory.createLineBorder(new Color(200, 200, 200), 2);
-    protected static final Border FOCUS_GAINTED_BORDER = BorderFactory.createLineBorder(new Color(112, 112, 112), 2);
     /**
      * 显示消息对话框
      *
@@ -326,4 +324,3 @@ abstract class ChooseButton extends CTTextButton implements ActionListener {
         this.addActionListener(this);
     }
 }
-
