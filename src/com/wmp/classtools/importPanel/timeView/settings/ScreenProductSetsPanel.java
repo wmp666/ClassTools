@@ -18,9 +18,8 @@ import java.awt.*;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Paths;
-import java.nio.file.StandardCopyOption;
+import java.nio.file.*;
+import java.nio.file.attribute.BasicFileAttributes;
 import java.util.Objects;
 
 public class ScreenProductSetsPanel extends CTSetsPanel {
@@ -140,7 +139,39 @@ public class ScreenProductSetsPanel extends CTSetsPanel {
                     try {
                         //通过遍历将文件拷贝到目标文件夹
                         File sourceFile = new File(path);
-                        new File(target).mkdirs();
+
+                        File targetFile = new File(target);
+                        if (targetFile.exists()) {
+                            Files.walkFileTree(targetFile.toPath(), new SimpleFileVisitor<Path>() {
+                                // 先去遍历删除文件
+                                @Override
+                                public FileVisitResult visitFile(Path file,
+                                                                 BasicFileAttributes attrs) {
+                                    try {
+                                        Files.delete(file);
+                                    } catch (IOException ex) {
+                                        Log.err.print("IOStreamForInf-删除文件", "文件: " + file + "\n删除失败: " + ex.getMessage());
+                                        throw new RuntimeException(ex);
+                                    }
+                                    return FileVisitResult.CONTINUE;
+                                }
+
+                                // 再去遍历删除目录
+                                @Override
+                                public FileVisitResult postVisitDirectory(Path dir,
+                                                                          IOException exc) {
+                                    try {
+                                        Files.delete(dir);
+                                    } catch (IOException ex) {
+                                        Log.err.print("IOStreamForInf-删除文件", "文件夹: " + dir + "\n删除失败: " + ex.getMessage());
+                                        throw new RuntimeException(ex);
+                                    }
+                                    return FileVisitResult.CONTINUE;
+                                }
+                            });
+
+                        }
+                        targetFile.mkdirs();
                         if (!sourceFile.exists()) {
                             Log.err.print("ScreenProductPanel-pathChoiceButton", "文件夹不存在:" + path);
                             return;

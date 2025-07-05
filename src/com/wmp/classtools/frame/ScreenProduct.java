@@ -32,6 +32,8 @@ public class ScreenProduct extends JDialog {
 
         this.getLayeredPane().add(viewLabel, Integer.valueOf(Integer.MIN_VALUE));
 
+        initBackground(0);
+        initColor();
 
         SetsScrInfo setsScrInfo = new SetsScrInfo();
         Timer updateBG = new Timer(setsScrInfo.getRepaintTimer() * 1000, e -> {
@@ -39,7 +41,7 @@ public class ScreenProduct extends JDialog {
             try {
                 initBackground(index);
                 initColor();
-                if (index <= setsScrInfo.getBGImagesLength()) index++;
+                if (index < setsScrInfo.getBGImagesLength() - 1) index++;
                 else index = 0;
             } catch (IOException ex) {
                 throw new RuntimeException(ex);
