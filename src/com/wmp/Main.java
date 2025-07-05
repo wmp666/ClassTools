@@ -25,7 +25,7 @@ public class Main{
     * d:只修复的问题,问题较少
     * e:测试版本号
      */
-    public static String version = "1.28.0.0.2";
+    public static String version = "1.28.0.0.3";
     public static String appName = "ClassTools";
     public static String author = "wmp";
 
@@ -41,7 +41,6 @@ public class Main{
     public static boolean canExit = true;
 
     static {
-        Log.exit(-1);
         //加载基础目录
         String path = System.getenv("LOCALAPPDATA");
 

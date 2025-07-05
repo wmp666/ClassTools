@@ -8,6 +8,7 @@ import com.wmp.PublicTools.printLog.Log;
 import com.wmp.classTools.CTComponent.CTComboBox;
 import com.wmp.classTools.CTComponent.CTSetsPanel;
 import com.wmp.classTools.CTComponent.CTTextButton;
+import com.wmp.classTools.CTComponent.CTTextField;
 import com.wmp.classTools.frame.tools.screenProduct.SetsScrInfo;
 import org.json.JSONObject;
 
@@ -29,6 +30,7 @@ public class ScreenProductSetsPanel extends CTSetsPanel {
 
     private final CTComboBox mainColorComboBox = new CTComboBox();
     private final CTComboBox mainThemeComboBox = new CTComboBox();
+    private final CTTextField repaintTimerTextField = new CTTextField("3");
 
     public ScreenProductSetsPanel(String basicDataPath) throws IOException {
         super(basicDataPath);
@@ -39,6 +41,7 @@ public class ScreenProductSetsPanel extends CTSetsPanel {
         }
 
         setName("屏保设置");
+        this.setLayout(new BorderLayout());
 
         try {
             initUI();
@@ -49,6 +52,37 @@ public class ScreenProductSetsPanel extends CTSetsPanel {
 
     }
 
+    private static void initViewPanel(JSONObject jsonObject, JLabel viewLabel) {
+
+        viewLabel.setText("");
+
+        if (jsonObject.has("path")) {
+            String path = jsonObject.getString("path");
+            if (new File(path).exists()) {
+
+                if (new File(path).isFile()) {
+                    ImageIcon icon = new ImageIcon(path);
+                    do {
+                        icon.setImage(icon.getImage().getScaledInstance(icon.getIconWidth() / 2, icon.getIconHeight() / 2, Image.SCALE_SMOOTH));
+                    } while (icon.getIconWidth() >= 400);
+
+                    viewLabel.setIcon(icon);
+                } else if (new File(path).isDirectory()) {
+                    viewLabel.setIcon(null);
+                    viewLabel.setText("包含多张图片,不支持预览");
+                }
+            } else {
+                viewLabel.setIcon(null);
+                viewLabel.setText("请选择图片");
+            }
+
+
+        }
+
+        viewLabel.revalidate();
+        viewLabel.repaint();
+    }
+
     private void initUI() throws IOException {
         JPanel panel = new JPanel(new GridBagLayout());
 
@@ -56,7 +90,8 @@ public class ScreenProductSetsPanel extends CTSetsPanel {
         gbc.fill = GridBagConstraints.HORIZONTAL;
         gbc.weightx = 1;
         gbc.weighty = 0;
-
+        gbc.gridx = 0;
+        gbc.gridy = 0;
 
         File BGPath = new File(dataPath + "\\background.json");
         if (!BGPath.exists()) {
@@ -71,47 +106,77 @@ public class ScreenProductSetsPanel extends CTSetsPanel {
 
         JSONObject jsonObject = new JSONObject(new IOForInfo(BGPath).GetInfos());
 
+        JPanel bgPanel = new JPanel(new BorderLayout());
+        bgPanel.setBorder(BorderFactory.createTitledBorder("背景设置"));
 
         //预览
         JLabel viewLabel = new JLabel();
-        if (jsonObject.has("path")) {
-            ImageIcon icon = new ImageIcon(jsonObject.getString("path"));
-            do {
-                icon.setImage(icon.getImage().getScaledInstance(icon.getIconWidth() / 2, icon.getIconHeight() / 2, Image.SCALE_SMOOTH));
-            } while (icon.getIconWidth() >= 400);
-
-            viewLabel.setIcon(icon);
-        }
+        initViewPanel(jsonObject, viewLabel);
         viewLabel.setBorder(new EmptyBorder(10, 10, 10, 10));// 设置边框
         viewLabel.setAlignmentX(CENTER_ALIGNMENT);// 设置居中
-        gbc.gridx = 0;
-        gbc.gridy = 0;
+
 
         JScrollPane comp = new JScrollPane(viewLabel);
         comp.setPreferredSize(new Dimension(300, 300));
         //设置灵敏度
         comp.getVerticalScrollBar().setUnitIncrement(10);
-        panel.add(comp, gbc);
+        bgPanel.add(comp, BorderLayout.CENTER);
 
 
         JPanel iconSetsPanel = new JPanel(new GridLayout(1, 2));
         CTTextButton pathChoiceButton = new CTTextButton("选择图片");
         pathChoiceButton.addActionListener(e -> {
-            String path = GetPath.getFilePath(this, "请选择图片", ".png|.jpg|jpeg", "PNG|JPG");
 
-            if (path != null && !path.isEmpty()) {
-                String[] split = path.split("\\.");
-
-                String target = dataPath + "\\background." + split[split.length - 1];
-                try {
-                    Files.copy(Paths.get(path), Paths.get(target), StandardCopyOption.REPLACE_EXISTING);
-                } catch (IOException ex) {
-                    Log.err.print("ScreenProductPanel-pathChoiceButton", "图片复制失败:" + ex.getMessage());
-                    throw new RuntimeException(ex);
-                }
-                jsonObject.put("path", target);
+            String choose = Log.info.showChooseDialog(this, "设置背景", "请选择背景样式(位置)", "图片", "文件夹");
+            if (choose == null) {
+                return;
             }
+            if (choose.equals("文件夹")) {
+                String path = GetPath.getDirectoryPath(this, "请选择文件夹");
 
+                if (path != null && !path.isEmpty()) {
+
+                    String target = dataPath + "\\background\\";
+                    try {
+                        //通过遍历将文件拷贝到目标文件夹
+                        File sourceFile = new File(path);
+                        new File(target).mkdirs();
+                        if (!sourceFile.exists()) {
+                            Log.err.print("ScreenProductPanel-pathChoiceButton", "文件夹不存在:" + path);
+                            return;
+                        }
+                        for (File file : Objects.requireNonNull(sourceFile.listFiles())) {
+                            if (file.isFile()) {
+                                // 创建目标文件夹 StandardCopyOption.REPLACE_EXISTING -
+                                Files.copy(file.toPath(), Paths.get(target, file.getName()), StandardCopyOption.REPLACE_EXISTING);
+                            }
+                        }
+                        //Files.copy(Paths.get(path), Paths.get(target), StandardCopyOption.REPLACE_EXISTING);
+                    } catch (IOException ex) {
+                        Log.err.print("ScreenProductPanel-pathChoiceButton", "文件夹复制失败:" + ex.getMessage());
+                        throw new RuntimeException(ex);
+                    }
+                    jsonObject.put("path", target);
+                }
+
+            } else if (choose.equals("图片")) {
+                String path = GetPath.getFilePath(this, "请选择图片", ".png|.jpg|jpeg", "PNG|JPG");
+
+                if (path != null && !path.isEmpty()) {
+                    String[] split = path.split("\\.");
+
+                    String target = dataPath + "\\background." + split[split.length - 1];
+                    try {
+                        Files.copy(Paths.get(path), Paths.get(target), StandardCopyOption.REPLACE_EXISTING);
+                    } catch (IOException ex) {
+                        Log.err.print("ScreenProductPanel-pathChoiceButton", "图片复制失败:" + ex.getMessage());
+                        throw new RuntimeException(ex);
+                    }
+                    jsonObject.put("path", target);
+                }
+
+
+            }
             IOForInfo ioForInfo = new IOForInfo(BGPath);
             try {
                 ioForInfo.SetInfo(jsonObject.toString());
@@ -120,43 +185,81 @@ public class ScreenProductSetsPanel extends CTSetsPanel {
             }
 
 
+
             Log.info.message(this, "InfSetDialog", "已保存数据: " + jsonObject);
 
-            ImageIcon icon = new ImageIcon(jsonObject.getString("path"));
-            do {
-                icon.setImage(icon.getImage().getScaledInstance(icon.getIconWidth() / 2, icon.getIconHeight() / 2, Image.SCALE_SMOOTH));
-            } while (icon.getIconWidth() >= 400);
+            initViewPanel(jsonObject, viewLabel);
 
-            viewLabel.setIcon(icon);
-            viewLabel.setText("");
-            viewLabel.revalidate();
-            viewLabel.repaint();
 
 
         });
         iconSetsPanel.add(pathChoiceButton, gbc);
 
-        //清空背景
-        CTTextButton clearButton = new CTTextButton("清空背景");
-        clearButton.addActionListener(e -> {
+        //背景设置
+        CTTextButton bgSetsButton = new CTTextButton("设置");
+        bgSetsButton.addActionListener(e -> {
 
-            viewLabel.setIcon(null);
-            viewLabel.setText("请选择图片");
-            viewLabel.revalidate();
-            viewLabel.repaint();
+            JDialog dialog = new JDialog();
+            dialog.setModal(true);
+            dialog.setAlwaysOnTop(true);
+            dialog.setTitle("背景设置");
+            dialog.setLayout(new GridBagLayout());
 
-            IOForInfo ioForInfo = new IOForInfo(BGPath);
-            try {
-                ioForInfo.SetInfo("{}");
-            } catch (IOException ex) {
-                throw new RuntimeException(ex);
+            GridBagConstraints BGGbc = new GridBagConstraints();
+            BGGbc.fill = GridBagConstraints.HORIZONTAL;
+            BGGbc.weightx = 10;
+            BGGbc.weighty = 10;
+            BGGbc.gridx = 0;
+
+            //清空背景
+            CTTextButton clearButton = new CTTextButton("清空背景");
+            clearButton.addActionListener(e1 -> {
+
+                viewLabel.setIcon(null);
+                viewLabel.setText("请选择图片");
+                viewLabel.revalidate();
+                viewLabel.repaint();
+
+                jsonObject.put("path", "");
+
+                IOForInfo ioForInfo = new IOForInfo(BGPath);
+                try {
+                    ioForInfo.SetInfo(jsonObject.toString());
+                } catch (IOException ex) {
+                    throw new RuntimeException(ex);
+                }
+            });
+            BGGbc.gridy++;
+            dialog.add(clearButton, BGGbc);
+            //刷新间隔
+            {
+                JPanel repaintTimerPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
+
+                JLabel repaintTimerLabel = new JLabel("刷新间隔(秒):");
+
+
+                repaintTimerTextField.setColumns(10);
+                if (jsonObject.has("repaintTimer") && repaintTimerTextField.getText().isEmpty())
+                    repaintTimerTextField.setText(Integer.toString(jsonObject.getInt("repaintTimer")));
+
+                repaintTimerPanel.add(repaintTimerLabel);
+                repaintTimerPanel.add(repaintTimerTextField);
+
+                BGGbc.gridy++;
+                dialog.add(repaintTimerPanel, BGGbc);
             }
+
+            dialog.setLocationRelativeTo(null);
+            dialog.pack();
+            dialog.setVisible(true);
+
         });
-        iconSetsPanel.add(clearButton, gbc);
+        iconSetsPanel.add(bgSetsButton, gbc);
 
-        gbc.gridy++;
-        panel.add(iconSetsPanel, gbc);
 
+        bgPanel.add(iconSetsPanel, BorderLayout.SOUTH);
+
+        panel.add(bgPanel, gbc);
 
         JPanel ColorPanel = new JPanel();
         ColorPanel.setLayout(new GridLayout(1, 2));
@@ -235,11 +338,10 @@ public class ScreenProductSetsPanel extends CTSetsPanel {
 
 
         JScrollPane scrollPane = new JScrollPane(panel);
-        scrollPane.setBorder(BorderFactory.createEmptyBorder());
+        //scrollPane.setBorder(BorderFactory.createEmptyBorder());
 
-        this.add(scrollPane);
+        this.add(scrollPane, BorderLayout.CENTER);
     }
-
 
     @Override
     public void save() {
@@ -265,6 +367,8 @@ public class ScreenProductSetsPanel extends CTSetsPanel {
             default -> "light";
         };
         jsonObject.put("mainTheme", tempMainThemeColor);
+
+        jsonObject.put("repaintTimer", Integer.parseInt(repaintTimerTextField.getText()));
 
         IOForInfo ioForInfo = new IOForInfo(dataPath + "\\background.json");
         try {

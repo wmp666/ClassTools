@@ -1,11 +1,12 @@
 package com.wmp.PublicTools.io;
 
+import com.wmp.PublicTools.printLog.Log;
+
 import javax.swing.*;
 import javax.swing.filechooser.FileFilter;
 import java.awt.*;
 import java.io.File;
 import java.net.URISyntaxException;
-import java.util.List;
 
 public class GetPath {
 
@@ -62,8 +63,15 @@ public class GetPath {
                     return true;
                 } else {
                     String fileName = f.getName();
-                    String fileSuffix = fileName.substring(fileName.lastIndexOf("."));
-                    return List.of(fileType.split("\\|")).contains(fileSuffix);
+                    int dotIndex = fileName.lastIndexOf(".");
+                    if (dotIndex == -1) {
+                        return false;
+                    }
+                    String fileSuffix = fileName.substring(dotIndex);
+                    for (String s : fileType.split("\\|")) {
+                        if (fileSuffix.equalsIgnoreCase(s)) return true;
+                    }
+                    return false;
                 }
             }
 
@@ -84,7 +92,7 @@ public class GetPath {
                 //获取文件名前缀
                 String filePrefix = chooseFileName.substring(0, chooseFileName.lastIndexOf("."));
 
-                System.out.println("文件路径：" + filePath + "|文件名: " + chooseFileName + "|文件后缀: " + fileSuffix + "|文件前缀: " + filePrefix);
+                Log.info.print("文件选择器", "文件路径：" + filePath + "|文件名: " + chooseFileName + "|文件后缀: " + fileSuffix + "|文件前缀: " + filePrefix);
                 return filePath;
             } catch (Exception ex) {
                 throw new RuntimeException(ex);

@@ -30,9 +30,48 @@ public class SetsScrInfo {
         jsonObject = new JSONObject(new IOForInfo(BGPath).GetInfos());
     }
 
+    public int getBGImagesLength() {
+        if (jsonObject.has("path")) {
+            if (new File(jsonObject.getString("path")).isDirectory()) {
+                String path = jsonObject.getString("path");
+                File[] files = new File(path).listFiles();
+                if (files != null) {
+                    return files.length;
+                }
+            }
+        }
+        return 0;
+    }
+
+    public int getRepaintTimer() {
+        if (jsonObject.has("repaintTimer")) {
+            return jsonObject.getInt("repaintTimer");
+        }
+        return 1000;
+    }
+
     public String getBGImagePath() {
         if (jsonObject.has("path")) {
-            return jsonObject.getString("path");
+            if (new File(jsonObject.getString("path")).isFile())
+                return jsonObject.getString("path");
+            else Log.warn.print("屏保设置数据获取", "背景图片不存在");
+
+        }
+        return null;
+    }
+
+    public String getBGImagePath(int index) {
+        if (jsonObject.has("path")) {
+            if (new File(jsonObject.getString("path")).isDirectory()) {
+                String path = jsonObject.getString("path");
+                File[] files = new File(path).listFiles();
+                if (files != null && files.length > index) {
+                    return files[index].getPath();
+                }
+            } else {
+                getBGImagePath();
+            }
+
         }
         return null;
     }

@@ -22,6 +22,8 @@ public class ScreenProduct extends JDialog {
 
     private final JLabel viewLabel = new JLabel();
 
+    private int index = 0;
+
     public ScreenProduct() throws IOException {
 
         initTimePanel();
@@ -29,14 +31,21 @@ public class ScreenProduct extends JDialog {
         initWindow();
 
         this.getLayeredPane().add(viewLabel, Integer.valueOf(Integer.MIN_VALUE));
-        Timer updateBG = new Timer(3000, e -> {
+
+
+        SetsScrInfo setsScrInfo = new SetsScrInfo();
+        Timer updateBG = new Timer(setsScrInfo.getRepaintTimer() * 1000, e -> {
+
             try {
-                initBackground();
+                initBackground(index);
                 initColor();
+                if (index <= setsScrInfo.getBGImagesLength()) index++;
+                else index = 0;
             } catch (IOException ex) {
                 throw new RuntimeException(ex);
             }
         });
+        updateBG.setRepeats(true);
         updateBG.start();
 
 
@@ -124,7 +133,7 @@ public class ScreenProduct extends JDialog {
         this.setLocation(0, 0);
     }
 
-    private void initBackground() throws IOException {
+    private void initBackground(int index) throws IOException {
         JPanel panel = (JPanel) this.getContentPane();
         panel.setOpaque(false);
 
@@ -138,7 +147,7 @@ public class ScreenProduct extends JDialog {
 
             viewLabel.setBounds(0, 0, screenSize.width, screenSize.height);
 
-            String bgImagePath = setsScrInfo.getBGImagePath();
+            String bgImagePath = setsScrInfo.getBGImagePath(index);
             if (bgImagePath != null) {
                 ImageIcon icon = new ImageIcon(bgImagePath);
 
@@ -153,12 +162,6 @@ public class ScreenProduct extends JDialog {
                 panel.setOpaque(true);
             }
 
-            //JPanel jPanel = new JPanel(null);
-            //jPanel.add(viewLabel);
-
-
-            /*this.getLayeredPane().revalidate();
-            this.getLayeredPane().repaint();*/
         }
     }
 

@@ -108,11 +108,13 @@ public class GetNewerVersion {
             return;
         }
 
-        int updateMode;
+        int updateMode = NEW_VERSION;
 
         if (inquireUpdateWay) {
             String s = Log.info.showChooseDialog(dialog, "检查更新", "选择更新版本", "最新版", "测试版");
-            updateMode = s.equals("最新版") ? NEW_VERSION : TEST_VERSION;
+            //updateMode = s.equals() ? NEW_VERSION : TEST_VERSION;
+            if (s.equals("最新版")) updateMode = NEW_VERSION;
+            else if (s.equals("测试版")) updateMode = TEST_VERSION;
         } else {
             updateMode = NEW_VERSION;
         }
@@ -182,7 +184,7 @@ public class GetNewerVersion {
             }.execute();// 开始执行异步任务
         }
         //获取测试版
-        else {
+        else if (updateMode == TEST_VERSION) {
             Log.info.print("检查更新", "开始获取最新测试版");
 
             new SwingWorker<Void, Void>() {
