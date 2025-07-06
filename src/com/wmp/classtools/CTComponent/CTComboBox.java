@@ -1,6 +1,7 @@
 package com.wmp.classTools.CTComponent;
 
 import javax.swing.*;
+import javax.swing.plaf.basic.BasicComboBoxUI;
 import java.awt.*;
 import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
@@ -8,6 +9,15 @@ import java.awt.event.FocusListener;
 public class CTComboBox extends JComboBox<String> {
     public CTComboBox() {
         super();
+
+
+        this.setUI(new BasicComboBoxUI() {
+            @Override
+            protected JButton createArrowButton() {//创建按钮 - 箭头按钮
+                return new CTTextButton("∨");
+            }
+
+        });
 
 
         this.setBorder(CTOptionPane.BASIC_LINE_BORDER);//设置按钮的边框 - 5px 实线

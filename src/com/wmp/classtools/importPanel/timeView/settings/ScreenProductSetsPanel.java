@@ -27,9 +27,9 @@ public class ScreenProductSetsPanel extends CTSetsPanel {
     private final File dataPath;
 
 
-    private final CTComboBox mainColorComboBox = new CTComboBox();
-    private final CTComboBox mainThemeComboBox = new CTComboBox();
-    private final CTTextField repaintTimerTextField = new CTTextField("3");
+    private static final CTComboBox mainColorComboBox = new CTComboBox();
+    private static final CTComboBox mainThemeComboBox = new CTComboBox();
+    private static final CTTextField repaintTimerTextField = new CTTextField();
 
     public ScreenProductSetsPanel(String basicDataPath) throws IOException {
         super(basicDataPath);
@@ -270,8 +270,7 @@ public class ScreenProductSetsPanel extends CTSetsPanel {
 
 
                 repaintTimerTextField.setColumns(10);
-                if (jsonObject.has("repaintTimer") && repaintTimerTextField.getText().isEmpty())
-                    repaintTimerTextField.setText(Integer.toString(jsonObject.getInt("repaintTimer")));
+
 
                 repaintTimerPanel.add(repaintTimerLabel);
                 repaintTimerPanel.add(repaintTimerTextField);
@@ -332,7 +331,7 @@ public class ScreenProductSetsPanel extends CTSetsPanel {
 
                 //添加主题项目
                 mainThemeComboBox.removeAllItems();
-                mainThemeComboBox.addItems("浅色", "深色");
+                mainThemeComboBox.addItems("深色", "浅色");
 
                 MainThemeSets.add(mainThemeLabel);
                 MainThemeSets.add(mainThemeComboBox);
@@ -350,6 +349,7 @@ public class ScreenProductSetsPanel extends CTSetsPanel {
             SetsScrInfo setsScrInfo = new SetsScrInfo();
             String mainColor = setsScrInfo.getMainColor();
             String mainTheme = setsScrInfo.getMainTheme();
+            int repaintTimer = setsScrInfo.getRepaintTimer();
             //主题色设置
             if (mainColor != null) {
                 switch (mainColor) {
@@ -362,9 +362,12 @@ public class ScreenProductSetsPanel extends CTSetsPanel {
             if (mainTheme != null) {
                 switch (mainTheme) {
                     case "light" -> mainThemeComboBox.setSelectedItem("浅色");
-                    default -> mainThemeComboBox.setSelectedItem("黑色");
+                    default -> mainThemeComboBox.setSelectedItem("深色");
                 }
             }
+            if (repaintTimer > 0)
+                repaintTimerTextField.setText(Integer.toString(repaintTimer));
+
         }
 
 
@@ -387,8 +390,8 @@ public class ScreenProductSetsPanel extends CTSetsPanel {
         //设置主题色
         String tempMainColor = switch (Objects.requireNonNull(mainColorComboBox.getSelectedItem()).toString()) {
             case "黑色" -> "black";
-            case "白色" -> "white";
-            default -> "blue";
+            case "蓝色" -> "blue";
+            default -> "white";
         };
         jsonObject.put("mainColor", tempMainColor);
 

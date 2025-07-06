@@ -220,13 +220,14 @@ public class CTOptionPane {
                 JTextArea messageArea = new JTextArea();
                 messageArea.setText(message);
                 messageArea.setEditable(false);//设置文本区域不可编辑
-                //messageArea.setFocusable(false);//设置文本区域可聚焦
+                messageArea.setFocusable(false);//设置文本区域可聚焦
                 messageArea.setOpaque(false);//设置文本区域不透明
                 messageArea.setLineWrap(true);//设置文本区域自动换行
                 messageArea.setWrapStyleWord(true);//设置文本区域自动换行时单词不被分割
                 messageArea.setFont(new Font("Microsoft YaHei UI", Font.PLAIN, 15));
                 messagePanel = new JScrollPane(messageArea);
                 messagePanel.setBorder(null);
+
 
                 panel.add(messagePanel, BorderLayout.CENTER);
             }
@@ -261,6 +262,7 @@ public class CTOptionPane {
                         dialog.dispose();
                     }
                 };
+                yesButton.requestFocus();
                 ChooseButton noButton = new ChooseButton("否") {
                     @Override
                     public void actionPerformed(ActionEvent e) {
@@ -281,6 +283,7 @@ public class CTOptionPane {
                         dialog.dispose();
                     }
                 };
+                yesButton.requestFocus();
                 JPanel buttonPanel = new JPanel(new GridLayout(1, 1, 10, 10));
                 buttonPanel.add(yesButton);
                 dialog.add(buttonPanel, BorderLayout.SOUTH);//设置按钮面板的位置 - 下

@@ -28,6 +28,8 @@ public class SetsScrInfo {
             }
         }
         jsonObject = new JSONObject(new IOForInfo(BGPath).GetInfos());
+
+        Log.info.print("屏保数据", "初始化完成:" + jsonObject);
     }
 
     public int getBGImagesLength() {
@@ -47,7 +49,7 @@ public class SetsScrInfo {
         if (jsonObject.has("repaintTimer")) {
             return jsonObject.getInt("repaintTimer");
         }
-        return 1000;
+        return 0;
     }
 
     public String getBGImagePath() {
