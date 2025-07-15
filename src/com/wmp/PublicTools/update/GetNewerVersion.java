@@ -248,11 +248,12 @@ public class GetNewerVersion {
         for (int i = 0; i < Math.min(remoteParts.length, localParts.length); i++) {
             int remotePart = Integer.parseInt(remoteParts[i]);
             int localPart = Integer.parseInt(localParts[i]);
-            if (remotePart > localPart) {
+            if (remotePart > localPart) {//有最新版
                 if (i == 0 || i == 1){
                     return importUpdate;
                 }else{
-                    return newerVersion;
+                    if (local.length() >= 5 && remote.length() < 5) return importUpdate;
+                    else return newerVersion;
                 }
 
             } else if (remotePart < localPart) {
