@@ -23,6 +23,7 @@ import static com.wmp.Main.argsList;
 public class MainWindow extends JDialog {
     private final Container contentPane = this.getContentPane();
 
+    public static final ArrayList<CTPanel> allPanelList = new ArrayList<>();
     public static final ArrayList<CTPanel> showPanelList = new ArrayList<>();
 
     public MainWindow(String path) throws IOException {
@@ -48,12 +49,22 @@ public class MainWindow extends JDialog {
 
         //添加组件
         TimeViewPanel timeViewPanel = new TimeViewPanel();
-        showPanelList.add(timeViewPanel);
+        allPanelList.add(timeViewPanel);
 
+        DPanel dPanel = new DPanel(DutyListPath, indexPath);
+        allPanelList.add(dPanel);
+
+        ATPanel aTPanel = new ATPanel(AllStuPath, LeaveListPath);
+        allPanelList.add(aTPanel);
+
+        ETPanel eEPanel = new ETPanel();
+        allPanelList.add(eEPanel);
+
+        FinalPanel finalPanel = new FinalPanel();
+        allPanelList.add(finalPanel);
 
         if (allArgs.get("screenProduct:view").contains(argsList)) {
             JDialog view = new JDialog();
-            view.setSize(timeViewPanel.getWidth() + 20, timeViewPanel.getHeight() + 40);
             view.setLocationRelativeTo(null);
             view.setLayout(null);
             view.setAlwaysOnTop(true);
@@ -67,21 +78,16 @@ public class MainWindow extends JDialog {
 
             view.add(timeViewPanel);
 
+            view.pack();
             view.setVisible(true);
 
         } else {
 
-            DPanel dPanel = new DPanel(DutyListPath, indexPath);
-            showPanelList.add(dPanel);
-
-            ATPanel aTPanel = new ATPanel(AllStuPath, LeaveListPath);
-            showPanelList.add(aTPanel);
-
-            ETPanel eEPanel = new ETPanel();
-            showPanelList.add(eEPanel);
-
-            FinalPanel finalPanel = new FinalPanel(showPanelList);
-            showPanelList.add(finalPanel);
+            allPanelList.forEach(ctPanel -> {
+                if (!Main.disPanelList.contains(ctPanel.getID())) {
+                    showPanelList.add(ctPanel);
+                }
+            });
 
             showPanelList.forEach(ctPanel -> {
                 ctPanel.setBackground(CTColor.backColor);

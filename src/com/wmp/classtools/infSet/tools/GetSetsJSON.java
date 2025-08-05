@@ -20,6 +20,7 @@ public class GetSetsJSON {
     private boolean canExit = true;
     private boolean StartUpdate = true;
     private final ArrayList<String> disButList = new ArrayList<>();
+    private final ArrayList<String> disPanelList = new ArrayList<>();
 
     public GetSetsJSON() throws IOException {
         boolean exists = new File(Main.DATA_PATH + "setUp.json").exists();
@@ -64,6 +65,12 @@ public class GetSetsJSON {
                     disButList.add(object.toString());
                 });
             }
+            if (jsonObject.has("disposePanel")) {
+                JSONArray disButtonList = jsonObject.getJSONArray("disposePanel");
+                disButtonList.forEach(object -> {
+                    disPanelList.add(object.toString());
+                });
+            }
             //设置是否可以退出
             if (jsonObject.has("canExit")) {
                 canExit = jsonObject.getBoolean("canExit");
@@ -87,6 +94,10 @@ public class GetSetsJSON {
 
     public ArrayList<String> getDisButList() {
         return disButList;
+    }
+
+    public ArrayList<String> getDisPanelList() {
+        return disPanelList;
     }
 
     public JSONObject getJsonObject() {

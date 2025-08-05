@@ -18,14 +18,7 @@ public class Main{
     public static String DATA_PATH = "null";
     public static String TEMP_PATH = "null";
 
-    /**a.b.c.d.e
-    * a:主版本号
-    * b:功能更新版本号
-    * c:修订版本号/小功能更新
-    * d:只修复的问题,问题较少
-    * e:测试版本号
-     */
-    public static String version = "1.29.0";
+    public static final ArrayList<String> disPanelList = new ArrayList<>();
     public static String appName = "ClassTools";
     public static String author = "wmp";
 
@@ -37,6 +30,14 @@ public class Main{
     public static final TreeMap<String, StartupParameters> allArgs = new TreeMap<>();
 
     public static final ArrayList<String> disButList = new ArrayList<>();
+    /**a.b.c.d.e
+    * a:主版本号
+    * b:功能更新版本号
+    * c:修订版本号/小功能更新
+    * d:只修复的问题,问题较少
+    * e:测试版本号
+     */
+    public static String version = "1.30.0";
 
     public static boolean canExit = true;
 
@@ -59,6 +60,7 @@ public class Main{
         allArgs.put("Cookie:StartUp", StartupParameters.creative("-OpenCookie:", "/OpenCookie:"));
         //allArgs.put("", StartupParameters.creative("-EasterEgg-pin:nj02", "/EasterEgg-pin:nj02"));
     }
+
     public static void main(String[] args) throws IOException {
 
 
@@ -73,6 +75,7 @@ public class Main{
             startUpdate = setsJSON.isStartUpdate();
             canExit = setsJSON.isCanExit();
             disButList.addAll(setsJSON.getDisButList());
+            disPanelList.addAll(setsJSON.getDisPanelList());
 
 
             for (int i = 0; i < args.length; i++) {

@@ -10,7 +10,6 @@ import com.wmp.PublicTools.io.GetPath;
 import com.wmp.PublicTools.io.ZipPack;
 import com.wmp.PublicTools.printLog.Log;
 import com.wmp.classTools.CTComponent.CTIconButton;
-import com.wmp.classTools.CTComponent.CTPanel;
 import com.wmp.classTools.CTComponent.CTSetsPanel;
 import com.wmp.classTools.frame.MainWindow;
 import com.wmp.classTools.infSet.panel.ClearTempPanel;
@@ -53,8 +52,7 @@ public class InfSetDialog extends JDialog {
 
         ctSetsPanelList.add(new PersonalizationPanel(Main.DATA_PATH));
 
-        ArrayList<CTPanel> showPanelList = MainWindow.showPanelList;
-        showPanelList.forEach(ctPanel -> {
+        MainWindow.allPanelList.forEach(ctPanel -> {
             java.util.List<CTSetsPanel> tempCTSetsPanelList = ctPanel.getCtSetsPanelList();
             if (tempCTSetsPanelList != null) {
                 ctSetsPanelList.addAll(tempCTSetsPanelList);

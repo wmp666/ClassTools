@@ -43,7 +43,8 @@ public class ATPanel extends CTPanel {
         list.add(new LeaveListSetsPanel(Main.DATA_PATH));
         list.add(new AllStuSetsPanel(Main.DATA_PATH));
         this.setCtSetsPanelList(list);
-        this.setName("ATPanel");
+        this.setName("考勤表组件");
+        this.setID("ATPanel");
         this.setLayout(new GridBagLayout());
 
         initStuList(AllStudentPath,LeaveListPath);
@@ -116,14 +117,10 @@ public class ATPanel extends CTPanel {
         // 重新加载数据
         initStuList(AllStudentPath, LeaveListPath);
 
-
         // 更新UI组件
-
         this.removeAll();
 
         initContainer();
-
-
 
         // 强制重绘
         revalidate();

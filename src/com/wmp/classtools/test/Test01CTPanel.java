@@ -135,7 +135,7 @@ public class Test01CTPanel {
         public FinalPanelTest() throws IOException {
             new MainWindow(Main.DATA_PATH);
 
-            FinalPanel finalPanel = new FinalPanel(MainWindow.showPanelList);
+            FinalPanel finalPanel = new FinalPanel();
 
             this.add(finalPanel);
             this.pack();

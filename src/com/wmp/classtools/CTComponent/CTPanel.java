@@ -10,6 +10,7 @@ import java.util.List;
 public abstract class CTPanel extends JPanel{
 
     private List<CTSetsPanel> ctSetsPanelList = new ArrayList<>();
+    private String ID = "CTPanel";
 
     public CTPanel()
     {
@@ -23,6 +24,14 @@ public abstract class CTPanel extends JPanel{
 
     public void setCtSetsPanelList(List<CTSetsPanel> ctSetsPanelList) {
         this.ctSetsPanelList = ctSetsPanelList;
+    }
+
+    public String getID() {
+        return ID;
+    }
+
+    public void setID(String ID) {
+        this.ID = ID;
     }
 
     public abstract void refresh() throws IOException;

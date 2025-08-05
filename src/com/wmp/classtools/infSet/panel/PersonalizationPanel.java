@@ -29,6 +29,7 @@ public class PersonalizationPanel extends CTSetsPanel {
     private final CTComboBox FontNameComboBox = new CTComboBox();
     private final ArrayList<CTTextField> FontSizeList = new ArrayList<>();
     private final TreeMap<String, JCheckBox> disposeButton = new TreeMap<>();
+    private final TreeMap<String, JCheckBox> disposePanel = new TreeMap<>();
     private final JCheckBox StartUpdate = new JCheckBox("启动检查更新");
     private final JCheckBox canExit = new JCheckBox("防止被意外关闭");
     private final JCheckBox startUp = new JCheckBox("开机自启动");
@@ -86,16 +87,11 @@ public class PersonalizationPanel extends CTSetsPanel {
             {
 
                 MainThemeSets.setLayout(new FlowLayout(FlowLayout.LEFT));
-                //MainThemeSets.setBackground(CTColor.backColor);
 
                 JLabel mainThemeLabel = new JLabel("主题:");
                 mainThemeLabel.setFont(CTFont.getCTFont(-1, CTFontSizeStyle.SMALL));
-                //mainThemeLabel.setForeground(CTColor.textColor);
-                //mainThemeLabel.setSize(50, 30);
 
                 mainThemeComboBox.setFont(CTFont.getCTFont(-1, CTFontSizeStyle.SMALL));
-                //mainThemeComboBox.setForeground(CTColor.textColor);
-                //mainThemeComboBox.setBackground(CTColor.backColor);
 
                 //添加主题项目
                 mainThemeComboBox.removeAllItems();
@@ -111,7 +107,6 @@ public class PersonalizationPanel extends CTSetsPanel {
         }
 
         JPanel reSetFontPanel = new JPanel();
-        //reSetFontPanel.setBackground(CTColor.backColor);
         reSetFontPanel.setLayout(new GridBagLayout());
         reSetFontPanel.setBorder(BorderFactory.createTitledBorder("字体设置"));
         //字体设置
@@ -121,14 +116,11 @@ public class PersonalizationPanel extends CTSetsPanel {
             {
 
                 setFontName.setLayout(new FlowLayout(FlowLayout.LEFT));
-                //setFontName.setBackground(CTColor.backColor);
 
                 JLabel FontNameLabel = new JLabel("字体:");
                 FontNameLabel.setFont(CTFont.getCTFont(-1, CTFontSizeStyle.SMALL));
 
-
                 FontNameComboBox.setFont(CTFont.getCTFont(-1, CTFontSizeStyle.SMALL));
-
 
                 //添加颜色项目
                 FontNameComboBox.removeAllItems();
@@ -138,18 +130,15 @@ public class PersonalizationPanel extends CTSetsPanel {
                 setFontName.add(FontNameLabel);
                 setFontName.add(FontNameComboBox);
             }
-            //字体大小设置
-            JPanel setFontSize = new JPanel();
+            //字体大小设置(废弃设施)
+            /*JPanel setFontSize = new JPanel();
             {
                 setFontSize.setLayout(new FlowLayout(FlowLayout.LEFT));
-                //setFontSize.setBackground(CTColor.backColor);
                 JLabel FontSizeLabel = new JLabel("字体大小-大:");
                 FontSizeLabel.setFont(CTFont.getCTFont(-1, CTFontSizeStyle.SMALL));
-                //FontSizeLabel.setForeground(CTColor.textColor);
                 CTTextField FontSizeTextField = new CTTextField();
                 FontSizeTextField.setFont(CTFont.getCTFont(-1, CTFontSizeStyle.SMALL));
-                //FontSizeTextField.setForeground(CTColor.textColor);
-            }
+            }*/
 
             JButton button = new JButton("改为默认");
             //button.setFont(new Font("Microsoft YaHei UI", Font.PLAIN, 12));
@@ -176,11 +165,11 @@ public class PersonalizationPanel extends CTSetsPanel {
 
         }
 
-        JPanel disposePanel = new JPanel();
+        JPanel disButPanel = new JPanel();
         //disposePanel.setBackground(CTColor.backColor);
-        disposePanel.setLayout(new GridLayout(0, 2));
+        disButPanel.setLayout(new GridLayout(0, 2));
         //设置按钮隐藏
-        disposePanel.setBorder(BorderFactory.createTitledBorder("隐藏部分按钮"));
+        disButPanel.setBorder(BorderFactory.createTitledBorder("隐藏部分按钮"));
         {
 
             FinalPanel.allButList.forEach(button -> {
@@ -192,7 +181,34 @@ public class PersonalizationPanel extends CTSetsPanel {
             });
 
             disposeButton.forEach((key, value) -> {
-                disposePanel.add(value);
+                disButPanel.add(value);
+            });
+        }
+
+        JPanel disPanPanel = new JPanel();
+        //disposePanel.setBackground(CTColor.backColor);
+        disPanPanel.setLayout(new GridLayout(0, 2));
+        //设置组件隐藏
+        disPanPanel.setBorder(BorderFactory.createTitledBorder("隐藏部分组件"));
+        {
+
+            MainWindow.allPanelList.forEach(panel -> {
+
+                if (panel.getID().equals("TimeViewPanel") ||
+                        //panel.getID().equals("ETPanel") ||
+                        panel.getID().equals("FinalPanel")) {
+                    return;
+                }
+
+                JCheckBox checkBox = new JCheckBox(panel.getName());
+                checkBox.setFont(CTFont.getCTFont(-1, CTFontSizeStyle.SMALL));
+                //checkBox.setBackground(CTColor.backColor);
+                //checkBox.setForeground(CTColor.textColor);
+                disposePanel.put(panel.getID(), checkBox);
+            });
+
+            disposePanel.forEach((key, value) -> {
+                disPanPanel.add(value);
             });
         }
 
@@ -224,7 +240,9 @@ public class PersonalizationPanel extends CTSetsPanel {
         gbc.gridy++;
         SetsPanel.add(reSetFontPanel, gbc);
         gbc.gridy++;
-        SetsPanel.add(disposePanel, gbc);
+        SetsPanel.add(disButPanel, gbc);
+        gbc.gridy++;
+        SetsPanel.add(disPanPanel, gbc);
         gbc.gridy++;
         SetsPanel.add(otherPanel, gbc);
 
@@ -262,12 +280,23 @@ public class PersonalizationPanel extends CTSetsPanel {
             }
             //字体设置
             FontNameComboBox.setSelectedItem(CTFont.getFontName());
+            //
             if (jsonObject.has("disposeButton")) {
                 JSONArray JSONArrdisButton = jsonObject.getJSONArray("disposeButton");
                 for (int i = 0; i < JSONArrdisButton.length(); i++) {
                     String s = JSONArrdisButton.getString(i);
                     if (disposeButton.containsKey(s)) {
                         disposeButton.get(s).setSelected(true);
+                    }
+                }
+            }
+            //
+            if (jsonObject.has("disposePanel")) {
+                JSONArray JSONArrdisPanel = jsonObject.getJSONArray("disposePanel");
+                for (int i = 0; i < JSONArrdisPanel.length(); i++) {
+                    String s = JSONArrdisPanel.getString(i);
+                    if (disposePanel.containsKey(s)) {
+                        disposePanel.get(s).setSelected(true);
                     }
                 }
             }
@@ -314,13 +343,25 @@ public class PersonalizationPanel extends CTSetsPanel {
             String tempFontName = Objects.requireNonNull(FontNameComboBox.getSelectedItem(), "微软雅黑").toString();
             jsonObject.put("FontName", tempFontName);
             //设置隐藏按钮
-            ArrayList<String> tempList = new ArrayList<>();
-            disposeButton.forEach((key, value) -> {
-                if (value.isSelected()) {
-                    tempList.add(key);
-                }
-            });
-            jsonObject.put("disposeButton", tempList);
+            {
+                ArrayList<String> tempList = new ArrayList<>();
+                disposeButton.forEach((key, value) -> {
+                    if (value.isSelected()) {
+                        tempList.add(key);
+                    }
+                });
+                jsonObject.put("disposeButton", tempList);
+            }
+            //设置隐藏面板
+            {
+                ArrayList<String> tempList = new ArrayList<>();
+                disposePanel.forEach((key, value) -> {
+                    if (value.isSelected()) {
+                        tempList.add(key);
+                    }
+                });
+                jsonObject.put("disposePanel", tempList);
+            }
             //设置是否可退出
             jsonObject.put("canExit", !canExit.isSelected());
 

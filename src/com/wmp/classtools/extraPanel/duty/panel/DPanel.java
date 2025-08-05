@@ -36,7 +36,8 @@ public class DPanel extends CTPanel {
         ArrayList<CTSetsPanel> setsPanelList = new ArrayList<>();
         setsPanelList.add(new DutyListSetsPanel(Main.DATA_PATH));
         this.setCtSetsPanelList(setsPanelList);
-        this.setName("DPanel");
+        this.setName("值日表组件");
+        this.setID("DPanel");
         //设置容器布局- 绝对布局
         this.setLayout(new BorderLayout());
 
@@ -225,11 +226,14 @@ public class DPanel extends CTPanel {
     public void refresh() throws IOException {
 
         this.removeAll();
+
         initDutyList(DutyListPath);
         initIndex(indexPath);
         initContainer();
-        //repaint();
-        //revalidate();
+
+        revalidate();
+        repaint();
+
 
 
     }

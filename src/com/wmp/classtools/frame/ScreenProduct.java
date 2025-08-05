@@ -84,7 +84,7 @@ public class ScreenProduct extends JDialog {
         gbc.anchor = GridBagConstraints.WEST;// 左对齐
         for (CTPanel ctPanel : MainWindow.showPanelList) {
 
-            String name = Objects.isNull(ctPanel.getName()) ? "CTPanel" : ctPanel.getName();
+            String name = Objects.isNull(ctPanel.getID()) ? "CTPanel" : ctPanel.getName();
 
             if (name.equals("TimeViewPanel")) continue;
 

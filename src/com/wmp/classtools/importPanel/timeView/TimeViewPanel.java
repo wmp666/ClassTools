@@ -46,7 +46,8 @@ public class TimeViewPanel extends CTPanel {
 
     public TimeViewPanel() throws IOException {
 
-        this.setName("TimeViewPanel");
+        this.setName("时间显示组件");
+        this.setID("TimeViewPanel");
         this.setLayout(new BorderLayout());
         this.setCtSetsPanelList(List.of(new ScreenProductSetsPanel(Main.DATA_PATH)));
         initPanel();

@@ -1,5 +1,6 @@
 package com.wmp.classTools.importPanel.eastereggtext;
 
+import com.wmp.Main;
 import com.wmp.PublicTools.EasterEgg.EETextStyle;
 import com.wmp.PublicTools.EasterEgg.EasterEgg;
 import com.wmp.PublicTools.UITools.CTColor;
@@ -21,6 +22,7 @@ public class ETPanel extends CTPanel {
     public ETPanel() {
         this.setLayout(new BorderLayout());
         this.setName("ETPanel");
+        this.setID("ETPanel");
         this.setOpaque(false);
 
         {
@@ -54,6 +56,7 @@ public class ETPanel extends CTPanel {
         new Thread(() -> {
             while (true) {
                 this.removeAll();
+
 
                 String text = EasterEgg.getText(EETextStyle.HTML);
                 label.setText(text);
@@ -105,6 +108,7 @@ public class ETPanel extends CTPanel {
                 } catch (InterruptedException e) {
                     throw new RuntimeException(e);
                 }
+
             }
         }).start();
     }

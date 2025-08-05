@@ -150,9 +150,16 @@ public class AboutDialog extends JDialog {
 
         });
 
+        JMenuItem dataPath = new JMenuItem("数据路径");
+        dataPath.setIcon(GetIcon.getIcon(getClass().getResource("/image/openExp.png"), 20, 20));
+        dataPath.addActionListener(e -> {
+            OpenInExp.open(Main.DATA_PATH);
+        });
+
         menu.add(chat);
         menu.add(github);
         menu.add(appPath);
+        menu.add(dataPath);
 
         menuBar.add(menu);
 

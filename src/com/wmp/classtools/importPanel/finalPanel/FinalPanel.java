@@ -8,6 +8,7 @@ import com.wmp.PublicTools.update.GetNewerVersion;
 import com.wmp.classTools.CTComponent.CTIconButton;
 import com.wmp.classTools.CTComponent.CTPanel;
 import com.wmp.classTools.frame.AboutDialog;
+import com.wmp.classTools.frame.MainWindow;
 import com.wmp.classTools.frame.ShowCookieDialog;
 import com.wmp.classTools.infSet.InfSetDialog;
 import com.wmp.classTools.infSet.tools.GetSetsJSON;
@@ -20,24 +21,25 @@ import java.util.ArrayList;
 import java.util.concurrent.atomic.AtomicInteger;
 
 import static com.wmp.Main.disButList;
+import static com.wmp.Main.disPanelList;
 
 public class FinalPanel extends CTPanel {
 
 
-    private final ArrayList<CTPanel> panelList;
+
     public static final ArrayList<CTIconButton> allButList = new ArrayList<>();
 
 
-    public FinalPanel(ArrayList<CTPanel> panelList) throws MalformedURLException {
+    public FinalPanel() throws MalformedURLException {
         super();
 
 
-        this.panelList = panelList;
-        this.setName("FinalPanel");
+        this.setName("功能性按钮组");
+        this.setID("FinalPanel");
 
         initPanel();
 
-        initButton(panelList);
+        initButton();
     }
 
     private void initPanel() {
@@ -50,7 +52,48 @@ public class FinalPanel extends CTPanel {
 
     }
 
-    private void initButton(ArrayList<CTPanel> panelList) throws MalformedURLException {
+    private static void refreshPanel() {
+        GetSetsJSON setsJSON;
+        try {
+            setsJSON = new GetSetsJSON();
+
+
+            Main.canExit = setsJSON.isCanExit();
+            disButList.clear();
+            disButList.addAll(setsJSON.getDisButList());
+            disPanelList.clear();
+            disPanelList.addAll(setsJSON.getDisPanelList());
+            MainWindow.showPanelList.clear();
+
+            //Log.err.print("FinalPanel", "已折叠的Panel:" + disPanelList);
+
+            MainWindow.allPanelList.forEach(panel -> {
+                if (!disPanelList.contains(panel.getID())) {
+                    MainWindow.showPanelList.add(panel);
+                } else {
+                    panel.removeAll();
+                    panel.revalidate();
+                    panel.repaint();
+                }
+            });
+
+            //Log.err.print("FinalPanel", "showPanelList:" + MainWindow.showPanelList);
+            MainWindow.showPanelList.forEach(panel -> {
+                try {
+                    panel.refresh();
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
+                }
+
+            });// 自定义刷新方法
+            //this.setBackground(CTColor.backColor);
+            //refresh();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    private void initButton() throws MalformedURLException {
         JDialog moreDialog = new JDialog();
         moreDialog.setTitle("已折叠的功能");
         moreDialog.setLayout(new FlowLayout(FlowLayout.CENTER));
@@ -75,7 +118,7 @@ public class FinalPanel extends CTPanel {
             try {
                 new InfSetDialog(() -> {
 
-                    refreshPanel(panelList);
+                    refreshPanel();
                 }).setVisible(true);
             } catch (IOException e) {
                 throw new RuntimeException(e);
@@ -115,9 +158,7 @@ public class FinalPanel extends CTPanel {
         CTIconButton refresh = new CTIconButton("刷新",
                 "/image/%s/refresh_0.png",
                 "/image/%s/refresh_1.png", 30, () -> {
-            panelList.forEach(panel -> {
-                refreshPanel(panelList);
-            });// 自定义刷新方法
+            refreshPanel();// 自定义刷新方法
         });
         allButList.add(refresh);
 
@@ -177,37 +218,12 @@ public class FinalPanel extends CTPanel {
         }
     }
 
-    private static void refreshPanel(ArrayList<CTPanel> panelList) {
-        GetSetsJSON setsJSON;
-        try {
-            setsJSON = new GetSetsJSON();
-
-
-            Main.canExit = setsJSON.isCanExit();
-            disButList.clear();
-            disButList.addAll(setsJSON.getDisButList());
-
-            panelList.forEach(panel -> {
-                try {
-                    panel.refresh();
-                } catch (IOException e) {
-                    throw new RuntimeException(e);
-                }
-
-            });// 自定义刷新方法
-            //this.setBackground(CTColor.backColor);
-            //refresh();
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
-    }
-
     @Override
     public void refresh() throws IOException {
         this.removeAll();
 
         initPanel();
-        initButton(panelList);
+        initButton();
 
         revalidate();
         repaint();

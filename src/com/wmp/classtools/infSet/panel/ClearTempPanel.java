@@ -50,22 +50,9 @@ public class ClearTempPanel extends CTSetsPanel {
                 new DataControlUnit("插件", Main.DATA_PATH + "Cookie", false),
                 new DataControlUnit("个性化文件", Main.DATA_PATH + "setUp.json", false)));
 
-        //this.add(getControlUnit("日志", Main.DATA_PATH + "Log\\"));
-
-        //this.add(getControlUnit("彩蛋文件", Main.TEMP_PATH + "EasterEgg\\"));
-        //this.add(getControlUnit("网络文件下载缓存", Main.TEMP_PATH + "WebTemp\\"));
-        //this.add(getControlUnit("帮助文档缓存", Main.TEMP_PATH + "help\\"));
-
-        //this.add(buttonPanel);
     }
 
     private DataControlUnit getControlUnit(String name, String DATA_PATH, boolean canDelete, DataControlUnit... childUnits) throws MalformedURLException {
-        /*CTTextButton button = new CTTextButton(name*//*, GetIcon.getIcon(Main.class.getResource("/image/light/delete_0.png"), 30, 30)*//*);
-        button.setFont(CTFont.getCTFont(Font.PLAIN, CTFontSizeStyle.SMALL));
-        button.addActionListener(e -> {
-            deleteDir(DATA_PATH);
-        });
-        return button;*/
 
         return new DataControlUnit(name, DATA_PATH, canDelete, childUnits);
 
