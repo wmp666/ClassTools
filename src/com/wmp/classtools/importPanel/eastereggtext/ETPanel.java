@@ -57,6 +57,9 @@ public class ETPanel extends CTPanel {
             while (true) {
                 this.removeAll();
 
+                if (Main.disPanelList.contains(getID())) {
+                    continue;
+                }
 
                 String text = EasterEgg.getText(EETextStyle.HTML);
                 label.setText(text);
@@ -103,6 +106,7 @@ public class ETPanel extends CTPanel {
                 this.repaint();
 
                 Log.info.print("ETPanel", String.format("内容: %s | 等待时间: %s 毫秒", text, waitTime));
+
                 try {
                     Thread.sleep(waitTime);
                 } catch (InterruptedException e) {
