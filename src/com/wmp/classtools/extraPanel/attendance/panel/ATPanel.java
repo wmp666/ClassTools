@@ -83,12 +83,16 @@ public class ATPanel extends CTPanel {
         StuInfoLabel.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
+
+                int button = e.getButton();
+                if (button != MouseEvent.BUTTON3) return;
+
                 JPopupMenu popupMenu = new JPopupMenu();
 
                 JMenu editMenu = new JMenu("编辑");
                 editMenu.setIcon(GetIcon.getIcon(getClass().getResource("/image/edit.png"), 20, 20));
 
-                CTTextButton allStuEdit = new CTTextButton("编辑学生名单");
+                CTTextButton allStuEdit = new CTTextButton("学生名单");
                 allStuEdit.setIcon(GetIcon.getIcon(getClass().getResource("/image/edit.png"), 20, 20));
                 allStuEdit.addActionListener(event -> {
                     try {
@@ -99,7 +103,7 @@ public class ATPanel extends CTPanel {
                     }
                 });
                 editMenu.add(allStuEdit);
-                CTTextButton LeaveStuEdit = new CTTextButton("编辑迟到名单");
+                CTTextButton LeaveStuEdit = new CTTextButton("迟到名单");
                 LeaveStuEdit.setIcon(GetIcon.getIcon(getClass().getResource("/image/edit.png"), 20, 20));
                 LeaveStuEdit.addActionListener(event -> {
                     try {

@@ -1,13 +1,13 @@
 package com.wmp.classTools.CTComponent;
 
 import com.wmp.Main;
+import com.wmp.PublicTools.EasterEgg.EasterEgg;
 import com.wmp.PublicTools.UITools.GetIcon;
 
 import javax.swing.*;
 import javax.swing.border.Border;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
+import java.awt.event.*;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicReference;
 
@@ -220,13 +220,37 @@ public class CTOptionPane {
                 JTextArea messageArea = new JTextArea();
                 messageArea.setText(message);
                 messageArea.setEditable(false);//设置文本区域不可编辑
-                messageArea.setFocusable(false);//设置文本区域可聚焦
+                //messageArea.setFocusable(false);//设置文本区域可聚焦
                 messageArea.setOpaque(false);//设置文本区域不透明
                 messageArea.setLineWrap(true);//设置文本区域自动换行
                 messageArea.setWrapStyleWord(true);//设置文本区域自动换行时单词不被分割
                 messageArea.setFont(new Font("Microsoft YaHei UI", Font.PLAIN, 15));
                 messagePanel = new JScrollPane(messageArea);
                 messagePanel.setBorder(null);
+
+                messageArea.addFocusListener(new FocusAdapter() {
+                    @Override
+                    public void focusGained(FocusEvent e) {
+                        messageArea.selectAll();
+                    }
+                });
+
+                messageArea.addKeyListener(new KeyAdapter() {
+                    @Override
+                    public void keyTyped(KeyEvent e) {
+                        EasterEgg.errorAction();
+                    }
+
+                    @Override
+                    public void keyPressed(KeyEvent e) {
+                        EasterEgg.errorAction();
+                    }
+
+                    @Override
+                    public void keyReleased(KeyEvent e) {
+                        EasterEgg.errorAction();
+                    }
+                });
 
 
                 panel.add(messagePanel, BorderLayout.CENTER);

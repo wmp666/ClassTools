@@ -68,7 +68,7 @@ public class DPanel extends CTPanel {
 
         InfoPanel.add(CLBBLabel, gbc);
 
-        DutyDay now = new DutyDay(DutyDay.setDutyPersonList("数据异常"), DutyDay.setDutyPersonList("数据异常"));
+        DutyDay now;
         try {
             now = DutyList.get(index);
         } catch (Exception e) {
@@ -94,7 +94,7 @@ public class DPanel extends CTPanel {
         JPanel buttonPanel = new JPanel();
         buttonPanel.setLayout(new BorderLayout());
         buttonPanel.setOpaque(false);
-
+        //日期切换按钮
         {
 
             CTIconButton last = new CTIconButton("上一天",

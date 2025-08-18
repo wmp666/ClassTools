@@ -1,6 +1,7 @@
 package com.wmp.PublicTools.printLog;
 
 import com.wmp.Main;
+import com.wmp.PublicTools.EasterEgg.EasterEgg;
 import com.wmp.PublicTools.OpenInExp;
 import com.wmp.PublicTools.UITools.CTFont;
 import com.wmp.PublicTools.UITools.CTFontSizeStyle;
@@ -10,10 +11,7 @@ import com.wmp.classTools.CTComponent.CTOptionPane;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.WindowAdapter;
-import java.awt.event.WindowEvent;
+import java.awt.event.*;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
@@ -227,8 +225,25 @@ public class Log {
         dialog.setLocationRelativeTo(null);
         dialog.setLayout(new BorderLayout());
 
+        textArea.setEditable(false);
+        textArea.addKeyListener(new KeyAdapter() {
+            @Override
+            public void keyTyped(KeyEvent e) {
+                EasterEgg.errorAction();
+            }
+
+            @Override
+            public void keyPressed(KeyEvent e) {
+                EasterEgg.errorAction();
+            }
+
+            @Override
+            public void keyReleased(KeyEvent e) {
+                EasterEgg.errorAction();
+            }
+        });
+
         JScrollPane scrollPane = new JScrollPane(textArea);
-        //scrollPane.setPreferredSize(new Dimension(480, 550));
         dialog.add(scrollPane, BorderLayout.CENTER);
 
         JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT));

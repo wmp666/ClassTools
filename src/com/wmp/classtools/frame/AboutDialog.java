@@ -11,10 +11,13 @@ import com.wmp.PublicTools.io.GetPath;
 import com.wmp.PublicTools.printLog.Log;
 import com.wmp.PublicTools.update.GetNewerVersion;
 import com.wmp.classTools.CTComponent.CTIconButton;
+import com.wmp.classTools.CTComponent.CTTextButton;
 import com.wmp.classTools.frame.tools.help.ShowHelpDoc;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URI;
@@ -61,6 +64,33 @@ public class AboutDialog extends JDialog {
         author.setFont(CTFont.getCTFont(Font.BOLD, CTFontSizeStyle.SMALL));
         author.setForeground(CTColor.textColor);
 
+        JLabel info = new JLabel("<html>"
+                + "程序名: " + Main.appName + "<br><br>"
+                + "作者: " + Main.author + "<br><br>"
+                + "版本: " + Main.version
+                + "</html>");
+        info.setBounds(120, 10, 200, 100);
+        info.setFont(CTFont.getCTFont(Font.BOLD, CTFontSizeStyle.SMALL));
+        info.setForeground(CTColor.textColor);
+        info.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                int button = e.getButton();
+                if (button == MouseEvent.BUTTON3) {
+                    JPopupMenu ETPopupMenu = new JPopupMenu();
+
+                    CTTextButton edit = new CTTextButton("编辑");
+                    edit.setIcon(GetIcon.getIcon(getClass().getResource("/image/edit.png"), 20, 20));
+                    edit.addActionListener(event -> {
+                        EasterEgg.errorAction();
+                    });
+
+                    ETPopupMenu.add(edit);
+
+                    ETPopupMenu.show(info, e.getX(), e.getY());
+                }
+            }
+        });
         //view = new JPanel();
 
 
@@ -74,9 +104,10 @@ public class AboutDialog extends JDialog {
         this.add(view);
         this.add(getNew);
         this.add(icon);
-        this.add(title);
-        this.add(version);
-        this.add(author);
+        //this.add(title);
+        //this.add(version);
+        //this.add(author);
+        this.add(info);
 
         initMenuBar();
 
