@@ -2,7 +2,6 @@ package com.wmp.classTools.importPanel.finalPanel;
 
 import com.wmp.Main;
 import com.wmp.PublicTools.UITools.CTColor;
-import com.wmp.PublicTools.UITools.GetIcon;
 import com.wmp.PublicTools.printLog.Log;
 import com.wmp.PublicTools.update.GetNewerVersion;
 import com.wmp.classTools.CTComponent.CTIconButton;
@@ -52,7 +51,7 @@ public class FinalPanel extends CTPanel {
 
     }
 
-    private static void refreshPanel() {
+    public static void refreshPanel() {
         GetSetsJSON setsJSON;
         try {
             setsJSON = new GetSetsJSON();
@@ -67,6 +66,7 @@ public class FinalPanel extends CTPanel {
 
             //Log.err.print("FinalPanel", "已折叠的Panel:" + disPanelList);
 
+            //1.判断需要显示的CTPanel,不需要的清除其中的内容
             MainWindow.allPanelList.forEach(panel -> {
                 if (!disPanelList.contains(panel.getID())) {
                     MainWindow.showPanelList.add(panel);
@@ -77,7 +77,7 @@ public class FinalPanel extends CTPanel {
                 }
             });
 
-            //Log.err.print("FinalPanel", "showPanelList:" + MainWindow.showPanelList);
+            //刷新要显示的CTPanel的内容
             MainWindow.showPanelList.forEach(panel -> {
                 try {
                     panel.refresh();
@@ -86,26 +86,25 @@ public class FinalPanel extends CTPanel {
                 }
 
             });// 自定义刷新方法
-            //this.setBackground(CTColor.backColor);
-            //refresh();
+
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
     }
 
     private void initButton() throws MalformedURLException {
-        JDialog moreDialog = new JDialog();
-        moreDialog.setTitle("已折叠的功能");
-        moreDialog.setLayout(new FlowLayout(FlowLayout.CENTER));
-        moreDialog.setSize(250, 300);
-        moreDialog.setLocationRelativeTo(null);
-        moreDialog.setModal(true);
-        moreDialog.getContentPane().setBackground(CTColor.backColor);
-        moreDialog.setIconImage(GetIcon.getImageIcon(getClass().getResource("/image/light/more.png"), 32, 32).getImage());
+
+        JPopupMenu moreMenu = new JPopupMenu();
+        moreMenu.setBackground(CTColor.backColor);
 
         CTIconButton moreButton = new CTIconButton("更多功能",
                 "/image/%s/more.png",
-                "/image/%s/more.png", 30, () -> moreDialog.setVisible(true));
+                "/image/%s/more.png", 30, () -> {
+            //moreDialog.setVisible(true);
+        });
+        moreButton.setCallback(() -> {
+            moreMenu.show(moreButton, 0, moreButton.getHeight());
+        });
         moreButton.setPreferredSize(moreButton.getSize());
         moreButton.setMaximumSize(moreButton.getSize());
         moreButton.setMinimumSize(moreButton.getSize());
@@ -119,8 +118,9 @@ public class FinalPanel extends CTPanel {
                 new InfSetDialog(() -> {
 
                     refreshPanel();
-                }).setVisible(true);
+                });
             } catch (IOException e) {
+                Log.err.print("FinalPanel", "设置打开失败");
                 throw new RuntimeException(e);
             }
 
@@ -172,10 +172,12 @@ public class FinalPanel extends CTPanel {
         this.add(moreButton);
         AtomicInteger length = new AtomicInteger();
 
+        //按钮展示
         allButList.forEach(ctButton -> {
             if (disButList.contains(ctButton.getName())) {
                 ctButton.setText(ctButton.getToolTipText());
-                moreDialog.add(ctButton);
+                //moreDialog.add(ctButton);
+                moreMenu.add(ctButton);
                 length.getAndIncrement();
             } else {
                 CTIconButton temp = null;

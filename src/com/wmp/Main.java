@@ -8,15 +8,14 @@ import com.wmp.classTools.SwingRun;
 import com.wmp.classTools.infSet.tools.GetSetsJSON;
 
 import java.io.IOException;
-import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.TreeMap;
 
 public class Main{
 
-    public static String DATA_PATH = "null";
-    public static String TEMP_PATH = "null";
+    public static String DATA_PATH;
+    public static String TEMP_PATH;
 
     public static final ArrayList<String> disPanelList = new ArrayList<>();
     public static String appName = "ClassTools";
@@ -37,7 +36,7 @@ public class Main{
     * d:只修复的问题,问题较少
     * e:测试版本号
      */
-    public static String version = "1.30.1";
+    public static String version = "1.31.0";
 
     public static boolean canExit = true;
 
@@ -87,7 +86,7 @@ public class Main{
                 argsList = new ArrayList<>(Arrays.asList(args));
                 Log.info.print("Main", "使用的启动参数:" + Arrays.toString(args));
             }
-        } catch (IOException e) {
+        } catch (Exception e) {
             Log.err.print("Main", "初始化失败:" + e.getMessage());
             Log.showLogDialog();
             throw new RuntimeException(e);
@@ -97,7 +96,7 @@ public class Main{
         //Log.info.print("[Main]", "是否被骇客入侵:" + isError);
         if (isError) {
 
-            Log.info.message(null, "[Main]", "这次能让我玩得开心点吗？");
+            Log.info.message(null, "Main", "这次能让我玩得开心点吗？");
 
             version = "999.999.999";//错误版本号(无法更新)
             appName = "班级病毒";
@@ -110,7 +109,7 @@ public class Main{
 
         try {
             SwingRun.show(b, allArgs, argsList, startUpdate);
-        } catch (URISyntaxException e) {
+        } catch (Exception e) {
             Log.err.print("Main", "窗口初始化失败:" + e.getMessage());
             Log.showLogDialog();
             throw new RuntimeException(e);
@@ -120,7 +119,4 @@ public class Main{
 
 
     }
-
-
-
 }

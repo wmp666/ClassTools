@@ -2,11 +2,13 @@ package com.wmp.PublicTools.EasterEgg;
 
 import com.wmp.Main;
 import com.wmp.PublicTools.UITools.CTColor;
+import com.wmp.PublicTools.UITools.GetIcon;
 import com.wmp.PublicTools.io.IOForInfo;
 import com.wmp.PublicTools.io.ResourceLocalizer;
 import com.wmp.PublicTools.printLog.Log;
 import com.wmp.PublicTools.videoView.MediaPlayer;
 import com.wmp.PublicTools.web.GetWebInf;
+import com.wmp.classTools.CTComponent.CTOptionPane;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
@@ -233,5 +235,11 @@ public class EasterEgg {
 
         return IOForInfo.getInfo(EasterEgg.class.getResource("EasterEgg.txt"));
 
+    }
+
+    public static void errorAction() {
+        Log.info.print("EasterEgg", "你没有权限!!!");
+
+        CTOptionPane.showMessageDialog(null, "警告", "你没有权限!!!", GetIcon.getIcon(EasterEgg.class.getResource("/image/error/error.png"), 100, 100), CTOptionPane.ERROR_MESSAGE, true);
     }
 }

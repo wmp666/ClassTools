@@ -29,9 +29,15 @@ public class InfSetDialog extends JDialog {
     private final ArrayList<CTSetsPanel> ctSetsPanelList = new ArrayList<>();
 
 
-    private String openedPanel = "迟到人员";
-    // 添加文件路径参数
+    private String openedPanel;
+
     public InfSetDialog(Runnable refreshCallback) throws IOException {
+        this(refreshCallback, "迟到人员");
+    }
+
+
+    // 添加文件路径参数
+    public InfSetDialog(Runnable refreshCallback, String showPanel) throws IOException {
         Log.info.systemPrint("设置", "正在初始化设置...");
 
         this.setBackground(CTColor.backColor);
@@ -44,6 +50,7 @@ public class InfSetDialog extends JDialog {
         this.setResizable(false);
         this.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 
+        this.openedPanel = showPanel;
 
         this.c = this.getContentPane();
         this.refreshCallback = refreshCallback;
@@ -69,12 +76,13 @@ public class InfSetDialog extends JDialog {
 
         initSaveButton();
         ctSetsPanelList.forEach(ctSetsPanel -> {
-            if (ctSetsPanel.getName().equals("迟到人员"))
+            if (ctSetsPanel.getName().equals(this.openedPanel))
                 c.add(ctSetsPanel, BorderLayout.CENTER);
         });
         c.add(initSetsPanelSwitchBar(), BorderLayout.NORTH);
 
 
+        this.setVisible(true);
     }
 
     private JScrollPane initSetsPanelSwitchBar() {

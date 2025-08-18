@@ -17,8 +17,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 
-import static com.wmp.Main.allArgs;
-import static com.wmp.Main.argsList;
+import static com.wmp.Main.*;
 
 public class MainWindow extends JDialog {
     private final Container contentPane = this.getContentPane();
@@ -83,9 +82,17 @@ public class MainWindow extends JDialog {
 
         } else {
 
+
             allPanelList.forEach(ctPanel -> {
-                if (!Main.disPanelList.contains(ctPanel.getID())) {
-                    showPanelList.add(ctPanel);
+                ctPanel.setBackground(CTColor.backColor);
+
+                gbc.gridy++;
+                contentPane.add(ctPanel, gbc);
+
+                if (disPanelList.contains(ctPanel.getID())) {
+                    ctPanel.removeAll();
+                    ctPanel.revalidate();
+                    ctPanel.repaint();
                 }
             });
 

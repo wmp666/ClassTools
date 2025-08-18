@@ -1,19 +1,21 @@
 package com.wmp.classTools.extraPanel.attendance.panel;
 
 import com.wmp.Main;
-import com.wmp.PublicTools.UITools.CTColor;
-import com.wmp.PublicTools.UITools.CTFont;
-import com.wmp.PublicTools.UITools.CTFontSizeStyle;
-import com.wmp.PublicTools.UITools.PeoPanelProcess;
+import com.wmp.PublicTools.UITools.*;
 import com.wmp.PublicTools.io.IOForInfo;
 import com.wmp.PublicTools.printLog.Log;
 import com.wmp.classTools.CTComponent.CTPanel;
 import com.wmp.classTools.CTComponent.CTSetsPanel;
+import com.wmp.classTools.CTComponent.CTTextButton;
 import com.wmp.classTools.extraPanel.attendance.settings.AllStuSetsPanel;
 import com.wmp.classTools.extraPanel.attendance.settings.LeaveListSetsPanel;
+import com.wmp.classTools.importPanel.finalPanel.FinalPanel;
+import com.wmp.classTools.infSet.InfSetDialog;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -25,7 +27,9 @@ public class ATPanel extends CTPanel {
     private final JLabel LateStuLabel = new JLabel();
     private final JLabel AttendStuLabel = new JLabel();
     private final JLabel AllStuLabel = new JLabel();
-    private final JLabel personLabel = new JLabel();
+
+    private final JLabel StuInfoLabel = new JLabel();
+
     private final File AllStudentPath;
     private final File LeaveListPath;
     private int studentLength;// 应到人数
@@ -68,27 +72,59 @@ public class ATPanel extends CTPanel {
         StrTextColor = StrTextColor.substring(2, 9);
         String TextColor = "style='color: " + StrTextColor + ";'";
 
-        AllStuLabel.setText("<html><span " + TextColor + ">" + "应到：<span " + NumColor + ">" + studentLength + "人</html>");
-        AllStuLabel.setFont(CTFont.getCTFont(Font.BOLD, CTFontSizeStyle.BIG));
 
+        StuInfoLabel.setText("<html>"
+                + "<span " + TextColor + ">" + "应到：<span " + NumColor + ">" + studentLength + "人<br>"
+                + "<span " + TextColor + ">" + "实到：<span " + NumColor + ">" + (studentLength - studentLateLength) + "人<br>"
+                + "<span " + TextColor + ">" + "请假：<span style='color: red;'>" + studentLateLength + "人"
+                + "</html>");
+        StuInfoLabel.setFont(CTFont.getCTFont(Font.BOLD, CTFontSizeStyle.BIG));
 
-        AttendStuLabel.setText("<html><span " + TextColor + ">" + "实到：<span " + NumColor + ">" + (studentLength - studentLateLength) + "人</html>");
-        AttendStuLabel.setFont(CTFont.getCTFont(Font.BOLD, CTFontSizeStyle.BIG));
+        StuInfoLabel.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                JPopupMenu popupMenu = new JPopupMenu();
 
+                JMenu editMenu = new JMenu("编辑");
+                editMenu.setIcon(GetIcon.getIcon(getClass().getResource("/image/edit.png"), 20, 20));
 
-        LateStuLabel.setText("<html><span " + TextColor + ">" + "请假：<span style='color: red;'>" + studentLateLength + "人</html>");
-        LateStuLabel.setFont(CTFont.getCTFont(Font.BOLD, CTFontSizeStyle.BIG));
+                CTTextButton allStuEdit = new CTTextButton("编辑学生名单");
+                allStuEdit.setIcon(GetIcon.getIcon(getClass().getResource("/image/edit.png"), 20, 20));
+                allStuEdit.addActionListener(event -> {
+                    try {
+                        new InfSetDialog(FinalPanel::refreshPanel, "学生名单");
+                    } catch (IOException ex) {
+                        Log.err.print("ATPanel", "设置打开失败");
+                        throw new RuntimeException(ex);
+                    }
+                });
+                editMenu.add(allStuEdit);
+                CTTextButton LeaveStuEdit = new CTTextButton("编辑迟到名单");
+                LeaveStuEdit.setIcon(GetIcon.getIcon(getClass().getResource("/image/edit.png"), 20, 20));
+                LeaveStuEdit.addActionListener(event -> {
+                    try {
+                        new InfSetDialog(FinalPanel::refreshPanel, "迟到人员");
+                    } catch (IOException ex) {
+                        Log.err.print("ATPanel", "设置打开失败");
+                        throw new RuntimeException(ex);
+                    }
+                });
+                editMenu.add(LeaveStuEdit);
+
+                popupMenu.add(editMenu);
+
+                popupMenu.show(StuInfoLabel, e.getX(), e.getY());
+            }
+        });
+
 
         GridBagConstraints gbc = new GridBagConstraints();
         gbc.gridx = 0;// 列
         gbc.gridy = 0;// 行
         gbc.fill = GridBagConstraints.BOTH;// 填充方式
 
-        this.add(AllStuLabel, gbc);
-        gbc.gridy = 1;// 列
-        this.add(AttendStuLabel, gbc);
-        gbc.gridy = 2;// 列
-        this.add(LateStuLabel, gbc);
+
+        this.add(StuInfoLabel, gbc);
 
         if (leaveList.isEmpty()) {
 

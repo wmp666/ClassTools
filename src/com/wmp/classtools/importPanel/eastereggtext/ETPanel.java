@@ -3,21 +3,22 @@ package com.wmp.classTools.importPanel.eastereggtext;
 import com.wmp.Main;
 import com.wmp.PublicTools.EasterEgg.EETextStyle;
 import com.wmp.PublicTools.EasterEgg.EasterEgg;
-import com.wmp.PublicTools.UITools.CTColor;
-import com.wmp.PublicTools.UITools.CTFont;
-import com.wmp.PublicTools.UITools.CTFontSizeStyle;
-import com.wmp.PublicTools.UITools.GetMaxSize;
+import com.wmp.PublicTools.UITools.*;
 import com.wmp.PublicTools.printLog.Log;
 import com.wmp.classTools.CTComponent.CTPanel;
+import com.wmp.classTools.CTComponent.CTTextButton;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 import java.io.IOException;
 import java.util.Arrays;
 
-public class ETPanel extends CTPanel {
+public class ETPanel extends CTPanel implements MouseListener {
 
-    private JLabel label;
+    private final JLabel label;
+
 
     public ETPanel() {
         this.setLayout(new BorderLayout());
@@ -51,6 +52,8 @@ public class ETPanel extends CTPanel {
 
         }
 
+
+        label.addMouseListener(this);
 
         //刷新
         new Thread(() -> {
@@ -124,5 +127,43 @@ public class ETPanel extends CTPanel {
 
         this.revalidate();
         this.repaint();
+    }
+
+    @Override//鼠标点击
+    public void mouseClicked(MouseEvent e) {
+        int button = e.getButton();
+        if (button == MouseEvent.BUTTON3) {
+            JPopupMenu ETPopupMenu = new JPopupMenu();
+
+            CTTextButton edit = new CTTextButton("编辑");
+            edit.setIcon(GetIcon.getIcon(getClass().getResource("/image/edit.png"), 20, 20));
+            edit.addActionListener(event -> {
+                EasterEgg.errorAction();
+            });
+
+            ETPopupMenu.add(edit);
+
+            ETPopupMenu.show(label, e.getX(), e.getY());
+        }
+    }
+
+    @Override
+    public void mousePressed(MouseEvent e) {
+
+    }
+
+    @Override
+    public void mouseReleased(MouseEvent e) {
+
+    }
+
+    @Override
+    public void mouseEntered(MouseEvent e) {
+
+    }
+
+    @Override
+    public void mouseExited(MouseEvent e) {
+
     }
 }

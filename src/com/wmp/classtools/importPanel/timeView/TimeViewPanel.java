@@ -4,13 +4,19 @@ import com.wmp.Main;
 import com.wmp.PublicTools.UITools.CTColor;
 import com.wmp.PublicTools.UITools.CTFont;
 import com.wmp.PublicTools.UITools.CTFontSizeStyle;
+import com.wmp.PublicTools.UITools.GetIcon;
 import com.wmp.PublicTools.printLog.Log;
 import com.wmp.classTools.CTComponent.CTIconButton;
 import com.wmp.classTools.CTComponent.CTPanel;
+import com.wmp.classTools.CTComponent.CTTextButton;
+import com.wmp.classTools.importPanel.finalPanel.FinalPanel;
 import com.wmp.classTools.importPanel.timeView.settings.ScreenProductSetsPanel;
+import com.wmp.classTools.infSet.InfSetDialog;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.text.DateFormat;
@@ -44,6 +50,8 @@ public class TimeViewPanel extends CTPanel {
         }
     });
 
+    private final JPopupMenu ETPopupMenu = new JPopupMenu();
+
     public TimeViewPanel() throws IOException {
 
         this.setName("时间显示组件");
@@ -52,8 +60,30 @@ public class TimeViewPanel extends CTPanel {
         this.setCtSetsPanelList(List.of(new ScreenProductSetsPanel(Main.DATA_PATH)));
         initPanel();
 
-        //时间刷新
+        CTTextButton edit = new CTTextButton("编辑");
+        edit.setIcon(GetIcon.getIcon(getClass().getResource("/image/edit.png"), 20, 20));
+        edit.addActionListener(e -> {
+            try {
+                new InfSetDialog(FinalPanel::refreshPanel, "屏保设置");
+            } catch (IOException ex) {
+                Log.err.print("TimeViewPanel", "设置打开失败");
+                throw new RuntimeException(ex);
+            }
+        });
 
+        ETPopupMenu.add(edit);
+
+        timeView.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                if (e.getButton() == MouseEvent.BUTTON3) {
+                    ETPopupMenu.show(e.getComponent(), e.getX(), e.getY());
+                }
+
+            }
+        });
+
+        //时间刷新
         timeThread.setDaemon(true);
         timeThread.start();
     }

@@ -24,12 +24,17 @@ import java.util.TreeMap;
 
 public class PersonalizationPanel extends CTSetsPanel {
 
+    //颜色 数据
     private final CTComboBox mainColorComboBox = new CTComboBox();
     private final CTComboBox mainThemeComboBox = new CTComboBox();
     private final CTComboBox FontNameComboBox = new CTComboBox();
+    //字体 数据
     private final ArrayList<CTTextField> FontSizeList = new ArrayList<>();
+    //隐藏按钮 数据
     private final TreeMap<String, JCheckBox> disposeButton = new TreeMap<>();
+    //隐藏面板 数据
     private final TreeMap<String, JCheckBox> disposePanel = new TreeMap<>();
+    //其他数据
     private final JCheckBox StartUpdate = new JCheckBox("启动检查更新");
     private final JCheckBox canExit = new JCheckBox("防止被意外关闭");
     private final JCheckBox startUp = new JCheckBox("开机自启动");
@@ -130,15 +135,15 @@ public class PersonalizationPanel extends CTSetsPanel {
                 setFontName.add(FontNameLabel);
                 setFontName.add(FontNameComboBox);
             }
-            //字体大小设置(废弃设施)
-            /*JPanel setFontSize = new JPanel();
+            //字体大小设置
+            JPanel setFontSize = new JPanel();
             {
                 setFontSize.setLayout(new FlowLayout(FlowLayout.LEFT));
                 JLabel FontSizeLabel = new JLabel("字体大小-大:");
                 FontSizeLabel.setFont(CTFont.getCTFont(-1, CTFontSizeStyle.SMALL));
                 CTTextField FontSizeTextField = new CTTextField();
                 FontSizeTextField.setFont(CTFont.getCTFont(-1, CTFontSizeStyle.SMALL));
-            }*/
+            }
 
             JButton button = new JButton("改为默认");
             //button.setFont(new Font("Microsoft YaHei UI", Font.PLAIN, 12));

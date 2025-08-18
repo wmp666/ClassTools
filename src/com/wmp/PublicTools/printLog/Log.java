@@ -80,7 +80,7 @@ public class Log {
 
     public static void exit(int status) {
 
-        if(status == -1){
+        if (status == -1 || !Main.canExit) {
             return;
         }
         //获取桌面大小
