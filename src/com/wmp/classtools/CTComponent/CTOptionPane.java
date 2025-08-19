@@ -7,6 +7,9 @@ import com.wmp.PublicTools.UITools.GetIcon;
 import javax.swing.*;
 import javax.swing.border.Border;
 import java.awt.*;
+import java.awt.datatransfer.Clipboard;
+import java.awt.datatransfer.StringSelection;
+import java.awt.datatransfer.Transferable;
 import java.awt.event.*;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicReference;
@@ -238,17 +241,32 @@ public class CTOptionPane {
                 messageArea.addKeyListener(new KeyAdapter() {
                     @Override
                     public void keyTyped(KeyEvent e) {
+                        System.err.println(e.getKeyChar());
                         EasterEgg.errorAction();
                     }
+                });
 
-                    @Override
-                    public void keyPressed(KeyEvent e) {
-                        EasterEgg.errorAction();
-                    }
+                messageArea.addMouseListener(new MouseAdapter() {
+                    @Override//鼠标点击
+                    public void mouseClicked(MouseEvent e) {
+                        int button = e.getButton();
+                        if (button == MouseEvent.BUTTON3) {
+                            JPopupMenu ETPopupMenu = new JPopupMenu();
 
-                    @Override
-                    public void keyReleased(KeyEvent e) {
-                        EasterEgg.errorAction();
+                            CTTextButton copy = new CTTextButton("复制");
+                            copy.setIcon(GetIcon.getIcon(getClass().getResource("/image/edit.png"), 20, 20));
+                            copy.addActionListener(event -> {
+
+                                //将字符串复制到剪切板。
+                                Clipboard clip = Toolkit.getDefaultToolkit().getSystemClipboard();
+                                Transferable tText = new StringSelection(messageArea.getSelectedText());
+                                clip.setContents(tText, null);
+                            });
+
+                            ETPopupMenu.add(copy);
+
+                            ETPopupMenu.show(messageArea, e.getX(), e.getY());
+                        }
                     }
                 });
 
