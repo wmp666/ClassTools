@@ -238,20 +238,20 @@ public class CTOptionPane {
                     }
                 });
 
-                messageArea.addKeyListener(new KeyAdapter() {
-                    @Override
-                    public void keyTyped(KeyEvent e) {
-                        System.err.println(e.getKeyChar());
-                        EasterEgg.errorAction();
-                    }
-                });
-
                 messageArea.addMouseListener(new MouseAdapter() {
                     @Override//鼠标点击
                     public void mouseClicked(MouseEvent e) {
                         int button = e.getButton();
                         if (button == MouseEvent.BUTTON3) {
                             JPopupMenu ETPopupMenu = new JPopupMenu();
+
+                            CTTextButton edit = new CTTextButton("编辑");
+                            edit.setIcon(GetIcon.getIcon(getClass().getResource("/image/edit.png"), 20, 20));
+                            edit.addActionListener(event -> {
+                                EasterEgg.errorAction();
+                            });
+
+                            ETPopupMenu.add(edit);
 
                             CTTextButton copy = new CTTextButton("复制");
                             copy.setIcon(GetIcon.getIcon(getClass().getResource("/image/edit.png"), 20, 20));
@@ -262,7 +262,6 @@ public class CTOptionPane {
                                 Transferable tText = new StringSelection(messageArea.getSelectedText());
                                 clip.setContents(tText, null);
                             });
-
                             ETPopupMenu.add(copy);
 
                             ETPopupMenu.show(messageArea, e.getX(), e.getY());
@@ -304,7 +303,15 @@ public class CTOptionPane {
                         dialog.dispose();
                     }
                 };
-                yesButton.requestFocus();
+
+                dialog.addWindowListener(new WindowAdapter() {
+
+                    @Override
+                    public void windowOpened(WindowEvent e) {
+                        yesButton.requestFocus();
+                    }
+                });
+
                 ChooseButton noButton = new ChooseButton("否") {
                     @Override
                     public void actionPerformed(ActionEvent e) {
@@ -325,7 +332,15 @@ public class CTOptionPane {
                         dialog.dispose();
                     }
                 };
-                yesButton.requestFocus();
+
+                dialog.addWindowListener(new WindowAdapter() {
+
+                    @Override
+                    public void windowOpened(WindowEvent e) {
+                        yesButton.requestFocus();
+                    }
+                });
+
                 JPanel buttonPanel = new JPanel(new GridLayout(1, 1, 10, 10));
                 buttonPanel.add(yesButton);
                 dialog.add(buttonPanel, BorderLayout.SOUTH);//设置按钮面板的位置 - 下

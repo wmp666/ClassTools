@@ -115,8 +115,10 @@ public class GetNewerVersion {
             //updateMode = s.equals() ? NEW_VERSION : TEST_VERSION;
             if (s.equals("最新版")) updateMode = NEW_VERSION;
             else if (s.equals("测试版")) updateMode = TEST_VERSION;
-        } else {
-            updateMode = NEW_VERSION;
+            else {
+                Log.err.print(null, "获取新版本", "未设置更新方式");
+                return;
+            }
         }
 
 
