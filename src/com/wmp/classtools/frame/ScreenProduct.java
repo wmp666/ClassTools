@@ -7,6 +7,7 @@ import com.wmp.PublicTools.printLog.Log;
 import com.wmp.classTools.CTComponent.CTIconButton;
 import com.wmp.classTools.CTComponent.CTPanel;
 import com.wmp.classTools.frame.tools.screenProduct.SetsScrInfo;
+import com.wmp.classTools.importPanel.finalPanel.FinalPanel;
 
 import javax.swing.*;
 import java.awt.*;
@@ -82,9 +83,9 @@ public class ScreenProduct extends JDialog {
         gbc.gridy = 0;
         gbc.fill = GridBagConstraints.VERTICAL;
         gbc.anchor = GridBagConstraints.WEST;// 左对齐
-        for (CTPanel ctPanel : MainWindow.showPanelList) {
+        for (CTPanel ctPanel : MainWindow.allPanelList) {
 
-            String name = Objects.isNull(ctPanel.getID()) ? "CTPanel" : ctPanel.getName();
+            String name = Objects.isNull(ctPanel.getID()) ? "CTPanel" : ctPanel.getID();
 
             if (name.equals("TimeViewPanel")) continue;
 
@@ -103,6 +104,9 @@ public class ScreenProduct extends JDialog {
         scrollPane.getViewport().setOpaque(false);
         scrollPane.setViewportView(tempPanel);
         c.add(scrollPane, BorderLayout.EAST);
+
+        //刷新颜色
+        FinalPanel.refreshPanel();
 
         this.setVisible(true);
 

@@ -11,6 +11,7 @@ import com.wmp.PublicTools.io.ZipPack;
 import com.wmp.PublicTools.printLog.Log;
 import com.wmp.classTools.CTComponent.CTIconButton;
 import com.wmp.classTools.CTComponent.CTSetsPanel;
+import com.wmp.classTools.CTComponent.CTTextButton;
 import com.wmp.classTools.frame.MainWindow;
 import com.wmp.classTools.infSet.panel.ClearTempPanel;
 import com.wmp.classTools.infSet.panel.PersonalizationPanel;
@@ -94,25 +95,23 @@ public class InfSetDialog extends JDialog {
         GridBagConstraints gbc = new GridBagConstraints();
         gbc.fill = GridBagConstraints.HORIZONTAL;
         gbc.weightx = 1.0;
-        gbc.insets = new Insets(10, 5, 20, 5); // 设置边距
+        gbc.insets = new Insets(0, 5, 15, 5); // 设置边距 10 5 20 5
         this.ctSetsPanelList.forEach(ctSetsPanel -> {
-            JButton button = new JButton(ctSetsPanel.getName());
+            CTTextButton button = new CTTextButton(ctSetsPanel.getName());
             if (openedPanel.equals(ctSetsPanel.getName())) {
                 button.setForeground(new Color(0x0090FF));
             } else {
                 button.setForeground(Color.BLACK);
             }
+            button.setBorder(null);
             button.setBackground(Color.WHITE);
-            button.setFont(CTFont.getCTFont(-1, CTFontSizeStyle.MORE_SMALL));
-            button.setBorderPainted(false);
-            button.setFocusPainted(false);// 去除按钮的焦点边框
+            button.setFont(CTFont.getCTFont(Font.PLAIN, CTFontSizeStyle.SMALL));
             button.addActionListener(e -> {
                 openedPanel = ctSetsPanel.getName();
                 try {
                     this.repaintSetsPanel(ctSetsPanel);
-                } catch (MalformedURLException ex) {
-                    throw new RuntimeException(ex);
                 } catch (IOException ex) {
+                    Log.err.print("InfSetDialog", "刷新设置页面失败");
                     throw new RuntimeException(ex);
                 }
             });
