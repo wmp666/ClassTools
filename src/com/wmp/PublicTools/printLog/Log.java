@@ -3,11 +3,13 @@ package com.wmp.PublicTools.printLog;
 import com.wmp.Main;
 import com.wmp.PublicTools.EasterEgg.EasterEgg;
 import com.wmp.PublicTools.OpenInExp;
+import com.wmp.PublicTools.UITools.CTColor;
 import com.wmp.PublicTools.UITools.CTFont;
 import com.wmp.PublicTools.UITools.CTFontSizeStyle;
 import com.wmp.PublicTools.UITools.GetIcon;
 import com.wmp.PublicTools.videoView.MediaPlayer;
 import com.wmp.classTools.CTComponent.CTOptionPane;
+import com.wmp.classTools.importPanel.finalPanel.FinalPanel;
 
 import javax.swing.*;
 import java.awt.*;
@@ -28,7 +30,7 @@ public class Log {
     private static int index = 0;
 
 
-    private static final TrayIcon trayIcon = new TrayIcon(GetIcon.getImageIcon(Main.class.getResource(Main.iconPath), 16, 16).getImage(), "ClassTools");
+    public static final TrayIcon trayIcon = new TrayIcon(GetIcon.getImageIcon(Main.class.getResource(Main.iconPath), 16, 16).getImage(), "ClassTools");
 
     private static final JTextArea textArea = new JTextArea();
 
@@ -76,9 +78,46 @@ public class Log {
     public Log() {
     }
 
+    public static void initTrayIcon() {
+        PopupMenu popupMenu = new PopupMenu();
+        MenuItem exit = new MenuItem("exit");
+        exit.addActionListener(e -> {
+            Log.exit(0);
+        });
+        popupMenu.add(exit);
+
+        MenuItem refresh = new MenuItem("refresh");
+        refresh.addActionListener(e -> {
+            FinalPanel.refreshPanel();
+        });
+        popupMenu.add(refresh);
+
+        MenuItem more = new MenuItem("more");
+        more.addActionListener(e -> {
+            JDialog moreDialog = new JDialog();
+            moreDialog.setTitle("更多");
+            moreDialog.setLayout(new FlowLayout(FlowLayout.CENTER));
+            moreDialog.setSize(250, 300);
+            moreDialog.setLocationRelativeTo(null);
+            moreDialog.setModal(true);
+            moreDialog.getContentPane().setBackground(CTColor.backColor);
+            moreDialog.setIconImage(GetIcon.getImageIcon(Log.class.getResource("/image/light/more.png"), 32, 32).getImage());
+
+            FinalPanel.allButList.forEach(but -> {
+                moreDialog.add(but);
+            });
+
+            moreDialog.setVisible(true);
+        });
+
+        popupMenu.add(more);
+
+        trayIcon.setPopupMenu(popupMenu);
+    }
     public static void exit(int status) {
 
         if (status == -1 || !Main.canExit) {
+            Log.err.print("系统操作", "错误行为");
             return;
         }
         //获取桌面大小

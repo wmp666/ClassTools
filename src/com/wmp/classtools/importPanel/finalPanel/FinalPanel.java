@@ -24,8 +24,6 @@ import static com.wmp.Main.disPanelList;
 
 public class FinalPanel extends CTPanel {
 
-
-
     public static final ArrayList<CTIconButton> allButList = new ArrayList<>();
 
 
@@ -39,6 +37,8 @@ public class FinalPanel extends CTPanel {
         initPanel();
 
         initButton();
+
+        Log.initTrayIcon();
     }
 
     private void initPanel() {

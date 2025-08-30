@@ -14,7 +14,11 @@ public class CTComboBox extends JComboBox<String> {
         this.setUI(new BasicComboBoxUI() {
             @Override
             protected JButton createArrowButton() {//创建按钮 - 箭头按钮
-                return new CTTextButton("∨");
+
+                CTTextButton button = new CTTextButton("下拉");
+                button.setBorderPainted(false);
+
+                return button;
             }
 
         });
