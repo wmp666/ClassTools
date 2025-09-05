@@ -166,8 +166,9 @@ public class CTOptionPane {
         dialog.setTitle(title);
         dialog.setResizable(false);
         dialog.setLayout(new BorderLayout(10, 10));
-        //dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
+        dialog.setDefaultCloseOperation(JDialog.DO_NOTHING_ON_CLOSE);
 
+        JLabel iconLabel = new JLabel();
         // 创建图标标签
         {
             if (icon == null) {
@@ -184,10 +185,10 @@ public class CTOptionPane {
                         tempIcon = GetIcon.getIcon(Main.class.getResource("/image/optionDialogIcon/warn.png"), 50, 50);
                         break;
                 }
-                JLabel iconLabel = new JLabel(tempIcon);
+                iconLabel = new JLabel(tempIcon);
                 dialog.add(iconLabel, BorderLayout.WEST);//设置图标标签的位置 - 左
             } else {
-                JLabel iconLabel = new JLabel(icon);
+                iconLabel = new JLabel(icon);
                 dialog.add(iconLabel, BorderLayout.WEST);//设置图标标签的位置 - 左
             }
         }
@@ -348,6 +349,21 @@ public class CTOptionPane {
             }
         }
 
+
+        dialog.addWindowListener(new WindowAdapter() {
+            @Override
+            public void windowClosing(WindowEvent e) {
+                CTOptionPane.showMessageDialog(dialog, "doge", "请认真看窗口内容!!!", GetIcon.getIcon(CTOptionPane.class.getResource("/image/error/xtll.png"), 100, 100), CTOptionPane.INFORMATION_MESSAGE, true);
+            }
+
+            @Override
+            public void windowOpened(WindowEvent e) {
+                dialog.getWindowListeners()[0].windowOpened(e);
+            }
+        });
+
+        JLabel finalIconLabel = iconLabel;
+        SwingUtilities.invokeLater(() -> finalIconLabel.repaint());
 
         dialog.setVisible(true);
 

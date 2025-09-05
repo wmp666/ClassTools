@@ -116,7 +116,7 @@ public class Log {
     }
     public static void exit(int status) {
 
-        if (status == -1 || !Main.canExit) {
+        if (!Main.allArgs.get("screenProduct:show").contains(Main.argsList) && (status == -1 || !Main.canExit)) {
             Log.err.print("系统操作", "错误行为");
             return;
         }

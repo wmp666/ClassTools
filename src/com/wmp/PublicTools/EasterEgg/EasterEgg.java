@@ -85,7 +85,7 @@ public class EasterEgg {
 
         String s = ss[1];
 
-        int style = 0;
+        int style;
         String s1 = ss[0];
         if (s1.equals("视频")) {
             style = STYLE_EE_VIDEO;
@@ -133,7 +133,7 @@ public class EasterEgg {
                 Log.info.print("EasterEgg-下载", "正在下载...");
                 String downloadUrl = "";
                 try {
-                    String temp = GetWebInf.getWebInf("https://api.github.com/repos/wmp666/ClassTools/releases");
+                    /*String temp = GetWebInf.getWebInf("https://api.github.com/repos/wmp666/ClassTools/releases");
 
 
                     //以数组的形式加载[n,d,v]
@@ -159,9 +159,28 @@ public class EasterEgg {
 
                             }
                         }
+                    }*/
+
+                    //https://api.github.com/repos/wmp666/ClassTools/releases/213477108
+                    String webInf = GetWebInf.getWebInf("https://api.github.com/repos/wmp666/ClassTools/releases/213477108");
+                    JSONObject jsonObject = new JSONObject(webInf);
+
+                    JSONArray assets = jsonObject.getJSONArray("assets");
+                    for (int j = 0; j < assets.length(); j++) {
+                        JSONObject asset = assets.getJSONObject(j);
+                        if (style == STYLE_EE_VIDEO) {
+                            if (asset.getString("name").equals(mediaName + ".mp4")) {
+                                downloadUrl = asset.getString("browser_download_url");
+                                break;
+                            }
+                        } else if (style == STYLE_EE_MUSIC) {
+                            if (asset.getString("name").equals(mediaName + ".mp3")) {
+                                downloadUrl = asset.getString("browser_download_url");
+                                break;
+                            }
+                        }
+
                     }
-
-
                     //webInf = GetWebInf.getWebInf("https://api.github.com/repos/wmp666/ClassTools/contents/video/" + pin + ".mp4");
                 } catch (Exception e) {
                     throw new RuntimeException(e);

@@ -1,10 +1,10 @@
 package com.wmp.classTools;
 
 import com.wmp.Main;
+import com.wmp.PublicTools.EasterEgg.EasterEgg;
 import com.wmp.PublicTools.StartupParameters;
 import com.wmp.PublicTools.printLog.Log;
 import com.wmp.PublicTools.update.GetNewerVersion;
-import com.wmp.PublicTools.EasterEgg.EasterEgg;
 import com.wmp.classTools.frame.LoadingWindow;
 import com.wmp.classTools.frame.MainWindow;
 import com.wmp.classTools.frame.tools.cookie.StartCookie;
@@ -24,6 +24,7 @@ public class SwingRun {
         try {
             //使用系统UI
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+
         } catch (UnsupportedLookAndFeelException | ClassNotFoundException | InstantiationException |
                  IllegalAccessException e) {
             throw new RuntimeException(e);

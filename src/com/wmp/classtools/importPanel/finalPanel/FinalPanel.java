@@ -97,6 +97,7 @@ public class FinalPanel extends CTPanel {
         JPopupMenu moreMenu = new JPopupMenu();
         moreMenu.setBackground(CTColor.backColor);
 
+
         CTIconButton moreButton = new CTIconButton("更多功能",
                 "/image/%s/more.png",
                 "/image/%s/more.png", 30, () -> {
@@ -176,6 +177,7 @@ public class FinalPanel extends CTPanel {
         allButList.forEach(ctButton -> {
             if (disButList.contains(ctButton.getName())) {
                 ctButton.setText(ctButton.getToolTipText());
+                ctButton.setForeground(Color.BLACK);
                 //moreDialog.add(ctButton);
                 moreMenu.add(ctButton);
                 length.getAndIncrement();

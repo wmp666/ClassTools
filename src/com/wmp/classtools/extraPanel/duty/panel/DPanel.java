@@ -62,7 +62,7 @@ public class DPanel extends CTPanel {
         gbc.anchor = GridBagConstraints.WEST;// 左对齐
 
         JLabel CLBBLabel = new JLabel();
-        CLBBLabel.setText("擦黑板:");
+        CLBBLabel.setText("擦黑板 + 倒垃圾:");
         CLBBLabel.setFont(CTFont.getCTFont(Font.BOLD, CTFontSizeStyle.NORMAL));
         CLBBLabel.setForeground(CTColor.textColor);
 
