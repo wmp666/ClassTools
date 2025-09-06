@@ -1,6 +1,8 @@
 package com.wmp.classTools.extraPanel.attendance.settings;
 
 import com.wmp.PublicTools.UITools.CTColor;
+import com.wmp.PublicTools.UITools.CTFont;
+import com.wmp.PublicTools.UITools.CTFontSizeStyle;
 import com.wmp.PublicTools.io.IOForInfo;
 import com.wmp.PublicTools.printLog.Log;
 import com.wmp.classTools.CTComponent.CTSetsPanel;
@@ -40,13 +42,14 @@ public class LeaveListSetsPanel extends CTSetsPanel {
         checkBoxList.clear();
 
         //this.setBackground(CTColor.backColor);
-        this.setLayout(null);
+        this.setLayout(new BorderLayout());
 
         // 请假人员设置组件
         JLabel leaveLabel = new JLabel("请假人员:");
-        leaveLabel.setBounds(20, 0, 300, 25);
+        leaveLabel.setFont(CTFont.getCTFont(Font.PLAIN, CTFontSizeStyle.NORMAL));
+        //leaveLabel.setBounds(20, 0, 300, 25);
         //leaveLabel.setForeground(CTColor.textColor);
-        this.add(leaveLabel);
+        this.add(leaveLabel, BorderLayout.NORTH);
 
         JPanel leavePanel = new JPanel();
         leavePanel.setBounds(20, 0, 340, 300);
@@ -57,12 +60,12 @@ public class LeaveListSetsPanel extends CTSetsPanel {
 
         //JTextArea leaveArea = new JTextArea();
         JScrollPane scrollPane = new JScrollPane(leavePanel);
-        scrollPane.setBounds(20, 30, 340, 300);
+        //scrollPane.setBounds(20, 30, 340, 300);
         //scrollPane.setBackground(CTColor.backColor);
         //修改滚轮的灵敏度
         scrollPane.getVerticalScrollBar().setUnitIncrement(12);
         //scrollPane.setLayout(null);
-        this.add(scrollPane);
+        this.add(scrollPane, BorderLayout.CENTER);
 
         Log.info.print("数据设置界面-initATSet", "studentList:" + studentList);
         Log.info.print("数据设置界面-initATSet", "leaveList:" + leaveList);

@@ -36,7 +36,7 @@ public class Main{
     * d:只修复的问题,问题较少
     * e:测试版本号
      */
-    public static String version = "1.33.0";
+    public static String version = "1.33.1";
 
     public static boolean canExit = true;
 
@@ -108,7 +108,7 @@ public class Main{
 
 
         try {
-            SwingRun.show(b, allArgs, argsList, startUpdate);
+            SwingRun.show(b, startUpdate);
         } catch (Exception e) {
             Log.err.print("Main", "窗口初始化失败:" + e.getMessage());
             Log.showLogDialog();

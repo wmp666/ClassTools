@@ -1,6 +1,7 @@
 package com.wmp.classTools.importPanel.finalPanel;
 
 import com.wmp.Main;
+import com.wmp.PublicTools.EasterEgg.EasterEgg;
 import com.wmp.PublicTools.UITools.CTColor;
 import com.wmp.PublicTools.printLog.Log;
 import com.wmp.PublicTools.update.GetNewerVersion;
@@ -162,6 +163,11 @@ public class FinalPanel extends CTPanel {
             refreshPanel();// 自定义刷新方法
         });
         allButList.add(refresh);
+
+        CTIconButton holidayBlessings = new CTIconButton("查看祝词",
+                "/image/wish.png",
+                "/image/wish.png", 30, () -> EasterEgg.showHolidayBlessings(1));
+        allButList.add(holidayBlessings);
 
         CTIconButton showLog = new CTIconButton("查看日志",
                 "/image/%s/showLog_0.png",

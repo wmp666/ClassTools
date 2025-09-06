@@ -2,7 +2,6 @@ package com.wmp.classTools;
 
 import com.wmp.Main;
 import com.wmp.PublicTools.EasterEgg.EasterEgg;
-import com.wmp.PublicTools.StartupParameters;
 import com.wmp.PublicTools.printLog.Log;
 import com.wmp.PublicTools.update.GetNewerVersion;
 import com.wmp.classTools.frame.LoadingWindow;
@@ -12,12 +11,11 @@ import com.wmp.classTools.frame.tools.cookie.StartCookie;
 import javax.swing.*;
 import java.io.IOException;
 import java.net.URISyntaxException;
-import java.util.ArrayList;
-import java.util.TreeMap;
 
 public class SwingRun {
 
-    public static void show(boolean b, TreeMap<String, StartupParameters> allArgs, ArrayList<String> list, boolean StartUpdate) throws URISyntaxException, IOException {
+    //, TreeMap<String, StartupParameters> allArgs, ArrayList<String> list
+    public static void show(boolean b, boolean StartUpdate) throws URISyntaxException, IOException {
 
         Log.info.systemPrint("SwingRun", "开始初始化UI...");
 
@@ -33,7 +31,7 @@ public class SwingRun {
 
         LoadingWindow loadingWindow;
         if (b){
-            if (allArgs.get("screenProduct:show").contains(list)){
+            if (Main.allArgs.get("screenProduct:show").contains(Main.argsList)) {
                 loadingWindow = new LoadingWindow(Main.class.getResource("/image/start.gif"),
                         692, 491, "", true, 1300, LoadingWindow.STYLE_SCREEN);
             }else{
@@ -49,30 +47,37 @@ public class SwingRun {
 
         //loadingWindow.setVisible(true);
 
+
+        new MainWindow(Main.DATA_PATH);
+        loadingWindow.setVisible(false);
+
+        if (!(Main.allArgs.get("screenProduct:show").contains(Main.argsList) ||
+                Main.allArgs.get("screenProduct:view").contains(Main.argsList))) {
+
+            EasterEgg.showHolidayBlessings(0);
+        }
+
         if (StartUpdate &&
-                !(allArgs.get("StartUpdate:false").contains(list) ||
-                        allArgs.get("screenProduct:show").contains(list) ||
-                        allArgs.get("screenProduct:view").contains(list))) {
+                !(Main.allArgs.get("StartUpdate:false").contains(Main.argsList) ||
+                        Main.allArgs.get("screenProduct:show").contains(Main.argsList) ||
+                        Main.allArgs.get("screenProduct:view").contains(Main.argsList))) {
             Log.info.print("Main", "开始启动自动检查更新");
             GetNewerVersion.checkForUpdate(
                     loadingWindow, null, true, false);
 
         }
 
-        if (allArgs.get("EasterEgg:").contains(list)) {
-            int i = list.indexOf("-EasterEgg:") + 1;
-            Log.info.print("Main", "-EasterEgg:" + list.get(i));
+        if (Main.allArgs.get("EasterEgg:").contains(Main.argsList)) {
+            int i = Main.argsList.indexOf("-EasterEgg:") + 1;
+            Log.info.print("Main", "-EasterEgg:" + Main.argsList.get(i));
             //System.out.println();
-            EasterEgg.showEasterEgg(EasterEgg.STYLE_EE_VIDEO, list.get(i));
+            EasterEgg.showEasterEgg(EasterEgg.STYLE_EE_VIDEO, Main.argsList.get(i));
         }
-        if (allArgs.get("Cookie:StartUp").contains(list)) {
-            int i = list.indexOf("-OpenCookie:") + 1;
-            Log.info.print("Main", "-OpenCookie:" + list.get(i));
+        if (Main.allArgs.get("Cookie:StartUp").contains(Main.argsList)) {
+            int i = Main.argsList.indexOf("-OpenCookie:") + 1;
+            Log.info.print("Main", "-OpenCookie:" + Main.argsList.get(i));
             //System.out.println();
-            StartCookie.showCookie(list.get(i).split(";"));
+            StartCookie.showCookie(Main.argsList.get(i).split(";"));
         }
-
-        new MainWindow(Main.DATA_PATH);
-        loadingWindow.setVisible(false);
     }
 }

@@ -13,7 +13,7 @@ import java.awt.*;
 import java.net.URL;
 import java.util.Arrays;
 
-public class LoadingWindow extends JWindow {
+public class LoadingWindow extends JDialog {
 
     public static final int STYLE_NORMAL = 0;
     public static final int STYLE_SCREEN = 1;
@@ -74,6 +74,7 @@ public class LoadingWindow extends JWindow {
         this.getContentPane().setBackground(Color.WHITE);
         this.add(label);
 
+        this.setUndecorated(true);
         this.setAlwaysOnTop(true);
         this.setLocationRelativeTo(null);
         this.setVisible(true);

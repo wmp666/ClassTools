@@ -1,0 +1,12 @@
+<component name="libraryTable">
+  <library name="cn.6tail.lunar" type="repository">
+    <properties maven-id="cn.6tail:lunar:1.7.4" />
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/lib/lunar/lunar-1.7.4.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES>
+      <root url="jar://$PROJECT_DIR$/lib/lunar/lunar-1.7.4-sources.jar!/" />
+    </SOURCES>
+  </library>
+</component>

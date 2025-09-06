@@ -38,7 +38,7 @@ public class AllStuSetsPanel extends CTSetsPanel {
 
         this.removeAll();
 
-        this.setLayout(null);
+        this.setLayout(new BorderLayout());
 
         String[][] studentListTemp = new String[studentList.size()][2];
         for (int i = 0; i < studentList.size(); i++) {
@@ -56,7 +56,7 @@ public class AllStuSetsPanel extends CTSetsPanel {
         JScrollPane scrollPane = new JScrollPane(allStuTable);
         scrollPane.setBounds(20, 30, 340, 300);
         //scrollPane.setBackground(CTColor.backColor);
-        this.add(scrollPane);
+        this.add(scrollPane, BorderLayout.CENTER);
 
         JPanel buttonPanel = new JPanel();
         //buttonPanel.setBackground(CTColor.backColor);
@@ -107,7 +107,7 @@ public class AllStuSetsPanel extends CTSetsPanel {
             buttonPanel.add(deleteBtn);
         }
 
-        this.add(buttonPanel);
+        this.add(buttonPanel, BorderLayout.SOUTH);
 
     }
 
