@@ -338,26 +338,15 @@ public class EasterEgg {
                             scrollPane.setBorder(null);
                             messageDialog.add(scrollPane, BorderLayout.CENTER);
 
-                            CTTextButton exitButton = new CTTextButton("关闭(" + jsonObject1.getInt("waitTime") + "s)");
+                            CTTextButton exitButton = new CTTextButton("关闭");
                             exitButton.setFont(CTFont.getCTFont(Font.PLAIN, CTFontSizeStyle.MORE_BIG));
                             exitButton.addActionListener(e -> {
                                 messageDialog.dispose();
 
                             });
-                            exitButton.setEnabled(false);
                             messageDialog.add(exitButton, BorderLayout.SOUTH);
 
                             messageDialog.setVisible(true);
-
-                            if (style == 1) {
-                                try {
-                                    Thread.sleep(jsonObject1.getInt("waitTime") * 1000L);
-                                    exitButton.setEnabled(true);
-                                } catch (InterruptedException e) {
-                                    Log.err.print("EasterEgg", "获取彩蛋文件数据异常: \n" + jsonObject);
-                                    throw new RuntimeException(e);
-                                }
-                            }
                         }
                     }
 
@@ -411,26 +400,16 @@ public class EasterEgg {
                         scrollPane.setBorder(null);
                         messageDialog.add(scrollPane, BorderLayout.CENTER);
 
-                        CTTextButton exitButton = new CTTextButton("关闭(" + jsonObject1.getInt("waitTime") + "s)");
+                        CTTextButton exitButton = new CTTextButton("关闭");
                         exitButton.setFont(CTFont.getCTFont(Font.PLAIN, CTFontSizeStyle.MORE_BIG));
                         exitButton.addActionListener(e -> {
                             messageDialog.dispose();
 
                         });
-                        exitButton.setEnabled(false);
                         messageDialog.add(exitButton, BorderLayout.SOUTH);
 
                         messageDialog.setVisible(true);
 
-                        if (style == 1) {
-                            try {
-                                Thread.sleep(jsonObject1.getInt("waitTime") * 1000L);
-                                exitButton.setEnabled(true);
-                            } catch (InterruptedException e) {
-                                Log.err.print("EasterEgg", "获取彩蛋文件数据异常: \n" + jsonObject);
-                                throw new RuntimeException(e);
-                            }
-                        }
                     }
                 } else {
                     Log.err.print("EasterEgg", "获取彩蛋文件数据异常: \n" + jsonObject);

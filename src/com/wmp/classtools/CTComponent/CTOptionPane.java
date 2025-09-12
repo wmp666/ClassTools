@@ -353,7 +353,7 @@ public class CTOptionPane {
         dialog.addWindowListener(new WindowAdapter() {
             @Override
             public void windowClosing(WindowEvent e) {
-                CTOptionPane.showMessageDialog(dialog, "doge", "请认真看窗口内容!!!", GetIcon.getIcon(CTOptionPane.class.getResource("/image/error/xtll.png"), 100, 100), CTOptionPane.INFORMATION_MESSAGE, true);
+                CTOptionPane.showMessageDialog(dialog, "doge", "请认真看窗口内容!!!\n请不要尝试跳过选择过程(按下关闭键),\n请认真选择", GetIcon.getIcon(CTOptionPane.class.getResource("/image/error/xtll.png"), 100, 100), CTOptionPane.INFORMATION_MESSAGE, true);
             }
 
             @Override

@@ -8,13 +8,16 @@ import com.wmp.PublicTools.UITools.CTFont;
 import com.wmp.PublicTools.UITools.CTFontSizeStyle;
 import com.wmp.PublicTools.UITools.GetIcon;
 import com.wmp.PublicTools.videoView.MediaPlayer;
+import com.wmp.classTools.CTComponent.CTIconButton;
 import com.wmp.classTools.CTComponent.CTOptionPane;
 import com.wmp.classTools.importPanel.finalPanel.FinalPanel;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.*;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 import java.io.IOException;
+import java.net.MalformedURLException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.nio.file.StandardOpenOption;
@@ -104,7 +107,16 @@ public class Log {
             moreDialog.setIconImage(GetIcon.getImageIcon(Log.class.getResource("/image/light/more.png"), 32, 32).getImage());
 
             FinalPanel.allButList.forEach(but -> {
-                moreDialog.add(but);
+                CTIconButton temp = null;
+                try {
+                    temp = but.copy();
+                    temp.setText(temp.getToolTipText());
+                    temp.setForeground(Color.BLACK);
+                    moreDialog.add(temp);
+                } catch (MalformedURLException ex) {
+                    Log.err.print("FinalPanel", "初始化按钮时出错\n" + ex);
+                    throw new RuntimeException(ex);
+                }
             });
 
             moreDialog.setVisible(true);
@@ -123,67 +135,21 @@ public class Log {
         //获取桌面大小
         Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
 
-        JWindow window = new JWindow();
+        JFrame window = new JFrame();
         window.setAlwaysOnTop(true);
         window.setSize(screenSize);
+        window.setUndecorated(true);
         Container c = window.getContentPane();
+
+
         c.setLayout(new BorderLayout());
-        c.setBackground(Color.BLACK);
+        initBG(c, window, screenSize);
 
-        window.addWindowListener(new WindowAdapter() {
-            @Override
-            public void windowClosed(WindowEvent e) {
-                System.exit(status);
-            }
-        });
-
-
-        String[] exitStrList = {
-                "愿此行，终抵群星",
-                "我们终将重逢",
-                "明天见",
-                "聚散终有时，山水有相逢。",
-                "樱花凋零时，方知一期一会。",
-                "当你有机会做出选择的时候，\n不要让自己后悔。",
-                "庸人只得学着独立行走，\n在跌倒爬起中度过碌碌一生。\n但失败的人生同样是人生，\n他们有权品尝至最后。",
-                "每一次移动后发生的变化，\n每一个不经意间弹出的话语，\n都在呈现■■■■时的所见所感……\n虽不如■■■■，\n但创造出了足够的情感冲击。",
-                "如果遇到了两难的情况，\n一方面是■■，\n一方面是■■，\n只能选一个……",
-        };
-        String exitStr = exitStrList[new Random().nextInt(exitStrList.length)];
-        if (exitStr.contains("\n")) {
-            exitStr = "<html>" + exitStr.replaceAll("\\n", "<br>") + "</html>";
-        }
-        //String result = "<html>" + exitStr.replaceAll("\\n", "<br>") + "</html>";
-        JLabel label = new JLabel(exitStr);// 创建标签
-        label.setForeground(Color.WHITE);
-        label.setFont(CTFont.getCTFont(Font.BOLD, CTFontSizeStyle.MORE_BIG));
-        label.setHorizontalAlignment(SwingConstants.CENTER);
-
-        c.add(label, BorderLayout.CENTER);
         window.setVisible(true);
 
 
-
-        new Timer(10, new ActionListener() {
-            private float alpha = 255; // 使用浮点保证平滑过渡
-            private final float delta = 255 / (1000/10f); // 按1秒持续时间计算步长
-
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                if (alpha <= 0) {
-                    ((Timer)e.getSource()).stop();
-                    return;
-                }
-
-                alpha = Math.max(0, alpha - delta);
-                label.setForeground(new Color(255, 255, 255, 255 - (int)alpha));
-            }
-        }).start();
-
-
-
         // 改为自动关闭窗口
-        new Timer(3000, e -> {
+        new Timer(1500, e -> {
             window.dispose();
 
             System.exit(status);
@@ -191,6 +157,78 @@ public class Log {
         }).start();
 
         saveLog(false);
+    }
+
+    private static void initBG(Container c, JFrame window, Dimension screenSize) {
+        //c.setBackground(Color.BLACK);
+        ((JPanel) c).setOpaque(false);
+
+
+
+
+        String[] exitStrList = {
+                "愿此行，终抵群星",
+                "我们终将重逢",
+                "明天见",
+                "为了与你重逢愿倾尽所有",
+                "生命从夜中醒来\n却在触碰到光明的瞬间坠入永眠"
+        };
+        String exitStr = exitStrList[new Random().nextInt(exitStrList.length)];
+        if (exitStr.contains("\n")) {
+            exitStr = "<html>" + exitStr.replaceAll("\\n", "<br>") + "</html>";
+        }
+
+        //String result = "<html>" + exitStr.replaceAll("\\n", "<br>") + "</html>";
+        JLabel label = new JLabel(exitStr);// 创建标签
+        label.setForeground(Color.WHITE);
+        label.setFont(CTFont.getCTFont(Font.BOLD, CTFontSizeStyle.MORE_BIG));
+        label.setHorizontalAlignment(SwingConstants.CENTER);
+        label.setOpaque(false);
+
+        c.add(label, BorderLayout.CENTER);
+
+        JLabel viewLabel = new JLabel();
+        //viewLabel.setBackground(Color.BLACK);
+        {
+
+
+            //背景
+            {
+
+                viewLabel.setBounds(0, 0, screenSize.width, screenSize.height);
+
+                String imageStr = switch (exitStr) {
+                    case "我们终将重逢" -> "wmzjcf.png";
+                    case "明天见" -> "mtj.png";
+                    case "愿此行，终抵群星" -> "ycxzdqx.png";
+                    case "为了与你重逢愿倾尽所有" -> "wlyncfwyqjsy.png";
+                    case "生命从夜中醒来\n却在触碰到光明的瞬间坠入永眠" -> "smcyzxl.png";
+                    default -> "";
+                };
+
+
+                if (!imageStr.isEmpty()) {
+                    String name = "/image/exitBG/" + imageStr;
+                    System.err.println(name);
+                    ImageIcon icon = new ImageIcon(Main.class.getResource(name));//
+
+                    icon.setImage(icon.getImage().getScaledInstance(screenSize.width, screenSize.height, Image.SCALE_SMOOTH));
+
+                    viewLabel.setIcon(icon);
+
+
+                } else {
+                    viewLabel.setBackground(Color.BLACK);
+                    ((JPanel) c).setOpaque(true);
+                }
+
+            }
+        }
+        window.getLayeredPane().add(viewLabel, Integer.valueOf(Integer.MIN_VALUE));
+
+        window.getLayeredPane().repaint();
+        viewLabel.revalidate();
+        viewLabel.repaint();
     }
 
     public static void systemPrint(LogStyle style, String owner, String logInfo) {
