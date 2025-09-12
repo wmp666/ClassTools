@@ -174,6 +174,14 @@ public class Log {
                 "生命从夜中醒来\n却在触碰到光明的瞬间坠入永眠"
         };
         String exitStr = exitStrList[new Random().nextInt(exitStrList.length)];
+        String imageStr = switch (exitStr) {
+            case "我们终将重逢" -> "wmzjcf.png";
+            case "明天见" -> "mtj.png";
+            case "愿此行，终抵群星" -> "ycxzdqx.png";
+            case "为了与你重逢愿倾尽所有" -> "wlyncfwyqjsy.png";
+            case "生命从夜中醒来\n却在触碰到光明的瞬间坠入永眠" -> "smcyzxl.png";
+            default -> "";
+        };
         if (exitStr.contains("\n")) {
             exitStr = "<html>" + exitStr.replaceAll("\\n", "<br>") + "</html>";
         }
@@ -196,15 +204,6 @@ public class Log {
             {
 
                 viewLabel.setBounds(0, 0, screenSize.width, screenSize.height);
-
-                String imageStr = switch (exitStr) {
-                    case "我们终将重逢" -> "wmzjcf.png";
-                    case "明天见" -> "mtj.png";
-                    case "愿此行，终抵群星" -> "ycxzdqx.png";
-                    case "为了与你重逢愿倾尽所有" -> "wlyncfwyqjsy.png";
-                    case "生命从夜中醒来\n却在触碰到光明的瞬间坠入永眠" -> "smcyzxl.png";
-                    default -> "";
-                };
 
 
                 if (!imageStr.isEmpty()) {
