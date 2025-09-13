@@ -16,6 +16,8 @@ import org.json.JSONObject;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -50,26 +52,27 @@ public class BRPanel extends CTPanel {
                     continue;
                 }
 
-                JLabel titleLabel = new JLabel("今日过生日:");
+                JLabel titleLabel = new JLabel("<html>今日过生日:</html>");
                 titleLabel.setForeground(CTColor.textColor);
                 titleLabel.setFont(CTFont.getCTFont(Font.BOLD, CTFontSizeStyle.NORMAL));
+                titleLabel.addMouseListener(new MouseAdapter() {
+                    @Override
+                    public void mouseClicked(MouseEvent e) {
+                        try {
+                            showBR();
+                        } catch (IOException ex) {
+                            Log.err.print("BRPanel", "显示生日列表失败: \n" + ex.getMessage());
+                            throw new RuntimeException(ex);
+                        }
+                    }
+                });
                 this.add(titleLabel, BorderLayout.NORTH);
 
 
                 //EasterEgg.getText(EETextStyle.HTML)
                 try {
                     List<String> temp = getBRList();
-                    if (!oldNameList.equals(temp) && !temp.contains("无人生日") && !temp.contains("没有相关数据")) {
-                        StringBuilder sb = new StringBuilder();
-
-                        for (int i = 0; i < temp.size(); i++) {
-                            if (i != temp.size() - 1)
-                                sb.append(temp.get(i)).append(", ");
-                            else sb.append(temp.get(i));
-
-                        }
-                        CTOptionPane.showFullScreenMessageDialog("生日祝福", "让我们祝->" + sb + "<-生日快乐");
-                    }
+                    if (!oldNameList.equals(temp)) showBR();
 
 
                     this.oldNameList.clear();
@@ -92,6 +95,21 @@ public class BRPanel extends CTPanel {
 
             }
         }).start();
+    }
+
+    private void showBR() throws IOException {
+        List<String> temp = getBRList();
+        if (!temp.contains("无人生日") && !temp.contains("没有相关数据")) {
+            StringBuilder sb = new StringBuilder();
+
+            for (int i = 0; i < temp.size(); i++) {
+                if (i != temp.size() - 1)
+                    sb.append(temp.get(i)).append(", ");
+                else sb.append(temp.get(i));
+
+            }
+            CTOptionPane.showFullScreenMessageDialog("生日祝福", "让我们祝->" + sb + "<-生日快乐");
+        }
     }
 
     private java.util.List<String> getBRList() throws IOException {
