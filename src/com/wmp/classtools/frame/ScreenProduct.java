@@ -9,8 +9,10 @@ import com.wmp.classTools.CTComponent.CTPanel;
 import com.wmp.classTools.frame.tools.screenProduct.SetsScrInfo;
 import com.wmp.classTools.importPanel.finalPanel.FinalPanel;
 
+import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
+import java.io.File;
 import java.io.IOException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -139,6 +141,23 @@ public class ScreenProduct extends JDialog {
         this.setLocation(0, 0);
     }
 
+    private static Image resizeImage(ImageIcon icon, Dimension screenSize) {
+        int screenWidth = screenSize.width;
+        int screenHeight = screenSize.height;
+
+        int imageWidth = icon.getIconWidth();
+        int imageHeight = icon.getIconHeight();
+
+        double scale = Math.max((double) screenWidth / imageWidth, (double) screenHeight / imageHeight);
+
+        int scaledWidth = (int) (imageWidth * scale);
+        int scaledHeight = (int) (imageHeight * scale);
+
+        System.err.printf("缩放比例：%s|宽:%s|高:%s\n原图大小:%s|%s\n", scale, scaledWidth, scaledHeight, imageWidth, imageHeight);
+
+        return icon.getImage().getScaledInstance(scaledWidth, scaledHeight, Image.SCALE_SMOOTH);
+    }
+
     private void initBackground(int index) throws IOException {
         JPanel panel = (JPanel) this.getContentPane();
         panel.setOpaque(false);
@@ -155,9 +174,22 @@ public class ScreenProduct extends JDialog {
 
             String bgImagePath = setsScrInfo.getBGImagePath(index);
             if (bgImagePath != null) {
-                ImageIcon icon = new ImageIcon(bgImagePath);
+                // 使用ImageIO避免缓存并支持更多格式
+                File imageFile = new File(bgImagePath);
+                if (!imageFile.exists()) {
+                    Log.err.print("背景图片加载", "背景图片不存在: " + bgImagePath);
+                    throw new IOException("背景图片不存在: " + bgImagePath);
+                }
 
-                icon.setImage(icon.getImage().getScaledInstance(screenSize.width, screenSize.height, Image.SCALE_SMOOTH));
+                Image image = ImageIO.read(imageFile);
+                if (image == null) {
+                    Log.err.print("背景图片加载", "无法读取图片格式: " + bgImagePath);
+                    throw new IOException("无法读取图片格式: " + bgImagePath);
+                }
+
+                ImageIcon icon = new ImageIcon(image);
+
+                icon.setImage(resizeImage(icon, screenSize));
 
                 viewLabel.setIcon(icon);
 

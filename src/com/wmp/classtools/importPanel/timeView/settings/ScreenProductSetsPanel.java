@@ -55,27 +55,32 @@ public class ScreenProductSetsPanel extends CTSetsPanel {
 
         viewLabel.setText("");
 
-        if (jsonObject.has("path")) {
-            String path = jsonObject.getString("path");
-            if (new File(path).exists()) {
+        try {
+            if (jsonObject.has("path")) {
+                String path = jsonObject.getString("path");
+                if (new File(path).exists()) {
 
-                if (new File(path).isFile()) {
-                    ImageIcon icon = new ImageIcon(path);
-                    do {
-                        icon.setImage(icon.getImage().getScaledInstance(icon.getIconWidth() / 2, icon.getIconHeight() / 2, Image.SCALE_SMOOTH));
-                    } while (icon.getIconWidth() >= 400);
+                    if (new File(path).isFile()) {
+                        ImageIcon icon = new ImageIcon(path);
+                        do {
+                            icon.setImage(icon.getImage().getScaledInstance(icon.getIconWidth() / 2, icon.getIconHeight() / 2, Image.SCALE_SMOOTH));
+                        } while (icon.getIconWidth() >= 400);
 
-                    viewLabel.setIcon(icon);
-                } else if (new File(path).isDirectory()) {
+                        viewLabel.setIcon(icon);
+                    } else if (new File(path).isDirectory()) {
+                        viewLabel.setIcon(null);
+                        viewLabel.setText("包含多张图片,不支持预览");
+                    }
+                } else {
                     viewLabel.setIcon(null);
-                    viewLabel.setText("包含多张图片,不支持预览");
+                    viewLabel.setText("请选择图片");
                 }
-            } else {
-                viewLabel.setIcon(null);
-                viewLabel.setText("请选择图片");
+
+
             }
-
-
+        } catch (Exception e) {
+            Log.err.print("ScreenProductPanel-initViewPanel", "初始化失败:" + e.getMessage());
+            throw new RuntimeException(e);
         }
 
         viewLabel.revalidate();

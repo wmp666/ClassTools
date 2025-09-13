@@ -52,16 +52,6 @@ public class SetsScrInfo {
         return 0;
     }
 
-    public String getBGImagePath() {
-        if (jsonObject.has("path")) {
-            if (new File(jsonObject.getString("path")).isFile())
-                return jsonObject.getString("path");
-            else Log.warn.print("屏保设置数据获取", "背景图片不存在");
-
-        }
-        return null;
-    }
-
     public String getBGImagePath(int index) {
         if (jsonObject.has("path")) {
             if (new File(jsonObject.getString("path")).isDirectory()) {
@@ -71,7 +61,7 @@ public class SetsScrInfo {
                     return files[index].getPath();
                 }
             } else {
-                getBGImagePath();
+                return jsonObject.getString("path");
             }
 
         }
