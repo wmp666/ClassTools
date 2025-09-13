@@ -11,7 +11,7 @@ public class PeoPanelProcess {
      * @param array 人员姓名数组
      * @return 人员姓名, 行数, 最大长度
      */
-    private static Object[] getPeopleName(List<String> array) {
+    public static Object[] getPeopleName(List<String> array) {
         StringBuilder sb = new StringBuilder();
         sb.append("<html>");
 

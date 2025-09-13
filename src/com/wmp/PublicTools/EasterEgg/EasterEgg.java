@@ -1,10 +1,8 @@
 package com.wmp.PublicTools.EasterEgg;
 
-import com.nlf.calendar.Lunar;
 import com.wmp.Main;
+import com.wmp.PublicTools.TodayIsNow;
 import com.wmp.PublicTools.UITools.CTColor;
-import com.wmp.PublicTools.UITools.CTFont;
-import com.wmp.PublicTools.UITools.CTFontSizeStyle;
 import com.wmp.PublicTools.UITools.GetIcon;
 import com.wmp.PublicTools.io.IOForInfo;
 import com.wmp.PublicTools.io.ResourceLocalizer;
@@ -12,19 +10,14 @@ import com.wmp.PublicTools.printLog.Log;
 import com.wmp.PublicTools.videoView.MediaPlayer;
 import com.wmp.PublicTools.web.GetWebInf;
 import com.wmp.classTools.CTComponent.CTOptionPane;
-import com.wmp.classTools.CTComponent.CTTextButton;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
 import javax.swing.*;
-import java.awt.*;
 import java.io.IOException;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.Month;
 import java.time.ZoneId;
-import java.util.Date;
 import java.util.Objects;
 import java.util.Random;
 import java.util.concurrent.atomic.AtomicBoolean;
@@ -283,32 +276,26 @@ public class EasterEgg {
             JSONArray jsonArray = new JSONArray(jsonArrayStr);
 
             //获取时间
-            DateFormat dateFormat = new SimpleDateFormat("MM-dd");
-            String date = dateFormat.format(new Date());
+            /*DateFormat dateFormat = new SimpleDateFormat("MM-dd");
+            String date = dateFormat.format(new Date());*/
 
-            //计算农历
             jsonArray.forEach(jsonObject -> {
 
-                if (b.get()) return;
 
                 if (jsonObject instanceof JSONObject jsonObject1) {
 
                     String date1 = jsonObject1.getString("date");
-                    if (date1.startsWith("lunar")) {
+                    if (TodayIsNow.todayIsNow(date1)) {
 
-                        Lunar lunar = Lunar.fromDate(new Date());
+                        b.set(true);
+                        Main.argsList.add("-StartUpdate:false");
 
-                        //Math.abs(lunar.getMonth()) 取绝对值
-                        if (date1.substring(5).equals(Math.abs(lunar.getMonth()) + "-" + lunar.getDay())) {
+                        String text = jsonObject1.getString("text");
+                        String title = jsonObject1.getString("title");
 
-                            b.set(true);
-                            Main.argsList.add("-StartUpdate:false");
+                        CTOptionPane.showFullScreenMessageDialog(title, text);
 
-                            String text = jsonObject1.getString("text");
-                            String title = jsonObject1.getString("title");
-
-
-                            JDialog messageDialog = new JDialog();
+                            /*JDialog messageDialog = new JDialog();
                             messageDialog.setAlwaysOnTop(true);
                             //设置屏幕大小
                             Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
@@ -346,8 +333,7 @@ public class EasterEgg {
                             });
                             messageDialog.add(exitButton, BorderLayout.SOUTH);
 
-                            messageDialog.setVisible(true);
-                        }
+                            messageDialog.setVisible(true);*/
                     }
 
                 } else {
@@ -355,66 +341,6 @@ public class EasterEgg {
                 }
             });
 
-            //计算公历
-            jsonArray.forEach(jsonObject -> {
-
-                if (b.get()) return;
-
-                if (jsonObject instanceof JSONObject jsonObject1) {
-                    if (jsonObject1.getString("date").equals(date)) {
-
-                        b.set(true);
-                        Main.argsList.add("-StartUpdate:false");
-
-                        String text = jsonObject1.getString("text");
-                        String title = jsonObject1.getString("title");
-
-
-                        JDialog messageDialog = new JDialog();
-                        messageDialog.setAlwaysOnTop(true);
-                        //设置屏幕大小
-                        Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
-                        messageDialog.setSize((int) screenSize.getWidth(), (int) screenSize.getHeight());
-                        messageDialog.setLocationRelativeTo(null);
-                        messageDialog.setUndecorated(true);
-                        messageDialog.getContentPane().setBackground(Color.BLACK);
-                        messageDialog.setLayout(new BorderLayout());
-
-                        JLabel titleLabel = new JLabel(title);
-                        titleLabel.setHorizontalAlignment(JLabel.CENTER);
-                        titleLabel.setForeground(Color.WHITE);
-                        titleLabel.setOpaque(false);
-
-                        titleLabel.setFont(CTFont.getCTFont(Font.PLAIN, CTFontSizeStyle.BIG_BIG));
-                        messageDialog.add(titleLabel, BorderLayout.NORTH);
-
-
-                        JTextArea textArea = new JTextArea(text);
-                        textArea.setBackground(Color.BLACK);
-                        textArea.setForeground(Color.WHITE);
-                        textArea.setEditable(false);
-                        textArea.setLineWrap(true);// 激活自动换行功能
-                        textArea.setFont(CTFont.getCTFont(Font.PLAIN, CTFontSizeStyle.MORE_BIG));
-
-                        JScrollPane scrollPane = new JScrollPane(textArea);
-                        scrollPane.setBorder(null);
-                        messageDialog.add(scrollPane, BorderLayout.CENTER);
-
-                        CTTextButton exitButton = new CTTextButton("关闭");
-                        exitButton.setFont(CTFont.getCTFont(Font.PLAIN, CTFontSizeStyle.MORE_BIG));
-                        exitButton.addActionListener(e -> {
-                            messageDialog.dispose();
-
-                        });
-                        messageDialog.add(exitButton, BorderLayout.SOUTH);
-
-                        messageDialog.setVisible(true);
-
-                    }
-                } else {
-                    Log.err.print("EasterEgg", "获取彩蛋文件数据异常: \n" + jsonObject);
-                }
-            });
 
         } catch (Exception e) {
             Log.err.print("EasterEgg", "获取彩蛋文字失败: \n" + e.getMessage());

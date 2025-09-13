@@ -149,7 +149,7 @@ public class Log {
 
 
         // 改为自动关闭窗口
-        new Timer(1500, e -> {
+        new Timer(3000, e -> {
             window.dispose();
 
             System.exit(status);

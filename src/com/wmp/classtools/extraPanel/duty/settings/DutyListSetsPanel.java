@@ -45,7 +45,6 @@ public class DutyListSetsPanel extends CTSetsPanel {
 
         this.removeAll();
 
-        //this.setBackground(CTColor.backColor);
         this.setLayout(new BorderLayout());
 
         DefaultTableModel model = new DefaultTableModel(dutyList,
@@ -56,14 +55,10 @@ public class DutyListSetsPanel extends CTSetsPanel {
         DutyTable.setModel(model);
 
         JScrollPane scrollPane = new JScrollPane(DutyTable);
-        //scrollPane.setBounds(20, 30, 340, 300);
-        //scrollPane.setBackground(CTColor.backColor);
         this.add(scrollPane, BorderLayout.CENTER);
 
         JPanel buttonPanel = new JPanel();
-        //buttonPanel.setBackground(CTColor.backColor);
         buttonPanel.setLayout(new FlowLayout(FlowLayout.LEFT, 5, 5));
-        //buttonPanel.setBounds(0, 340, 400, 45);
 
         //新建
         {

@@ -13,7 +13,6 @@ import java.awt.*;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.io.IOException;
-import java.util.Arrays;
 
 public class ETPanel extends CTPanel implements MouseListener {
 
@@ -26,9 +25,10 @@ public class ETPanel extends CTPanel implements MouseListener {
         this.setID("ETPanel");
         this.setOpaque(false);
 
-        {
+        label = new JLabel();
+        /*{
             String text = EasterEgg.getText(EETextStyle.HTML);
-            label = new JLabel(text);
+
             label.setForeground(CTColor.textColor);
             label.setBackground(CTColor.backColor);
             this.add(label);
@@ -50,7 +50,7 @@ public class ETPanel extends CTPanel implements MouseListener {
             // 设置窗口大小
             this.setSize(newWidth, newHeight);
 
-        }
+        }*/
 
 
         label.addMouseListener(this);

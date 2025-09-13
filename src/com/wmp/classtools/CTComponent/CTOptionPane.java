@@ -2,6 +2,8 @@ package com.wmp.classTools.CTComponent;
 
 import com.wmp.Main;
 import com.wmp.PublicTools.EasterEgg.EasterEgg;
+import com.wmp.PublicTools.UITools.CTFont;
+import com.wmp.PublicTools.UITools.CTFontSizeStyle;
 import com.wmp.PublicTools.UITools.GetIcon;
 
 import javax.swing.*;
@@ -392,6 +394,48 @@ public class CTOptionPane {
         return null;
     }
 
+    public static void showFullScreenMessageDialog(String title, String message) {
+        JDialog messageDialog = new JDialog();
+        messageDialog.setAlwaysOnTop(true);
+        //设置屏幕大小
+        Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+        messageDialog.setSize((int) screenSize.getWidth(), (int) screenSize.getHeight());
+        messageDialog.setLocationRelativeTo(null);
+        messageDialog.setUndecorated(true);
+        messageDialog.getContentPane().setBackground(Color.BLACK);
+        messageDialog.setLayout(new BorderLayout());
+        messageDialog.setModal(true);
+
+        JLabel titleLabel = new JLabel(title);
+        titleLabel.setHorizontalAlignment(JLabel.CENTER);
+        titleLabel.setForeground(Color.WHITE);
+        titleLabel.setOpaque(false);
+
+        titleLabel.setFont(CTFont.getCTFont(Font.PLAIN, CTFontSizeStyle.BIG_BIG));
+        messageDialog.add(titleLabel, BorderLayout.NORTH);
+
+
+        JTextArea textArea = new JTextArea(message);
+        textArea.setBackground(Color.BLACK);
+        textArea.setForeground(Color.WHITE);
+        textArea.setEditable(false);
+        textArea.setLineWrap(true);// 激活自动换行功能
+        textArea.setFont(CTFont.getCTFont(Font.PLAIN, CTFontSizeStyle.MORE_BIG));
+
+        JScrollPane scrollPane = new JScrollPane(textArea);
+        scrollPane.setBorder(null);
+        messageDialog.add(scrollPane, BorderLayout.CENTER);
+
+        CTTextButton exitButton = new CTTextButton("关闭");
+        exitButton.setFont(CTFont.getCTFont(Font.PLAIN, CTFontSizeStyle.MORE_BIG));
+        exitButton.addActionListener(e -> {
+            messageDialog.dispose();
+
+        });
+        messageDialog.add(exitButton, BorderLayout.SOUTH);
+
+        messageDialog.setVisible(true);
+    }
 }
 
 abstract class ChooseButton extends CTTextButton implements ActionListener {

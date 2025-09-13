@@ -5,6 +5,7 @@ import com.wmp.PublicTools.UITools.CTColor;
 import com.wmp.classTools.CTComponent.CTPanel;
 import com.wmp.classTools.extraPanel.attendance.panel.ATPanel;
 import com.wmp.classTools.extraPanel.duty.panel.DPanel;
+import com.wmp.classTools.extraPanel.reminderBir.panel.BRPanel;
 import com.wmp.classTools.importPanel.eastereggtext.ETPanel;
 import com.wmp.classTools.importPanel.finalPanel.FinalPanel;
 import com.wmp.classTools.importPanel.timeView.TimeViewPanel;
@@ -43,6 +44,7 @@ public class MainWindow extends JDialog {
         File indexPath = new File(path + "Duty\\index.txt");
         File AllStuPath = new File(path + "Att\\AllStu.txt");
         File LeaveListPath = new File(path + "Att\\LeaveList.txt");
+        File birthdayPath = new File(path + "birthday.json");
 
 
 
@@ -55,6 +57,9 @@ public class MainWindow extends JDialog {
 
         ATPanel aTPanel = new ATPanel(AllStuPath, LeaveListPath);
         allPanelList.add(aTPanel);
+
+        BRPanel brPanel = new BRPanel(birthdayPath);
+        allPanelList.add(brPanel);
 
         ETPanel eEPanel = new ETPanel();
         allPanelList.add(eEPanel);
