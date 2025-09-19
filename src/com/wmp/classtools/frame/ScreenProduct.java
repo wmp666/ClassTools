@@ -153,7 +153,7 @@ public class ScreenProduct extends JDialog {
         int scaledWidth = (int) (imageWidth * scale);
         int scaledHeight = (int) (imageHeight * scale);
 
-        System.err.printf("缩放比例：%s|宽:%s|高:%s\n原图大小:%s|%s\n", scale, scaledWidth, scaledHeight, imageWidth, imageHeight);
+        Log.info.print("ScreenProduct", String.format("缩放比例：%s|宽:%s|高:%s\n原图大小:%s|%s\n", scale, scaledWidth, scaledHeight, imageWidth, imageHeight));
 
         return icon.getImage().getScaledInstance(scaledWidth, scaledHeight, Image.SCALE_SMOOTH);
     }

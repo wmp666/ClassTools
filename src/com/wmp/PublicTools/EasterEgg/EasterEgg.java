@@ -1,7 +1,7 @@
 package com.wmp.PublicTools.EasterEgg;
 
 import com.wmp.Main;
-import com.wmp.PublicTools.TodayIsNow;
+import com.wmp.PublicTools.DayIsNow;
 import com.wmp.PublicTools.UITools.CTColor;
 import com.wmp.PublicTools.UITools.GetIcon;
 import com.wmp.PublicTools.io.IOForInfo;
@@ -16,7 +16,6 @@ import org.json.JSONObject;
 import javax.swing.*;
 import java.io.IOException;
 import java.time.LocalDate;
-import java.time.Month;
 import java.time.ZoneId;
 import java.util.Objects;
 import java.util.Random;
@@ -37,34 +36,25 @@ public class EasterEgg {
             case STYLE_IMPORT_DAY -> {
                 //加载颜色(CTColor)数据
                 //判断当前时间是否是4月1日
-                // 明确指定时区
-                LocalDate currentDate = LocalDate.now(ZoneId.of("Asia/Shanghai"));
-                boolean b = currentDate.getMonth() == Month.APRIL
-                        && currentDate.getDayOfMonth() == 1;
+                boolean b = DayIsNow.dayIsNow("04-01");
                 if (b) {
                     CTColor.setAllColor(CTColor.MAIN_COLOR_GREEN, CTColor.STYLE_LIGHT);
                     return b;
                 }
 
-                b = (currentDate.getMonth() == Month.SEPTEMBER //原神周年庆
-                        && currentDate.getDayOfMonth() == 28) ||
-                        (currentDate.getMonth() == Month.NOVEMBER //author birthday
-                                && currentDate.getDayOfMonth() == 3) ||
-                        (currentDate.getMonth() == Month.SEPTEMBER //mc
-                                && currentDate.getDayOfMonth() == 3) ||
-                        (currentDate.getMonth() == Month.APRIL //崩铁
-                                && currentDate.getDayOfMonth() == 25);
+                b = DayIsNow.dayIsNow("09-28") ||//原神周年庆
+                        DayIsNow.dayIsNow("lunar9-17") ||//author birthday
+                        DayIsNow.dayIsNow("09-03") ||//mc
+                        DayIsNow.dayIsNow("04-25");//崩铁
 
                 return b;
             }
             case STYLE_ERROR -> {
                 // 明确指定时区
                 LocalDate currentDate = LocalDate.now(ZoneId.of("Asia/Shanghai"));
-                boolean b = currentDate.getMonth() == Month.APRIL
-                        && currentDate.getDayOfMonth() == 7;
+                boolean b = DayIsNow.dayIsNow("04-07");
                 if (!b) {
-                    if (currentDate.getMonth() == Month.APRIL //崩铁
-                            && currentDate.getDayOfMonth() == 25) {
+                    if (DayIsNow.dayIsNow("04-25")) {//崩铁
                         Random r = new Random();
                         int i = r.nextInt(5);
                         System.out.println("崩铁:" + i);
@@ -285,7 +275,7 @@ public class EasterEgg {
                 if (jsonObject instanceof JSONObject jsonObject1) {
 
                     String date1 = jsonObject1.getString("date");
-                    if (TodayIsNow.todayIsNow(date1)) {
+                    if (DayIsNow.dayIsNow(date1)) {
 
                         b.set(true);
                         Main.argsList.add("-StartUpdate:false");
@@ -295,45 +285,6 @@ public class EasterEgg {
 
                         CTOptionPane.showFullScreenMessageDialog(title, text);
 
-                            /*JDialog messageDialog = new JDialog();
-                            messageDialog.setAlwaysOnTop(true);
-                            //设置屏幕大小
-                            Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
-                            messageDialog.setSize((int) screenSize.getWidth(), (int) screenSize.getHeight());
-                            messageDialog.setLocationRelativeTo(null);
-                            messageDialog.setUndecorated(true);
-                            messageDialog.getContentPane().setBackground(Color.BLACK);
-                            messageDialog.setLayout(new BorderLayout());
-
-                            JLabel titleLabel = new JLabel(title);
-                            titleLabel.setHorizontalAlignment(JLabel.CENTER);
-                            titleLabel.setForeground(Color.WHITE);
-                            titleLabel.setOpaque(false);
-
-                            titleLabel.setFont(CTFont.getCTFont(Font.PLAIN, CTFontSizeStyle.BIG_BIG));
-                            messageDialog.add(titleLabel, BorderLayout.NORTH);
-
-
-                            JTextArea textArea = new JTextArea(text);
-                            textArea.setBackground(Color.BLACK);
-                            textArea.setForeground(Color.WHITE);
-                            textArea.setEditable(false);
-                            textArea.setLineWrap(true);// 激活自动换行功能
-                            textArea.setFont(CTFont.getCTFont(Font.PLAIN, CTFontSizeStyle.MORE_BIG));
-
-                            JScrollPane scrollPane = new JScrollPane(textArea);
-                            scrollPane.setBorder(null);
-                            messageDialog.add(scrollPane, BorderLayout.CENTER);
-
-                            CTTextButton exitButton = new CTTextButton("关闭");
-                            exitButton.setFont(CTFont.getCTFont(Font.PLAIN, CTFontSizeStyle.MORE_BIG));
-                            exitButton.addActionListener(e -> {
-                                messageDialog.dispose();
-
-                            });
-                            messageDialog.add(exitButton, BorderLayout.SOUTH);
-
-                            messageDialog.setVisible(true);*/
                     }
 
                 } else {

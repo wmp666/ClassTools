@@ -80,11 +80,10 @@ public class BRSetsPanel extends CTSetsPanel {
 
                 b = true;
                 while (b) {
-                    s2 = Log.info.showInputDialog(this, "BRSetsPanel-新建", "请输入日期(MM-dd)\n如:01-20");
-                    if (s2 != null && !s2.trim().isEmpty()) {
+                    String[] inputs = Log.info.showInputDialog(this, "BRSetsPanel-新建", "请输入日期(MM-dd)\n如:01-20\n农历日期可以不加\"0\"补空位", "公历", "农历");
+                    s2 = (inputs[0].equals("农历") ? "lunar" : "") + inputs[1];
+                    if (!s2.trim().isEmpty()) {
                         b = false;
-                    } else if (s2 == null) {
-                        return;
                     }
                 }
 

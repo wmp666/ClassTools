@@ -36,7 +36,7 @@ public class Main{
     * d:只修复的问题,问题较少
     * e:测试版本号
      */
-    public static String version = "1.34.4";
+    public static String version = "1.35.0";
 
     public static boolean canExit = true;
 

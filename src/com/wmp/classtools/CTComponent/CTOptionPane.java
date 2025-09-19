@@ -5,6 +5,7 @@ import com.wmp.PublicTools.EasterEgg.EasterEgg;
 import com.wmp.PublicTools.UITools.CTFont;
 import com.wmp.PublicTools.UITools.CTFontSizeStyle;
 import com.wmp.PublicTools.UITools.GetIcon;
+import com.wmp.PublicTools.printLog.Log;
 
 import javax.swing.*;
 import javax.swing.border.Border;
@@ -426,13 +427,30 @@ public class CTOptionPane {
         scrollPane.setBorder(null);
         messageDialog.add(scrollPane, BorderLayout.CENTER);
 
-        CTTextButton exitButton = new CTTextButton("关闭");
+        CTTextButton exitButton = new CTTextButton("关闭(10s)");
         exitButton.setFont(CTFont.getCTFont(Font.PLAIN, CTFontSizeStyle.MORE_BIG));
         exitButton.addActionListener(e -> {
             messageDialog.dispose();
 
         });
+        exitButton.setEnabled(false);
         messageDialog.add(exitButton, BorderLayout.SOUTH);
+
+        messageDialog.addWindowListener(new WindowAdapter() {
+            @Override
+            public void windowOpened(WindowEvent e) {
+
+                try {
+                    Thread.sleep(10000);
+                } catch (InterruptedException ex) {
+                    Log.err.print("EasterEgg", "获取彩蛋文件数据异常: \n" + ex.getMessage());
+                    throw new RuntimeException(ex);
+                }
+                exitButton.setEnabled(true);
+
+                exitButton.requestFocus();
+            }
+        });
 
         messageDialog.setVisible(true);
     }
