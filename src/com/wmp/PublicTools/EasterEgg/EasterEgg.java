@@ -42,6 +42,13 @@ public class EasterEgg {
                     return b;
                 }
 
+                ;
+                if (DayIsNow.dayIsNow("09-18") ||
+                        DayIsNow.dayIsNow("10-01") ||
+                        DayIsNow.dayIsNow("05-01")) {
+                    CTColor.setAllColor(CTColor.MAIN_COLOR_RED, CTColor.STYLE_LIGHT);
+                }
+
                 b = DayIsNow.dayIsNow("09-28") ||//原神周年庆
                         DayIsNow.dayIsNow("lunar9-17") ||//author birthday
                         DayIsNow.dayIsNow("09-03") ||//mc

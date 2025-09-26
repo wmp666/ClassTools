@@ -103,7 +103,6 @@ public class Main{
         }
 
 
-        b = true;
         try {
             SwingRun.show(b, startUpdate);
         } catch (Exception e) {

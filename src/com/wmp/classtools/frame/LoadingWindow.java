@@ -70,8 +70,9 @@ public class LoadingWindow extends JDialog {
 
         this.setUndecorated(true);
         this.setAlwaysOnTop(true);
-        this.setLocationRelativeTo(null);
         this.pack();
+        this.setLocationRelativeTo(null);
+
         this.setVisible(true);
         try {
             if (mustWait){
