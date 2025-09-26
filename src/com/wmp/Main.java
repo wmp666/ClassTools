@@ -51,13 +51,9 @@ public class Main{
         if (version.split("\\.").length < 5) iconPath = "/image/icon.png";
         else iconPath = "/image/icon_bate.png";
 
-        allArgs.put("TimeView:screen", StartupParameters.creative("-TimeView:screen", "/TimeView:screen"));
         allArgs.put("StartUpdate:false", StartupParameters.creative("-StartUpdate:false", "/StartUpdate:false"));
-        allArgs.put("EasterEgg:", StartupParameters.creative("-EasterEgg:", "/EasterEgg:"));
         allArgs.put("screenProduct:show", StartupParameters.creative("/s", "-s"));
         allArgs.put("screenProduct:view", StartupParameters.creative("/p", "-p"));
-        allArgs.put("Cookie:StartUp", StartupParameters.creative("-OpenCookie:", "/OpenCookie:"));
-        //allArgs.put("", StartupParameters.creative("-EasterEgg-pin:nj02", "/EasterEgg-pin:nj02"));
     }
 
     public static void main(String[] args) throws IOException {

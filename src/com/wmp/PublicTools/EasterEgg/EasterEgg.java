@@ -126,36 +126,9 @@ public class EasterEgg {
                 Log.info.print("EasterEgg-下载", "正在下载...");
                 String downloadUrl = "";
                 try {
-                    /*String temp = GetWebInf.getWebInf("https://api.github.com/repos/wmp666/ClassTools/releases");
-
-
-                    //以数组的形式加载[n,d,v]
-                    JSONArray jsonArray = new JSONArray(temp);
-                    for (int i = 0; i < jsonArray.length(); i++) {
-                        JSONObject jsonObject = jsonArray.getJSONObject(i);
-                        if (jsonObject.getString("tag_name").equalsIgnoreCase("0.0.1")) {
-
-                            JSONArray assets = jsonObject.getJSONArray("assets");
-                            for (int j = 0; j < assets.length(); j++) {
-                                JSONObject asset = assets.getJSONObject(j);
-                                if (style == STYLE_EE_VIDEO) {
-                                    if (asset.getString("name").equals(mediaName + ".mp4")) {
-                                        downloadUrl = asset.getString("browser_download_url");
-                                        break;
-                                    }
-                                } else if (style == STYLE_EE_MUSIC) {
-                                    if (asset.getString("name").equals(mediaName + ".mp3")) {
-                                        downloadUrl = asset.getString("browser_download_url");
-                                        break;
-                                    }
-                                }
-
-                            }
-                        }
-                    }*/
 
                     //https://api.github.com/repos/wmp666/ClassTools/releases/213477108
-                    String webInf = GetWebInf.getWebInf("https://api.github.com/repos/wmp666/ClassTools/releases/213477108");
+                    String webInf = GetWebInf.getWebInf("https://api.github.com/repos/wmp666/ClassTools/releases/tags/0.0.1");
                     JSONObject jsonObject = new JSONObject(webInf);
 
                     JSONArray assets = jsonObject.getJSONArray("assets");

@@ -204,7 +204,7 @@ public class BRPanel extends CTPanel {
                 String name = infoObject.getString("name");
                 String birthday = infoObject.getString("birthday");
                 int remainderDay = DayIsNow.getRemainderDay(birthday);
-                if (remainderDay < 6 && remainderDay > 0) {
+                if (remainderDay < 11 && remainderDay > 0) {
                     nameList.add(name);
                 }
             }

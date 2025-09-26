@@ -25,9 +25,13 @@ public class ScreenProduct extends JDialog {
 
     private final JLabel viewLabel = new JLabel();
 
+    private final Container c = this.getContentPane();
+
     private int index = 0;
 
     public ScreenProduct() throws IOException {
+
+        initAuthorLabel();
 
         initTimePanel();
 
@@ -54,7 +58,7 @@ public class ScreenProduct extends JDialog {
         updateBG.start();
 
 
-        Container c = this.getContentPane();
+
         c.setLayout(new BorderLayout());
 
         //让时间在组件中央显示
@@ -113,9 +117,8 @@ public class ScreenProduct extends JDialog {
         this.setVisible(true);
 
         //时间刷新
-        //获取时间
         //格式化 11.22 23:05
-        //让时间在组件左侧显示
+        //让时间在组件显示
         Timer timer = new Timer(300, e -> {
             //获取时间
             Date date = new Date();
@@ -127,6 +130,23 @@ public class ScreenProduct extends JDialog {
         });
         timer.start();
         timer.setRepeats(true);//循环
+    }
+
+    private void initAuthorLabel() {
+
+        JLabel authorLabel = new JLabel("无名牌作");
+        authorLabel.setFont(CTFont.getCTFont(Font.PLAIN, CTFontSizeStyle.SMALL));
+        c.add(authorLabel, BorderLayout.NORTH);
+
+        final boolean[] b = {true};
+        Timer timer = new Timer(3000, e -> {
+            if (b[0]) authorLabel.setForeground(Color.BLACK);
+            else authorLabel.setForeground(Color.WHITE);
+            b[0] = !b[0];
+        });
+        timer.setRepeats(true);
+        timer.start();
+
     }
 
     private void initWindow() {
@@ -211,10 +231,7 @@ public class ScreenProduct extends JDialog {
     private void initTimePanel() {
 
         timeView.setText("初始化...");
-        //timeView.setFont(new Font("微软雅黑", Font.BOLD, 23));
-        //timeView.setBackground(new Color(0x0ECECED, true));
         timeView.setForeground(CTColor.mainColor);
-        timeView.setBounds(5, 3, 180, 32);
 
     }
 }

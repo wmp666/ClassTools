@@ -53,8 +53,7 @@
 
 感谢各个开源仓库对软件的支持！！！
 
-感谢 [@wmp666](https://github.com/wmp666)  [
-@黑祲和苍野](https://github.com/Karagarasu)对软件开发、插件库插件的贡献！
+感谢 [@wmp666](https://github.com/wmp666)  [@黑祲和苍野](https://github.com/Karagarasu)对软件开发、插件库插件的贡献！
 
 
 

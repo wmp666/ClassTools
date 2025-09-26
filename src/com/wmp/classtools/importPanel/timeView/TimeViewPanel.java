@@ -115,12 +115,6 @@ public class TimeViewPanel extends CTPanel {
 
         this.add(viewTimeButton, BorderLayout.EAST);
 
-        if (allArgs.get("TimeView:screen").contains(argsList)) {
-            //执行你的代码
-            viewTimeInDeskTop();
-            Log.info.print("TimeView", "全屏显示时间");
-        }
-
     }
 
     private void viewTimeInDeskTop() throws MalformedURLException {

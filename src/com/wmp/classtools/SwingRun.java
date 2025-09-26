@@ -6,7 +6,6 @@ import com.wmp.PublicTools.printLog.Log;
 import com.wmp.PublicTools.update.GetNewerVersion;
 import com.wmp.classTools.frame.LoadingWindow;
 import com.wmp.classTools.frame.MainWindow;
-import com.wmp.classTools.frame.tools.cookie.StartCookie;
 
 import javax.swing.*;
 import java.io.IOException;
@@ -65,19 +64,6 @@ public class SwingRun {
             GetNewerVersion.checkForUpdate(
                     loadingWindow, null, true, false);
 
-        }
-
-        if (Main.allArgs.get("EasterEgg:").contains(Main.argsList)) {
-            int i = Main.argsList.indexOf("-EasterEgg:") + 1;
-            Log.info.print("Main", "-EasterEgg:" + Main.argsList.get(i));
-            //System.out.println();
-            EasterEgg.showEasterEgg(EasterEgg.STYLE_EE_VIDEO, Main.argsList.get(i));
-        }
-        if (Main.allArgs.get("Cookie:StartUp").contains(Main.argsList)) {
-            int i = Main.argsList.indexOf("-OpenCookie:") + 1;
-            Log.info.print("Main", "-OpenCookie:" + Main.argsList.get(i));
-            //System.out.println();
-            StartCookie.showCookie(Main.argsList.get(i).split(";"));
         }
     }
 }
