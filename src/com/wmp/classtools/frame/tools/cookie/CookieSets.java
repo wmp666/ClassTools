@@ -1,6 +1,7 @@
 package com.wmp.classTools.frame.tools.cookie;
 
 import com.wmp.Main;
+import com.wmp.PublicTools.CTInfo;
 import com.wmp.PublicTools.OpenInExp;
 import com.wmp.PublicTools.UITools.CTFont;
 import com.wmp.PublicTools.UITools.CTFontSizeStyle;
@@ -185,33 +186,14 @@ public class CookieSets {
                 label.setFont(CTFont.getCTFont(-1, CTFontSizeStyle.SMALL));
                 step2Panel.add(label, BorderLayout.NORTH);
 
-                /*CTIconButton openDirButton = new CTIconButton(CTIconButton.ButtonText, "打开插件目录",
-                        "/image/openExp.png", "/image/openExp.png", 30, 100, () -> {
-                    File cookiePath = cookie.getCookiePath();
-                    if (cookiePath == null || !cookiePath.exists()) {
-                        try {
-                            String finalPin = pinTextField.getText();
-                            System.out.println(Main.DATA_PATH + "Cookie\\" + finalPin + "\\");
-                            cookiePath = new File(Main.DATA_PATH + "Cookie\\" + finalPin + "\\");
-                        } catch (Exception e) {
-                            e.printStackTrace();
-                        }
-                        cookiePath.mkdirs();
-                        System.out.println(cookiePath.getPath());
-                    }
-                    OpenInExp.open(cookiePath.getPath());
-                });
-                openDirButton.setBackground(Color.WHITE);
-                openDirButton.setForeground(Color.BLACK);
-                openDirButton.setFont(CTFont.getCTFont(-1, CTFontSizeStyle.SMALL));*/
                 CTTextButton openDirButton = new CTTextButton("打开插件目录", GetIcon.getIcon(Main.class.getResource("/image/openExp.png"), 30, 30));
                 openDirButton.addActionListener(e -> {
                     File cookiePath = cookie.getCookiePath();
                     if (cookiePath == null || !cookiePath.exists()) {
                         try {
                             String finalPin = pinTextField.getText();
-                            System.out.println(Main.DATA_PATH + "Cookie\\" + finalPin + "\\");
-                            cookiePath = new File(Main.DATA_PATH + "Cookie\\" + finalPin + "\\");
+                            System.out.println(CTInfo.DATA_PATH + "Cookie\\" + finalPin + "\\");
+                            cookiePath = new File(CTInfo.DATA_PATH + "Cookie\\" + finalPin + "\\");
                         } catch (Exception ex) {
                             Log.err.print(dialog, "插件设置窗口", "打开插件目录失败:" + ex.getMessage());
                         }
@@ -292,7 +274,7 @@ public class CookieSets {
 
                     String cookiePath;
                     if (cookie.getCookiePath() == null || !cookie.getCookiePath().exists()){
-                        cookiePath = Main.DATA_PATH + "Cookie\\" + pinTextField.getText() + "\\";
+                        cookiePath = CTInfo.DATA_PATH + "Cookie\\" + pinTextField.getText() + "\\";
                         new File(cookiePath).mkdirs();
                     }else{
                         cookiePath = cookie.getCookiePath().getPath();
@@ -345,11 +327,10 @@ public class CookieSets {
 
 
         dialog.setVisible(true);
-        //ZipPack.unzip(file.getRunPath(), Main.DATA_PATH + "\\Cookie\\");
     }
 
     public static void addCookie(File file) {
-        ZipPack.unzip(file.getPath(), Main.DATA_PATH + "\\Cookie\\", () -> {
+        ZipPack.unzip(file.getPath(), CTInfo.DATA_PATH + "\\Cookie\\", () -> {
             try {
                 refreshParentWindow();
             } catch (IOException e) {

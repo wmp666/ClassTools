@@ -1,6 +1,6 @@
 package com.wmp.classTools.extraPanel.reminderBir.panel;
 
-import com.wmp.Main;
+import com.wmp.PublicTools.CTInfo;
 import com.wmp.PublicTools.DayIsNow;
 import com.wmp.PublicTools.UITools.CTColor;
 import com.wmp.PublicTools.UITools.CTFont;
@@ -42,14 +42,14 @@ public class BRPanel extends CTPanel {
         this.setName("生日提醒页");
         this.setID("BRPanel");
         this.setOpaque(false);
-        this.setCtSetsPanelList(List.of(new BRSetsPanel(Main.DATA_PATH)));
+        this.setCtSetsPanelList(List.of(new BRSetsPanel(CTInfo.DATA_PATH)));
 
         //刷新
         new Thread(() -> {
             while (true) {
                 this.removeAll();
 
-                if (Main.disPanelList.contains(getID())) {
+                if (CTInfo.disPanelList.contains(getID())) {
                     continue;
                 }
 

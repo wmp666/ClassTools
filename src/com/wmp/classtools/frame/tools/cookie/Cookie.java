@@ -1,6 +1,6 @@
 package com.wmp.classTools.frame.tools.cookie;
 
-import com.wmp.Main;
+import com.wmp.PublicTools.CTInfo;
 import com.wmp.PublicTools.UITools.GetIcon;
 import com.wmp.PublicTools.printLog.Log;
 
@@ -25,8 +25,8 @@ public class Cookie {
     private static final TreeMap<String, String> fixedPathMap = new TreeMap<>();
 
     static {
-        fixedPathMap.put("%DataPath", Main.DATA_PATH);
-        fixedPathMap.put("%TempPath", Main.TEMP_PATH);
+        fixedPathMap.put("%DataPath", CTInfo.DATA_PATH);
+        fixedPathMap.put("%TempPath", CTInfo.TEMP_PATH);
         fixedPathMap.put("%AppDirPath", System.getProperty("user.dir"));
     }
 
@@ -157,7 +157,7 @@ public class Cookie {
         try {
 
             if (cookiePath != null && !cookiePath.exists()) {
-                cookiePath = new File(Main.DATA_PATH + "Cookie\\" + name + "\\");
+                cookiePath = new File(CTInfo.DATA_PATH + "Cookie\\" + name + "\\");
                 cookiePath.mkdirs();
             }
             return cookiePath;

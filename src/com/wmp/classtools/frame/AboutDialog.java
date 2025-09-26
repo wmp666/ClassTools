@@ -1,6 +1,7 @@
 package com.wmp.classTools.frame;
 
 import com.wmp.Main;
+import com.wmp.PublicTools.CTInfo;
 import com.wmp.PublicTools.EasterEgg.EasterEgg;
 import com.wmp.PublicTools.OpenInExp;
 import com.wmp.PublicTools.UITools.CTColor;
@@ -45,29 +46,29 @@ public class AboutDialog extends JDialog {
         this.getContentPane().setBackground(CTColor.backColor);
 
 
-        JLabel icon = new JLabel(GetIcon.getIcon(Main.class.getResource(Main.iconPath), 100, 100));
+        JLabel icon = new JLabel(GetIcon.getIcon(Main.class.getResource(CTInfo.iconPath), 100, 100));
         icon.setBounds(10, 10, 100, 100);
 
-        JLabel title = new JLabel("程序名: " + Main.appName);
+        JLabel title = new JLabel("程序名: " + CTInfo.appName);
         title.setBounds(120, 10, 200, 20);
         title.setFont(CTFont.getCTFont(Font.BOLD, CTFontSizeStyle.SMALL));
         title.setForeground(CTColor.textColor);
 
         //将图标显示在文字上方
-        JLabel version = new JLabel("版本: " + Main.version);
+        JLabel version = new JLabel("版本: " + CTInfo.version);
         version.setBounds(120, 40, 200, 20);
         version.setFont(CTFont.getCTFont(Font.BOLD, CTFontSizeStyle.SMALL));
         version.setForeground(CTColor.textColor);
 
-        JLabel author = new JLabel("作者: " + Main.author);
+        JLabel author = new JLabel("作者: " + CTInfo.author);
         author.setBounds(120, 70, 200, 20);
         author.setFont(CTFont.getCTFont(Font.BOLD, CTFontSizeStyle.SMALL));
         author.setForeground(CTColor.textColor);
 
         JLabel info = new JLabel("<html>"
-                + "程序名: " + Main.appName + "<br><br>"
-                + "作者: " + Main.author + "<br><br>"
-                + "版本: " + Main.version
+                + "程序名: " + CTInfo.appName + "<br><br>"
+                + "作者: " + CTInfo.author + "<br><br>"
+                + "版本: " + CTInfo.version
                 + "</html>");
         info.setBounds(120, 10, 200, 100);
         info.setFont(CTFont.getCTFont(Font.BOLD, CTFontSizeStyle.SMALL));
@@ -184,7 +185,7 @@ public class AboutDialog extends JDialog {
         JMenuItem dataPath = new JMenuItem("数据路径");
         dataPath.setIcon(GetIcon.getIcon(getClass().getResource("/image/openExp.png"), 20, 20));
         dataPath.addActionListener(e -> {
-            OpenInExp.open(Main.DATA_PATH);
+            OpenInExp.open(CTInfo.DATA_PATH);
         });
 
         menu.add(chat);

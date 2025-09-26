@@ -1,6 +1,6 @@
 package com.wmp.classTools.infSet.panel;
 
-import com.wmp.Main;
+import com.wmp.PublicTools.CTInfo;
 import com.wmp.PublicTools.UITools.CTFont;
 import com.wmp.PublicTools.UITools.CTFontSizeStyle;
 import com.wmp.PublicTools.io.IOForInfo;
@@ -257,7 +257,7 @@ public class PersonalizationPanel extends CTSetsPanel {
 
         //显示数据
         {
-            IOForInfo io = new IOForInfo(new File(Main.DATA_PATH + "setUp.json"));
+            IOForInfo io = new IOForInfo(new File(CTInfo.DATA_PATH + "setUp.json"));
             JSONObject jsonObject;
             try {
                 jsonObject = new JSONObject(io.GetInfos());
@@ -324,7 +324,7 @@ public class PersonalizationPanel extends CTSetsPanel {
     public void save() {
         //保存数据-个性化
         {
-            IOForInfo io = new IOForInfo(new File(Main.DATA_PATH + "setUp.json"));
+            IOForInfo io = new IOForInfo(new File(CTInfo.DATA_PATH + "setUp.json"));
             JSONObject jsonObject = new JSONObject();
 
             //设置主题色

@@ -1,11 +1,10 @@
 package com.wmp.classTools.frame.tools.screenProduct;
 
-import com.wmp.Main;
+import com.wmp.PublicTools.CTInfo;
 import com.wmp.PublicTools.io.IOForInfo;
 import com.wmp.PublicTools.printLog.Log;
 import org.json.JSONObject;
 
-import java.awt.*;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -16,7 +15,7 @@ public class SetsScrInfo {
 
 
     public SetsScrInfo() throws IOException {
-        File BGPath = new File(Main.DATA_PATH + "\\ScreenProduct\\background.json");
+        File BGPath = new File(CTInfo.DATA_PATH + "\\ScreenProduct\\background.json");
         if (!BGPath.exists()) {
             try {
                 FileWriter fileWriter = new FileWriter(BGPath);

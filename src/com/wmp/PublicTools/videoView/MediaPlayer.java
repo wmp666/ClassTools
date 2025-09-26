@@ -1,6 +1,6 @@
 package com.wmp.PublicTools.videoView;
 
-import com.wmp.Main;
+import com.wmp.PublicTools.CTInfo;
 import com.wmp.PublicTools.printLog.Log;
 import javazoom.jl.decoder.JavaLayerException;
 import javazoom.jl.player.Player;
@@ -58,7 +58,7 @@ public class MediaPlayer {
 
                 Random r = new Random();
 
-                if (Main.isError) {
+                if (CTInfo.isError) {
                     inputStream = Log.class.getResourceAsStream("/music/error-yl.mp3");
                 } else {
                     int i = r.nextInt(3);

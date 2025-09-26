@@ -1,6 +1,6 @@
 package com.wmp.classTools.test;
 
-import com.wmp.Main;
+import com.wmp.PublicTools.CTInfo;
 import com.wmp.classTools.extraPanel.attendance.panel.ATPanel;
 import com.wmp.classTools.extraPanel.duty.panel.DPanel;
 import com.wmp.classTools.frame.MainWindow;
@@ -52,8 +52,8 @@ public class Test01CTPanel {
     static class ATPanelTest extends JFrame {
 
         public ATPanelTest() throws IOException {
-            File AllStuPath = new File(Main.DATA_PATH + "Att\\AllStu.txt");
-            File LeaveListPath = new File(Main.DATA_PATH + "Att\\LeaveList.txt");
+            File AllStuPath = new File(CTInfo.DATA_PATH + "Att\\AllStu.txt");
+            File LeaveListPath = new File(CTInfo.DATA_PATH + "Att\\LeaveList.txt");
 
             ATPanel atPanel = new ATPanel(AllStuPath, LeaveListPath);
 
@@ -72,8 +72,8 @@ public class Test01CTPanel {
             this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
             this.setLocationRelativeTo(null);
 
-            File DutyListPath = new File(Main.DATA_PATH + "Duty\\DutyList.txt");
-            File indexPath = new File(Main.DATA_PATH + "Duty\\index.txt");
+            File DutyListPath = new File(CTInfo.DATA_PATH + "Duty\\DutyList.txt");
+            File indexPath = new File(CTInfo.DATA_PATH + "Duty\\index.txt");
 
             DPanel dPanel = new DPanel(DutyListPath, indexPath);
             this.add(dPanel);
@@ -133,7 +133,7 @@ public class Test01CTPanel {
 
     static class FinalPanelTest extends JFrame {
         public FinalPanelTest() throws IOException {
-            new MainWindow(Main.DATA_PATH);
+            new MainWindow(CTInfo.DATA_PATH);
 
             FinalPanel finalPanel = new FinalPanel();
 

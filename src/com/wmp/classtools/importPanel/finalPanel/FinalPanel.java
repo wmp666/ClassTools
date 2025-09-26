@@ -1,6 +1,7 @@
 package com.wmp.classTools.importPanel.finalPanel;
 
 import com.wmp.Main;
+import com.wmp.PublicTools.CTInfo;
 import com.wmp.PublicTools.EasterEgg.EasterEgg;
 import com.wmp.PublicTools.UITools.CTColor;
 import com.wmp.PublicTools.printLog.Log;
@@ -11,7 +12,6 @@ import com.wmp.classTools.frame.AboutDialog;
 import com.wmp.classTools.frame.MainWindow;
 import com.wmp.classTools.frame.ShowCookieDialog;
 import com.wmp.classTools.infSet.InfSetDialog;
-import com.wmp.classTools.infSet.tools.GetSetsJSON;
 
 import javax.swing.*;
 import java.awt.*;
@@ -20,8 +20,6 @@ import java.net.MalformedURLException;
 import java.util.ArrayList;
 import java.util.concurrent.atomic.AtomicInteger;
 
-import static com.wmp.Main.disButList;
-import static com.wmp.Main.disPanelList;
 
 public class FinalPanel extends CTPanel {
 
@@ -42,34 +40,16 @@ public class FinalPanel extends CTPanel {
         Log.initTrayIcon();
     }
 
-    private void initPanel() {
-        this.setLayout(new BoxLayout(this, BoxLayout.X_AXIS));
-        this.setBackground(CTColor.backColor);
-        // 添加弹性空间
-        this.add(Box.createHorizontalGlue()); // 左侧弹簧
-        this.add(Box.createRigidArea(new Dimension(5, 0))); // 按钮间距
-        this.add(Box.createHorizontalGlue()); // 右侧弹簧
-
-    }
-
     public static void refreshPanel() {
-        GetSetsJSON setsJSON;
         try {
-            setsJSON = new GetSetsJSON();
-
-
-            Main.canExit = setsJSON.isCanExit();
-            disButList.clear();
-            disButList.addAll(setsJSON.getDisButList());
-            disPanelList.clear();
-            disPanelList.addAll(setsJSON.getDisPanelList());
+            CTInfo.init();
             MainWindow.showPanelList.clear();
 
             //Log.err.print("FinalPanel", "已折叠的Panel:" + disPanelList);
 
             //1.判断需要显示的CTPanel,不需要的清除其中的内容
             MainWindow.allPanelList.forEach(panel -> {
-                if (!disPanelList.contains(panel.getID())) {
+                if (!CTInfo.disPanelList.contains(panel.getID())) {
                     MainWindow.showPanelList.add(panel);
                 } else {
                     panel.removeAll();
@@ -88,9 +68,21 @@ public class FinalPanel extends CTPanel {
 
             });// 自定义刷新方法
 
-        } catch (IOException e) {
+        } catch (Exception e) {
+            Log.err.print("FinalPanel", "刷新失败\n错误信息:" + e.getMessage());
             throw new RuntimeException(e);
         }
+    }
+
+    private void initPanel() {
+        this.setLayout(new BoxLayout(this, BoxLayout.X_AXIS));
+        this.setBackground(CTColor.backColor);
+        // 添加弹性空间
+        this.add(Box.createHorizontalGlue()); // 左侧弹簧
+        this.add(Box.createRigidArea(new Dimension(5, 0))); // 按钮间距
+        this.add(Box.createHorizontalGlue()); // 右侧弹簧
+
+
     }
 
     private void initButton() throws MalformedURLException {
@@ -181,7 +173,7 @@ public class FinalPanel extends CTPanel {
 
         //按钮展示
         allButList.forEach(ctButton -> {
-            if (disButList.contains(ctButton.getName())) {
+            if (CTInfo.disButList.contains(ctButton.getName())) {
                 ctButton.setText(ctButton.getToolTipText());
                 ctButton.setForeground(Color.BLACK);
                 //moreDialog.add(ctButton);
@@ -209,7 +201,7 @@ public class FinalPanel extends CTPanel {
         }
 
         //设置关闭按钮
-        if (!Main.isError && Main.canExit && !Main.allArgs.get("screenProduct:show").contains(Main.argsList)) {
+        if (!CTInfo.isError && CTInfo.canExit && !Main.allArgs.get("screenProduct:show").contains(Main.argsList)) {
             CTIconButton exit = new CTIconButton("关闭",
                     "/image/%s/exit_0.png",
                     "/image/%s/exit_1.png", 30, () -> {

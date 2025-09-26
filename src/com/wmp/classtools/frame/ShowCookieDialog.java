@@ -1,6 +1,7 @@
 package com.wmp.classTools.frame;
 
 import com.wmp.Main;
+import com.wmp.PublicTools.CTInfo;
 import com.wmp.PublicTools.OpenInExp;
 import com.wmp.PublicTools.UITools.CTFont;
 import com.wmp.PublicTools.UITools.CTFontSizeStyle;
@@ -36,7 +37,7 @@ public class ShowCookieDialog extends JDialog implements WindowListener {
 
     private final Thread repaintCookie = new Thread(() -> {
         long lastModifyTime = 0;
-        File cookieDir = new File(Main.DATA_PATH + "\\Cookie\\");
+        File cookieDir = new File(CTInfo.DATA_PATH + "\\Cookie\\");
 
         // 监听文件修改
         while (!Thread.interrupted()) {
@@ -360,7 +361,7 @@ public class ShowCookieDialog extends JDialog implements WindowListener {
         JMenuItem openInExp = new JMenuItem("打开插件所在目录");
         openInExp.setIcon( GetIcon.getIcon(getClass().getResource("/image/openExp.png"),16,16));
         openInExp.addActionListener(e -> {
-            OpenInExp.open(Main.DATA_PATH + "\\Cookie\\");
+            OpenInExp.open(CTInfo.DATA_PATH + "\\Cookie\\");
         });
 
 

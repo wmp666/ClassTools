@@ -1,6 +1,7 @@
 package com.wmp.classTools.frame;
 
 import com.wmp.Main;
+import com.wmp.PublicTools.CTInfo;
 import com.wmp.PublicTools.EasterEgg.EETextStyle;
 import com.wmp.PublicTools.EasterEgg.EasterEgg;
 import com.wmp.PublicTools.UITools.CTFont;
@@ -19,7 +20,7 @@ public class LoadingWindow extends JDialog {
     public static final int STYLE_SCREEN = 1;
 
     public LoadingWindow() {
-        this(LoadingWindow.class.getResource(Main.iconPath),
+        this(LoadingWindow.class.getResource(CTInfo.iconPath),
                 180, 180, "useLoadingText", false, 0, 0);
     }
 

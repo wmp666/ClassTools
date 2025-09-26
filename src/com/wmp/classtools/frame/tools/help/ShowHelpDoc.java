@@ -1,6 +1,6 @@
 package com.wmp.classTools.frame.tools.help;
 
-import com.wmp.Main;
+import com.wmp.PublicTools.CTInfo;
 import com.wmp.PublicTools.OpenInExp;
 import com.wmp.PublicTools.UITools.CTFont;
 import com.wmp.PublicTools.UITools.CTFontSizeStyle;
@@ -69,7 +69,7 @@ public class ShowHelpDoc extends JDialog {
 
     private static void copyDoc(String DocName){
         //将resource/help中的文件复制到dataPath中
-        String dataPath = Main.TEMP_PATH + "help\\";
+        String dataPath = CTInfo.TEMP_PATH + "help\\";
 
         ResourceLocalizer.copyEmbeddedFile(dataPath, "/help/", DocName);
 
@@ -83,7 +83,7 @@ public class ShowHelpDoc extends JDialog {
     }
     private static void copyDocImage(String imageName){
         //将resource/help中的文件复制到dataPath中
-        String dataPath = Main.TEMP_PATH + "help\\images\\";
+        String dataPath = CTInfo.TEMP_PATH + "help\\images\\";
 
         ResourceLocalizer.copyEmbeddedFile(dataPath, "/help/images/", imageName);
 
@@ -97,29 +97,12 @@ public class ShowHelpDoc extends JDialog {
         return editorPane;
     }
 
-    private JPanel getButtonPanel() {
-        JButton exitButton = new JButton("退出");
-        exitButton.addActionListener(e -> this.dispose());
-
-        JButton openInExpButton = new JButton("打开所在位置");
-        openInExpButton.addActionListener(e -> {
-            OpenInExp.open(Main.TEMP_PATH + "help\\");
-        });
-
-        JPanel buttonPanel = new JPanel();
-        buttonPanel.setLayout(new FlowLayout(FlowLayout.RIGHT));
-        buttonPanel.add(exitButton);
-        buttonPanel.add(openInExpButton);
-
-        return buttonPanel;
-    }
-
     private static String initHelpDoc(String name) throws IOException, URISyntaxException {
 
         copyDoc(name);
 
         String markdown = "";
-        String parent = Main.TEMP_PATH + "help\\";
+        String parent = CTInfo.TEMP_PATH + "help\\";
 
         markdown = Files.readString(Paths.get(parent + name));
 
@@ -138,6 +121,23 @@ public class ShowHelpDoc extends JDialog {
 
         //将images 路径改为绝对路径
         return html;
+    }
+
+    private JPanel getButtonPanel() {
+        JButton exitButton = new JButton("退出");
+        exitButton.addActionListener(e -> this.dispose());
+
+        JButton openInExpButton = new JButton("打开所在位置");
+        openInExpButton.addActionListener(e -> {
+            OpenInExp.open(CTInfo.TEMP_PATH + "help\\");
+        });
+
+        JPanel buttonPanel = new JPanel();
+        buttonPanel.setLayout(new FlowLayout(FlowLayout.RIGHT));
+        buttonPanel.add(exitButton);
+        buttonPanel.add(openInExpButton);
+
+        return buttonPanel;
     }
 
     private void initDialog() {

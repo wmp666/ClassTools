@@ -1,6 +1,6 @@
 package com.wmp.classTools.importPanel.eastereggtext;
 
-import com.wmp.Main;
+import com.wmp.PublicTools.CTInfo;
 import com.wmp.PublicTools.EasterEgg.EETextStyle;
 import com.wmp.PublicTools.EasterEgg.EasterEgg;
 import com.wmp.PublicTools.UITools.*;
@@ -60,7 +60,7 @@ public class ETPanel extends CTPanel implements MouseListener {
             while (true) {
                 this.removeAll();
 
-                if (Main.disPanelList.contains(getID())) {
+                if (CTInfo.disPanelList.contains(getID())) {
                     continue;
                 }
 

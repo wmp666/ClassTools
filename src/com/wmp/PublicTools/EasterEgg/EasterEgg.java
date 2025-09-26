@@ -1,6 +1,7 @@
 package com.wmp.PublicTools.EasterEgg;
 
 import com.wmp.Main;
+import com.wmp.PublicTools.CTInfo;
 import com.wmp.PublicTools.DayIsNow;
 import com.wmp.PublicTools.UITools.CTColor;
 import com.wmp.PublicTools.UITools.GetIcon;
@@ -121,7 +122,7 @@ public class EasterEgg {
 
         Log.info.print("EasterEgg-显示", "正在准备...");
 
-        if (Main.isError) mediaName = "PV-yl";
+        if (CTInfo.isError) mediaName = "PV-yl";
         else {
             mediaName = pin;
         }
@@ -161,9 +162,9 @@ public class EasterEgg {
                 Log.info.print("EasterEgg-下载", "下载链接: " + downloadUrl);
 
                 if (style == STYLE_EE_VIDEO)
-                    ResourceLocalizer.copyWebFile(Main.TEMP_PATH + "EasterEgg\\video\\", downloadUrl, mediaName + ".mp4");
+                    ResourceLocalizer.copyWebFile(CTInfo.TEMP_PATH + "EasterEgg\\video\\", downloadUrl, mediaName + ".mp4");
                 else if (style == STYLE_EE_MUSIC)
-                    ResourceLocalizer.copyWebFile(Main.TEMP_PATH + "EasterEgg\\music\\", downloadUrl, mediaName + ".mp3");
+                    ResourceLocalizer.copyWebFile(CTInfo.TEMP_PATH + "EasterEgg\\music\\", downloadUrl, mediaName + ".mp3");
                 return null;
             }
 
@@ -177,10 +178,10 @@ public class EasterEgg {
 
                     try {
                         if (style == STYLE_EE_MUSIC) {
-                            String path = Main.TEMP_PATH + "EasterEgg\\music\\" + mediaName + ".mp3";
+                            String path = CTInfo.TEMP_PATH + "EasterEgg\\music\\" + mediaName + ".mp3";
                             MediaPlayer.playMusic(path);
                         } else if (style == STYLE_EE_VIDEO) {
-                            String path = Main.TEMP_PATH + "EasterEgg\\video\\" + mediaName + ".mp4";
+                            String path = CTInfo.TEMP_PATH + "EasterEgg\\video\\" + mediaName + ".mp4";
                             MediaPlayer.playVideo(path);
                         }
 
@@ -219,7 +220,7 @@ public class EasterEgg {
     }
 
     public static String[] getAllText(){
-        if (Main.isError) return new String[]{
+        if (CTInfo.isError) return new String[]{
                 "骇客已入侵:\\n游戏就只是为了游戏\\n仅此而已！",
                 "骇客已入侵:\\n重要的不是数值\\n是体验，是操作！",
                 "骇客已入侵:\\n这次能让我玩得开心点么？"

@@ -1,6 +1,7 @@
 package com.wmp.PublicTools.update;
 
 import com.wmp.Main;
+import com.wmp.PublicTools.CTInfo;
 import com.wmp.PublicTools.io.DownloadURLFile;
 import com.wmp.PublicTools.io.GetPath;
 import com.wmp.PublicTools.printLog.Log;
@@ -146,7 +147,7 @@ public class GetNewerVersion {
 
                         return;
                     }
-                    int i = isNewerVersion(latestVersion, Main.version);
+                    int i = isNewerVersion(latestVersion, CTInfo.version);
                     if (i == 1) {
                         Log.info.print("发现新版本", "发现新版本 " + latestVersion);
                         int result = Log.info.showChooseDialog(dialog, "发现新版本",
@@ -206,7 +207,7 @@ public class GetNewerVersion {
 
                         return;
                     }
-                    int i = isNewerVersion(latestVersion, Main.version);
+                    int i = isNewerVersion(latestVersion, CTInfo.version);
                     if (i != 0) {
                         int result = Log.info.showChooseDialog(dialog, "发现测试版本",
                                 "发现测试版本 " + latestVersion + "，是否下载？\n" + versionContent);

@@ -1,6 +1,7 @@
 package com.wmp.classTools.extraPanel.attendance.panel;
 
 import com.wmp.Main;
+import com.wmp.PublicTools.CTInfo;
 import com.wmp.PublicTools.UITools.*;
 import com.wmp.PublicTools.io.IOForInfo;
 import com.wmp.PublicTools.printLog.Log;
@@ -44,8 +45,8 @@ public class ATPanel extends CTPanel {
         this.LeaveListPath = LeaveListPath;
 
         ArrayList<CTSetsPanel> list = new ArrayList<>();
-        list.add(new LeaveListSetsPanel(Main.DATA_PATH));
-        list.add(new AllStuSetsPanel(Main.DATA_PATH));
+        list.add(new LeaveListSetsPanel(CTInfo.DATA_PATH));
+        list.add(new AllStuSetsPanel(CTInfo.DATA_PATH));
         this.setCtSetsPanelList(list);
         this.setName("考勤表组件");
         this.setID("ATPanel");

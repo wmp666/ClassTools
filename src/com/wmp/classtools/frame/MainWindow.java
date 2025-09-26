@@ -1,6 +1,6 @@
 package com.wmp.classTools.frame;
 
-import com.wmp.Main;
+import com.wmp.PublicTools.CTInfo;
 import com.wmp.PublicTools.UITools.CTColor;
 import com.wmp.classTools.CTComponent.CTPanel;
 import com.wmp.classTools.extraPanel.attendance.panel.ATPanel;
@@ -18,7 +18,8 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 
-import static com.wmp.Main.*;
+import static com.wmp.Main.allArgs;
+import static com.wmp.Main.argsList;
 
 public class MainWindow extends JDialog {
     private final JPanel centerPane = new JPanel(); // 用于放置中间组件的面板
@@ -29,7 +30,7 @@ public class MainWindow extends JDialog {
     public MainWindow(String path) throws IOException {
 
         this.setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
-        this.setTitle(Main.appName + "-V" + Main.version);
+        this.setTitle(CTInfo.appName + "-V" + CTInfo.version);
         //删除边框
         this.setUndecorated(true);
 
@@ -116,7 +117,7 @@ public class MainWindow extends JDialog {
                     gbc.gridy++;
                 }
 
-                if (disPanelList.contains(ctPanel.getID())) {
+                if (CTInfo.disPanelList.contains(ctPanel.getID())) {
                     ctPanel.removeAll();
                     ctPanel.revalidate();
                     ctPanel.repaint();
@@ -179,7 +180,7 @@ public class MainWindow extends JDialog {
         int screenHeight = (int) screenSize.getHeight();
 
         this.setForeground(CTColor.backColor);
-        this.setIconImage(new ImageIcon(getClass().getResource(Main.iconPath)).getImage());
+        this.setIconImage(new ImageIcon(getClass().getResource(CTInfo.iconPath)).getImage());
         this.pack();
     }
 }

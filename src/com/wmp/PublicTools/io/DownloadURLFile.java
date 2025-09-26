@@ -1,6 +1,7 @@
 package com.wmp.PublicTools.io;
 
 import com.wmp.Main;
+import com.wmp.PublicTools.CTInfo;
 import com.wmp.PublicTools.UITools.CTColor;
 import com.wmp.PublicTools.UITools.CTFont;
 import com.wmp.PublicTools.UITools.CTFontSizeStyle;
@@ -66,7 +67,7 @@ public class DownloadURLFile {
 
 
             // 创建缓存目录
-            File appDir = new File(Main.TEMP_PATH + "WebTemp\\");
+            File appDir = new File(CTInfo.TEMP_PATH + "WebTemp\\");
             if (!appDir.exists()) appDir.mkdirs();
 
             // 替换原有的页面解析逻辑为直接获取最新JAR

@@ -1,6 +1,6 @@
 package com.wmp.classTools.frame.tools.cookie;
 
-import com.wmp.Main;
+import com.wmp.PublicTools.CTInfo;
 import com.wmp.PublicTools.printLog.Log;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -11,7 +11,7 @@ import java.util.TreeMap;
 
 public class GetCookie {
 
-    private final String CookiePath = Main.DATA_PATH + "\\Cookie\\";
+    private final String CookiePath = CTInfo.DATA_PATH + "\\Cookie\\";
     // pin -> name
     //private final TreeMap<String, String> nameList = new TreeMap<>();
     // pin -> 文件位置

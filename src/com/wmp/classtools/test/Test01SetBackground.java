@@ -1,6 +1,7 @@
 package com.wmp.classTools.test;
 
 import com.wmp.Main;
+import com.wmp.PublicTools.CTInfo;
 import com.wmp.PublicTools.io.IOForInfo;
 import org.json.JSONObject;
 
@@ -16,7 +17,7 @@ public class Test01SetBackground extends JFrame {
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         this.setSize(400, 300);
 
-        File BGPath = new File(Main.DATA_PATH + "\\ScreenProduct\\background.json");
+        File BGPath = new File(CTInfo.DATA_PATH + "\\ScreenProduct\\background.json");
         if (!BGPath.exists()) {
             try {
                 FileWriter fileWriter = new FileWriter(BGPath);

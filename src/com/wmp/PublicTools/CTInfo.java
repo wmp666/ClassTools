@@ -1,39 +1,67 @@
-package com.wmp.classTools.infSet.tools;
+package com.wmp.PublicTools;
 
-import com.wmp.Main;
 import com.wmp.PublicTools.UITools.CTColor;
 import com.wmp.PublicTools.UITools.CTFont;
 import com.wmp.PublicTools.io.IOForInfo;
 import com.wmp.PublicTools.printLog.Log;
 import org.json.JSONArray;
-import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.File;
-import java.io.IOException;
 import java.util.ArrayList;
 
-public class GetSetsJSON {
+public class CTInfo {
+    public static final ArrayList<String> disPanelList = new ArrayList<>();
+    public static final ArrayList<String> disButList = new ArrayList<>();
+    public static String DATA_PATH;
+    public static String TEMP_PATH;
+    public static String appName = "ClassTools";
+    public static String author = "wmp";
 
-    private JSONObject jsonObject;
+    public static String iconPath;
 
-    private boolean canExit = true;
-    private boolean StartUpdate = true;
-    private final ArrayList<String> disButList = new ArrayList<>();
-    private final ArrayList<String> disPanelList = new ArrayList<>();
+    public static boolean isError = false;
+    /**
+     * a.b.c.d.e
+     * a:主版本号
+     * b:功能更新版本号
+     * c:修订版本号/小功能更新
+     * d:只修复的问题,问题较少
+     * e:测试版本号
+     */
+    public static String version = "1.35.1";
+    public static boolean canExit = true;
+    public static boolean StartUpdate = true;
+    private static JSONObject jsonObject;
 
-    public GetSetsJSON() throws IOException {
-        boolean exists = new File(Main.DATA_PATH + "setUp.json").exists();
+    public static void init() {
+
+        disButList.clear();
+        disPanelList.clear();
+
+
+        //加载基础目录
+        String path = System.getenv("LOCALAPPDATA");
+
+        DATA_PATH = path + "\\ClassTools\\";
+
+        TEMP_PATH = path + "\\ClassToolsTemp\\";
+
+        if (version.split("\\.").length < 5) iconPath = "/image/icon.png";
+        else iconPath = "/image/icon_bate.png";
+
+
+        boolean exists = new File(CTInfo.DATA_PATH + "setUp.json").exists();
 
         if (exists) {
-            IOForInfo sets = new IOForInfo(new File(Main.DATA_PATH + "setUp.json"));
+            IOForInfo sets = new IOForInfo(new File(CTInfo.DATA_PATH + "setUp.json"));
 
 
             try {
                 jsonObject = new JSONObject(sets.GetInfos());
-            }catch (JSONException e){
+            } catch (Exception e) {
+                //throw new RuntimeException(e);
                 Log.err.print("获取个性化数据", "数据获取发生错误:" + e.getMessage());
-                return;
             }
 
             //设置颜色
@@ -59,7 +87,7 @@ public class GetSetsJSON {
                 CTFont.setFontName(jsonObject.getString("FontName"));
             }
             //设置隐藏按钮
-            if (jsonObject.has("disposeButton")){
+            if (jsonObject.has("disposeButton")) {
                 JSONArray disButtonList = jsonObject.getJSONArray("disposeButton");
                 disButtonList.forEach(object -> {
                     disButList.add(object.toString());
@@ -80,27 +108,5 @@ public class GetSetsJSON {
                 StartUpdate = jsonObject.getBoolean("StartUpdate");
             }
         }
-
-
-    }
-
-    public boolean isCanExit() {
-        return canExit;
-    }
-
-    public boolean isStartUpdate() {
-        return StartUpdate;
-    }
-
-    public ArrayList<String> getDisButList() {
-        return disButList;
-    }
-
-    public ArrayList<String> getDisPanelList() {
-        return disPanelList;
-    }
-
-    public JSONObject getJsonObject() {
-        return jsonObject;
     }
 }

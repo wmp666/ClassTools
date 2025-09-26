@@ -1,6 +1,7 @@
 package com.wmp.PublicTools.printLog;
 
 import com.wmp.Main;
+import com.wmp.PublicTools.CTInfo;
 import com.wmp.PublicTools.UITools.GetIcon;
 import com.wmp.classTools.CTComponent.CTOptionPane;
 
@@ -28,13 +29,13 @@ public class InfoLogStyle extends PrintLogStyle {
 
     private static String getTitle(String owner) {
         String title;
-        if (Main.isError) title = "骇客已入侵";
+        if (CTInfo.isError) title = "骇客已入侵";
         else title = owner;
         return title;
     }
 
     private static Icon getIcon() {
-        if (Main.isError) return GetIcon.getIcon(Main.class.getResource("/image/error/icon.png"), 100, 100);
+        if (CTInfo.isError) return GetIcon.getIcon(Main.class.getResource("/image/error/icon.png"), 100, 100);
         return null;
     }
 

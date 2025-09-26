@@ -1,6 +1,6 @@
 package com.wmp.classTools.extraPanel.duty.panel;
 
-import com.wmp.Main;
+import com.wmp.PublicTools.CTInfo;
 import com.wmp.PublicTools.UITools.CTColor;
 import com.wmp.PublicTools.UITools.CTFont;
 import com.wmp.PublicTools.UITools.CTFontSizeStyle;
@@ -34,7 +34,7 @@ public class DPanel extends CTPanel {
         this.indexPath = indexPath;
 
         ArrayList<CTSetsPanel> setsPanelList = new ArrayList<>();
-        setsPanelList.add(new DutyListSetsPanel(Main.DATA_PATH));
+        setsPanelList.add(new DutyListSetsPanel(CTInfo.DATA_PATH));
         this.setCtSetsPanelList(setsPanelList);
         this.setName("值日表组件");
         this.setID("DPanel");

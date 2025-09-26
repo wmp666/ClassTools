@@ -1,11 +1,11 @@
 package com.wmp;
 
+import com.wmp.PublicTools.CTInfo;
 import com.wmp.PublicTools.EasterEgg.EasterEgg;
 import com.wmp.PublicTools.StartupParameters;
 import com.wmp.PublicTools.UITools.CTColor;
 import com.wmp.PublicTools.printLog.Log;
 import com.wmp.classTools.SwingRun;
-import com.wmp.classTools.infSet.tools.GetSetsJSON;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -14,42 +14,11 @@ import java.util.TreeMap;
 
 public class Main{
 
-    public static String DATA_PATH;
-    public static String TEMP_PATH;
-
-    public static final ArrayList<String> disPanelList = new ArrayList<>();
-    public static String appName = "ClassTools";
-    public static String author = "wmp";
-
-    public static String iconPath;
-
-    public static boolean isError = false;
-
     public static ArrayList<String> argsList = new ArrayList<>();
     public static final TreeMap<String, StartupParameters> allArgs = new TreeMap<>();
 
-    public static final ArrayList<String> disButList = new ArrayList<>();
-    /**a.b.c.d.e
-    * a:主版本号
-    * b:功能更新版本号
-    * c:修订版本号/小功能更新
-    * d:只修复的问题,问题较少
-    * e:测试版本号
-     */
-    public static String version = "1.35.0";
-
-    public static boolean canExit = true;
-
     static {
         //加载基础目录
-        String path = System.getenv("LOCALAPPDATA");
-
-        DATA_PATH = path + "\\ClassTools\\";
-
-        TEMP_PATH = path + "\\ClassToolsTemp\\";
-
-        if (version.split("\\.").length < 5) iconPath = "/image/icon.png";
-        else iconPath = "/image/icon_bate.png";
 
         allArgs.put("StartUpdate:false", StartupParameters.creative("-StartUpdate:false", "/StartUpdate:false"));
         allArgs.put("screenProduct:show", StartupParameters.creative("/s", "-s"));
@@ -58,20 +27,17 @@ public class Main{
 
     public static void main(String[] args) throws IOException {
 
+        CTInfo.init();
 
         Log.info.systemPrint("Main", "正在初始化...");
         boolean b;
         boolean startUpdate;
         try {
-            GetSetsJSON setsJSON = new GetSetsJSON();
+            //GetSetsJSON setsJSON = new GetSetsJSON();
 
             b = EasterEgg.getEasterEggItem(EasterEgg.STYLE_IMPORT_DAY);
 
-            startUpdate = setsJSON.isStartUpdate();
-            canExit = setsJSON.isCanExit();
-            disButList.addAll(setsJSON.getDisButList());
-            disPanelList.addAll(setsJSON.getDisPanelList());
-
+            startUpdate = CTInfo.StartUpdate;
 
             for (int i = 0; i < args.length; i++) {
                 args[i] = args[i].replace("/", "-");
@@ -88,16 +54,16 @@ public class Main{
             throw new RuntimeException(e);
         }
 
-        isError = EasterEgg.getEasterEggItem(EasterEgg.STYLE_ERROR);
+        CTInfo.isError = EasterEgg.getEasterEggItem(EasterEgg.STYLE_ERROR);
         //Log.info.print("[Main]", "是否被骇客入侵:" + isError);
-        if (isError) {
+        if (CTInfo.isError) {
 
             Log.info.message(null, "Main", "这次能让我玩得开心点吗？");
 
-            version = "999.999.999";//错误版本号(无法更新)
-            appName = "班级病毒";
-            author = "银狼";
-            iconPath = "/image/error/icon.png";
+            CTInfo.version = "999.999.999";//错误版本号(无法更新)
+            CTInfo.appName = "班级病毒";
+            CTInfo.author = "银狼";
+            CTInfo.iconPath = "/image/error/icon.png";
             b = false;
             CTColor.setErrorColor();//修改颜色
         }

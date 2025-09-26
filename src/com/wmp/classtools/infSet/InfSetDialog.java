@@ -1,6 +1,6 @@
 package com.wmp.classTools.infSet;
 
-import com.wmp.Main;
+import com.wmp.PublicTools.CTInfo;
 import com.wmp.PublicTools.OpenInExp;
 import com.wmp.PublicTools.UITools.CTColor;
 import com.wmp.PublicTools.UITools.CTFont;
@@ -58,7 +58,7 @@ public class InfSetDialog extends JDialog {
 
         Log.info.systemPrint("设置", "正在获取设置页面...");
 
-        ctSetsPanelList.add(new PersonalizationPanel(Main.DATA_PATH));
+        ctSetsPanelList.add(new PersonalizationPanel(CTInfo.DATA_PATH));
 
         MainWindow.allPanelList.forEach(ctPanel -> {
             java.util.List<CTSetsPanel> tempCTSetsPanelList = ctPanel.getCtSetsPanelList();
@@ -67,7 +67,7 @@ public class InfSetDialog extends JDialog {
             }
         });
 
-        ctSetsPanelList.add(new ClearTempPanel(Main.DATA_PATH));
+        ctSetsPanelList.add(new ClearTempPanel(CTInfo.DATA_PATH));
 
         Log.info.systemPrint("设置", "正在完成后续工作...");
         initMenuBar();
@@ -146,7 +146,7 @@ public class InfSetDialog extends JDialog {
         JMenuItem openSetsList = new JMenuItem("数据位置");
         openSetsList.setIcon(GetIcon.getIcon(getClass().getResource("/image/openExp.png"), 16, 16));
         openSetsList.addActionListener(e -> {
-            OpenInExp.open(Main.DATA_PATH);
+            OpenInExp.open(CTInfo.DATA_PATH);
         });
 
         JMenu InfSets = new JMenu("数据设置");
@@ -159,7 +159,7 @@ public class InfSetDialog extends JDialog {
         getAllInf.setIcon(GetIcon.getIcon(getClass().getResource("/image/input.png"), 16, 16));
         getAllInf.addActionListener(e -> {
             String filePath = GetPath.getFilePath(this, "请选择所有数据", ".ctdatas", "ClassTools");
-            ZipPack.unzip(filePath, Main.DATA_PATH);
+            ZipPack.unzip(filePath, CTInfo.DATA_PATH);
             //刷新数据
             this.setVisible(false);
             refreshCallback.run();
@@ -173,7 +173,7 @@ public class InfSetDialog extends JDialog {
         inputAllInf.addActionListener(e -> {
             String path = GetPath.getDirectoryPath(this, "请选择导出目录");
             //将ClassTools文件夹中的文件打包为.zip
-            ZipPack.createZip(path, Main.DATA_PATH, "ClassTools.ctdatas");
+            ZipPack.createZip(path, CTInfo.DATA_PATH, "ClassTools.ctdatas");
         });
 
 

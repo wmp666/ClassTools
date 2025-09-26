@@ -1,6 +1,7 @@
 package com.wmp.PublicTools.printLog;
 
 import com.wmp.Main;
+import com.wmp.PublicTools.CTInfo;
 import com.wmp.PublicTools.EasterEgg.EasterEgg;
 import com.wmp.PublicTools.OpenInExp;
 import com.wmp.PublicTools.UITools.CTColor;
@@ -33,7 +34,7 @@ public class Log {
     private static int index = 0;
 
 
-    public static final TrayIcon trayIcon = new TrayIcon(GetIcon.getImageIcon(Main.class.getResource(Main.iconPath), 16, 16).getImage(), "ClassTools");
+    public static final TrayIcon trayIcon = new TrayIcon(GetIcon.getImageIcon(Main.class.getResource(CTInfo.iconPath), 16, 16).getImage(), "ClassTools");
 
     private static final JTextArea textArea = new JTextArea();
 
@@ -128,7 +129,7 @@ public class Log {
     }
     public static void exit(int status) {
 
-        if (!Main.allArgs.get("screenProduct:show").contains(Main.argsList) && (status == -1 || !Main.canExit)) {
+        if (!Main.allArgs.get("screenProduct:show").contains(Main.argsList) && (status == -1 || !CTInfo.canExit)) {
             Log.err.print("系统操作", "错误行为");
             return;
         }
@@ -278,10 +279,10 @@ public class Log {
 
 
                 String title;
-                if (Main.isError) title = "骇客已入侵";
+                if (CTInfo.isError) title = "骇客已入侵";
                 else title = "世界拒绝了我";
                 Icon icon = null;
-                if (Main.isError) icon = GetIcon.getIcon(Log.class.getResource("/image/error/icon.png"), 100, 100);
+                if (CTInfo.isError) icon = GetIcon.getIcon(Log.class.getResource("/image/error/icon.png"), 100, 100);
                 CTOptionPane.showMessageDialog(c, title, logInfo, icon, CTOptionPane.ERROR_MESSAGE, true);
 
                 logInfList.add(info);
@@ -341,15 +342,15 @@ public class Log {
 
         JButton openButton = new JButton("打开所在位置");
         openButton.addActionListener(e -> {
-            if ( !Files.exists(Paths.get(Main.DATA_PATH + "Log\\"))){
+            if (!Files.exists(Paths.get(CTInfo.DATA_PATH + "Log\\"))) {
                 try {
-                    Files.createDirectories(Paths.get(Main.DATA_PATH + "Log\\"));
+                    Files.createDirectories(Paths.get(CTInfo.DATA_PATH + "Log\\"));
                 } catch (IOException ex) {
                     throw new RuntimeException(ex);
                 }
             }
 
-            OpenInExp.open(Main.DATA_PATH + "Log\\");
+            OpenInExp.open(CTInfo.DATA_PATH + "Log\\");
         });
 
         JButton saveButton = new JButton("保存");
@@ -383,10 +384,10 @@ public class Log {
         }
         // 实现日志保存
         try {
-            if (!Files.exists(Paths.get(Main.DATA_PATH + "Log\\"))){
-                Files.createDirectories(Paths.get(Main.DATA_PATH + "Log\\"));
+            if (!Files.exists(Paths.get(CTInfo.DATA_PATH + "Log\\"))) {
+                Files.createDirectories(Paths.get(CTInfo.DATA_PATH + "Log\\"));
             }
-            Files.writeString(Paths.get(Main.DATA_PATH + "Log\\Log_" + dateFormat.format(new Date()) + ".txt"),
+            Files.writeString(Paths.get(CTInfo.DATA_PATH + "Log\\Log_" + dateFormat.format(new Date()) + ".txt"),
                     sb.toString(),
                     StandardOpenOption.CREATE,
                     StandardOpenOption.TRUNCATE_EXISTING);

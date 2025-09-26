@@ -1,6 +1,7 @@
 package com.wmp.classTools;
 
 import com.wmp.Main;
+import com.wmp.PublicTools.CTInfo;
 import com.wmp.PublicTools.EasterEgg.EasterEgg;
 import com.wmp.PublicTools.printLog.Log;
 import com.wmp.PublicTools.update.GetNewerVersion;
@@ -42,7 +43,7 @@ public class SwingRun {
         //loadingWindow.setVisible(true);
 
 
-        new MainWindow(Main.DATA_PATH);
+        new MainWindow(CTInfo.DATA_PATH);
         loadingWindow.setVisible(false);
 
         if (!(Main.allArgs.get("screenProduct:show").contains(Main.argsList) ||

@@ -1,6 +1,6 @@
 package com.wmp.classTools.importPanel.timeView;
 
-import com.wmp.Main;
+import com.wmp.PublicTools.CTInfo;
 import com.wmp.PublicTools.UITools.CTColor;
 import com.wmp.PublicTools.UITools.CTFont;
 import com.wmp.PublicTools.UITools.CTFontSizeStyle;
@@ -23,9 +23,6 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
-
-import static com.wmp.Main.allArgs;
-import static com.wmp.Main.argsList;
 
 public class TimeViewPanel extends CTPanel {
 
@@ -57,7 +54,7 @@ public class TimeViewPanel extends CTPanel {
         this.setName("时间显示组件");
         this.setID("TimeViewPanel");
         this.setLayout(new BorderLayout());
-        this.setCtSetsPanelList(List.of(new ScreenProductSetsPanel(Main.DATA_PATH)));
+        this.setCtSetsPanelList(List.of(new ScreenProductSetsPanel(CTInfo.DATA_PATH)));
         initPanel();
 
         CTTextButton edit = new CTTextButton("编辑");
