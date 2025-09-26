@@ -61,12 +61,6 @@ public class LoadingWindow extends JDialog {
         int newHeight = Math.max(baseHeight, lineCount * 30);  // 每多一行增加30像素高度
         time = Math.max(time, plainText.length() * 90L);
 
-        if (windowStyle == STYLE_SCREEN){
-            this.setSize(Toolkit.getDefaultToolkit().getScreenSize());
-        } else {
-            this.setSize(newWidth, newHeight); // 应用新尺寸
-        }
-
         JLabel label = new JLabel(showText, GetIcon.getIcon(url, width, height), SwingConstants.CENTER);
         label.setBackground(Color.WHITE);
         label.setFont(CTFont.getCTFont(Font.BOLD, CTFontSizeStyle.NORMAL));
@@ -77,6 +71,7 @@ public class LoadingWindow extends JDialog {
         this.setUndecorated(true);
         this.setAlwaysOnTop(true);
         this.setLocationRelativeTo(null);
+        this.pack();
         this.setVisible(true);
         try {
             if (mustWait){

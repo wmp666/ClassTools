@@ -18,6 +18,7 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Objects;
+import java.util.Random;
 
 public class ScreenProduct extends JDialog {
 
@@ -39,10 +40,13 @@ public class ScreenProduct extends JDialog {
 
         this.getLayeredPane().add(viewLabel, Integer.valueOf(Integer.MIN_VALUE));
 
-        initBackground(0);
-        initColor();
 
         SetsScrInfo setsScrInfo = new SetsScrInfo();
+
+        initBackground(new Random().nextInt(setsScrInfo.getBGImagesLength() - 1));
+        initColor();
+
+
         Timer updateBG = new Timer(setsScrInfo.getRepaintTimer() * 1000, e -> {
 
             try {

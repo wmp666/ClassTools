@@ -30,13 +30,8 @@ public class SwingRun {
 
         LoadingWindow loadingWindow;
         if (b){
-            if (Main.allArgs.get("screenProduct:show").contains(Main.argsList)) {
-                loadingWindow = new LoadingWindow(Main.class.getResource("/image/start.gif"),
-                        692, 491, "", true, 1300, LoadingWindow.STYLE_SCREEN);
-            }else{
-                loadingWindow = new LoadingWindow(Main.class.getResource("/image/loading.gif"),
+            loadingWindow = new LoadingWindow(Main.class.getResource("/image/loading.gif"),
                         200, 200, "useLoadingText", true, 2300);
-            }
 
         }else{
             loadingWindow = new LoadingWindow();
