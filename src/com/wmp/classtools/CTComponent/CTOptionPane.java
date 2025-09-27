@@ -452,7 +452,14 @@ public class CTOptionPane {
             }
         });
 
-        messageDialog.setVisible(true);
+        new SwingWorker<Void, Void>() {
+            @Override
+            protected Void doInBackground() throws Exception {
+                messageDialog.setVisible(true);
+                return null;
+            }
+        }.execute();
+
     }
 }
 

@@ -17,7 +17,7 @@ public class ClearTempPanel extends CTSetsPanel {
     public ClearTempPanel(String basicDataPath) {
         super(basicDataPath);
 
-        setName("软件数据文件管理");
+        setName("软件数据管理");
 
         try {
             initUI();

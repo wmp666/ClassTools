@@ -29,7 +29,7 @@ public class CTInfo {
      * d:只修复的问题,问题较少
      * e:测试版本号
      */
-    public static String version = "1.35.1";
+    public static String version = "1.35.2";
     public static boolean canExit = true;
     public static boolean StartUpdate = true;
     private static JSONObject jsonObject;

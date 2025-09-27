@@ -101,7 +101,7 @@ public class DataControlUnit extends JPanel {
                     });
                     Set<String> keySet = unitMap.keySet();
                     for (File file1 : files) {
-                        DataControlUnit dataControlUnit = new DataControlUnit(file1.getName(), file1.getAbsolutePath(), false);
+                        DataControlUnit dataControlUnit = new DataControlUnit(file1.getName(), file1.getAbsolutePath(), this.canDelete);
                         if (keySet.contains(file1.getAbsolutePath())) {
                             dataControlUnit = unitMap.get(file1.getAbsolutePath());
                             //System.err.println(file1.getAbsolutePath());
