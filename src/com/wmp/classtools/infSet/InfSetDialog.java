@@ -32,13 +32,13 @@ public class InfSetDialog extends JDialog {
 
     private String openedPanel;
 
-    public InfSetDialog(Runnable refreshCallback) throws IOException {
+    public InfSetDialog(Runnable refreshCallback) throws Exception {
         this(refreshCallback, "迟到人员");
     }
 
 
     // 添加文件路径参数
-    public InfSetDialog(Runnable refreshCallback, String showPanel) throws IOException {
+    public InfSetDialog(Runnable refreshCallback, String showPanel) throws Exception {
         Log.info.systemPrint("设置", "正在初始化设置...");
 
         this.setBackground(CTColor.backColor);

@@ -113,8 +113,8 @@ public class FinalPanel extends CTPanel {
 
                     refreshPanel();
                 });
-            } catch (IOException e) {
-                Log.err.print("FinalPanel", "设置打开失败");
+            } catch (Exception e) {
+                Log.err.print("FinalPanel", "设置打开失败\n" + e);
                 throw new RuntimeException(e);
             }
 

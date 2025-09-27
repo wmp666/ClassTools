@@ -4,6 +4,7 @@ import com.wmp.PublicTools.CTInfo;
 import com.wmp.PublicTools.UITools.CTColor;
 import com.wmp.classTools.CTComponent.CTPanel;
 import com.wmp.classTools.extraPanel.attendance.panel.ATPanel;
+import com.wmp.classTools.extraPanel.countdown.panel.CountDownPanel;
 import com.wmp.classTools.extraPanel.duty.panel.DPanel;
 import com.wmp.classTools.extraPanel.reminderBir.panel.BRPanel;
 import com.wmp.classTools.importPanel.eastereggtext.ETPanel;
@@ -68,6 +69,9 @@ public class MainWindow extends JDialog {
 
         ATPanel aTPanel = new ATPanel(AllStuPath, LeaveListPath);
         allPanelList.add(aTPanel);
+
+        CountDownPanel countDownPanel = new CountDownPanel();
+        allPanelList.add(countDownPanel);
 
         BRPanel brPanel = new BRPanel(birthdayPath);
         allPanelList.add(brPanel);

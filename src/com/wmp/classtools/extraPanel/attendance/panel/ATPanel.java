@@ -1,6 +1,5 @@
 package com.wmp.classTools.extraPanel.attendance.panel;
 
-import com.wmp.Main;
 import com.wmp.PublicTools.CTInfo;
 import com.wmp.PublicTools.UITools.*;
 import com.wmp.PublicTools.io.IOForInfo;
@@ -98,7 +97,7 @@ public class ATPanel extends CTPanel {
                 allStuEdit.addActionListener(event -> {
                     try {
                         new InfSetDialog(FinalPanel::refreshPanel, "学生名单");
-                    } catch (IOException ex) {
+                    } catch (Exception ex) {
                         Log.err.print("ATPanel", "设置打开失败");
                         throw new RuntimeException(ex);
                     }
@@ -109,8 +108,8 @@ public class ATPanel extends CTPanel {
                 LeaveStuEdit.addActionListener(event -> {
                     try {
                         new InfSetDialog(FinalPanel::refreshPanel, "迟到人员");
-                    } catch (IOException ex) {
-                        Log.err.print("ATPanel", "设置打开失败");
+                    } catch (Exception ex) {
+                        Log.err.print("ATPanel", "设置打开失败\n" + ex);
                         throw new RuntimeException(ex);
                     }
                 });

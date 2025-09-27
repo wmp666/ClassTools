@@ -62,8 +62,8 @@ public class TimeViewPanel extends CTPanel {
         edit.addActionListener(e -> {
             try {
                 new InfSetDialog(FinalPanel::refreshPanel, "屏保设置");
-            } catch (IOException ex) {
-                Log.err.print("TimeViewPanel", "设置打开失败");
+            } catch (Exception ex) {
+                Log.err.print("TimeViewPanel", "设置打开失败\n" + ex);
                 throw new RuntimeException(ex);
             }
         });
