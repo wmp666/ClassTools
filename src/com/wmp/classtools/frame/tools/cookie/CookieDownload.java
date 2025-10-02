@@ -22,7 +22,7 @@ public class CookieDownload {
     /**
      * Cookie信息<br>
      * String key<br>
-     * CookieInfo 插件信息
+     * CookieInfo 快速启动单元信息
      */
     private final TreeMap<String, CookieInfo> cookieInfoMap = new TreeMap<>();
 
@@ -31,10 +31,10 @@ public class CookieDownload {
     private static final String apiUrl = "https://api.github.com/repos/wmp666/ClassTools/releases/tags/0.0.2";
 
     /**
-     * 下载官方插件
+     * 下载官方快速启动单元
      */
     public CookieDownload() throws Exception {
-        Log.info.systemPrint("CookieDownload", "正在初始化插件下载页");
+        Log.info.systemPrint("CookieDownload", "正在初始化快速启动单元下载页");
 
         Log.info.systemPrint("CookieDownload", "正在获取数据");
         getInfo();
@@ -66,7 +66,7 @@ public class CookieDownload {
         showCookieGbc.gridy = 0;//组件在网格中的y坐标
         showCookieGbc.insets = new Insets(5, 5, 5, 5);//组件之间的间距
         showCookieGbc.weighty = 0;
-        //展示已有插件
+        //展示已有快速启动单元
         cookieInfoMap.forEach((key, value) -> {
             CTTextButton button = new CTTextButton(value.getName());
             button.setFont(CTFont.getCTFont(Font.BOLD, CTFontSizeStyle.NORMAL));
@@ -98,10 +98,10 @@ public class CookieDownload {
         downloadButton.setFont(CTFont.getCTFont(Font.BOLD, CTFontSizeStyle.SMALL));
         downloadButton.addActionListener(e -> {
             if (ref.openedButtonKey.isEmpty()) {
-                Log.err.print("CookieDownload", "请选择一个插件");
+                Log.err.print("CookieDownload", "请选择一个快速启动单元");
             } else {
                 if (cookieInfoMap.get(ref.openedButtonKey).getDownloadUrl().isEmpty()) {
-                    Log.err.print("CookieDownload", "该插件暂无下载地址");
+                    Log.err.print("CookieDownload", "该快速启动单元暂无下载地址");
                 } else {
 
                     JFileChooser fileChooser = new JFileChooser();
@@ -128,7 +128,7 @@ public class CookieDownload {
         showInfoButton.setFont(CTFont.getCTFont(Font.BOLD, CTFontSizeStyle.SMALL));
         showInfoButton.addActionListener(e -> {
             if (ref.openedButtonKey.isEmpty()) {
-                Log.err.print("CookieDownload", "请选择一个插件");
+                Log.err.print("CookieDownload", "请选择一个快速启动单元");
             } else {
                 JDialog infoDialog = new JDialog();
                 infoDialog.setIconImage(GetIcon.getImageIcon(getClass().getResource("/image/light/about_0.png"), 300, 300).getImage());
@@ -136,15 +136,15 @@ public class CookieDownload {
                 infoDialog.setLocationRelativeTo(null);
                 infoDialog.setModal(true);
                 infoDialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
-                infoDialog.setTitle("插件详细信息");
+                infoDialog.setTitle("快速启动单元详细信息");
 
                 JPanel infoPanel = new JPanel();
                 infoPanel.setLayout(new GridBagLayout());
-                JLabel nameLabel = new JLabel("插件名称:" + cookieInfoMap.get(ref.openedButtonKey).getName());
+                JLabel nameLabel = new JLabel("快速启动单元名称:" + cookieInfoMap.get(ref.openedButtonKey).getName());
                 nameLabel.setFont(CTFont.getCTFont(Font.BOLD, CTFontSizeStyle.SMALL));
-                JLabel functionLabel = new JLabel("<html>插件功能:" + cookieInfoMap.get(ref.openedButtonKey).getFunction() + "</html>");
+                JLabel functionLabel = new JLabel("<html>快速启动单元功能:" + cookieInfoMap.get(ref.openedButtonKey).getFunction() + "</html>");
                 functionLabel.setFont(CTFont.getCTFont(Font.BOLD, CTFontSizeStyle.SMALL));
-                JLabel downloadUrlLabel = new JLabel("<html>插件下载地址:<br>" + cookieInfoMap.get(ref.openedButtonKey).getDownloadUrl() + "</html>");
+                JLabel downloadUrlLabel = new JLabel("<html>快速启动单元下载地址:<br>" + cookieInfoMap.get(ref.openedButtonKey).getDownloadUrl() + "</html>");
                 downloadUrlLabel.setFont(CTFont.getCTFont(Font.BOLD, CTFontSizeStyle.SMALL));
 
                 GridBagConstraints gbc = new GridBagConstraints();
@@ -176,12 +176,12 @@ public class CookieDownload {
         //dialog.setResizable(false);
         dialog.setModal(true);
         dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
-        dialog.setTitle("插件下载");
+        dialog.setTitle("快速启动单元下载");
     }
 
     private void getInfo() throws Exception {
 
-        Log.info.print("CookieDownload", "正在获取插件数据...");
+        Log.info.print("CookieDownload", "正在获取快速启动单元数据...");
 
         JSONObject jsonObject = new JSONObject(GetWebInf.getWebInf(apiUrl));
 
@@ -225,7 +225,7 @@ public class CookieDownload {
         });
 
 
-        Log.info.print("CookieDownload", "插件数据获取完成");
-        Log.info.print("CookieDownload", "插件数据:" + cookieInfoMap);
+        Log.info.print("CookieDownload", "快速启动单元数据获取完成");
+        Log.info.print("CookieDownload", "快速启动单元数据:" + cookieInfoMap);
     }
 }

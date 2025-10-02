@@ -121,7 +121,7 @@ public class FinalPanel extends CTPanel {
         });
         allButList.add(settings);
 
-        CTIconButton cookie = new CTIconButton("插件库",
+        CTIconButton cookie = new CTIconButton("快速启动页",
                 "/image/%s/cookie_0.png",
                 "/image/%s/cookie_1.png", 30, () -> {
             try {

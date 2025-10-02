@@ -440,10 +440,7 @@ public class CTOptionPane {
 
         CTTextButton exitButton = new CTTextButton("关闭(10s)");
         exitButton.setFont(CTFont.getCTFont(Font.PLAIN, CTFontSizeStyle.MORE_BIG));
-        exitButton.addActionListener(e -> {
-            messageDialog.dispose();
 
-        });
         exitButton.setEnabled(false);
         messageDialog.add(exitButton, BorderLayout.SOUTH);
 
@@ -458,6 +455,10 @@ public class CTOptionPane {
                     throw new RuntimeException(ex);
                 }
                 exitButton.setEnabled(true);
+                exitButton.addActionListener(ev -> {
+                    messageDialog.dispose();
+
+                });
 
                 exitButton.requestFocus();
             }
