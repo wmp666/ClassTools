@@ -91,7 +91,7 @@ public class CTIconButton extends JButton implements MouseListener, ActionListen
         this.setFont(CTFont.getCTFont(-1, CTFontSizeStyle.MORE_SMALL));
         this.setBackground(CTColor.backColor);
         this.setForeground(CTColor.textColor);
-        this.setSize(weight, height);
+        this.setSize(defaultIcon.getIconWidth(), defaultIcon.getIconHeight());
         this.callback = callback;
 
         this.addMouseListener(this);

@@ -51,8 +51,10 @@ public class DutyListSetsPanel extends CTSetsPanel {
                 new String[]{"扫地", "擦黑板"});
         //设置表格的两列不可以修改顺序
         DutyTable.getTableHeader().setReorderingAllowed(false);
-        DutyTable.setFont(CTFont.getCTFont(-1, CTFontSizeStyle.SMALL));
         DutyTable.setModel(model);
+        DutyTable.setFont(CTFont.getCTFont(Font.PLAIN, CTFontSizeStyle.SMALL));
+        DutyTable.setRowHeight(CTFont.getSize(CTFontSizeStyle.SMALL));
+        DutyTable.getTableHeader().setFont(CTFont.getCTFont(Font.PLAIN, CTFontSizeStyle.SMALL));
 
         JScrollPane scrollPane = new JScrollPane(DutyTable);
         this.add(scrollPane, BorderLayout.CENTER);

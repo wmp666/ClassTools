@@ -10,6 +10,7 @@ import com.wmp.classTools.CTComponent.CTIconButton;
 import com.wmp.classTools.CTComponent.CTOptionPane;
 import com.wmp.classTools.CTComponent.CTPanel;
 import com.wmp.classTools.CTComponent.CTTextButton;
+import com.wmp.classTools.frame.MainWindow;
 import com.wmp.classTools.importPanel.finalPanel.FinalPanel;
 import com.wmp.classTools.importPanel.timeView.settings.ScreenProductSetsPanel;
 import com.wmp.classTools.infSet.InfSetDialog;
@@ -62,7 +63,7 @@ public class TimeViewPanel extends CTPanel {
         edit.setIcon(GetIcon.getIcon(getClass().getResource("/image/edit.png"), 20, 20));
         edit.addActionListener(e -> {
             try {
-                new InfSetDialog(FinalPanel::refreshPanel, "屏保设置");
+                new InfSetDialog(MainWindow::refreshPanel, "屏保设置");
             } catch (Exception ex) {
                 Log.err.print("TimeViewPanel", "设置打开失败\n" + ex);
                 throw new RuntimeException(ex);

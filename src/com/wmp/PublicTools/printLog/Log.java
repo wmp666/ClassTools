@@ -11,6 +11,7 @@ import com.wmp.PublicTools.UITools.GetIcon;
 import com.wmp.PublicTools.videoView.MediaPlayer;
 import com.wmp.classTools.CTComponent.CTIconButton;
 import com.wmp.classTools.CTComponent.CTOptionPane;
+import com.wmp.classTools.frame.MainWindow;
 import com.wmp.classTools.importPanel.finalPanel.FinalPanel;
 
 import javax.swing.*;
@@ -91,9 +92,7 @@ public class Log {
         popupMenu.add(exit);
 
         MenuItem refresh = new MenuItem("refresh");
-        refresh.addActionListener(e -> {
-            FinalPanel.refreshPanel();
-        });
+        refresh.addActionListener(e -> MainWindow.refreshPanel());
         popupMenu.add(refresh);
 
         MenuItem more = new MenuItem("more");

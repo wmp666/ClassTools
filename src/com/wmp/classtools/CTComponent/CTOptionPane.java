@@ -1,6 +1,7 @@
 package com.wmp.classTools.CTComponent;
 
 import com.wmp.Main;
+import com.wmp.PublicTools.CTInfo;
 import com.wmp.PublicTools.EasterEgg.EasterEgg;
 import com.wmp.PublicTools.UITools.CTFont;
 import com.wmp.PublicTools.UITools.CTFontSizeStyle;
@@ -25,8 +26,8 @@ public class CTOptionPane {
     public static final int ERROR_MESSAGE = 0;
     public static final int INFORMATION_MESSAGE = 1;
     public static final int WARNING_MESSAGE = 2;
-    protected static final Border BASIC_LINE_BORDER = BorderFactory.createLineBorder(new Color(200, 200, 200), 2);
-    protected static final Border FOCUS_GAINTED_BORDER = BorderFactory.createLineBorder(new Color(112, 112, 112), 2);
+    public static Border BASIC_LINE_BORDER = BorderFactory.createLineBorder(new Color(200, 200, 200), (int) (2 * CTInfo.dpi));
+    public static Border FOCUS_GAINTED_BORDER = BorderFactory.createLineBorder(new Color(112, 112, 112), (int) (2 * CTInfo.dpi));
     private static final int YES_NO_BUTTONS = 0;
     private static final int YES_BUTTONS = 1;
     private static final int MESSAGE_TEXT = 0;
@@ -162,7 +163,7 @@ public class CTOptionPane {
      */
     private static Object[] showDefaultDialog(Component owner, String title, String message, Icon icon, int iconType, int optionType, int messageType, boolean isAlwaysOnTop, String... choices) {
         JDialog dialog = new JDialog();
-        dialog.setSize(380, 200);
+        dialog.setSize((int) (380 * CTInfo.dpi), (int) (200 * CTInfo.dpi));
         dialog.setLocationRelativeTo(owner);//设置对话框的位置相对于父组件
         dialog.setModal(true);
         dialog.setAlwaysOnTop(isAlwaysOnTop);
@@ -231,7 +232,7 @@ public class CTOptionPane {
                 messageArea.setOpaque(false);//设置文本区域不透明
                 messageArea.setLineWrap(true);//设置文本区域自动换行
                 messageArea.setWrapStyleWord(true);//设置文本区域自动换行时单词不被分割
-                messageArea.setFont(new Font("Microsoft YaHei UI", Font.PLAIN, 15));
+                messageArea.setFont(new Font("Microsoft YaHei UI", Font.PLAIN, (int) (15 * CTInfo.dpi)));
                 messagePanel = new JScrollPane(messageArea);
                 messagePanel.setBorder(null);
 

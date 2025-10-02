@@ -7,7 +7,6 @@ import com.wmp.PublicTools.printLog.Log;
 import com.wmp.classTools.CTComponent.CTIconButton;
 import com.wmp.classTools.CTComponent.CTPanel;
 import com.wmp.classTools.frame.tools.screenProduct.SetsScrInfo;
-import com.wmp.classTools.importPanel.finalPanel.FinalPanel;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
@@ -31,9 +30,6 @@ public class ScreenProduct extends JDialog {
     private int index = 0;
 
     public ScreenProduct() throws IOException {
-
-        initAuthorLabel();
-
         initTimePanel();
 
         initWindow();
@@ -60,7 +56,6 @@ public class ScreenProduct extends JDialog {
         });
         updateBG.setRepeats(true);
         updateBG.start();
-
 
 
         c.setLayout(new BorderLayout());
@@ -116,7 +111,7 @@ public class ScreenProduct extends JDialog {
         c.add(scrollPane, BorderLayout.EAST);
 
         //刷新颜色
-        FinalPanel.refreshPanel();
+        MainWindow.refreshPanel();
 
         this.setVisible(true);
 
@@ -134,23 +129,6 @@ public class ScreenProduct extends JDialog {
         });
         timer.start();
         timer.setRepeats(true);//循环
-    }
-
-    private void initAuthorLabel() {
-
-        JLabel authorLabel = new JLabel("无名牌作");
-        authorLabel.setFont(CTFont.getCTFont(Font.PLAIN, CTFontSizeStyle.SMALL));
-        c.add(authorLabel, BorderLayout.NORTH);
-
-        final boolean[] b = {true};
-        Timer timer = new Timer(3000, e -> {
-            if (b[0]) authorLabel.setForeground(Color.BLACK);
-            else authorLabel.setForeground(Color.WHITE);
-            b[0] = !b[0];
-        });
-        timer.setRepeats(true);
-        timer.start();
-
     }
 
     private void initWindow() {

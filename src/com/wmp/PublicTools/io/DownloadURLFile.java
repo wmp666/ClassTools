@@ -1,6 +1,5 @@
 package com.wmp.PublicTools.io;
 
-import com.wmp.Main;
 import com.wmp.PublicTools.CTInfo;
 import com.wmp.PublicTools.UITools.CTColor;
 import com.wmp.PublicTools.UITools.CTFont;
@@ -28,32 +27,28 @@ public class DownloadURLFile {
 
         if (panel == null) {
             progressDialog.setIconImage(GetIcon.getImageIcon(DownloadURLFile.class.getResource("/image/input.png"), 30, 30).getImage());
-            progressDialog.setSize(300, 175);
+            progressDialog.setSize((int) (300 * CTInfo.dpi), (int) (175 * CTInfo.dpi));
             progressDialog.setTitle("下载中...");
             progressDialog.setLocationRelativeTo(parent);
+            progressDialog.setLayout(new BorderLayout());
             progressDialog.setModal(true);
-            progressDialog.setLayout(null);
             progressDialog.setDefaultCloseOperation(JDialog.DO_NOTHING_ON_CLOSE);
         }
 
 
-        label.setBounds(10, 10, 300, 20);
-
-
         // 设置进度对话框
         progressBar.setForeground(CTColor.mainColor);
-        progressBar.setBounds(10, 35, 260, 30);
         // 进度条自适应 作用: 进度条自动滚动
         progressBar.setAutoscrolls(true);
 
 
         if (panel == null) {
-            progressDialog.add(label);
-            progressDialog.add(progressBar);
+            progressDialog.add(label, BorderLayout.NORTH);
+            progressDialog.add(progressBar, BorderLayout.CENTER);
             new Thread(() -> progressDialog.setVisible(true)).start();
         } else {
-            panel.add(label);
-            panel.add(progressBar);
+            panel.add(label, BorderLayout.NORTH);
+            panel.add(progressBar, BorderLayout.CENTER);
             panel.setVisible(true);
         }
 

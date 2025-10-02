@@ -1,5 +1,7 @@
 package com.wmp.classTools.CTComponent;
 
+import com.wmp.PublicTools.CTInfo;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.FocusEvent;
@@ -30,7 +32,7 @@ public class CTTextButton extends JButton {
         }
         this.setText(text);
         this.setBackground(new Color(255, 255, 255));
-        this.setFont(new Font("Microsoft YaHei UI", Font.PLAIN, 20));
+        this.setFont(new Font("Microsoft YaHei UI", Font.PLAIN, (int) (20 * CTInfo.dpi)));
         this.setFocusPainted(false);
         this.setOpaque(true);
 

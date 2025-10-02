@@ -50,8 +50,11 @@ public class AllStuSetsPanel extends CTSetsPanel {
                 new String[]{"序号", "姓名"});
 
         allStuTable.getTableHeader().setReorderingAllowed(false);
-        allStuTable.setFont(CTFont.getCTFont(-1, CTFontSizeStyle.MORE_SMALL));
+
         allStuTable.setModel(model);
+        allStuTable.setFont(CTFont.getCTFont(-1, CTFontSizeStyle.SMALL));
+        allStuTable.setRowHeight(CTFont.getSize(CTFontSizeStyle.SMALL));
+        allStuTable.getTableHeader().setFont(CTFont.getCTFont(-1, CTFontSizeStyle.SMALL));
 
         JScrollPane scrollPane = new JScrollPane(allStuTable);
         scrollPane.setBounds(20, 30, 340, 300);

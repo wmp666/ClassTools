@@ -37,8 +37,8 @@ public class AboutDialog extends JDialog {
     public AboutDialog() throws MalformedURLException {
 
         this.setTitle("关于");
-        this.setSize(300, 400);
-        this.setLayout(null);
+        this.setSize((int) (300 * CTInfo.dpi), (int) (400 * CTInfo.dpi));
+        this.setLayout(new BorderLayout());
         this.setLocationRelativeTo(null);
         this.setModal(true);
         this.setResizable(false);
@@ -47,30 +47,13 @@ public class AboutDialog extends JDialog {
 
 
         JLabel icon = new JLabel(GetIcon.getIcon(Main.class.getResource(CTInfo.iconPath), 100, 100));
-        icon.setBounds(10, 10, 100, 100);
 
-        JLabel title = new JLabel("程序名: " + CTInfo.appName);
-        title.setBounds(120, 10, 200, 20);
-        title.setFont(CTFont.getCTFont(Font.BOLD, CTFontSizeStyle.SMALL));
-        title.setForeground(CTColor.textColor);
-
-        //将图标显示在文字上方
-        JLabel version = new JLabel("版本: " + CTInfo.version);
-        version.setBounds(120, 40, 200, 20);
-        version.setFont(CTFont.getCTFont(Font.BOLD, CTFontSizeStyle.SMALL));
-        version.setForeground(CTColor.textColor);
-
-        JLabel author = new JLabel("作者: " + CTInfo.author);
-        author.setBounds(120, 70, 200, 20);
-        author.setFont(CTFont.getCTFont(Font.BOLD, CTFontSizeStyle.SMALL));
-        author.setForeground(CTColor.textColor);
 
         JLabel info = new JLabel("<html>"
                 + "程序名: " + CTInfo.appName + "<br><br>"
                 + "作者: " + CTInfo.author + "<br><br>"
                 + "版本: " + CTInfo.version
                 + "</html>");
-        info.setBounds(120, 10, 200, 100);
         info.setFont(CTFont.getCTFont(Font.BOLD, CTFontSizeStyle.SMALL));
         info.setForeground(CTColor.textColor);
         info.addMouseListener(new MouseAdapter() {
@@ -94,21 +77,21 @@ public class AboutDialog extends JDialog {
         });
         //view = new JPanel();
 
+        JPanel infos = new JPanel();
+        infos.setOpaque(false);
+        infos.setLayout(new BorderLayout());
+        infos.add(icon, BorderLayout.WEST);
+        infos.add(info, BorderLayout.CENTER);
 
         CTIconButton getNew = new CTIconButton(CTIconButton.ButtonText, "检查更新",
                 "/image/%s/update_0.png",
                 "/image/%s/update_1.png", 150, 35,
                 () -> GetNewerVersion.checkForUpdate(this, view, true));
         getNew.setBackground(CTColor.backColor);
-        getNew.setLocation(60, 240);
 
-        this.add(view);
-        this.add(getNew);
-        this.add(icon);
-        //this.add(title);
-        //this.add(version);
-        //this.add(author);
-        this.add(info);
+        this.add(view, BorderLayout.CENTER);
+        this.add(getNew, BorderLayout.SOUTH);
+        this.add(infos, BorderLayout.NORTH);
 
         initMenuBar();
 

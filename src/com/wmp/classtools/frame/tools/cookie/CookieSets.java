@@ -78,7 +78,7 @@ public class CookieSets {
 
         TreeMap<String, Object> cookiePriData = cookie.getPriData();
 
-        dialog.setSize(500, 350);
+        dialog.setSize((int) (500 * CTInfo.dpi), (int) (350 * CTInfo.dpi));
         dialog.setLocationRelativeTo(null);
         dialog.setModal(true);
         dialog.setResizable(false);

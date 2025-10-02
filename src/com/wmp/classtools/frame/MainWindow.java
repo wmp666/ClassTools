@@ -2,6 +2,8 @@ package com.wmp.classTools.frame;
 
 import com.wmp.PublicTools.CTInfo;
 import com.wmp.PublicTools.UITools.CTColor;
+import com.wmp.PublicTools.printLog.Log;
+import com.wmp.classTools.CTComponent.CTOptionPane;
 import com.wmp.classTools.CTComponent.CTPanel;
 import com.wmp.classTools.extraPanel.attendance.panel.ATPanel;
 import com.wmp.classTools.extraPanel.countdown.panel.CountDownPanel;
@@ -150,7 +152,7 @@ public class MainWindow extends JDialog {
             } else {
                 this.setVisible(true);
                 //刷新
-                Thread repaint = new Thread(() -> {
+                /*Thread repaint = new Thread(() -> {
 
                     while (true) {
                         try {
@@ -172,8 +174,80 @@ public class MainWindow extends JDialog {
                         this.repaint();
                     }
                 });
+                repaint.start();*/
+
+                Timer repaint = new Timer(200, e -> {
+                    //刷新窗口大小
+
+                    showPanelList.forEach(ctPanel -> {
+                        ctPanel.setBackground(CTColor.backColor);
+                    });
+
+                    // 重新验证中心面板以更新布局
+                    centerPane.revalidate();
+
+
+                });
                 repaint.start();
+
+                Timer repaintSize = new Timer(2000, e -> {
+                    this.pack();
+
+
+                    if (this.getHeight() >= Toolkit.getDefaultToolkit().getScreenSize().getHeight() * 3 / 4)
+                        this.setSize(new Dimension(this.getWidth(), (int) (Toolkit.getDefaultToolkit().getScreenSize().getHeight() * 3 / 4)));
+                    this.setLocation(Toolkit.getDefaultToolkit().getScreenSize().width - this.getWidth(), 0);
+                    this.repaint();
+                });
+                repaintSize.start();
+
+                Timer strongRepaint = new Timer(60 * 1000, e -> {
+                    //刷新组件
+                    refreshPanel();
+
+
+                });
+                strongRepaint.start();
             }
+        }
+    }
+
+    public static void refreshPanel() {
+        try {
+            CTInfo.init();
+
+
+            CTOptionPane.BASIC_LINE_BORDER = BorderFactory.createLineBorder(new Color(200, 200, 200), (int) (2 * CTInfo.dpi));
+            CTOptionPane.FOCUS_GAINTED_BORDER = BorderFactory.createLineBorder(new Color(112, 112, 112), (int) (2 * CTInfo.dpi));
+
+            showPanelList.clear();
+
+            //Log.err.print("FinalPanel", "已折叠的Panel:" + disPanelList);
+
+            //1.判断需要显示的CTPanel,不需要的清除其中的内容
+            allPanelList.forEach(panel -> {
+                if (!CTInfo.disPanelList.contains(panel.getID())) {
+                    showPanelList.add(panel);
+                } else {
+                    panel.removeAll();
+                    panel.revalidate();
+                    panel.repaint();
+                }
+            });
+
+            //刷新要显示的CTPanel的内容
+            showPanelList.forEach(panel -> {
+                try {
+                    panel.refresh();
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
+                }
+
+            });// 自定义刷新方法
+
+        } catch (Exception e) {
+            Log.err.print("FinalPanel", "刷新失败\n错误信息:" + e.getMessage());
+            throw new RuntimeException(e);
         }
     }
 
@@ -186,5 +260,7 @@ public class MainWindow extends JDialog {
         this.setForeground(CTColor.backColor);
         this.setIconImage(new ImageIcon(getClass().getResource(CTInfo.iconPath)).getImage());
         this.pack();
+
+
     }
 }

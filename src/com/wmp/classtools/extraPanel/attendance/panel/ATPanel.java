@@ -9,6 +9,7 @@ import com.wmp.classTools.CTComponent.CTSetsPanel;
 import com.wmp.classTools.CTComponent.CTTextButton;
 import com.wmp.classTools.extraPanel.attendance.settings.AllStuSetsPanel;
 import com.wmp.classTools.extraPanel.attendance.settings.LeaveListSetsPanel;
+import com.wmp.classTools.frame.MainWindow;
 import com.wmp.classTools.importPanel.finalPanel.FinalPanel;
 import com.wmp.classTools.infSet.InfSetDialog;
 
@@ -96,7 +97,7 @@ public class ATPanel extends CTPanel {
                 allStuEdit.setIcon(GetIcon.getIcon(getClass().getResource("/image/edit.png"), 20, 20));
                 allStuEdit.addActionListener(event -> {
                     try {
-                        new InfSetDialog(FinalPanel::refreshPanel, "学生名单");
+                        new InfSetDialog(MainWindow::refreshPanel, "学生名单");
                     } catch (Exception ex) {
                         Log.err.print("ATPanel", "设置打开失败");
                         throw new RuntimeException(ex);
@@ -107,7 +108,7 @@ public class ATPanel extends CTPanel {
                 LeaveStuEdit.setIcon(GetIcon.getIcon(getClass().getResource("/image/edit.png"), 20, 20));
                 LeaveStuEdit.addActionListener(event -> {
                     try {
-                        new InfSetDialog(FinalPanel::refreshPanel, "迟到人员");
+                        new InfSetDialog(MainWindow::refreshPanel, "迟到人员");
                     } catch (Exception ex) {
                         Log.err.print("ATPanel", "设置打开失败\n" + ex);
                         throw new RuntimeException(ex);

@@ -40,40 +40,6 @@ public class FinalPanel extends CTPanel {
         Log.initTrayIcon();
     }
 
-    public static void refreshPanel() {
-        try {
-            CTInfo.init();
-            MainWindow.showPanelList.clear();
-
-            //Log.err.print("FinalPanel", "已折叠的Panel:" + disPanelList);
-
-            //1.判断需要显示的CTPanel,不需要的清除其中的内容
-            MainWindow.allPanelList.forEach(panel -> {
-                if (!CTInfo.disPanelList.contains(panel.getID())) {
-                    MainWindow.showPanelList.add(panel);
-                } else {
-                    panel.removeAll();
-                    panel.revalidate();
-                    panel.repaint();
-                }
-            });
-
-            //刷新要显示的CTPanel的内容
-            MainWindow.showPanelList.forEach(panel -> {
-                try {
-                    panel.refresh();
-                } catch (IOException e) {
-                    throw new RuntimeException(e);
-                }
-
-            });// 自定义刷新方法
-
-        } catch (Exception e) {
-            Log.err.print("FinalPanel", "刷新失败\n错误信息:" + e.getMessage());
-            throw new RuntimeException(e);
-        }
-    }
-
     private void initPanel() {
         this.setLayout(new BoxLayout(this, BoxLayout.X_AXIS));
         this.setBackground(CTColor.backColor);
@@ -109,10 +75,7 @@ public class FinalPanel extends CTPanel {
                 "/image/%s/settings_1.png", 30, () -> {
 
             try {
-                new InfSetDialog(() -> {
-
-                    refreshPanel();
-                });
+                new InfSetDialog(MainWindow::refreshPanel);
             } catch (Exception e) {
                 Log.err.print("FinalPanel", "设置打开失败\n" + e);
                 throw new RuntimeException(e);
@@ -149,11 +112,10 @@ public class FinalPanel extends CTPanel {
                 "/image/%s/update_1.png", 30, () -> GetNewerVersion.checkForUpdate(null, null, true));
         allButList.add(update);
 
+        // 自定义刷新方法
         CTIconButton refresh = new CTIconButton("刷新",
                 "/image/%s/refresh_0.png",
-                "/image/%s/refresh_1.png", 30, () -> {
-            refreshPanel();// 自定义刷新方法
-        });
+                "/image/%s/refresh_1.png", 30, MainWindow::refreshPanel);
         allButList.add(refresh);
 
         CTIconButton holidayBlessings = new CTIconButton("查看祝词",

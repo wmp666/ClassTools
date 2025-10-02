@@ -58,10 +58,7 @@ public class LeaveListSetsPanel extends CTSetsPanel {
         //leavePanel.setBackground(Color.WHITE);
 
 
-        //JTextArea leaveArea = new JTextArea();
         JScrollPane scrollPane = new JScrollPane(leavePanel);
-        //scrollPane.setBounds(20, 30, 340, 300);
-        //scrollPane.setBackground(CTColor.backColor);
         //修改滚轮的灵敏度
         scrollPane.getVerticalScrollBar().setUnitIncrement(12);
         //scrollPane.setLayout(null);
@@ -71,6 +68,7 @@ public class LeaveListSetsPanel extends CTSetsPanel {
         Log.info.print("数据设置界面-initATSet", "leaveList:" + leaveList);
         for (String student : studentList) {
             JCheckBox checkBox = new JCheckBox(student);
+            checkBox.setFont(CTFont.getCTFont(Font.PLAIN, CTFontSizeStyle.SMALL));
             checkBox.setBackground(CTColor.backColor);
             checkBox.setForeground(CTColor.textColor);
 

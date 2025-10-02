@@ -4,23 +4,25 @@ import com.wmp.PublicTools.UITools.CTColor;
 import com.wmp.PublicTools.UITools.CTFont;
 import com.wmp.PublicTools.io.IOForInfo;
 import com.wmp.PublicTools.printLog.Log;
+import com.wmp.classTools.CTComponent.CTOptionPane;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import javax.swing.*;
+import javax.swing.border.Border;
+import java.awt.*;
 import java.io.File;
 import java.util.ArrayList;
 
 public class CTInfo {
     public static final ArrayList<String> disPanelList = new ArrayList<>();
     public static final ArrayList<String> disButList = new ArrayList<>();
+
     public static String DATA_PATH;
     public static String TEMP_PATH;
+
     public static String appName = "ClassTools";
     public static String author = "wmp";
-
-    public static String iconPath;
-
-    public static boolean isError = false;
     /**
      * a.b.c.d.e
      * a:主版本号
@@ -30,6 +32,10 @@ public class CTInfo {
      * e:测试版本号
      */
     public static String version = "1.37.0";
+    public static String iconPath;
+
+    public static double dpi = 1;
+    public static boolean isError = false;
     public static boolean canExit = true;
     public static boolean StartUpdate = true;
     private static JSONObject jsonObject;
@@ -86,7 +92,7 @@ public class CTInfo {
             if (jsonObject.has("FontName")) {
                 CTFont.setFontName(jsonObject.getString("FontName"));
             }
-            //设置隐藏按钮
+            //设置隐藏内容
             if (jsonObject.has("disposeButton")) {
                 JSONArray disButtonList = jsonObject.getJSONArray("disposeButton");
                 disButtonList.forEach(object -> {
@@ -107,6 +113,12 @@ public class CTInfo {
             if (jsonObject.has("StartUpdate")) {
                 StartUpdate = jsonObject.getBoolean("StartUpdate");
             }
+            //设置DPI
+            if (jsonObject.has("DPI")) {
+                dpi = jsonObject.getDouble("DPI");
+            }
         }
+
+
     }
 }

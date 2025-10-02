@@ -1,5 +1,6 @@
 package com.wmp.PublicTools.UITools;
 
+import com.wmp.PublicTools.CTInfo;
 import com.wmp.PublicTools.printLog.Log;
 
 import java.awt.*;
@@ -26,7 +27,7 @@ public class CTFont {
             case SMALL -> size = smallSize;
             case MORE_SMALL -> size = moreSmallSize;
         }//12 14/-15-/16 18/(-19-/)20 -23-/24/25
-        return new Font(fontName, fontStyle, size);
+        return new Font(fontName, fontStyle, (int) (size * CTInfo.dpi));
     }
 
     public static String[] getAllFontName() {
@@ -65,9 +66,26 @@ public class CTFont {
     /**
      * 获取字体大小
      *
-     * @return 大  中  小  更小
+     * @return BigBigSize, moreBigSize, bigSize, normalSize, smallSize, moreSmallSize
      */
-    public static int[] getSize() {
+    public static int[] getBasicSize() {
         return new int[]{BigBigSize, moreBigSize, bigSize, normalSize, smallSize, moreSmallSize};
+    }
+
+    public static int[] getSize() {
+        return new int[]{(int) (BigBigSize * CTInfo.dpi), (int) (moreBigSize * CTInfo.dpi), (int) (bigSize * CTInfo.dpi), (int) (normalSize * CTInfo.dpi), (int) (smallSize * CTInfo.dpi), (int) (moreSmallSize * CTInfo.dpi)};
+    }
+
+    public static int getSize(CTFontSizeStyle index) {
+        int size = 0;
+        switch (index) {
+            case BIG_BIG -> size = BigBigSize;
+            case MORE_BIG -> size = moreBigSize;
+            case BIG -> size = bigSize;
+            case NORMAL -> size = normalSize;
+            case SMALL -> size = smallSize;
+            case MORE_SMALL -> size = moreSmallSize;
+        }//12 14/-15-/16 18/(-19-/)20 -23-/24/25
+        return (int) (size * CTInfo.dpi);
     }
 }

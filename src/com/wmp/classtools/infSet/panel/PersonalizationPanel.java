@@ -38,6 +38,8 @@ public class PersonalizationPanel extends CTSetsPanel {
     private final JCheckBox StartUpdate = new JCheckBox("启动检查更新");
     private final JCheckBox canExit = new JCheckBox("防止被意外关闭");
     private final JCheckBox startUp = new JCheckBox("开机自启动");
+    //兼容数据
+    private final CTTextField dpi = new CTTextField();
 
 
     public PersonalizationPanel(String basicDataPath) {
@@ -74,10 +76,10 @@ public class PersonalizationPanel extends CTSetsPanel {
                 MainColorSets.setLayout(new FlowLayout(FlowLayout.LEFT));
 
                 JLabel mainColorLabel = new JLabel("主题色:");
-                mainColorLabel.setFont(CTFont.getCTFont(-1, CTFontSizeStyle.SMALL));
+                mainColorLabel.setFont(CTFont.getCTFont(Font.PLAIN, CTFontSizeStyle.SMALL));
 
 
-                mainColorComboBox.setFont(CTFont.getCTFont(-1, CTFontSizeStyle.SMALL));
+                mainColorComboBox.setFont(CTFont.getCTFont(Font.PLAIN, CTFontSizeStyle.SMALL));
 
                 //添加颜色项目
                 mainColorComboBox.removeAllItems();
@@ -94,9 +96,9 @@ public class PersonalizationPanel extends CTSetsPanel {
                 MainThemeSets.setLayout(new FlowLayout(FlowLayout.LEFT));
 
                 JLabel mainThemeLabel = new JLabel("主题:");
-                mainThemeLabel.setFont(CTFont.getCTFont(-1, CTFontSizeStyle.SMALL));
+                mainThemeLabel.setFont(CTFont.getCTFont(Font.PLAIN, CTFontSizeStyle.SMALL));
 
-                mainThemeComboBox.setFont(CTFont.getCTFont(-1, CTFontSizeStyle.SMALL));
+                mainThemeComboBox.setFont(CTFont.getCTFont(Font.PLAIN, CTFontSizeStyle.SMALL));
 
                 //添加主题项目
                 mainThemeComboBox.removeAllItems();
@@ -123,9 +125,9 @@ public class PersonalizationPanel extends CTSetsPanel {
                 setFontName.setLayout(new FlowLayout(FlowLayout.LEFT));
 
                 JLabel FontNameLabel = new JLabel("字体:");
-                FontNameLabel.setFont(CTFont.getCTFont(-1, CTFontSizeStyle.SMALL));
+                FontNameLabel.setFont(CTFont.getCTFont(Font.PLAIN, CTFontSizeStyle.SMALL));
 
-                FontNameComboBox.setFont(CTFont.getCTFont(-1, CTFontSizeStyle.SMALL));
+                FontNameComboBox.setFont(CTFont.getCTFont(Font.PLAIN, CTFontSizeStyle.SMALL));
 
                 //添加颜色项目
                 FontNameComboBox.removeAllItems();
@@ -140,9 +142,9 @@ public class PersonalizationPanel extends CTSetsPanel {
             {
                 setFontSize.setLayout(new FlowLayout(FlowLayout.LEFT));
                 JLabel FontSizeLabel = new JLabel("字体大小-大:");
-                FontSizeLabel.setFont(CTFont.getCTFont(-1, CTFontSizeStyle.SMALL));
+                FontSizeLabel.setFont(CTFont.getCTFont(Font.PLAIN, CTFontSizeStyle.SMALL));
                 CTTextField FontSizeTextField = new CTTextField();
-                FontSizeTextField.setFont(CTFont.getCTFont(-1, CTFontSizeStyle.SMALL));
+                FontSizeTextField.setFont(CTFont.getCTFont(Font.PLAIN, CTFontSizeStyle.SMALL));
             }
 
             JButton button = new JButton("改为默认");
@@ -151,7 +153,7 @@ public class PersonalizationPanel extends CTSetsPanel {
                 CTFont.setSize(100, 60, 24, 19, 15, 12);
                 CTFont.setFontName("微软雅黑");
                 FontNameComboBox.setSelectedItem("微软雅黑");
-                FontSizeList.forEach(textField -> textField.setText(String.valueOf(CTFont.getSize()[0])));
+                FontSizeList.forEach(textField -> textField.setText(String.valueOf(CTFont.getBasicSize()[0])));
                 MainWindow.showPanelList.forEach(ctPanel -> {
                     try {
                         ctPanel.refresh();
@@ -179,7 +181,7 @@ public class PersonalizationPanel extends CTSetsPanel {
 
             FinalPanel.allButList.forEach(button -> {
                 JCheckBox checkBox = new JCheckBox(button.getName());
-                checkBox.setFont(CTFont.getCTFont(-1, CTFontSizeStyle.SMALL));
+                checkBox.setFont(CTFont.getCTFont(Font.PLAIN, CTFontSizeStyle.SMALL));
                 //checkBox.setBackground(CTColor.backColor);
                 //checkBox.setForeground(CTColor.textColor);
                 disposeButton.put(button.getName(), checkBox);
@@ -206,7 +208,7 @@ public class PersonalizationPanel extends CTSetsPanel {
                 }
 
                 JCheckBox checkBox = new JCheckBox(panel.getName());
-                checkBox.setFont(CTFont.getCTFont(-1, CTFontSizeStyle.SMALL));
+                checkBox.setFont(CTFont.getCTFont(Font.PLAIN, CTFontSizeStyle.SMALL));
                 //checkBox.setBackground(CTColor.backColor);
                 //checkBox.setForeground(CTColor.textColor);
                 disposePanel.put(panel.getID(), checkBox);
@@ -223,16 +225,41 @@ public class PersonalizationPanel extends CTSetsPanel {
         otherPanel.setBorder(BorderFactory.createTitledBorder("其他设置"));
         //其他设置
         {
-            startUp.setFont(CTFont.getCTFont(-1, CTFontSizeStyle.SMALL));
+            startUp.setFont(CTFont.getCTFont(Font.PLAIN, CTFontSizeStyle.SMALL));
 
-            canExit.setFont(CTFont.getCTFont(-1, CTFontSizeStyle.SMALL));
+            canExit.setFont(CTFont.getCTFont(Font.PLAIN, CTFontSizeStyle.SMALL));
 
-            StartUpdate.setFont(CTFont.getCTFont(-1, CTFontSizeStyle.SMALL));
+            StartUpdate.setFont(CTFont.getCTFont(Font.PLAIN, CTFontSizeStyle.SMALL));
             StartUpdate.setSelected(true);
 
             otherPanel.add(startUp);
             otherPanel.add(canExit);
             otherPanel.add(StartUpdate);
+
+
+        }
+
+        JPanel compatiblePanel = new JPanel();
+        //otherPanel.setBackground(CTColor.backColor);
+        compatiblePanel.setLayout(new GridLayout(0, 2));
+        compatiblePanel.setBorder(BorderFactory.createTitledBorder("其他设置"));
+        //其他设置
+        {
+            JPanel dpiPanel = new JPanel();
+            dpiPanel.setLayout(new FlowLayout(FlowLayout.LEFT));
+            {
+                JLabel dpiLabel = new JLabel("组件放大倍率:");
+                dpiLabel.setFont(CTFont.getCTFont(Font.PLAIN, CTFontSizeStyle.SMALL));
+
+                dpi.setFont(CTFont.getCTFont(Font.PLAIN, CTFontSizeStyle.SMALL));
+                dpi.setText(String.valueOf(CTInfo.dpi));
+
+
+                dpiPanel.add(dpiLabel);
+                dpiPanel.add(dpi);
+            }
+
+            compatiblePanel.add(dpiPanel);
 
 
         }
@@ -250,6 +277,8 @@ public class PersonalizationPanel extends CTSetsPanel {
         SetsPanel.add(disPanPanel, gbc);
         gbc.gridy++;
         SetsPanel.add(otherPanel, gbc);
+        gbc.gridy++;
+        SetsPanel.add(compatiblePanel, gbc);
 
         this.setLayout(new BorderLayout());
         //this.setBackground(CTColor.backColor);
@@ -316,6 +345,9 @@ public class PersonalizationPanel extends CTSetsPanel {
             }
             //是否自动启动
             startUp.setSelected(SetStartUp.isAutoStartEnabled());
+            //放大倍率
+            if (jsonObject.has("dpi"))
+                dpi.setText(String.valueOf(jsonObject.getDouble("dpi")));
 
         }
     }
@@ -387,6 +419,12 @@ public class PersonalizationPanel extends CTSetsPanel {
                     }
                 }
 
+            }
+            //设置DPI
+            try {
+                jsonObject.put("DPI", Double.valueOf(dpi.getText()));
+            } catch (NumberFormatException e) {
+                jsonObject.put("DPI", 1.0);
             }
 
             Log.info.print("InfSetDialog", "保存数据: " + jsonObject.toString());

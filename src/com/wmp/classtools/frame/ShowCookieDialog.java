@@ -112,7 +112,7 @@ public class ShowCookieDialog extends JDialog implements WindowListener {
                         throw new RuntimeException(ex);
 
                     } catch (JSONException ex) {
-                        Log.err.print(c, "快速启动单元管理页", "快速启动单元设置文件格式错误");
+                        Log.err.print(c, "启动单元管理页", "快速启动单元设置文件格式错误");
                         throw new RuntimeException(ex);
                     }
                 }
@@ -121,7 +121,7 @@ public class ShowCookieDialog extends JDialog implements WindowListener {
         removeCookie.setEnabled(false);
         cookieSettingPanel.add(removeCookie);
 
-        CTTextButton deleteCookie = new CTTextButton("删除快速启动单元", GetIcon.getIcon(getClass().getResource("/image/light/delete_0.png"), 30, 30));
+        CTTextButton deleteCookie = new CTTextButton("删除启动单元", GetIcon.getIcon(getClass().getResource("/image/light/delete_0.png"), 30, 30));
         deleteCookie.addActionListener(e -> {
             String cookiePin = s[0];
             CookieSets.deleteCookie(cookieMap.get(cookiePin));
@@ -331,10 +331,10 @@ public class ShowCookieDialog extends JDialog implements WindowListener {
         JMenu fileMenu = new JMenu("文件");
         fileMenu.setMnemonic('F');
 
-        JMenuItem inputCookie = new JMenuItem("导入快速启动单元(.zip)");
+        JMenuItem inputCookie = new JMenuItem("导入启动单元(.zip)");
         inputCookie.setIcon( GetIcon.getIcon(getClass().getResource("/image/input.png"),16,16));
         inputCookie.addActionListener(e -> {
-            String filePath = GetPath.getFilePath(this, "导入快速启动单元", ".zip", "ClassTools快速启动单元");
+            String filePath = GetPath.getFilePath(this, "导入启动单元", ".zip", "ClassTools快速启动单元");
 
             if (filePath != null) {
                 CookieSets.addCookie(new File(filePath));
@@ -349,7 +349,7 @@ public class ShowCookieDialog extends JDialog implements WindowListener {
             }
         });
 
-        JMenuItem outputMenuItem = new JMenuItem("导出快速启动单元(.zip)");
+        JMenuItem outputMenuItem = new JMenuItem("导出启动单元(.zip)");
         outputMenuItem.setIcon( GetIcon.getIcon(getClass().getResource("/image/light/update_0.png"),16,16));
         outputMenuItem.addActionListener(e -> {
             String path = GetPath.getDirectoryPath(this, "请选择导出目录");
@@ -358,7 +358,7 @@ public class ShowCookieDialog extends JDialog implements WindowListener {
 
         });
 
-        JMenuItem openInExp = new JMenuItem("打开快速启动单元所在目录");
+        JMenuItem openInExp = new JMenuItem("打开启动单元所在目录");
         openInExp.setIcon( GetIcon.getIcon(getClass().getResource("/image/openExp.png"),16,16));
         openInExp.addActionListener(e -> {
             OpenInExp.open(CTInfo.DATA_PATH + "\\Cookie\\");
@@ -381,7 +381,7 @@ public class ShowCookieDialog extends JDialog implements WindowListener {
         JMenu editMenu = new JMenu("编辑");
         editMenu.setMnemonic('E');
 
-        JMenuItem cookieDownload = new JMenuItem("下载快速启动单元");
+        JMenuItem cookieDownload = new JMenuItem("下载启动单元");
         cookieDownload.setIcon(GetIcon.getIcon(getClass().getResource("/image/input.png"), 16, 16));
         cookieDownload.addActionListener(e -> {
             try {
@@ -391,7 +391,7 @@ public class ShowCookieDialog extends JDialog implements WindowListener {
             }
         });
 
-        JMenuItem cookieSets = new JMenuItem("修改快速启动单元");
+        JMenuItem cookieSets = new JMenuItem("修改启动单元");
         cookieSets.setIcon( GetIcon.getIcon(getClass().getResource("/image/light/settings_0.png"),16,16));
         cookieSets.addActionListener(e -> {
             try {
@@ -404,7 +404,7 @@ public class ShowCookieDialog extends JDialog implements WindowListener {
             }
         });
 
-        JMenuItem deleteCookie = new JMenuItem("删除快速启动单元");
+        JMenuItem deleteCookie = new JMenuItem("删除启动单元");
         deleteCookie.setIcon( GetIcon.getIcon(getClass().getResource("/image/light/delete_0.png"),16,16));
         deleteCookie.addActionListener(e -> {
             CookieSets.deleteCookie(cookieMap.get(s[0]));
@@ -436,7 +436,7 @@ public class ShowCookieDialog extends JDialog implements WindowListener {
 
     private void initDialog() {
         this.setTitle("快速启动页");
-        this.setSize(500, 400);
+        this.setSize((int) (500 * CTInfo.dpi), (int) (400 * CTInfo.dpi));
         this.setIconImage(GetIcon.getImageIcon(getClass().getResource("/image/light/cookie_0.png"),
                         32, 32).getImage());
         this.setLocationRelativeTo(null);
