@@ -396,6 +396,17 @@ public class CTOptionPane {
     }
 
     public static void showFullScreenMessageDialog(String title, String message) {
+        showFullScreenMessageDialog(title, message, 0);
+    }
+
+    /**
+     * 全屏弹窗
+     *
+     * @param title    标题
+     * @param message  内容
+     * @param waitTime 最大显示时间
+     */
+    public static void showFullScreenMessageDialog(String title, String message, int waitTime) {
         JDialog messageDialog = new JDialog();
         messageDialog.setAlwaysOnTop(true);
         //设置屏幕大小
@@ -455,7 +466,20 @@ public class CTOptionPane {
         new SwingWorker<Void, Void>() {
             @Override
             protected Void doInBackground() throws Exception {
+                if (waitTime > 0) {
+                    Timer t = new Timer(waitTime * 1000, e -> {
+
+                        if (messageDialog.isVisible())
+                            messageDialog.dispose();
+                    });
+                    t.setRepeats(false);
+                    t.start();
+                }
+
                 messageDialog.setVisible(true);
+
+
+
                 return null;
             }
         }.execute();

@@ -1,10 +1,12 @@
 package com.wmp.classTools.extraPanel.countdown.panel;
 
+import com.wmp.Main;
 import com.wmp.PublicTools.CTInfo;
 import com.wmp.PublicTools.UITools.CTColor;
 import com.wmp.PublicTools.UITools.CTFont;
 import com.wmp.PublicTools.UITools.CTFontSizeStyle;
 import com.wmp.PublicTools.printLog.Log;
+import com.wmp.classTools.CTComponent.CTOptionPane;
 import com.wmp.classTools.CTComponent.CTPanel;
 import com.wmp.classTools.extraPanel.countdown.CDInfoControl;
 import com.wmp.classTools.extraPanel.countdown.settings.CountDownSetsPanel;
@@ -16,6 +18,7 @@ import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.List;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 public class CountDownPanel extends CTPanel {
 
@@ -35,6 +38,7 @@ public class CountDownPanel extends CTPanel {
         this.add(titleLabel, BorderLayout.NORTH);
         this.add(timeLabel, BorderLayout.CENTER);
 
+        AtomicBoolean b = new AtomicBoolean(false);
         Timer timer = new Timer(34, e -> {
             String targetTime = info.targetTime();
             DateFormat dateFormat = new SimpleDateFormat("yyyy.MM.dd HH:mm:ss");
@@ -49,11 +53,19 @@ public class CountDownPanel extends CTPanel {
             //Log.info.print("时间显示","时间差:" + time);
 
             if (time <= 0) {
+
                 timeLabel.setText("已结束");
+                if (!b.get()) {
+                    if (Main.allArgs.get("screenProduct:show").contains(Main.argsList))
+                        CTOptionPane.showFullScreenMessageDialog(info.title() + "倒计时", "已结束", 60);
+                    else
+                        Log.info.systemPrint(info.title() + "倒计时", "已结束");
+                }
+                b.set(true);
                 return;
             }
 
-
+            b.set(false);
             StringBuilder sb = new StringBuilder();
             sb.append(String.format("%02d", time / (24L * 60 * 60 * 1000)))
                     .append("天");

@@ -146,7 +146,7 @@ public class BRPanel extends CTPanel {
                 else sb.append(temp.get(i));
 
             }
-            CTOptionPane.showFullScreenMessageDialog("生日祝福", "让我们祝->" + sb + "<-生日快乐");
+            CTOptionPane.showFullScreenMessageDialog("生日祝福", "让我们祝->" + sb + "<-生日快乐", 60);
         }
     }
 
@@ -161,7 +161,7 @@ public class BRPanel extends CTPanel {
                 else sb.append(temp.get(i));
 
             }
-            CTOptionPane.showFullScreenMessageDialog("即将生日提醒", "这些人->" + sb + "<-即将生日");
+            CTOptionPane.showFullScreenMessageDialog("即将生日提醒", "这些人->" + sb + "<-即将生日", 60);
         }
     }
 

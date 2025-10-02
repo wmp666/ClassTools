@@ -435,7 +435,7 @@ public class ShowCookieDialog extends JDialog implements WindowListener {
     }
 
     private void initDialog() {
-        this.setTitle("插件库");
+        this.setTitle("快速启动页");
         this.setSize(500, 400);
         this.setIconImage(GetIcon.getImageIcon(getClass().getResource("/image/light/cookie_0.png"),
                         32, 32).getImage());

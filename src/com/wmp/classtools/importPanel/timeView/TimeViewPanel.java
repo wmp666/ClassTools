@@ -7,6 +7,7 @@ import com.wmp.PublicTools.UITools.CTFontSizeStyle;
 import com.wmp.PublicTools.UITools.GetIcon;
 import com.wmp.PublicTools.printLog.Log;
 import com.wmp.classTools.CTComponent.CTIconButton;
+import com.wmp.classTools.CTComponent.CTOptionPane;
 import com.wmp.classTools.CTComponent.CTPanel;
 import com.wmp.classTools.CTComponent.CTTextButton;
 import com.wmp.classTools.importPanel.finalPanel.FinalPanel;
@@ -102,8 +103,19 @@ public class TimeViewPanel extends CTPanel {
                 "/image/%s/view_0.png",
                 "/image/%s/view_1.png", 30, () -> {
             try {
-                int i = Log.info.showChooseDialog(null, "doge", "是不是当成关闭按钮了?");
+                int i = Log.info.showChooseDialog(null, "doge", "若当成了关闭按钮,\n请按\"是\",想要显示时间请按\"否\"");
                 if (i == JOptionPane.YES_OPTION) return;
+                else {
+                    if (Log.info.showChooseDialog(null, "doge", "请再次确认是不是当成了关闭键?") == JOptionPane.YES_OPTION) {
+                        CTOptionPane.showFullScreenMessageDialog("你不乘哦~", "不要总是乱选", 5);
+                        return;
+                    } else {
+                        if (Log.info.showChooseDialog(null, "doge", "最后一次确认,你是不是想关闭某程序,\n而不是想要全屏显示时间?") == JOptionPane.YES_OPTION) {
+                            CTOptionPane.showFullScreenMessageDialog("你不乘哦~", "不要总是乱选", 5);
+                            return;
+                        }
+                    }
+                }
                 viewTimeInDeskTop();
             } catch (MalformedURLException e) {
                 throw new RuntimeException(e);

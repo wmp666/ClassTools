@@ -9,7 +9,6 @@ import com.wmp.PublicTools.UITools.GetIcon;
 import com.wmp.PublicTools.io.GetPath;
 import com.wmp.PublicTools.io.ZipPack;
 import com.wmp.PublicTools.printLog.Log;
-import com.wmp.classTools.CTComponent.CTIconButton;
 import com.wmp.classTools.CTComponent.CTSetsPanel;
 import com.wmp.classTools.CTComponent.CTTextButton;
 import com.wmp.classTools.frame.MainWindow;
@@ -33,7 +32,7 @@ public class InfSetDialog extends JDialog {
     private String openedPanel;
 
     public InfSetDialog(Runnable refreshCallback) throws Exception {
-        this(refreshCallback, "迟到人员");
+        this(refreshCallback, "个性化");
     }
 
 
@@ -48,7 +47,7 @@ public class InfSetDialog extends JDialog {
         this.setLocationRelativeTo(null);
         this.setModal(true);
         //this.setLayout(null);
-        this.setResizable(false);
+        //this.setResizable(false);
         this.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 
         this.openedPanel = showPanel;
@@ -80,9 +79,9 @@ public class InfSetDialog extends JDialog {
             if (ctSetsPanel.getName().equals(this.openedPanel))
                 c.add(ctSetsPanel, BorderLayout.CENTER);
         });
-        c.add(initSetsPanelSwitchBar(), BorderLayout.NORTH);
+        c.add(initSetsPanelSwitchBar(), BorderLayout.WEST);
 
-
+        this.pack();
         this.setVisible(true);
     }
 
@@ -91,21 +90,24 @@ public class InfSetDialog extends JDialog {
         mainPanel.setBackground(Color.WHITE);
         mainPanel.setLayout(new GridBagLayout());
 
-
         GridBagConstraints gbc = new GridBagConstraints();
         gbc.fill = GridBagConstraints.HORIZONTAL;
+        gbc.gridy = 0;
+        gbc.gridx = 0;
         gbc.weightx = 1.0;
-        gbc.insets = new Insets(0, 5, 15, 5); // 设置边距 10 5 20 5
+        gbc.anchor = GridBagConstraints.NORTH;
+        gbc.insets = new Insets(5, 0, 5, 0);
+        
         this.ctSetsPanelList.forEach(ctSetsPanel -> {
-            CTTextButton button = new CTTextButton(ctSetsPanel.getName());
+            CTTextButton button = new CTTextButton(ctSetsPanel.getName(), false);
             if (openedPanel.equals(ctSetsPanel.getName())) {
                 button.setForeground(new Color(0x0090FF));
             } else {
                 button.setForeground(Color.BLACK);
             }
-            button.setBorder(null);
+            button.setHorizontalAlignment(SwingConstants.LEFT);
             button.setBackground(Color.WHITE);
-            button.setFont(CTFont.getCTFont(Font.PLAIN, CTFontSizeStyle.SMALL));
+            button.setFont(CTFont.getCTFont(Font.PLAIN, CTFontSizeStyle.NORMAL));
             button.addActionListener(e -> {
                 openedPanel = ctSetsPanel.getName();
                 try {
@@ -116,7 +118,14 @@ public class InfSetDialog extends JDialog {
                 }
             });
             mainPanel.add(button, gbc);
+            gbc.gridy++;
         });
+
+        // 添加一个空的组件占据剩余空间，将按钮推到顶部
+        gbc.weighty = 1.0;
+        JPanel filler = new JPanel();
+        filler.setOpaque(false);
+        mainPanel.add(filler, gbc);
 
         JScrollPane mainPanelScroll = new JScrollPane(mainPanel);
         mainPanelScroll.setBorder(BorderFactory.createEmptyBorder());
@@ -236,9 +245,11 @@ public class InfSetDialog extends JDialog {
     }
 
     private void initSaveButton() throws MalformedURLException {
-        CTIconButton saveButton = new CTIconButton(CTIconButton.ButtonText, "保存数据",
-                "/image/light/save_0.png",
-                "/image/light/save_1.png", 200, 50, this::save);
+
+        CTTextButton saveButton = new CTTextButton("保存数据", GetIcon.getIcon(getClass().getResource("/image/light/save_0.png"), 30, 30), false);
+        saveButton.addActionListener(e -> save());
+
+
         c.add(saveButton, BorderLayout.SOUTH);
 
     }
@@ -246,7 +257,7 @@ public class InfSetDialog extends JDialog {
     private void repaintSetsPanel(CTSetsPanel panel) throws IOException {
 
         c.removeAll();
-        c.add(initSetsPanelSwitchBar(), BorderLayout.NORTH);
+        c.add(initSetsPanelSwitchBar(), BorderLayout.WEST);
         initMenuBar();
         initSaveButton();
         c.add(panel, BorderLayout.CENTER);

@@ -13,7 +13,16 @@ public class CTTextButton extends JButton {
     }
 
     public CTTextButton(String text, Icon icon) {
+        this(text, icon, true);
+    }
+
+    public CTTextButton(String text, boolean showBorder) {
+        this(text, null, showBorder);
+    }
+
+    public CTTextButton(String text, Icon icon, boolean showBorder) {
         this.setContentAreaFilled(false);
+        this.setBorderPainted(showBorder);
         this.setBorder(CTOptionPane.BASIC_LINE_BORDER);
 
         if (icon != null) {
