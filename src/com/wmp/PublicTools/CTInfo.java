@@ -4,13 +4,9 @@ import com.wmp.PublicTools.UITools.CTColor;
 import com.wmp.PublicTools.UITools.CTFont;
 import com.wmp.PublicTools.io.IOForInfo;
 import com.wmp.PublicTools.printLog.Log;
-import com.wmp.classTools.CTComponent.CTOptionPane;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
-import javax.swing.*;
-import javax.swing.border.Border;
-import java.awt.*;
 import java.io.File;
 import java.util.ArrayList;
 
@@ -31,7 +27,7 @@ public class CTInfo {
      * d:只修复的问题,问题较少
      * e:测试版本号
      */
-    public static String version = "1.37.0";
+    public static String version = "1.37.1";
     public static String iconPath;
 
     public static double dpi = 1;
@@ -118,7 +114,5 @@ public class CTInfo {
                 dpi = jsonObject.getDouble("DPI");
             }
         }
-
-
     }
 }

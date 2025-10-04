@@ -1,11 +1,10 @@
 package com.wmp.classTools.extraPanel.attendance.settings;
 
-import com.wmp.PublicTools.UITools.CTFont;
-import com.wmp.PublicTools.UITools.CTFontSizeStyle;
 import com.wmp.PublicTools.io.IOForInfo;
 import com.wmp.PublicTools.printLog.Log;
 import com.wmp.classTools.CTComponent.CTIconButton;
 import com.wmp.classTools.CTComponent.CTSetsPanel;
+import com.wmp.classTools.CTComponent.CTTable;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
@@ -19,7 +18,7 @@ public class AllStuSetsPanel extends CTSetsPanel {
 
     private final File AllStuPath;
 
-    private final JTable allStuTable = new JTable();
+    private final CTTable allStuTable = new CTTable();
 
     public AllStuSetsPanel(String basicDataPath) throws IOException {
         super(basicDataPath);
@@ -49,22 +48,15 @@ public class AllStuSetsPanel extends CTSetsPanel {
         DefaultTableModel model = new DefaultTableModel(studentListTemp,
                 new String[]{"序号", "姓名"});
 
-        allStuTable.getTableHeader().setReorderingAllowed(false);
+        //allStuTable.getTableHeader().setReorderingAllowed(false);// 列不允许拖动
 
         allStuTable.setModel(model);
-        allStuTable.setFont(CTFont.getCTFont(-1, CTFontSizeStyle.SMALL));
-        allStuTable.setRowHeight(CTFont.getSize(CTFontSizeStyle.SMALL));
-        allStuTable.getTableHeader().setFont(CTFont.getCTFont(-1, CTFontSizeStyle.SMALL));
 
         JScrollPane scrollPane = new JScrollPane(allStuTable);
-        scrollPane.setBounds(20, 30, 340, 300);
-        //scrollPane.setBackground(CTColor.backColor);
         this.add(scrollPane, BorderLayout.CENTER);
 
         JPanel buttonPanel = new JPanel();
-        //buttonPanel.setBackground(CTColor.backColor);
         buttonPanel.setLayout(new FlowLayout(FlowLayout.LEFT, 5, 5));
-        buttonPanel.setBounds(0, 340, 400, 45);
 
 
         //新建

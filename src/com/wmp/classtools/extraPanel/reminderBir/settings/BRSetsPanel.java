@@ -1,11 +1,10 @@
 package com.wmp.classTools.extraPanel.reminderBir.settings;
 
-import com.wmp.PublicTools.UITools.CTFont;
-import com.wmp.PublicTools.UITools.CTFontSizeStyle;
 import com.wmp.PublicTools.io.IOForInfo;
 import com.wmp.PublicTools.printLog.Log;
 import com.wmp.classTools.CTComponent.CTIconButton;
 import com.wmp.classTools.CTComponent.CTSetsPanel;
+import com.wmp.classTools.CTComponent.CTTable;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
@@ -21,7 +20,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 public class BRSetsPanel extends CTSetsPanel {
 
     private final File birthdayPath;
-    private final JTable BRTable = new JTable();
+    private final CTTable BRTable = new CTTable();
     private final AtomicInteger index = new AtomicInteger();
 
     public BRSetsPanel(String basicDataPath) {
@@ -47,9 +46,6 @@ public class BRSetsPanel extends CTSetsPanel {
 
         DefaultTableModel model = new DefaultTableModel(array,
                 new String[]{"姓名", "日期"});
-        //设置表格的两列不可以修改顺序
-        BRTable.getTableHeader().setReorderingAllowed(false);
-        BRTable.setFont(CTFont.getCTFont(-1, CTFontSizeStyle.SMALL));
         BRTable.setModel(model);
 
         JScrollPane scrollPane = new JScrollPane(BRTable);

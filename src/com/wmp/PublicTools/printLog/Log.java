@@ -100,7 +100,7 @@ public class Log {
             JDialog moreDialog = new JDialog();
             moreDialog.setTitle("更多");
             moreDialog.setLayout(new FlowLayout(FlowLayout.CENTER));
-            moreDialog.setSize(250, 300);
+            moreDialog.setSize((int) (250 * CTInfo.dpi), (int) (300 * CTInfo.dpi));
             moreDialog.setLocationRelativeTo(null);
             moreDialog.setModal(true);
             moreDialog.getContentPane().setBackground(CTColor.backColor);

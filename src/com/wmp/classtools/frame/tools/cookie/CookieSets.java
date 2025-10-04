@@ -8,6 +8,7 @@ import com.wmp.PublicTools.UITools.CTFontSizeStyle;
 import com.wmp.PublicTools.UITools.GetIcon;
 import com.wmp.PublicTools.io.ZipPack;
 import com.wmp.PublicTools.printLog.Log;
+import com.wmp.classTools.CTComponent.CTBorderFactory;
 import com.wmp.classTools.CTComponent.CTComboBox;
 import com.wmp.classTools.CTComponent.CTTextButton;
 import com.wmp.classTools.CTComponent.CTTextField;
@@ -120,7 +121,7 @@ public class CookieSets {
 
             JPanel step1Panel = new JPanel(new GridLayout(7, 1, 7, 5));
             {
-                step1Panel.setBorder(BorderFactory.createTitledBorder("设置插件配置文件"));
+                step1Panel.setBorder(CTBorderFactory.createTitledBorder("设置插件配置文件"));
 
                 JPanel namePanel = new JPanel();
                 namePanel.setLayout(new GridLayout(1, 2));
@@ -181,7 +182,7 @@ public class CookieSets {
 
             JPanel step2Panel = new JPanel(new BorderLayout());
             {
-                step2Panel.setBorder(BorderFactory.createTitledBorder("添加必要文件"));
+                step2Panel.setBorder(CTBorderFactory.createTitledBorder("添加必要文件"));
                 JLabel label = new JLabel("将点击打开插件目录,将必要文件添加至目录");
                 label.setFont(CTFont.getCTFont(-1, CTFontSizeStyle.SMALL));
                 step2Panel.add(label, BorderLayout.NORTH);

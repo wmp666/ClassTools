@@ -25,7 +25,7 @@ public class CTTextButton extends JButton {
     public CTTextButton(String text, Icon icon, boolean showBorder) {
         this.setContentAreaFilled(false);
         this.setBorderPainted(showBorder);
-        this.setBorder(CTOptionPane.BASIC_LINE_BORDER);
+        this.setBorder(CTBorderFactory.BASIC_LINE_BORDER);
 
         if (icon != null) {
             this.setIcon(icon);
@@ -40,12 +40,12 @@ public class CTTextButton extends JButton {
         this.addFocusListener(new FocusListener() {
             @Override
             public void focusGained(FocusEvent e) {
-                button.setBorder(CTOptionPane.FOCUS_GAINTED_BORDER);
+                button.setBorder(CTBorderFactory.FOCUS_GAINTED_BORDER);
             }
 
             @Override
             public void focusLost(FocusEvent e) {
-                button.setBorder(CTOptionPane.BASIC_LINE_BORDER);
+                button.setBorder(CTBorderFactory.BASIC_LINE_BORDER);
             }
         });
 

@@ -3,7 +3,7 @@ package com.wmp.classTools.frame;
 import com.wmp.PublicTools.CTInfo;
 import com.wmp.PublicTools.UITools.CTColor;
 import com.wmp.PublicTools.printLog.Log;
-import com.wmp.classTools.CTComponent.CTOptionPane;
+import com.wmp.classTools.CTComponent.CTBorderFactory;
 import com.wmp.classTools.CTComponent.CTPanel;
 import com.wmp.classTools.extraPanel.attendance.panel.ATPanel;
 import com.wmp.classTools.extraPanel.countdown.panel.CountDownPanel;
@@ -217,8 +217,8 @@ public class MainWindow extends JDialog {
             CTInfo.init();
 
 
-            CTOptionPane.BASIC_LINE_BORDER = BorderFactory.createLineBorder(new Color(200, 200, 200), (int) (2 * CTInfo.dpi));
-            CTOptionPane.FOCUS_GAINTED_BORDER = BorderFactory.createLineBorder(new Color(112, 112, 112), (int) (2 * CTInfo.dpi));
+            CTBorderFactory.BASIC_LINE_BORDER = BorderFactory.createLineBorder(new Color(200, 200, 200), (int) (2 * CTInfo.dpi));
+            CTBorderFactory.FOCUS_GAINTED_BORDER = BorderFactory.createLineBorder(new Color(112, 112, 112), (int) (2 * CTInfo.dpi));
 
             showPanelList.clear();
 

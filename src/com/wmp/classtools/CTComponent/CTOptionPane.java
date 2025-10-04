@@ -9,7 +9,6 @@ import com.wmp.PublicTools.UITools.GetIcon;
 import com.wmp.PublicTools.printLog.Log;
 
 import javax.swing.*;
-import javax.swing.border.Border;
 import java.awt.*;
 import java.awt.datatransfer.Clipboard;
 import java.awt.datatransfer.StringSelection;
@@ -26,8 +25,6 @@ public class CTOptionPane {
     public static final int ERROR_MESSAGE = 0;
     public static final int INFORMATION_MESSAGE = 1;
     public static final int WARNING_MESSAGE = 2;
-    public static Border BASIC_LINE_BORDER = BorderFactory.createLineBorder(new Color(200, 200, 200), (int) (2 * CTInfo.dpi));
-    public static Border FOCUS_GAINTED_BORDER = BorderFactory.createLineBorder(new Color(112, 112, 112), (int) (2 * CTInfo.dpi));
     private static final int YES_NO_BUTTONS = 0;
     private static final int YES_BUTTONS = 1;
     private static final int MESSAGE_TEXT = 0;

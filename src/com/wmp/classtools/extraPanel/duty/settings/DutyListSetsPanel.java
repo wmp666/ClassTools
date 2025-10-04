@@ -1,12 +1,11 @@
 package com.wmp.classTools.extraPanel.duty.settings;
 
-import com.wmp.PublicTools.UITools.CTFont;
-import com.wmp.PublicTools.UITools.CTFontSizeStyle;
 import com.wmp.PublicTools.io.IOForInfo;
 import com.wmp.PublicTools.io.InfProcess;
 import com.wmp.PublicTools.printLog.Log;
 import com.wmp.classTools.CTComponent.CTIconButton;
 import com.wmp.classTools.CTComponent.CTSetsPanel;
+import com.wmp.classTools.CTComponent.CTTable;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
@@ -20,7 +19,7 @@ public class DutyListSetsPanel extends CTSetsPanel {
 
     private final File DutyListPath;
 
-    private final JTable DutyTable = new JTable();
+    private final CTTable DutyTable = new CTTable();
     private final AtomicInteger index = new AtomicInteger();
 
     public DutyListSetsPanel(String basicDataPath) {
@@ -49,12 +48,7 @@ public class DutyListSetsPanel extends CTSetsPanel {
 
         DefaultTableModel model = new DefaultTableModel(dutyList,
                 new String[]{"扫地", "擦黑板"});
-        //设置表格的两列不可以修改顺序
-        DutyTable.getTableHeader().setReorderingAllowed(false);
         DutyTable.setModel(model);
-        DutyTable.setFont(CTFont.getCTFont(Font.PLAIN, CTFontSizeStyle.SMALL));
-        DutyTable.setRowHeight(CTFont.getSize(CTFontSizeStyle.SMALL));
-        DutyTable.getTableHeader().setFont(CTFont.getCTFont(Font.PLAIN, CTFontSizeStyle.SMALL));
 
         JScrollPane scrollPane = new JScrollPane(DutyTable);
         this.add(scrollPane, BorderLayout.CENTER);

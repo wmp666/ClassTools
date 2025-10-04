@@ -3,6 +3,7 @@ package com.wmp.classTools.infSet.panel.tools;
 import com.wmp.PublicTools.OpenInExp;
 import com.wmp.PublicTools.io.IOForInfo;
 import com.wmp.PublicTools.printLog.Log;
+import com.wmp.classTools.CTComponent.CTBorderFactory;
 import com.wmp.classTools.CTComponent.CTTextButton;
 import com.wmp.classTools.CTComponent.CTTextField;
 
@@ -38,7 +39,7 @@ public class DataControlUnit extends JPanel {
         this.canDelete = canDelete;
         this.specialChildPathList.addAll(List.of(specialChildPaths));
 
-        this.setBorder(BorderFactory.createTitledBorder(name));
+        this.setBorder(CTBorderFactory.createTitledBorder(name));
         this.setLayout(new BorderLayout(5, 5));
 
         //路径显示

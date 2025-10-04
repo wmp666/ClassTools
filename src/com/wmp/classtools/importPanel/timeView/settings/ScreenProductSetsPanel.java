@@ -5,10 +5,7 @@ import com.wmp.PublicTools.UITools.CTFontSizeStyle;
 import com.wmp.PublicTools.io.GetPath;
 import com.wmp.PublicTools.io.IOForInfo;
 import com.wmp.PublicTools.printLog.Log;
-import com.wmp.classTools.CTComponent.CTComboBox;
-import com.wmp.classTools.CTComponent.CTSetsPanel;
-import com.wmp.classTools.CTComponent.CTTextButton;
-import com.wmp.classTools.CTComponent.CTTextField;
+import com.wmp.classTools.CTComponent.*;
 import com.wmp.classTools.frame.tools.screenProduct.SetsScrInfo;
 import org.json.JSONObject;
 
@@ -111,7 +108,7 @@ public class ScreenProductSetsPanel extends CTSetsPanel {
         JSONObject jsonObject = new JSONObject(new IOForInfo(BGPath).GetInfos());
 
         JPanel bgPanel = new JPanel(new BorderLayout());
-        bgPanel.setBorder(BorderFactory.createTitledBorder("背景设置"));
+        bgPanel.setBorder(CTBorderFactory.createTitledBorder("背景设置"));
 
         //预览
         JLabel viewLabel = new JLabel();
@@ -298,7 +295,7 @@ public class ScreenProductSetsPanel extends CTSetsPanel {
 
         JPanel ColorPanel = new JPanel();
         ColorPanel.setLayout(new GridLayout(1, 2));
-        ColorPanel.setBorder(BorderFactory.createTitledBorder("颜色设置"));
+        ColorPanel.setBorder(CTBorderFactory.createTitledBorder("颜色设置"));
         //颜色设置
         {
             //主题色设置

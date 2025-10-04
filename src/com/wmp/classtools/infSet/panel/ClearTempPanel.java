@@ -1,16 +1,12 @@
 package com.wmp.classTools.infSet.panel;
 
 import com.wmp.PublicTools.CTInfo;
-import com.wmp.PublicTools.io.IOForInfo;
-import com.wmp.PublicTools.printLog.Log;
 import com.wmp.classTools.CTComponent.CTSetsPanel;
 import com.wmp.classTools.infSet.panel.tools.DataControlUnit;
 
-import javax.swing.*;
 import java.awt.*;
 import java.io.IOException;
 import java.net.MalformedURLException;
-import java.nio.file.Paths;
 
 public class ClearTempPanel extends CTSetsPanel {
 
@@ -56,21 +52,6 @@ public class ClearTempPanel extends CTSetsPanel {
 
         return new DataControlUnit(name, DATA_PATH, canDelete, childUnits);
 
-    }
-
-    private void deleteDir(String DATA_PATH) {
-
-        int i = Log.info.showChooseDialog(this, "清理临时文件", "是否清理?");
-        if (i == JOptionPane.NO_OPTION) {
-            return;
-        }
-
-        try {
-            IOForInfo.deleteDirectoryRecursively(Paths.get(DATA_PATH));
-
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
     }
 
     @Override

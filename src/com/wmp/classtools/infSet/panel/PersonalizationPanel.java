@@ -5,6 +5,7 @@ import com.wmp.PublicTools.UITools.CTFont;
 import com.wmp.PublicTools.UITools.CTFontSizeStyle;
 import com.wmp.PublicTools.io.IOForInfo;
 import com.wmp.PublicTools.printLog.Log;
+import com.wmp.classTools.CTComponent.CTBorderFactory;
 import com.wmp.classTools.CTComponent.CTComboBox;
 import com.wmp.classTools.CTComponent.CTSetsPanel;
 import com.wmp.classTools.CTComponent.CTTextField;
@@ -66,7 +67,7 @@ public class PersonalizationPanel extends CTSetsPanel {
 
         JPanel ColorPanel = new JPanel();
         ColorPanel.setLayout(new GridLayout(1, 2));
-        ColorPanel.setBorder(BorderFactory.createTitledBorder("颜色设置"));
+        ColorPanel.setBorder(CTBorderFactory.createTitledBorder("颜色设置"));
         //颜色设置
         {
             //主题色设置
@@ -115,7 +116,7 @@ public class PersonalizationPanel extends CTSetsPanel {
 
         JPanel reSetFontPanel = new JPanel();
         reSetFontPanel.setLayout(new GridBagLayout());
-        reSetFontPanel.setBorder(BorderFactory.createTitledBorder("字体设置"));
+        reSetFontPanel.setBorder(CTBorderFactory.createTitledBorder("字体设置"));
         //字体设置
         {
             //字体设置
@@ -148,7 +149,7 @@ public class PersonalizationPanel extends CTSetsPanel {
             }
 
             JButton button = new JButton("改为默认");
-            //button.setFont(new Font("Microsoft YaHei UI", Font.PLAIN, 12));
+            button.setFont(new Font("微软雅黑", Font.PLAIN, CTFont.getSize(CTFontSizeStyle.SMALL)));
             button.addActionListener(e -> {
                 CTFont.setSize(100, 60, 24, 19, 15, 12);
                 CTFont.setFontName("微软雅黑");
@@ -176,7 +177,7 @@ public class PersonalizationPanel extends CTSetsPanel {
         //disposePanel.setBackground(CTColor.backColor);
         disButPanel.setLayout(new GridLayout(0, 2));
         //设置按钮隐藏
-        disButPanel.setBorder(BorderFactory.createTitledBorder("隐藏部分按钮"));
+        disButPanel.setBorder(CTBorderFactory.createTitledBorder("隐藏部分按钮"));
         {
 
             FinalPanel.allButList.forEach(button -> {
@@ -196,7 +197,7 @@ public class PersonalizationPanel extends CTSetsPanel {
         //disposePanel.setBackground(CTColor.backColor);
         disPanPanel.setLayout(new GridLayout(0, 2));
         //设置组件隐藏
-        disPanPanel.setBorder(BorderFactory.createTitledBorder("隐藏部分组件"));
+        disPanPanel.setBorder(CTBorderFactory.createTitledBorder("隐藏部分组件"));
         {
 
             MainWindow.allPanelList.forEach(panel -> {
@@ -222,7 +223,7 @@ public class PersonalizationPanel extends CTSetsPanel {
         JPanel otherPanel = new JPanel();
         //otherPanel.setBackground(CTColor.backColor);
         otherPanel.setLayout(new GridLayout(0, 2));
-        otherPanel.setBorder(BorderFactory.createTitledBorder("其他设置"));
+        otherPanel.setBorder(CTBorderFactory.createTitledBorder("其他设置"));
         //其他设置
         {
             startUp.setFont(CTFont.getCTFont(Font.PLAIN, CTFontSizeStyle.SMALL));
@@ -242,7 +243,7 @@ public class PersonalizationPanel extends CTSetsPanel {
         JPanel compatiblePanel = new JPanel();
         //otherPanel.setBackground(CTColor.backColor);
         compatiblePanel.setLayout(new GridLayout(0, 2));
-        compatiblePanel.setBorder(BorderFactory.createTitledBorder("其他设置"));
+        compatiblePanel.setBorder(CTBorderFactory.createTitledBorder("其他设置"));
         //其他设置
         {
             JPanel dpiPanel = new JPanel();
