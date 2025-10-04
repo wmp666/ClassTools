@@ -14,6 +14,8 @@ public class CTTable extends JTable {
         this.setRowHeight(CTFont.getSize(CTFontSizeStyle.SMALL));
         this.getTableHeader().setFont(CTFont.getCTFont(Font.PLAIN, CTFontSizeStyle.SMALL));
 
+        this.setCellEditor(new DefaultCellEditor(new CTTextField()));
+
     }
 
 

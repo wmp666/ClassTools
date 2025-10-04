@@ -41,11 +41,13 @@ public class CTTextButton extends JButton {
             @Override
             public void focusGained(FocusEvent e) {
                 button.setBorder(CTBorderFactory.FOCUS_GAINTED_BORDER);
+                button.setBackground(new Color(218, 218, 218));
             }
 
             @Override
             public void focusLost(FocusEvent e) {
                 button.setBorder(CTBorderFactory.BASIC_LINE_BORDER);
+                button.setBackground(new Color(255, 255, 255));
             }
         });
 
