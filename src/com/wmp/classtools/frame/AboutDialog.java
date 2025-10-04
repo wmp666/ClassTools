@@ -29,9 +29,8 @@ public class AboutDialog extends JDialog {
     private static final JPanel view = new JPanel();
 
     static {
-        view.setBounds(0, 120, 300, 120);
         view.setBackground(CTColor.backColor);
-        view.setLayout(null);
+        view.setLayout(new BorderLayout());
     }
 
     public AboutDialog() throws MalformedURLException {
