@@ -84,9 +84,7 @@ public class ClassFormPanel extends CTPanel {
                     if (nextClass == null || nextClass.isEmpty()) nextClass = "无";
                     if (!oldNextClassName.equals(nextClass)) showNextClasses(nextClass);
 
-
-                    this.oldNowClassNameList.clear();
-                    this.oldNowClassNameList.add(nextClass);
+                    oldNextClassName = nextClass;
 
 
                     gbc.gridy++;
@@ -123,7 +121,7 @@ public class ClassFormPanel extends CTPanel {
             if (Main.allArgs.get("screenProduct:show").contains(Main.argsList))
                 CTOptionPane.showFullScreenMessageDialog("课程提醒", "现在的课程:" + sb, 60);
             else
-                Log.info.systemPrint("课程提醒", "现在的课程:" + sb);
+                Log.info.systemPrint("现在的课程", "现在的课程:" + sb);
         }
 
 
