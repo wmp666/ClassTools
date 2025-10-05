@@ -56,6 +56,9 @@ public class CFInfoControl {
         ArrayList<String> list = new ArrayList<>();
         info.forEach(object -> {
             if (object instanceof JSONObject jsonObject) {
+
+                if (!(jsonObject.has("class") && jsonObject.has("time"))) return;
+
                 String timePeriod = jsonObject.getString("time");
                 String[] time = timePeriod.split("-");
                 if (DayIsNow.isInTimePeriod(time[0], time[1])) {
@@ -88,6 +91,9 @@ public class CFInfoControl {
         String[] tempData = new String[2];// 0-时间 1-课程
         info.forEach(object -> {
             if (object instanceof JSONObject jsonObject) {
+
+                if (!(jsonObject.has("class") && jsonObject.has("time"))) return;
+
                 String timePeriod = jsonObject.getString("time");
                 String s = timePeriod.split("-")[0];//获取开始时间
 

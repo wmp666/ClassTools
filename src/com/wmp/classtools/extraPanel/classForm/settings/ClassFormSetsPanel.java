@@ -171,6 +171,7 @@ public class ClassFormSetsPanel extends CTSetsPanel {
             JSONArray jsonArray = new JSONArray(infos);
             jsonArray.forEach(object -> {
                 if (object instanceof JSONObject jsonObject) {
+                    if (!(jsonObject.has("class") && jsonObject.has("time"))) return;
                     CFList.add(jsonObject.getString("class"));
                     dateList.add(jsonObject.getString("time"));
                 }
