@@ -10,7 +10,6 @@ import com.wmp.classTools.CTComponent.CTTextButton;
 import com.wmp.classTools.extraPanel.attendance.settings.AllStuSetsPanel;
 import com.wmp.classTools.extraPanel.attendance.settings.LeaveListSetsPanel;
 import com.wmp.classTools.frame.MainWindow;
-import com.wmp.classTools.importPanel.finalPanel.FinalPanel;
 import com.wmp.classTools.infSet.InfSetDialog;
 
 import javax.swing.*;
@@ -173,7 +172,7 @@ public class ATPanel extends CTPanel {
         {
             IOForInfo ioForInfo = new IOForInfo(AllStudentPath);
 
-            String[] inf = ioForInfo.GetInfo();
+            String[] inf = ioForInfo.getInfo();
 
             //System.out.println(inf);
             if (inf[0].equals("err")) {
@@ -185,7 +184,7 @@ public class ATPanel extends CTPanel {
                     };
 
                     // 通过数组传递完整数据
-                    ioForInfo.SetInfo(DEFAULT_NAMES);
+                    ioForInfo.setInfo(DEFAULT_NAMES);
                 }
 
 
@@ -198,7 +197,7 @@ public class ATPanel extends CTPanel {
         //获取请假名单
         {
             IOForInfo ioForInfo = new IOForInfo(LeaveListPath);
-            String[] inf = ioForInfo.GetInfo();
+            String[] inf = ioForInfo.getInfo();
 
             //遍历数组
             for (String s : inf) {
@@ -209,7 +208,7 @@ public class ATPanel extends CTPanel {
                 //leaveList.add(s);
             }
             if (inf[0].equals("err")) {
-                ioForInfo.SetInfo("");
+                ioForInfo.setInfo("");
                 studentLateLength = 0;
             }else{
                 //leaveList.clear();

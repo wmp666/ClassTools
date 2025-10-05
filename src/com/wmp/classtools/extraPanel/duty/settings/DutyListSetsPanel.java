@@ -125,12 +125,12 @@ public class DutyListSetsPanel extends CTSetsPanel {
         //获取inf
         IOForInfo ioForInfo = new IOForInfo(dutyPath);
 
-        String[] inf = ioForInfo.GetInfo();
+        String[] inf = ioForInfo.getInfo();
 
         //System.out.println(inf);
         if (inf[0].equals("err")) {
             //总会有的
-            ioForInfo.SetInfo("[尽快,设置] [请]",
+            ioForInfo.setInfo("[尽快,设置] [请]",
                     "[尽快,设置,1] [请]");
             return new String[][]{{"err"}, {"null"}};
         }
@@ -183,7 +183,7 @@ public class DutyListSetsPanel extends CTSetsPanel {
         //System.out.println("--index:" + index.get());
 
         try {
-            new IOForInfo(DutyListPath).SetInfo(sb.toString());
+            new IOForInfo(DutyListPath).setInfo(sb.toString());
         } catch (IOException e) {
             throw new RuntimeException(e);
         }

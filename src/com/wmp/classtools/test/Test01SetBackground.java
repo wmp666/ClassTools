@@ -1,6 +1,5 @@
 package com.wmp.classTools.test;
 
-import com.wmp.Main;
 import com.wmp.PublicTools.CTInfo;
 import com.wmp.PublicTools.io.IOForInfo;
 import org.json.JSONObject;
@@ -27,7 +26,7 @@ public class Test01SetBackground extends JFrame {
                 e.printStackTrace();
             }
         }
-        JSONObject jsonObject = new JSONObject(new IOForInfo(BGPath).GetInfos());
+        JSONObject jsonObject = new JSONObject(new IOForInfo(BGPath).getInfos());
 
         Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
 

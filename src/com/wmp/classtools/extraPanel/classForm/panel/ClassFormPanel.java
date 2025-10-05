@@ -81,7 +81,7 @@ public class ClassFormPanel extends CTPanel {
 
                 try {
                     String nextClass = CFInfoControl.getNextClass();
-                    if (nextClass != null && nextClass.isEmpty()) nextClass = "无";
+                    if (nextClass == null || nextClass.isEmpty()) nextClass = "无";
                     if (!oldNextClassName.equals(nextClass)) showNextClasses(nextClass);
 
 

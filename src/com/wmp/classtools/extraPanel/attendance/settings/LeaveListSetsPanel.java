@@ -87,7 +87,7 @@ public class LeaveListSetsPanel extends CTSetsPanel {
         // 初始化现有数据
         try {
             if (leaveListPath.exists()) {
-                String[] content = new IOForInfo(leaveListPath).GetInfo();
+                String[] content = new IOForInfo(leaveListPath).getInfo();
                 leaveList.addAll(Arrays.asList(content));
 
                 //leaveArea.setText(content.replace(",", "\n"));
@@ -106,7 +106,7 @@ public class LeaveListSetsPanel extends CTSetsPanel {
         {
             IOForInfo ioForInfo = new IOForInfo(AllStuPath);
 
-            String[] inf = ioForInfo.GetInfo();
+            String[] inf = ioForInfo.getInfo();
 
             //System.out.println(inf);
             if (!inf[0].equals("err")) {
@@ -128,7 +128,7 @@ public class LeaveListSetsPanel extends CTSetsPanel {
             }
             String names = sb.toString();
             try {
-                new IOForInfo(leaveListPath).SetInfo(names);
+                new IOForInfo(leaveListPath).setInfo(names);
             } catch (IOException e) {
                 throw new RuntimeException(e);
             }

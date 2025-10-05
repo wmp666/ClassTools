@@ -26,7 +26,7 @@ public class SetsScrInfo {
                 throw new RuntimeException(e);
             }
         }
-        jsonObject = new JSONObject(new IOForInfo(BGPath).GetInfos());
+        jsonObject = new JSONObject(new IOForInfo(BGPath).getInfos());
 
         Log.info.print("屏保数据", "初始化完成:" + jsonObject);
     }

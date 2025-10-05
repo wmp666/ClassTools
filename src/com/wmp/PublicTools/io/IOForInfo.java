@@ -51,7 +51,7 @@ public class IOForInfo {
                 }
                 sb.append(line).append("\n");
             }
-
+            Log.info.print("IOForInfo-获取数据", "数据内容: " + sb);
             return sb.toString();// 读取第一行
         } catch (IOException e) {
             Log.err.print("IOForInfo-获取数据", file.getPath() + "文件读取失败");
@@ -59,15 +59,15 @@ public class IOForInfo {
         }
     }
 
-    public String[] GetInfo() throws IOException {
-        String s = GetInfos();
+    public String[] getInfo() throws IOException {
+        String s = getInfos();
         if (s.equals("err")) {
             return new String[]{"err"};
         }
         return s.split("\n");
     }
 
-    public String GetInfos() throws IOException {
+    public String getInfos() throws IOException {
         if (!file.exists()) {
             if (!creativeFile(file)) {
                 Log.err.print("IOForInfo-获取数据", file.getPath() + "文件无法创建");
@@ -103,7 +103,8 @@ public class IOForInfo {
             return "err";
         }
     }
-    public void SetInfo(String... infos) throws IOException {
+
+    public void setInfo(String... infos) throws IOException {
 
         if (!file.exists()) {
             if (!creativeFile(file)) {
@@ -173,7 +174,7 @@ public class IOForInfo {
         try {
             return "IOForInfo{" +
                     "file=" + file +
-                    " Inf=" + Arrays.toString(GetInfo()) +
+                    " Inf=" + Arrays.toString(getInfo()) +
                     '}';
         } catch (IOException e) {
             throw new RuntimeException(e);

@@ -17,7 +17,7 @@ public class CDInfoControl {
 
         try {
             IOForInfo io = new IOForInfo(path);
-            String s = io.GetInfos();
+            String s = io.getInfos();
             if (!s.equals("err")) {
                 JSONObject json = new JSONObject(s);
                 return new CDInfo(json.getString("title"), json.getString("targetTime"));
@@ -35,7 +35,7 @@ public class CDInfoControl {
             JSONObject json = new JSONObject();
             json.put("title", cdInfo.title);
             json.put("targetTime", cdInfo.targetTime);
-            io.SetInfo(json.toString());
+            io.setInfo(json.toString());
         }
     }
 

@@ -116,7 +116,7 @@ public class AllStuSetsPanel extends CTSetsPanel {
 
             String[] inf = null;
             try {
-                inf = ioForInfo.GetInfo();
+                inf = ioForInfo.getInfo();
             } catch (IOException e) {
                 throw new RuntimeException(e);
             }
@@ -146,7 +146,7 @@ public class AllStuSetsPanel extends CTSetsPanel {
         }
 
         try {
-            new IOForInfo(AllStuPath).SetInfo(sb.toString());
+            new IOForInfo(AllStuPath).setInfo(sb.toString());
         } catch (IOException e) {
             throw new RuntimeException(e);
         }

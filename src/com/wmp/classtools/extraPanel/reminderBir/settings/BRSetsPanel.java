@@ -120,7 +120,7 @@ public class BRSetsPanel extends CTSetsPanel {
     private String[][] getArray() {
         ArrayList<String> nameList = new ArrayList<>();
         ArrayList<String> dateList = new ArrayList<>();
-        if (!birthdayPath.exists()) return new String[][]{{""}, {""}};
+        if (!birthdayPath.exists()) return new String[][]{{}, {}};
         try {
             String infos = IOForInfo.getInfos(birthdayPath.toURI().toURL());
             JSONArray jsonArray = new JSONArray(infos);
@@ -170,7 +170,7 @@ public class BRSetsPanel extends CTSetsPanel {
             jsonObject.put("birthday", dateList.get(nameList.indexOf(s)));
             jsonArray.put(jsonObject);
         });
-        ioForInfo.SetInfo(jsonArray.toString());
+        ioForInfo.setInfo(jsonArray.toString());
     }
 
     @Override

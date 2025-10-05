@@ -105,7 +105,7 @@ public class ScreenProductSetsPanel extends CTSetsPanel {
             }
         }
 
-        JSONObject jsonObject = new JSONObject(new IOForInfo(BGPath).GetInfos());
+        JSONObject jsonObject = new JSONObject(new IOForInfo(BGPath).getInfos());
 
         JPanel bgPanel = new JPanel(new BorderLayout());
         bgPanel.setBorder(CTBorderFactory.createTitledBorder("背景设置"));
@@ -212,7 +212,7 @@ public class ScreenProductSetsPanel extends CTSetsPanel {
             }
             IOForInfo ioForInfo = new IOForInfo(BGPath);
             try {
-                ioForInfo.SetInfo(jsonObject.toString());
+                ioForInfo.setInfo(jsonObject.toString());
             } catch (IOException ex) {
                 throw new RuntimeException(ex);
             }
@@ -257,7 +257,7 @@ public class ScreenProductSetsPanel extends CTSetsPanel {
 
                 IOForInfo ioForInfo = new IOForInfo(BGPath);
                 try {
-                    ioForInfo.SetInfo(jsonObject.toString());
+                    ioForInfo.setInfo(jsonObject.toString());
                 } catch (IOException ex) {
                     throw new RuntimeException(ex);
                 }
@@ -408,7 +408,7 @@ public class ScreenProductSetsPanel extends CTSetsPanel {
 
         IOForInfo ioForInfo = new IOForInfo(dataPath + "\\background.json");
         try {
-            ioForInfo.SetInfo(jsonObject.toString());
+            ioForInfo.setInfo(jsonObject.toString());
         } catch (IOException e) {
             throw new RuntimeException(e);
         }

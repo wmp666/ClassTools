@@ -7,7 +7,7 @@ import com.wmp.PublicTools.UITools.CTFontSizeStyle;
 import com.wmp.PublicTools.UITools.GetIcon;
 import com.wmp.PublicTools.io.ResourceLocalizer;
 import com.wmp.PublicTools.printLog.Log;
-import com.wmp.classTools.CTComponent.CTTextButton;
+import com.wmp.classTools.CTComponent.CTList;
 import org.commonmark.parser.Parser;
 import org.commonmark.renderer.html.HtmlRenderer;
 
@@ -221,7 +221,7 @@ public class ShowHelpDoc extends JFrame {
     }
 
     private JScrollPane getChooseHelpDoc() {
-        JPanel chooseHelpDoc = new JPanel();
+        /*JPanel chooseHelpDoc = new JPanel();
         chooseHelpDoc.setLayout(new GridBagLayout());
         chooseHelpDoc.setBackground(Color.WHITE);
 
@@ -254,9 +254,33 @@ public class ShowHelpDoc extends JFrame {
         gbc.weighty = 1.0;
         JPanel filler = new JPanel();
         filler.setOpaque(false);
-        chooseHelpDoc.add(filler, gbc);
+        chooseHelpDoc.add(filler, gbc);*/
 
-        return new JScrollPane(chooseHelpDoc);
+
+        String[] list = new String[ShowHelpDoc.helpDocs.size()];
+        for (int i = 0; i < list.length; i++) {
+            list[i] = ShowHelpDoc.helpDocs.get(i);
+        }
+
+        CTList switchPanel = new CTList(list,
+                0, (e, choice) -> {
+            try {
+                showHelpDoc(choice);
+                ShowHelpDoc.this.repaint();
+            } catch (Exception ex) {
+                Log.err.print("帮助", "文档打开失败:\n" + ex.getMessage());
+                throw new RuntimeException(ex);
+            }
+        }
+        );
+
+
+        JScrollPane mainPanelScroll = new JScrollPane(switchPanel);
+        mainPanelScroll.setBorder(BorderFactory.createEmptyBorder());
+        mainPanelScroll.getViewport().setBackground(Color.WHITE);
+        mainPanelScroll.getVerticalScrollBar().setUnitIncrement(16);
+
+        return mainPanelScroll;
     }
 
 

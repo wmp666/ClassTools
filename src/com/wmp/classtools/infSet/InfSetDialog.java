@@ -3,12 +3,11 @@ package com.wmp.classTools.infSet;
 import com.wmp.PublicTools.CTInfo;
 import com.wmp.PublicTools.OpenInExp;
 import com.wmp.PublicTools.UITools.CTColor;
-import com.wmp.PublicTools.UITools.CTFont;
-import com.wmp.PublicTools.UITools.CTFontSizeStyle;
 import com.wmp.PublicTools.UITools.GetIcon;
 import com.wmp.PublicTools.io.GetPath;
 import com.wmp.PublicTools.io.ZipPack;
 import com.wmp.PublicTools.printLog.Log;
+import com.wmp.classTools.CTComponent.CTList;
 import com.wmp.classTools.CTComponent.CTSetsPanel;
 import com.wmp.classTools.CTComponent.CTTextButton;
 import com.wmp.classTools.frame.MainWindow;
@@ -20,6 +19,7 @@ import java.awt.*;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.util.ArrayList;
+import java.util.TreeMap;
 
 public class InfSetDialog extends JDialog {
 
@@ -30,6 +30,8 @@ public class InfSetDialog extends JDialog {
 
 
     private String openedPanel;
+
+    private CTList switchPanel;
 
     public InfSetDialog(Runnable refreshCallback) throws Exception {
         this(refreshCallback, "个性化");
@@ -86,47 +88,24 @@ public class InfSetDialog extends JDialog {
     }
 
     private JScrollPane initSetsPanelSwitchBar() {
-        JPanel mainPanel = new JPanel();
-        mainPanel.setBackground(Color.WHITE);
-        mainPanel.setLayout(new GridBagLayout());
 
-        GridBagConstraints gbc = new GridBagConstraints();
-        gbc.fill = GridBagConstraints.HORIZONTAL;
-        gbc.gridy = 0;
-        gbc.gridx = 0;
-        gbc.weightx = 1.0;
-        gbc.anchor = GridBagConstraints.NORTH;
-        gbc.insets = new Insets(5, 0, 5, 0);
-        
-        this.ctSetsPanelList.forEach(ctSetsPanel -> {
-            CTTextButton button = new CTTextButton(ctSetsPanel.getName(), false);
-            if (openedPanel.equals(ctSetsPanel.getName())) {
-                button.setForeground(new Color(0x0090FF));
-            } else {
-                button.setForeground(Color.BLACK);
+        String[] list = new String[this.ctSetsPanelList.size()];
+        TreeMap<String, CTSetsPanel> map = new TreeMap<>();
+        for (int i = 0; i < list.length; i++) {
+            list[i] = this.ctSetsPanelList.get(i).getName();
+            map.put(list[i], this.ctSetsPanelList.get(i));
+        }
+
+        this.switchPanel = new CTList(list, 0, (e, choice) -> {
+            try {
+                this.repaintSetsPanel(map.get(choice));
+            } catch (IOException ex) {
+                Log.err.print("InfSetDialog", "刷新设置页面失败");
+                throw new RuntimeException(ex);
             }
-            button.setHorizontalAlignment(SwingConstants.LEFT);
-            button.setFont(CTFont.getCTFont(Font.PLAIN, CTFontSizeStyle.NORMAL));
-            button.addActionListener(e -> {
-                openedPanel = ctSetsPanel.getName();
-                try {
-                    this.repaintSetsPanel(ctSetsPanel);
-                } catch (IOException ex) {
-                    Log.err.print("InfSetDialog", "刷新设置页面失败");
-                    throw new RuntimeException(ex);
-                }
-            });
-            mainPanel.add(button, gbc);
-            gbc.gridy++;
         });
 
-        // 添加一个空的组件占据剩余空间，将按钮推到顶部
-        gbc.weighty = 1.0;
-        JPanel filler = new JPanel();
-        filler.setOpaque(false);
-        mainPanel.add(filler, gbc);
-
-        JScrollPane mainPanelScroll = new JScrollPane(mainPanel);
+        JScrollPane mainPanelScroll = new JScrollPane(this.switchPanel);
         mainPanelScroll.setBorder(BorderFactory.createEmptyBorder());
         mainPanelScroll.getViewport().setBackground(Color.WHITE);
         mainPanelScroll.getVerticalScrollBar().setUnitIncrement(16);
@@ -256,7 +235,13 @@ public class InfSetDialog extends JDialog {
     private void repaintSetsPanel(CTSetsPanel panel) throws IOException {
 
         c.removeAll();
-        c.add(initSetsPanelSwitchBar(), BorderLayout.WEST);
+
+
+        JScrollPane mainPanelScroll = new JScrollPane(this.switchPanel);
+        mainPanelScroll.setBorder(BorderFactory.createEmptyBorder());
+        mainPanelScroll.getViewport().setBackground(Color.WHITE);
+        mainPanelScroll.getVerticalScrollBar().setUnitIncrement(16);
+        c.add(mainPanelScroll, BorderLayout.WEST);
         initMenuBar();
         initSaveButton();
         c.add(panel, BorderLayout.CENTER);

@@ -290,7 +290,7 @@ public class PersonalizationPanel extends CTSetsPanel {
             IOForInfo io = new IOForInfo(new File(CTInfo.DATA_PATH + "setUp.json"));
             JSONObject jsonObject;
             try {
-                jsonObject = new JSONObject(io.GetInfos());
+                jsonObject = new JSONObject(io.getInfos());
             } catch (Exception e) {
                 Log.err.print("InfSetDialog", "读取设置文件失败: " + e.getMessage());
                 jsonObject = new JSONObject();
@@ -430,7 +430,7 @@ public class PersonalizationPanel extends CTSetsPanel {
 
             Log.info.print("InfSetDialog", "保存数据: " + jsonObject.toString());
             try {
-                io.SetInfo(jsonObject.toString());
+                io.setInfo(jsonObject.toString());
             } catch (IOException e) {
                 throw new RuntimeException(e);
             }

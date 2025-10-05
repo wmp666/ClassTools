@@ -24,7 +24,7 @@ public class CFInfoControl {
         IOForInfo io = new IOForInfo(FilesPath + week + ".json");
         String infos;
         try {
-            infos = io.GetInfos();
+            infos = io.getInfos();
             if (infos.equals("err"))
                 return "[]";
         } catch (IOException e) {

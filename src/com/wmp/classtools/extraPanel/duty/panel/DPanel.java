@@ -72,7 +72,7 @@ public class DPanel extends CTPanel {
         try {
             now = DutyList.get(index);
         } catch (Exception e) {
-            new IOForInfo(indexPath).SetInfo("0");
+            new IOForInfo(indexPath).setInfo("0");
             Log.err.print("CTPanel-DutyPanel", "数据异常,请检查数据文件\n问题:" + e.getMessage());
             throw new RuntimeException(e);
         }
@@ -108,7 +108,7 @@ public class DPanel extends CTPanel {
 
 
                 try {
-                    new IOForInfo(indexPath).SetInfo(String.valueOf(index));
+                    new IOForInfo(indexPath).setInfo(String.valueOf(index));
                     refresh();
                 } catch (IOException ex) {
                     throw new RuntimeException(ex);
@@ -133,7 +133,7 @@ public class DPanel extends CTPanel {
 
 
                 try {
-                    new IOForInfo(indexPath).SetInfo(String.valueOf(index));
+                    new IOForInfo(indexPath).setInfo(String.valueOf(index));
                     refresh();
                 } catch (IOException ex) {
                     throw new RuntimeException(ex);
@@ -165,13 +165,13 @@ public class DPanel extends CTPanel {
     private void initIndex(File indexPath) throws IOException {
         IOForInfo ioForInfo = new IOForInfo(indexPath);
 
-        String[] inf = ioForInfo.GetInfo();
+        String[] inf = ioForInfo.getInfo();
 
         //System.out.println(inf);
         if (inf[0].equals("err")) {
             //将数据改为默认-空,需要用户自行输入数据
             index = 0;
-            ioForInfo.SetInfo("0");
+            ioForInfo.setInfo("0");
         }else{
             index = Integer.parseInt(inf[0]);
         }
@@ -185,13 +185,13 @@ public class DPanel extends CTPanel {
 
         //System.out.println("DutyPath:" + dutyPath);
 
-        String[] inf = ioForInfo.GetInfo();
+        String[] inf = ioForInfo.getInfo();
 
 
         if (inf[0].equals("err")) {
             //将数据改为默认-空,需要用户自行输入数据
 
-            ioForInfo.SetInfo("[尽快,设置] [请]",
+            ioForInfo.setInfo("[尽快,设置] [请]",
                     "[尽快,设置,0] [请]");
 
             inf = new String[]{"[尽快,设置] [请]",
