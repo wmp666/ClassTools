@@ -31,6 +31,8 @@ public class AboutDialog extends JDialog {
     static {
         view.setBackground(CTColor.backColor);
         view.setLayout(new BorderLayout());
+
+        GetNewerVersion.checkForUpdate(null, view, false, false);
     }
 
     public AboutDialog() throws MalformedURLException {
@@ -94,7 +96,6 @@ public class AboutDialog extends JDialog {
 
         initMenuBar();
 
-        GetNewerVersion.checkForUpdate(this, view, false, false);
 
     }
 
