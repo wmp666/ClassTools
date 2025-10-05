@@ -106,7 +106,6 @@ public class InfSetDialog extends JDialog {
                 button.setForeground(Color.BLACK);
             }
             button.setHorizontalAlignment(SwingConstants.LEFT);
-            button.setBackground(Color.WHITE);
             button.setFont(CTFont.getCTFont(Font.PLAIN, CTFontSizeStyle.NORMAL));
             button.addActionListener(e -> {
                 openedPanel = ctSetsPanel.getName();

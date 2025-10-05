@@ -6,6 +6,8 @@ import com.wmp.PublicTools.UITools.CTFont;
 import com.wmp.PublicTools.UITools.CTFontSizeStyle;
 import com.wmp.PublicTools.UITools.GetIcon;
 import com.wmp.PublicTools.io.ResourceLocalizer;
+import com.wmp.PublicTools.printLog.Log;
+import com.wmp.classTools.CTComponent.CTTextButton;
 import org.commonmark.parser.Parser;
 import org.commonmark.renderer.html.HtmlRenderer;
 
@@ -15,19 +17,34 @@ import java.io.IOException;
 import java.net.URISyntaxException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.util.ArrayList;
 
 public class ShowHelpDoc extends JFrame {
 
     private Container c;
     private JScrollPane helpDocPane = new JScrollPane();
 
-    public static final String INPUT_DOC = "如何导入表格数据";
-    public static final String START_PARAMETER = "启动参数";
-    public static final String CONFIG_PLUGIN = "如何配置插件";
-    public static final String HELP_DOC = "帮助文档";
+    public static final ArrayList<String> helpDocs = new ArrayList<>();
+
+    public static final int INPUT_DOC = 0;
+    public static final int START_PARAMETER = 1;
+    public static final int CONFIG_PLUGIN = 2;
+    public static final int HELP_DOC = 3;
+
+    static {
+        helpDocs.add("如何导入表格数据");
+        helpDocs.add("启动参数");
+        helpDocs.add("如何配置插件");
+        helpDocs.add("帮助文档");
+
+    }
 
     public ShowHelpDoc() throws URISyntaxException, IOException {
-        new ShowHelpDoc(null);
+        this(null);
+    }
+
+    public ShowHelpDoc(int index) throws URISyntaxException, IOException {
+        this(helpDocs.get(index));
     }
 
     public ShowHelpDoc(String s) throws URISyntaxException, IOException {
@@ -103,6 +120,7 @@ public class ShowHelpDoc extends JFrame {
         ResourceLocalizer.copyEmbeddedFile(dataPath, "/help/images/", imageName);
 
     }
+
     private static JEditorPane getHelpDocPane(String html) {
         JEditorPane editorPane = new JEditorPane("text/html", html);
         editorPane.setFont(CTFont.getCTFont(-1, CTFontSizeStyle.SMALL));
@@ -112,8 +130,17 @@ public class ShowHelpDoc extends JFrame {
         return editorPane;
     }
 
+    public static String getHelpDocStr(int index) {
+        return helpDocs.get(index);
+    }
+
     private void showHelpDoc(String s) throws IOException, URISyntaxException {
-        switch (s) {
+        if (s == null) return;
+
+        this.helpDocPane.setViewportView(getHelpDocPane(initHelpDoc(s + ".md")));
+        this.helpDocPane.repaint();
+
+        /*switch (s) {
             case INPUT_DOC -> {
 
                 String html = initHelpDoc("如何导入表格数据.md");
@@ -135,7 +162,34 @@ public class ShowHelpDoc extends JFrame {
                 this.helpDocPane.setViewportView(getHelpDocPane(html));
                 this.helpDocPane.repaint();
             }
-        }
+        }*/
+    }
+
+    private void showHelpDoc(int index) throws IOException, URISyntaxException {
+        showHelpDoc(getHelpDocStr(index));
+        /*switch (s) {
+            case INPUT_DOC -> {
+
+                String html = initHelpDoc("如何导入表格数据.md");
+                this.helpDocPane.setViewportView(getHelpDocPane(html));
+                this.helpDocPane.repaint();
+            }
+            case START_PARAMETER -> {
+                String html = initHelpDoc("启动参数.md");
+                this.helpDocPane.setViewportView(getHelpDocPane(html));
+                this.helpDocPane.repaint();
+            }
+            case CONFIG_PLUGIN -> {
+                String html = initHelpDoc("如何配置插件.md");
+                this.helpDocPane.setViewportView(getHelpDocPane(html));
+                this.helpDocPane.repaint();
+            }
+            case HELP_DOC -> {
+                String html = initHelpDoc("帮助文档.md");
+                this.helpDocPane.setViewportView(getHelpDocPane(html));
+                this.helpDocPane.repaint();
+            }
+        }*/
     }
 
     private JPanel getButtonPanel() {
@@ -168,25 +222,39 @@ public class ShowHelpDoc extends JFrame {
 
     private JScrollPane getChooseHelpDoc() {
         JPanel chooseHelpDoc = new JPanel();
-        chooseHelpDoc.setLayout(new FlowLayout());
+        chooseHelpDoc.setLayout(new GridBagLayout());
         chooseHelpDoc.setBackground(Color.WHITE);
 
-        JList<String> list = new JList<>();
-        list.setListData(new String[]{"如何导入表格数据", "启动参数", "如何配置插件", "帮助文档"});
-        list.setFont(CTFont.getCTFont(Font.BOLD, CTFontSizeStyle.BIG));
-        list.addListSelectionListener(e -> {
-            if (!list.isSelectionEmpty()) {
-                String s = list.getSelectedValue();
+        GridBagConstraints gbc = new GridBagConstraints();
+        gbc.fill = GridBagConstraints.HORIZONTAL;
+        gbc.gridy = 0;
+        gbc.gridx = 0;
+        gbc.weightx = 1.0;
+        gbc.anchor = GridBagConstraints.NORTH;
+        gbc.insets = new Insets(5, 0, 5, 0);
+
+        helpDocs.forEach(s -> {
+            CTTextButton button = new CTTextButton(s, false);
+            button.setHorizontalAlignment(SwingConstants.LEFT);
+            button.setFont(CTFont.getCTFont(Font.BOLD, CTFontSizeStyle.NORMAL));
+            button.addActionListener(e -> {
+
                 try {
                     showHelpDoc(s);
                     this.repaint();
-                } catch (IOException | URISyntaxException ex) {
-                throw new RuntimeException(ex);
-            }
-            }
+                } catch (Exception ex) {
+                    Log.err.print("帮助", "文档打开失败:\n" + ex.getMessage());
+                    throw new RuntimeException(ex);
+                }
+            });
+            chooseHelpDoc.add(button, gbc);
+            gbc.gridy++;
         });
-
-        chooseHelpDoc.add(list);
+        // 添加一个空的组件占据剩余空间，将按钮推到顶部
+        gbc.weighty = 1.0;
+        JPanel filler = new JPanel();
+        filler.setOpaque(false);
+        chooseHelpDoc.add(filler, gbc);
 
         return new JScrollPane(chooseHelpDoc);
     }
