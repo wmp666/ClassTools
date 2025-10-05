@@ -39,7 +39,8 @@ public class ScreenProduct extends JDialog {
 
         SetsScrInfo setsScrInfo = new SetsScrInfo();
 
-        initBackground(new Random().nextInt(setsScrInfo.getBGImagesLength() - 1));
+        if (setsScrInfo.getBGImagesLength() > 1)
+            initBackground(new Random().nextInt(setsScrInfo.getBGImagesLength() - 1));
         initColor();
 
 
@@ -162,7 +163,7 @@ public class ScreenProduct extends JDialog {
 
     private void initBackground(int index) throws IOException {
         JPanel panel = (JPanel) this.getContentPane();
-        panel.setOpaque(false);
+
 
         SetsScrInfo setsScrInfo = new SetsScrInfo();
 
@@ -173,19 +174,21 @@ public class ScreenProduct extends JDialog {
         {
 
             viewLabel.setBounds(0, 0, screenSize.width, screenSize.height);
+            viewLabel.setBackground(CTColor.backColor);
+            panel.setOpaque(true);
 
             String bgImagePath = setsScrInfo.getBGImagePath(index);
             if (bgImagePath != null) {
                 // 使用ImageIO避免缓存并支持更多格式
                 File imageFile = new File(bgImagePath);
                 if (!imageFile.exists()) {
-                    Log.err.print("背景图片加载", "背景图片不存在: " + bgImagePath);
+                    Log.warn.print("背景图片加载", "背景图片不存在: " + bgImagePath);
                     throw new IOException("背景图片不存在: " + bgImagePath);
                 }
 
                 Image image = ImageIO.read(imageFile);
                 if (image == null) {
-                    Log.err.print("背景图片加载", "无法读取图片格式: " + bgImagePath);
+                    Log.warn.print("背景图片加载", "无法读取图片格式: " + bgImagePath);
                     throw new IOException("无法读取图片格式: " + bgImagePath);
                 }
 
@@ -193,14 +196,13 @@ public class ScreenProduct extends JDialog {
 
                 icon.setImage(resizeImage(icon, screenSize));
 
+                panel.setOpaque(false);
                 viewLabel.setIcon(icon);
 
-                viewLabel.revalidate();
-                viewLabel.repaint();
-            } else {
-                viewLabel.setBackground(CTColor.backColor);
-                panel.setOpaque(true);
+
             }
+            viewLabel.revalidate();
+            viewLabel.repaint();
 
         }
     }

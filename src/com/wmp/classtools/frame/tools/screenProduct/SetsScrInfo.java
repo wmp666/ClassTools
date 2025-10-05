@@ -57,10 +57,10 @@ public class SetsScrInfo {
                 String path = jsonObject.getString("path");
                 File[] files = new File(path).listFiles();
                 if (files != null && files.length > index) {
-                    return files[index].getPath();
+                    return files[index].getPath().isEmpty() ? files[index].getPath() : null;
                 }
             } else {
-                return jsonObject.getString("path");
+                return jsonObject.getString("path").isEmpty() ? jsonObject.getString("path") : null;
             }
 
         }
