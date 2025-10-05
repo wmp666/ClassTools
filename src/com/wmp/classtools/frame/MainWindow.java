@@ -6,6 +6,7 @@ import com.wmp.PublicTools.printLog.Log;
 import com.wmp.classTools.CTComponent.CTBorderFactory;
 import com.wmp.classTools.CTComponent.CTPanel;
 import com.wmp.classTools.extraPanel.attendance.panel.ATPanel;
+import com.wmp.classTools.extraPanel.classForm.panel.ClassFormPanel;
 import com.wmp.classTools.extraPanel.countdown.panel.CountDownPanel;
 import com.wmp.classTools.extraPanel.duty.panel.DPanel;
 import com.wmp.classTools.extraPanel.reminderBir.panel.BRPanel;
@@ -74,6 +75,9 @@ public class MainWindow extends JDialog {
 
         CountDownPanel countDownPanel = new CountDownPanel();
         allPanelList.add(countDownPanel);
+
+        ClassFormPanel classFormPanel = new ClassFormPanel();
+        allPanelList.add(classFormPanel);
 
         BRPanel brPanel = new BRPanel(birthdayPath);
         allPanelList.add(brPanel);
@@ -152,29 +156,6 @@ public class MainWindow extends JDialog {
             } else {
                 this.setVisible(true);
                 //刷新
-                /*Thread repaint = new Thread(() -> {
-
-                    while (true) {
-                        try {
-                            Thread.sleep(100);
-                        } catch (InterruptedException e) {
-                            e.printStackTrace();
-                        }
-                        //刷新窗口大小
-
-                        showPanelList.forEach(ctPanel -> {
-                            ctPanel.setBackground(CTColor.backColor);
-                        });
-
-                        // 重新验证中心面板以更新布局
-                        centerPane.revalidate();
-                        
-                        this.pack();
-                        this.setLocation(Toolkit.getDefaultToolkit().getScreenSize().width - this.getWidth(), 0);
-                        this.repaint();
-                    }
-                });
-                repaint.start();*/
 
                 Timer repaint = new Timer(200, e -> {
                     //刷新窗口大小

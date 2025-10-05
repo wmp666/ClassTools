@@ -27,8 +27,8 @@ public class CTInfo {
      * d:只修复的问题,问题较少
      * e:测试版本号
      */
-    public static String version = "1.37.2";
-    public static String iconPath;
+    public static String version = "1.37.2.0.1";
+    public static String iconPath = "/image/icon.png";
 
     public static double dpi = 1;
     public static boolean isError = false;
