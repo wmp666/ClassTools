@@ -3,7 +3,10 @@ package com.wmp.classTools.extraPanel.classForm.settings;
 import com.wmp.PublicTools.UITools.GetIcon;
 import com.wmp.PublicTools.io.IOForInfo;
 import com.wmp.PublicTools.printLog.Log;
-import com.wmp.classTools.CTComponent.*;
+import com.wmp.classTools.CTComponent.CTList;
+import com.wmp.classTools.CTComponent.CTSetsPanel;
+import com.wmp.classTools.CTComponent.CTTable;
+import com.wmp.classTools.CTComponent.CTTextButton;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
@@ -68,9 +71,10 @@ public class ClassFormSetsPanel extends CTSetsPanel {
 
     private void initSetsPanel() {
         Log.info.print("CFSetsPanel", "初始化课程表设置面板");
+        CFTableList.clear();
         for (int i = 1; i <= 7; i++) {
             DefaultTableModel model = new DefaultTableModel(getClassFormData(i),
-                    new String[]{"时间", "课程"});
+                    new String[]{"时间(周" + i + ")", "课程"});
             CTTable table = new CTTable();
             table.setModel(model);
             CFTableList.add(table);
@@ -84,11 +88,8 @@ public class ClassFormSetsPanel extends CTSetsPanel {
 
         mainPanel.setLayout(new BorderLayout());
 
-        DefaultTableModel model = new DefaultTableModel(getClassFormData(week),
-                new String[]{"时间(周" + week + ")", "课程"});
         CTTable ctTable = CFTableList.get(week - 1);
-        ctTable.setModel(model);
-
+        DefaultTableModel model = (DefaultTableModel) ctTable.getModel();
         JScrollPane scrollPane = new JScrollPane(ctTable);
         mainPanel.add(scrollPane, BorderLayout.CENTER);
 
@@ -207,6 +208,7 @@ public class ClassFormSetsPanel extends CTSetsPanel {
     public void refresh() throws IOException {
         this.removeAll();
 
+        initSetsPanel();
         initChooseButtons();
 
         this.revalidate();

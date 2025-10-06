@@ -171,22 +171,21 @@ public class MainWindow extends JDialog {
                 });
                 repaint.start();
 
-                Timer repaintSize = new Timer(2000, e -> {
+                //刷新大小
+                Timer repaintSize = new Timer(500, e -> {
                     this.pack();
 
 
-                    if (this.getHeight() >= Toolkit.getDefaultToolkit().getScreenSize().getHeight() * 3 / 4)
-                        this.setSize(new Dimension(this.getWidth(), (int) (Toolkit.getDefaultToolkit().getScreenSize().getHeight() * 3 / 4)));
+                    if (this.getHeight() >= Toolkit.getDefaultToolkit().getScreenSize().getHeight() * 4 / 5)
+                        this.setSize(new Dimension(this.getWidth(), (int) (Toolkit.getDefaultToolkit().getScreenSize().getHeight() * 4 / 5)));
                     this.setLocation(Toolkit.getDefaultToolkit().getScreenSize().width - this.getWidth(), 0);
                     this.repaint();
                 });
                 repaintSize.start();
 
+                //刷新数据
                 Timer strongRepaint = new Timer(60 * 1000, e -> {
-                    //刷新组件
                     refreshPanel();
-
-
                 });
                 strongRepaint.start();
             }

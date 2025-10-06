@@ -1,10 +1,11 @@
 package com.wmp.classTools.extraPanel.attendance.settings;
 
+import com.wmp.PublicTools.UITools.GetIcon;
 import com.wmp.PublicTools.io.IOForInfo;
 import com.wmp.PublicTools.printLog.Log;
-import com.wmp.classTools.CTComponent.CTIconButton;
 import com.wmp.classTools.CTComponent.CTSetsPanel;
 import com.wmp.classTools.CTComponent.CTTable;
+import com.wmp.classTools.CTComponent.CTTextButton;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
@@ -62,9 +63,8 @@ public class AllStuSetsPanel extends CTSetsPanel {
         //新建
         {
 
-            CTIconButton newBtn = new CTIconButton("添加新的项",
-                    "/image/%s/new_0.png",
-                    "/image/%s/new_1.png", 30, () -> {
+            CTTextButton newBtn = new CTTextButton("添加", GetIcon.getIcon(getClass().getResource("/image/light/new_0.png"), 30, 30));
+            newBtn.addActionListener(e -> {
                 //检测内容是否为空
                 boolean b = true;
                 String s1 = "null";
@@ -86,19 +86,14 @@ public class AllStuSetsPanel extends CTSetsPanel {
         // 删除
         {
 
-            CTIconButton deleteBtn = new CTIconButton("删除选中的项",
-                    "/image/%s/delete_0.png",
-                    "/image/%s/delete_1.png", 35, () -> {
-
-
+            CTTextButton deleteBtn = new CTTextButton("删除", GetIcon.getIcon(getClass().getResource("/image/light/delete_0.png"), 30, 30));
+            deleteBtn.addActionListener(e -> {
                 int selectedRow = allStuTable.getSelectedRow();
                 if (selectedRow != -1) {
                     model.removeRow(selectedRow);
 
                 }
             });
-            //deleteBtn.setToolTipText("删除选中的值日生记录");
-            //deleteBtn.setLocation(255, 380);
             buttonPanel.add(deleteBtn);
         }
 
