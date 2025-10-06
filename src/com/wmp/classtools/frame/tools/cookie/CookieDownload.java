@@ -98,10 +98,10 @@ public class CookieDownload {
         downloadButton.setFont(CTFont.getCTFont(Font.BOLD, CTFontSizeStyle.SMALL));
         downloadButton.addActionListener(e -> {
             if (ref.openedButtonKey.isEmpty()) {
-                Log.err.print("CookieDownload", "请选择一个快速启动单元");
+                Log.err.print(getClass(), "请选择一个快速启动单元");
             } else {
                 if (cookieInfoMap.get(ref.openedButtonKey).getDownloadUrl().isEmpty()) {
-                    Log.err.print("CookieDownload", "该快速启动单元暂无下载地址");
+                    Log.err.print(getClass(), "该快速启动单元暂无下载地址");
                 } else {
 
                     JFileChooser fileChooser = new JFileChooser();
@@ -128,7 +128,7 @@ public class CookieDownload {
         showInfoButton.setFont(CTFont.getCTFont(Font.BOLD, CTFontSizeStyle.SMALL));
         showInfoButton.addActionListener(e -> {
             if (ref.openedButtonKey.isEmpty()) {
-                Log.err.print("CookieDownload", "请选择一个快速启动单元");
+                Log.err.print(getClass(), "请选择一个快速启动单元");
             } else {
                 JDialog infoDialog = new JDialog();
                 infoDialog.setIconImage(GetIcon.getImageIcon(getClass().getResource("/image/light/about_0.png"), 300, 300).getImage());

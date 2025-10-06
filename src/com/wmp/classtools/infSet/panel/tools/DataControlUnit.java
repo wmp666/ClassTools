@@ -76,7 +76,7 @@ public class DataControlUnit extends JPanel {
                 try {
                     IOForInfo.deleteDirectoryRecursively(Path.of(path));
                 } catch (IOException ex) {
-                    Log.err.print("文件管理", "删除失败:\n" + ex.getMessage());
+                    Log.err.print(getClass(), "删除失败:\n" + ex.getMessage());
                     throw new RuntimeException(ex);
                 }
             });

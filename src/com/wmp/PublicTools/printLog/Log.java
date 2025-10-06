@@ -66,7 +66,7 @@ public class Log {
 
     public static InfoLogStyle info = new InfoLogStyle(LogStyle.INFO);
     public static PrintLogStyle warn = new PrintLogStyle(LogStyle.WARN);
-    public static PrintLogStyle err = new PrintLogStyle(LogStyle.ERROR);
+    public static ErrorLogStyle err = new ErrorLogStyle(LogStyle.ERROR);
 
     static {
         SystemTray systemTray = SystemTray.getSystemTray();
@@ -114,7 +114,7 @@ public class Log {
                     temp.setForeground(Color.BLACK);
                     moreDialog.add(temp);
                 } catch (MalformedURLException ex) {
-                    Log.err.print("FinalPanel", "初始化按钮时出错\n" + ex);
+                    Log.err.print(Log.class, "初始化按钮时出错\n" + ex);
                     throw new RuntimeException(ex);
                 }
             });
@@ -282,7 +282,7 @@ public class Log {
                 else title = "世界拒绝了我";
                 Icon icon = null;
                 if (CTInfo.isError) icon = GetIcon.getIcon(Log.class.getResource("/image/error/icon.png"), 100, 100);
-                CTOptionPane.showMessageDialog(c, title, logInfo, icon, CTOptionPane.ERROR_MESSAGE, true);
+                CTOptionPane.showMessageDialog(c, title, owner + ":\n" + logInfo, icon, CTOptionPane.ERROR_MESSAGE, true);
 
                 logInfList.add(info);
             }
@@ -394,7 +394,7 @@ public class Log {
                 Log.info.message(null, "Log", "日志保存成功");
         } catch (IOException e) {
             if (showMessageDialog)
-                Log.err.print("Log", "日志保存失败");
+                Log.err.print(Log.class, "日志保存失败");
             throw new RuntimeException(e);
         }
     }

@@ -42,7 +42,7 @@ public class ScreenProductSetsPanel extends CTSetsPanel {
         try {
             initUI();
         } catch (IOException e) {
-            Log.err.print("ScreenProductPanel-initUI", "初始化失败:" + e.getMessage());
+            Log.err.print(getClass(), "初始化失败:" + e.getMessage());
             throw new RuntimeException(e);
         }
 
@@ -76,7 +76,7 @@ public class ScreenProductSetsPanel extends CTSetsPanel {
 
             }
         } catch (Exception e) {
-            Log.err.print("ScreenProductPanel-initViewPanel", "初始化失败:" + e.getMessage());
+            Log.err.print(ScreenProductSetsPanel.class, "初始化失败:" + e.getMessage());
             throw new RuntimeException(e);
         }
 
@@ -152,7 +152,7 @@ public class ScreenProductSetsPanel extends CTSetsPanel {
                                     try {
                                         Files.delete(file);
                                     } catch (IOException ex) {
-                                        Log.err.print("IOStreamForInf-删除文件", "文件: " + file + "\n删除失败: " + ex.getMessage());
+                                        Log.err.print(getClass(), "文件: " + file + "\n删除失败: " + ex.getMessage());
                                         throw new RuntimeException(ex);
                                     }
                                     return FileVisitResult.CONTINUE;
@@ -165,7 +165,7 @@ public class ScreenProductSetsPanel extends CTSetsPanel {
                                     try {
                                         Files.delete(dir);
                                     } catch (IOException ex) {
-                                        Log.err.print("IOStreamForInf-删除文件", "文件夹: " + dir + "\n删除失败: " + ex.getMessage());
+                                        Log.err.print(getClass(), "文件夹: " + dir + "\n删除失败: " + ex.getMessage());
                                         throw new RuntimeException(ex);
                                     }
                                     return FileVisitResult.CONTINUE;
@@ -175,7 +175,7 @@ public class ScreenProductSetsPanel extends CTSetsPanel {
                         }
                         targetFile.mkdirs();
                         if (!sourceFile.exists()) {
-                            Log.err.print("ScreenProductPanel-pathChoiceButton", "文件夹不存在:" + path);
+                            Log.err.print(getClass(), "文件夹不存在:" + path);
                             return;
                         }
                         for (File file : Objects.requireNonNull(sourceFile.listFiles())) {
@@ -186,7 +186,7 @@ public class ScreenProductSetsPanel extends CTSetsPanel {
                         }
                         //Files.copy(Paths.get(path), Paths.get(target), StandardCopyOption.REPLACE_EXISTING);
                     } catch (IOException ex) {
-                        Log.err.print("ScreenProductPanel-pathChoiceButton", "文件夹复制失败:" + ex.getMessage());
+                        Log.err.print(getClass(), "文件夹复制失败:" + ex.getMessage());
                         throw new RuntimeException(ex);
                     }
                     jsonObject.put("path", target);
@@ -202,7 +202,7 @@ public class ScreenProductSetsPanel extends CTSetsPanel {
                     try {
                         Files.copy(Paths.get(path), Paths.get(target), StandardCopyOption.REPLACE_EXISTING);
                     } catch (IOException ex) {
-                        Log.err.print("ScreenProductPanel-pathChoiceButton", "图片复制失败:" + ex.getMessage());
+                        Log.err.print(getClass(), "图片复制失败:" + ex.getMessage());
                         throw new RuntimeException(ex);
                     }
                     jsonObject.put("path", target);

@@ -54,7 +54,7 @@ public class IOForInfo {
             Log.info.print("IOForInfo-获取数据", "数据内容: " + sb);
             return sb.toString();// 读取第一行
         } catch (IOException e) {
-            Log.err.print("IOForInfo-获取数据", file.getPath() + "文件读取失败");
+            Log.err.print(IOForInfo.class, file.getPath() + "文件读取失败");
             throw new RuntimeException(e);
         }
     }
@@ -70,7 +70,7 @@ public class IOForInfo {
     public String getInfos() throws IOException {
         if (!file.exists()) {
             if (!creativeFile(file)) {
-                Log.err.print("IOForInfo-获取数据", file.getPath() + "文件无法创建");
+                Log.err.print(IOForInfo.class, file.getPath() + "文件无法创建");
                 return "err";
             }
         }
@@ -99,7 +99,7 @@ public class IOForInfo {
             Log.info.print("IOForInfo-获取数据", file.getPath() + "文件读取完成");
             return !s.isEmpty() ? s : "err";
         } catch (IOException e) {
-            Log.err.print("IOForInfo-获取数据", file.getPath() + "文件读取失败");
+            Log.err.print(IOForInfo.class, file.getPath() + "文件读取失败");
             return "err";
         }
     }
@@ -108,7 +108,7 @@ public class IOForInfo {
 
         if (!file.exists()) {
             if (!creativeFile(file)) {
-                Log.err.print("IOForInfo-设置数据", file.getPath() + "文件无法创建");
+                Log.err.print(IOForInfo.class, file.getPath() + "文件无法创建");
                 return;
             }
         }
@@ -139,7 +139,7 @@ public class IOForInfo {
                 }
             }
         } catch (IOException e) {
-            Log.err.print("IOForInfo-设置数据", file.getPath() + "文件写入失败");
+            Log.err.print(IOForInfo.class, file.getPath() + "文件写入失败");
         }
     }
 

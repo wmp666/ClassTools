@@ -292,7 +292,7 @@ public class PersonalizationPanel extends CTSetsPanel {
             try {
                 jsonObject = new JSONObject(io.getInfos());
             } catch (Exception e) {
-                Log.err.print("InfSetDialog", "读取设置文件失败: " + e.getMessage());
+                Log.err.print(getClass(), "读取设置文件失败: " + e.getMessage());
                 jsonObject = new JSONObject();
             }
 

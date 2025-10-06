@@ -28,7 +28,7 @@ public class CFInfoControl {
             if (infos.equals("err"))
                 return "[]";
         } catch (IOException e) {
-            Log.err.print("课程表", FilesPath + week + ".json文件读取失败\n" + e.getMessage());
+            Log.err.print(CFInfoControl.class, FilesPath + week + ".json文件读取失败\n" + e.getMessage());
             return "[]";
         }
         return infos;

@@ -22,7 +22,7 @@ public class SetsScrInfo {
                 fileWriter.write("{}");
                 fileWriter.close();
             } catch (IOException e) {
-                Log.err.print("ScreenProduct", "初始化失败:" + e.getMessage());
+                Log.err.print(SetsScrInfo.class, "初始化失败:" + e.getMessage());
                 throw new RuntimeException(e);
             }
         }

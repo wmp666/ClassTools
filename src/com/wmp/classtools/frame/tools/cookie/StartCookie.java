@@ -21,7 +21,7 @@ public class StartCookie {
     }
     public static void showCookie(String pin){
         if (pin == null){
-            Log.err.print("StartCookie", "pin为空");
+            Log.err.print(StartCookie.class, "pin为空");
             return;
         }
         try {
@@ -49,7 +49,7 @@ public class StartCookie {
                         case "exe" -> {
 
                             if (!Desktop.isDesktopSupported()) {
-                                Log.err.print("StartCookie", "不支持运行此exe文件");
+                                Log.err.print(StartCookie.class, "不支持运行此exe文件");
                                 return;
                             }
 
@@ -71,11 +71,11 @@ public class StartCookie {
                             Desktop.getDesktop().browse(URI.create(run));
                         }
                         default -> {
-                            Log.err.print("StartCookie", "未知的cookie类型");
+                            Log.err.print(StartCookie.class, "未知的cookie类型");
                         }
                     }
                 } catch (Exception e) {
-                    Log.err.print("StartCookie", "运行失败！\n" + e.getMessage());
+                    Log.err.print(StartCookie.class, "运行失败！\n" + e.getMessage());
                     throw new RuntimeException(e);
                 }
                 new Thread(() -> {
@@ -84,10 +84,10 @@ public class StartCookie {
 
                 //Runtime.getRuntime().exec(cookieFile.getRunPath());
             }else {
-                Log.err.print("StartCookie", "错误的pin");
+                Log.err.print(StartCookie.class, "错误的pin");
             }
         } catch (IOException e) {
-            Log.err.print("StartCookie", "运行失败！\n" + e.getMessage());
+            Log.err.print(StartCookie.class, "运行失败！\n" + e.getMessage());
         }
 
     }

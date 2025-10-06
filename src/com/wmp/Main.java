@@ -49,7 +49,7 @@ public class Main{
                 Log.info.print("Main", "使用的启动参数:" + Arrays.toString(args));
             }
         } catch (Exception e) {
-            Log.err.print("Main", "初始化失败:" + e.getMessage());
+            Log.err.print(Main.class, "初始化失败:" + e.getMessage());
             Log.showLogDialog();
             throw new RuntimeException(e);
         }
@@ -72,7 +72,7 @@ public class Main{
         try {
             SwingRun.show(b, startUpdate);
         } catch (Exception e) {
-            Log.err.print("Main", "窗口初始化失败:" + e.getMessage());
+            Log.err.print(Main.class, "窗口初始化失败:" + e.getMessage());
             Log.showLogDialog();
             throw new RuntimeException(e);
         }

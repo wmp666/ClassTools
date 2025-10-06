@@ -85,7 +85,7 @@ public class GetNewerVersion {
                     }
                 }
                 if (downloadUrl.equals("null")) {
-                    Log.err.print(null, "获取新版本", "无法获取下载地址");
+                    Log.err.print(null, GetNewerVersion.class, "无法获取下载地址");
                 } else {
                     Log.info.print(null, "获取新版本", "获取下载地址成功");
                 }
@@ -105,7 +105,7 @@ public class GetNewerVersion {
     public static void checkForUpdate(Window dialog, JPanel panel, boolean showMessage, boolean inquireUpdateWay) {
 
         if (Main.allArgs.get("screenProduct:show").contains(Main.argsList)) {
-            Log.err.print(null, "获取新版本", "屏保状态,无法更新");
+            Log.err.print(null, GetNewerVersion.class, "屏保状态,无法更新");
             return;
         }
 
@@ -117,7 +117,7 @@ public class GetNewerVersion {
             if (s.equals("最新版")) updateMode = NEW_VERSION;
             else if (s.equals("测试版")) updateMode = TEST_VERSION;
             else {
-                Log.err.print(null, "获取新版本", "未设置更新方式");
+                Log.err.print(null, GetNewerVersion.class, "未设置更新方式");
                 return;
             }
         }
@@ -143,7 +143,7 @@ public class GetNewerVersion {
                 protected void done() {
                     if (latestVersion == null) {
 
-                        Log.err.print(dialog, "获取新版本", "无法获取版本信息");
+                        Log.err.print(dialog, GetNewerVersion.class, "无法获取版本信息");
 
                         return;
                     }
@@ -203,7 +203,7 @@ public class GetNewerVersion {
                     System.out.println(latestVersion);
                     if (latestVersion == null) {
 
-                        Log.err.print(dialog, "获取新版本", "无法获取版本信息");
+                        Log.err.print(dialog, GetNewerVersion.class, "无法获取版本信息");
 
                         return;
                     }
@@ -289,7 +289,7 @@ public class GetNewerVersion {
 
             protected void done() {
                 if (sourceURL == null) {
-                    Log.err.print(dialog, "获取新版本", "无法获取下载地址");
+                    Log.err.print(dialog, GetNewerVersion.class, "无法获取下载地址");
                     return;
                 }
 
@@ -299,7 +299,7 @@ public class GetNewerVersion {
                     try {
                         downloadSource(sourceURL);
                     } catch (URISyntaxException e) {
-                        Log.err.print(dialog, "获取新版本-下载", "下载失败");
+                        Log.err.print(dialog, GetNewerVersion.class, "下载失败");
                         throw new RuntimeException(e);
                     } catch (IOException e) {
                         throw new RuntimeException(e);

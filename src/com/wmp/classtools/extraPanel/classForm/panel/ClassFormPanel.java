@@ -69,7 +69,7 @@ public class ClassFormPanel extends CTPanel {
                     gbc.gridy++;
                     this.add(PeoPanelProcess.getShowPeoPanel(List.of(nowClasses)), gbc);
                 } catch (Exception e) {
-                    Log.err.print("ClassFormPanel", "获取课程列表失败: \n" + e.getMessage());
+                    Log.err.print(getClass(), "获取课程列表失败: \n" + e.getMessage());
                     throw new RuntimeException(e);
                 }
 
@@ -90,7 +90,7 @@ public class ClassFormPanel extends CTPanel {
                     gbc.gridy++;
                     this.add(PeoPanelProcess.getShowPeoPanel(List.of(nextClass)), gbc);
                 } catch (Exception e) {
-                    Log.err.print("ClassFormPanel", "获取课程表失败: \n" + e.getMessage());
+                    Log.err.print(getClass(), "获取课程表失败: \n" + e.getMessage());
                     throw new RuntimeException(e);
                 }
 

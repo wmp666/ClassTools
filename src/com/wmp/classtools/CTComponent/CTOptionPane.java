@@ -449,7 +449,7 @@ public class CTOptionPane {
                 try {
                     Thread.sleep(10000);
                 } catch (InterruptedException ex) {
-                    Log.err.print("EasterEgg", "获取彩蛋文件数据异常: \n" + ex.getMessage());
+                    Log.err.print(CTOptionPane.class, "发生异常: \n" + ex.getMessage());
                     throw new RuntimeException(ex);
                 }
                 exitButton.setEnabled(true);

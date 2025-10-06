@@ -184,7 +184,7 @@ public class ClassFormSetsPanel extends CTSetsPanel {
             }
             return temp;
         } catch (Exception e) {
-            Log.err.print("CFSetsPanel", "获取数据失败:\n" + e.getMessage());
+            Log.err.print(getClass(), "获取数据失败:\n" + e.getMessage());
             throw new RuntimeException(e);
         }
     }

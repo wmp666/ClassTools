@@ -48,7 +48,7 @@ public class CTFont {
         //判断是否存在该字体
         boolean isExist = Arrays.asList(fontNames).contains(fontName);
         if (!isExist) {
-            Log.err.print("fontNames", "不存在该字体:" + fontName);
+            Log.err.print(CTFont.class, "不存在该字体:" + fontName);
             return;
         }
         CTFont.fontName = fontName;

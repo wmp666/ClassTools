@@ -98,7 +98,7 @@ public class ATPanel extends CTPanel {
                     try {
                         new InfSetDialog(MainWindow::refreshPanel, "学生名单");
                     } catch (Exception ex) {
-                        Log.err.print("ATPanel", "设置打开失败");
+                        Log.err.print(getClass(), "设置打开失败");
                         throw new RuntimeException(ex);
                     }
                 });
@@ -109,7 +109,7 @@ public class ATPanel extends CTPanel {
                     try {
                         new InfSetDialog(MainWindow::refreshPanel, "迟到人员");
                     } catch (Exception ex) {
-                        Log.err.print("ATPanel", "设置打开失败\n" + ex);
+                        Log.err.print(getClass(), "设置打开失败\n" + ex);
                         throw new RuntimeException(ex);
                     }
                 });

@@ -13,7 +13,6 @@ import com.wmp.PublicTools.printLog.Log;
 import com.wmp.PublicTools.update.GetNewerVersion;
 import com.wmp.classTools.CTComponent.CTIconButton;
 import com.wmp.classTools.CTComponent.CTTextButton;
-import com.wmp.classTools.frame.tools.help.ShowHelpDoc;
 
 import javax.swing.*;
 import java.awt.*;

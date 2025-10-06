@@ -78,7 +78,7 @@ public class DayIsNow {
 
             }
         } catch (Exception e) {
-            Log.err.print("DayIsNow", "获取目标时间失败: \n" + e.getMessage());
+            Log.err.print(DayIsNow.class, "获取目标时间失败: \n" + e.getMessage());
             throw new RuntimeException(e);
         }
 
@@ -111,7 +111,7 @@ public class DayIsNow {
         if (targetTime == null || targetTime.isEmpty()) return time;
 
         if (targetTime.startsWith("lunar")) {
-            Log.err.print("DayIsNow", "获取目标时间失败: \n" + "不支持农历");
+            Log.err.print(DayIsNow.class, "获取目标时间失败: \n" + "不支持农历");
         }
         try {
 
@@ -126,7 +126,7 @@ public class DayIsNow {
 
             time = calendar.getTime().getTime() - new Date().getTime();
         } catch (Exception e) {
-            Log.err.print("DayIsNow", "获取目标时间失败: \n" + e.getMessage());
+            Log.err.print(DayIsNow.class, "获取目标时间失败: \n" + e.getMessage());
             throw new RuntimeException(e);
         }
         return time;

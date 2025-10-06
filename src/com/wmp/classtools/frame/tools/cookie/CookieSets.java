@@ -50,7 +50,7 @@ public class CookieSets {
         } else {
             File setsFile = new File(file, "setUp.json");
             if (!setsFile.exists()) {
-                Log.err.print(dialog, "插件设置窗口", "此插件无配置文件");
+                Log.err.print(dialog, CookieSets.class, "此插件无配置文件");
                 return;
             }
             JSONObject jsonObject;
@@ -196,7 +196,7 @@ public class CookieSets {
                             System.out.println(CTInfo.DATA_PATH + "Cookie\\" + finalPin + "\\");
                             cookiePath = new File(CTInfo.DATA_PATH + "Cookie\\" + finalPin + "\\");
                         } catch (Exception ex) {
-                            Log.err.print(dialog, "插件设置窗口", "打开插件目录失败:" + ex.getMessage());
+                            Log.err.print(dialog, CookieSets.class, "打开插件目录失败:" + ex.getMessage());
                         }
                         cookiePath.mkdirs();
                         System.out.println(cookiePath.getPath());
@@ -294,7 +294,7 @@ public class CookieSets {
                         Log.info.message(dialog, "插件设置窗口", "设置完成");
 
                     } catch (IOException ex) {
-                        Log.err.print(dialog, "插件设置窗口", "设置失败\n" + ex.getMessage());
+                        Log.err.print(dialog, CookieSets.class, "设置失败\n" + ex.getMessage());
                         return;
                     }
 
@@ -303,7 +303,7 @@ public class CookieSets {
                     try {
                         refreshParentWindow();
                     } catch (IOException ex) {
-                        Log.err.print(dialog, "插件设置窗口", "刷新失败\n" + ex.getMessage());
+                        Log.err.print(dialog, CookieSets.class, "刷新失败\n" + ex.getMessage());
                         return;
                     }
                 }
@@ -375,7 +375,7 @@ public class CookieSets {
                 protected Void doInBackground() throws Exception {
                     try {
                         if (file == null || !file.exists()) {
-                            Log.err.print("删除 Cookie", "目标不存在");
+                            Log.err.print(CookieSets.class, "目标不存在");
                             return null;
                         }
 
@@ -390,12 +390,12 @@ public class CookieSets {
                             Log.info.message(null, "删除 Cookie", "删除成功");
                         } else {
                             String errorType = file.canWrite() ? "文件被占用" : "权限不足";
-                            Log.err.print("删除 Cookie", "删除失败：" + errorType);
+                            Log.err.print(CookieSets.class, "删除失败：" + errorType);
                         }
                     } catch (IOException e) {
-                        Log.err.print("删除 Cookie", "删除失败：文件遍历异常-" + e.getMessage());
+                        Log.err.print(CookieSets.class, "删除失败：文件遍历异常-" + e.getMessage());
                     } catch (SecurityException e) {
-                        Log.err.print("删除 Cookie", "删除失败：安全限制-" + e.getMessage());
+                        Log.err.print(CookieSets.class, "删除失败：安全限制-" + e.getMessage());
                     }
                     return null;
                 }

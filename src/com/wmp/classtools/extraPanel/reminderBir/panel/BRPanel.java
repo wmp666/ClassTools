@@ -68,7 +68,7 @@ public class BRPanel extends CTPanel {
                         try {
                             showBR();
                         } catch (IOException ex) {
-                            Log.err.print("BRPanel", "显示生日列表失败: \n" + ex.getMessage());
+                            Log.err.print(getClass(), "显示生日列表失败: \n" + ex.getMessage());
                             throw new RuntimeException(ex);
                         }
                     }
@@ -87,7 +87,7 @@ public class BRPanel extends CTPanel {
                     gbc.gridy++;
                     this.add(PeoPanelProcess.getShowPeoPanel(oldBRNameList), gbc);
                 } catch (Exception e) {
-                    Log.err.print("BRPanel", "获取生日列表失败: \n" + e.getMessage());
+                    Log.err.print(getClass(), "获取生日列表失败: \n" + e.getMessage());
                     throw new RuntimeException(e);
                 }
 
@@ -100,7 +100,7 @@ public class BRPanel extends CTPanel {
                         try {
                             showWB();
                         } catch (IOException ex) {
-                            Log.err.print("BRPanel", "显示生日列表失败: \n" + ex.getMessage());
+                            Log.err.print(getClass(), "显示生日列表失败: \n" + ex.getMessage());
                             throw new RuntimeException(ex);
                         }
                     }
@@ -118,7 +118,7 @@ public class BRPanel extends CTPanel {
                     gbc.gridy++;
                     this.add(PeoPanelProcess.getShowPeoPanel(oldWBNameList), gbc);
                 } catch (Exception e) {
-                    Log.err.print("BRPanel", "获取生日列表失败: \n" + e.getMessage());
+                    Log.err.print(getClass(), "获取生日列表失败: \n" + e.getMessage());
                     throw new RuntimeException(e);
                 }
 

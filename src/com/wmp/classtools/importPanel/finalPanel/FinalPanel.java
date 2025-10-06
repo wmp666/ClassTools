@@ -77,7 +77,7 @@ public class FinalPanel extends CTPanel {
             try {
                 new InfSetDialog(MainWindow::refreshPanel);
             } catch (Exception e) {
-                Log.err.print("FinalPanel", "设置打开失败\n" + e);
+                Log.err.print(getClass(), "设置打开失败\n" + e);
                 throw new RuntimeException(e);
             }
 
@@ -150,7 +150,7 @@ public class FinalPanel extends CTPanel {
                     temp.setMinimumSize(ctButton.getSize());
                     this.add(temp);
                 } catch (MalformedURLException e) {
-                    Log.err.print("FinalPanel", "初始化按钮时出错\n" + e);
+                    Log.err.print(getClass(), "初始化按钮时出错\n" + e);
                     throw new RuntimeException(e);
                 }
             }

@@ -11,7 +11,6 @@ import com.wmp.PublicTools.io.ZipPack;
 import com.wmp.PublicTools.printLog.Log;
 import com.wmp.classTools.CTComponent.CTTextButton;
 import com.wmp.classTools.frame.tools.cookie.*;
-import com.wmp.classTools.frame.tools.help.ShowHelpDoc;
 import org.json.JSONException;
 
 import javax.swing.*;
@@ -108,11 +107,11 @@ public class ShowCookieDialog extends JDialog implements WindowListener {
                     try {
                         CookieSets.CookieSetsDialog(cookieMap.get(cookiePin));
                     } catch (IOException ex) {
-                        Log.err.print(c, "快速启动单元管理页", "快速启动单元设置文件打开失败");
+                        Log.err.print(c, getClass(), "快速启动单元设置文件打开失败");
                         throw new RuntimeException(ex);
 
                     } catch (JSONException ex) {
-                        Log.err.print(c, "启动单元管理页", "快速启动单元设置文件格式错误");
+                        Log.err.print(c, getClass(), "快速启动单元设置文件格式错误");
                         throw new RuntimeException(ex);
                     }
                 }
@@ -204,7 +203,7 @@ public class ShowCookieDialog extends JDialog implements WindowListener {
                 } catch (IOException ex) {
                     throw new RuntimeException(ex);
                 } catch (JSONException ex) {
-                    Log.err.print(c, "快速启动单元管理页", "快速启动单元设置文件格式错误");
+                    Log.err.print(c, getClass(), "快速启动单元设置文件格式错误");
                     throw new RuntimeException(ex);
                 }
             }
@@ -399,7 +398,7 @@ public class ShowCookieDialog extends JDialog implements WindowListener {
             } catch (IOException ex) {
                 throw new RuntimeException(ex);
             } catch (JSONException ex){
-                Log.err.print(this, "快速启动单元管理页", "快速启动单元设置文件格式错误");
+                Log.err.print(this, getClass(), "快速启动单元设置文件格式错误");
                 throw new RuntimeException(ex);
             }
         });

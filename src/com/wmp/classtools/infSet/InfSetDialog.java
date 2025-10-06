@@ -100,7 +100,7 @@ public class InfSetDialog extends JDialog {
             try {
                 this.repaintSetsPanel(map.get(choice));
             } catch (IOException ex) {
-                Log.err.print("InfSetDialog", "刷新设置页面失败");
+                Log.err.print(getClass(), "刷新设置页面失败");
                 throw new RuntimeException(ex);
             }
         });
@@ -261,7 +261,7 @@ public class InfSetDialog extends JDialog {
                 try {
                     panel.save();
                 } catch (Exception e) {
-                    Log.err.print("InfSetDialog-保存", "保存失败：" + e);
+                    Log.err.print(getClass(), "保存失败：" + e);
                     throw new RuntimeException(e);
                 }
             });

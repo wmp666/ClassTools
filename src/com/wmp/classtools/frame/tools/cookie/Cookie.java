@@ -87,7 +87,7 @@ public class Cookie {
         try {
             return exec;
         } catch (Exception e) {
-            Log.err.print("Cookie", "路径设置出错:" + e);
+            Log.err.print(getClass(), "路径设置出错:" + e);
             throw new RuntimeException(e);
         }
     }
@@ -128,7 +128,7 @@ public class Cookie {
                 return GetIcon.getImageIcon(new URL(iconPath.toString()), 40, 40);
             }
         }catch ( Exception e){
-            Log.err.print("Cookie", "图标路径设置出错:" + e.getMessage());
+            Log.err.print(getClass(), "图标路径设置出错:" + e.getMessage());
         }
         return null;
     }
@@ -162,7 +162,7 @@ public class Cookie {
             }
             return cookiePath;
         } catch (Exception e) {
-            Log.err.print("Cookie", "cookiePath路径设置出错:" + e.getMessage());
+            Log.err.print(getClass(), "cookiePath路径设置出错:" + e.getMessage());
             throw new RuntimeException(e);
         }
     }

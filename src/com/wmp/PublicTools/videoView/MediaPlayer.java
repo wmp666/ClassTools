@@ -25,7 +25,7 @@ public class MediaPlayer {
             Desktop.getDesktop().open(videoFile);
         } catch (IOException e) {
             // 处理打开视频文件失败的情况
-            Log.err.print("MediaPlayer", "播放出现错误\n" + e.getMessage());
+            Log.err.print(MediaPlayer.class, "播放出现错误\n" + e.getMessage());
             throw new RuntimeException(e);
         }
     }
@@ -39,7 +39,21 @@ public class MediaPlayer {
             Desktop.getDesktop().open(musicFile);
         } catch (IOException e) {
             // 处理打开视频文件失败的情况
-            Log.err.print("MediaPlayer", "播放出现错误\n" + e.getMessage());
+            Log.err.print(MediaPlayer.class, "播放出现错误\n" + e.getMessage());
+            throw new RuntimeException(e);
+        }
+    }
+
+    public static void playOther(String filePath) throws IOException {
+        File file = new File(filePath);
+
+
+        //newStyleToShowVideo(videoFile);
+        try {
+            Desktop.getDesktop().open(file);
+        } catch (IOException e) {
+            // 处理打开视频文件失败的情况
+            Log.err.print(MediaPlayer.class, "打开出现错误\n" + e.getMessage());
             throw new RuntimeException(e);
         }
     }
