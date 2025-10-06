@@ -122,6 +122,8 @@ public class EasterEgg {
 
             AtomicReference<JSONArray> info = new AtomicReference<>(new JSONArray());
 
+            //name, key
+            HashMap<String, String> keyMap = new HashMap<>();
             //name, URL
             HashMap<String, String> musicMap = new HashMap<>();
             HashMap<String, String> videoMap = new HashMap<>();
@@ -136,6 +138,8 @@ public class EasterEgg {
                 if (asset instanceof JSONObject jsonObject1) {
                     String name = jsonObject1.getString("name");
                     String browser_download_url = jsonObject1.getString("browser_download_url");
+
+                    keyMap.put(name, name);
 
                     if (name.endsWith(".mp3")) {
                         musicMap.put(name, browser_download_url);
@@ -160,6 +164,9 @@ public class EasterEgg {
                     String key = jsonObject2.getString("key");
                     String name = jsonObject2.getString("name");
 
+                    keyMap.remove(key);
+                    keyMap.put(name, key);
+
                     if (key.endsWith(".mp3")) {
                         String s = musicMap.get(key);
                         musicMap.remove(key);
@@ -183,21 +190,21 @@ public class EasterEgg {
                 case "视频" -> {
                     String[] names = videoMap.keySet().toArray(new String[0]);
                     String s = Log.info.showChooseDialog(null, "祈愿", "请选择彩蛋", names);
-                    name = s;
+                    name = keyMap.get(s);
                     url = videoMap.get(s);
                     styleInt = STYLE_EE_VIDEO;
                 }
                 case "音乐" -> {
                     String[] names = musicMap.keySet().toArray(new String[0]);
                     String s = Log.info.showChooseDialog(null, "祈愿", "请选择彩蛋", names);
-                    name = s;
+                    name = keyMap.get(s);
                     url = musicMap.get(s);
                     styleInt = STYLE_EE_MUSIC;
                 }
                 case "其他" -> {
                     String[] names = otherMap.keySet().toArray(new String[0]);
                     String s = Log.info.showChooseDialog(null, "祈愿", "请选择彩蛋", names);
-                    name = s;
+                    name = keyMap.get(s);
                     url = otherMap.get(s);
                     styleInt = STYLE_IMPORT_DAY;
                 }
