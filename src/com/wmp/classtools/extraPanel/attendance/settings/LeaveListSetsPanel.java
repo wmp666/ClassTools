@@ -93,7 +93,7 @@ public class LeaveListSetsPanel extends CTSetsPanel {
                 //leaveArea.setText(content.replace(",", "\n"));
             }
         } catch (IOException e) {
-            e.printStackTrace();
+            Log.err.print(getClass(), "获取失败", e);
         }
         return leaveList;
     }
@@ -130,7 +130,7 @@ public class LeaveListSetsPanel extends CTSetsPanel {
             try {
                 new IOForInfo(leaveListPath).setInfo(names);
             } catch (IOException e) {
-                throw new RuntimeException(e);
+                Log.err.print(getClass(), "保存失败", e);
             }
 
 

@@ -19,8 +19,7 @@ public class GetWebInf {
             Log.info.print("GetWebInf", "信息: " + webInf);
             return webInf;
         } catch (Exception e) {
-            Log.err.print(GetWebInf.class, "获取Web信息失败: " + e.getMessage());
-            //throw new RuntimeException("信息解析失败", e);
+            Log.err.print(GetWebInf.class, "获取Web信息失败", e);
         }
         return "";
     }

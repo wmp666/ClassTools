@@ -23,10 +23,9 @@ public class CDInfoControl {
                 return new CDInfo(json.getString("title"), json.getString("targetTime"));
             } else return new CDInfo("数据出错", "2030.01.01 00:00:00");
         } catch (Exception e) {
-            Log.err.print(CDInfoControl.class, "获取倒计时信息失败\n" + e.getMessage());
-            throw new RuntimeException(e);
+            Log.err.print(CDInfoControl.class, "获取倒计时信息失败", e);
         }
-
+        return null;
     }
 
     public static void setCDInfo(CDInfo cdInfo) throws IOException {

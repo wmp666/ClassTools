@@ -165,7 +165,6 @@ public class CTOptionPane {
         dialog.setModal(true);
         dialog.setAlwaysOnTop(isAlwaysOnTop);
         dialog.setTitle(title);
-        dialog.setResizable(false);
         dialog.setLayout(new BorderLayout(10, 10));
         dialog.setDefaultCloseOperation(JDialog.DO_NOTHING_ON_CLOSE);
 
@@ -449,7 +448,7 @@ public class CTOptionPane {
                 try {
                     Thread.sleep(10000);
                 } catch (InterruptedException ex) {
-                    Log.err.print(CTOptionPane.class, "发生异常: \n" + ex.getMessage());
+                    Log.err.print(CTOptionPane.class, "发生异常", ex);
                     throw new RuntimeException(ex);
                 }
                 exitButton.setEnabled(true);

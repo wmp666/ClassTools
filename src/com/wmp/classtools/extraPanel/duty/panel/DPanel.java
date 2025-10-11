@@ -68,13 +68,12 @@ public class DPanel extends CTPanel {
 
         InfoPanel.add(CLBBLabel, gbc);
 
-        DutyDay now;
+        DutyDay now = new DutyDay();
         try {
             now = DutyList.get(index);
         } catch (Exception e) {
             new IOForInfo(indexPath).setInfo("0");
-            Log.err.print(getClass(), "数据异常,请检查数据文件\n问题:" + e.getMessage());
-            throw new RuntimeException(e);
+            Log.err.print(getClass(), "数据异常,请检查数据文件", e);
         }
 
         initPeople(now.getClBlackBroadList(), gbc, InfoPanel);
@@ -98,8 +97,7 @@ public class DPanel extends CTPanel {
         {
 
             CTIconButton last = new CTIconButton("上一天",
-                    "/image/%s/last_0.png",
-                    "/image/%s/last_1.png", 30, () -> {
+                    "/image/%s/last_0.png", () -> {
                 int i = Log.info.showChooseDialog(this, "CTPanel-DutyPanel-日期切换", "确认切换至上一天");
                 if (i == 0) {
                     if (index > 0) index--;
@@ -111,7 +109,7 @@ public class DPanel extends CTPanel {
                     new IOForInfo(indexPath).setInfo(String.valueOf(index));
                     refresh();
                 } catch (IOException ex) {
-                    throw new RuntimeException(ex);
+                    Log.err.print(getClass(), "切换失败", ex);
                 }
             });
             buttonPanel.add(last, BorderLayout.WEST);
@@ -120,8 +118,7 @@ public class DPanel extends CTPanel {
         {
 
             CTIconButton next = new CTIconButton("下一天",
-                    "/image/%s/next_0.png",
-                    "/image/%s/next_1.png", 30, () -> {
+                    "/image/%s/next_0.png", () -> {
 
                 int i = Log.info.showChooseDialog(this, "CTPanel-DutyPanel-日期切换", "确认切换至下一天");
 
@@ -136,7 +133,7 @@ public class DPanel extends CTPanel {
                     new IOForInfo(indexPath).setInfo(String.valueOf(index));
                     refresh();
                 } catch (IOException ex) {
-                    throw new RuntimeException(ex);
+                    Log.err.print(getClass(), "切换失败", ex);
                 }
             });
 
@@ -211,9 +208,8 @@ public class DPanel extends CTPanel {
                         DutyDay.setDutyPersonList(strings.get(1))));
             } catch (Exception e) {
                 if (strings.size() <= 2){
-                    Log.err.print(this, getClass(), "请检查数据格式是否正确");
+                    Log.err.print(this, getClass(), "请检查数据格式是否正确", e);
                 }
-                throw new RuntimeException(e);
             }
         }
 

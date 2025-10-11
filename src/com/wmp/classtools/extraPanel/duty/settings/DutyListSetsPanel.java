@@ -36,7 +36,7 @@ public class DutyListSetsPanel extends CTSetsPanel {
             String[][] dutyList = getDutyList(this.DutyListPath);
             initDuSet(dutyList);
         } catch (IOException e) {
-            throw new RuntimeException(e);
+            Log.err.print(getClass(), "初始化失败", e);
         }
 
     }
@@ -178,7 +178,7 @@ public class DutyListSetsPanel extends CTSetsPanel {
         try {
             new IOForInfo(DutyListPath).setInfo(sb.toString());
         } catch (IOException e) {
-            throw new RuntimeException(e);
+            Log.err.print(getClass(), "保存失败", e);
         }
 
 
@@ -193,7 +193,7 @@ public class DutyListSetsPanel extends CTSetsPanel {
             String[][] dutyList = getDutyList(this.DutyListPath);
             initDuSet(dutyList);
         } catch (IOException e) {
-            throw new RuntimeException(e);
+            Log.err.print(getClass(), "刷新失败", e);
         }
         this.revalidate();
         this.repaint();

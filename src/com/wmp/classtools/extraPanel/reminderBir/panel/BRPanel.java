@@ -67,9 +67,8 @@ public class BRPanel extends CTPanel {
                     public void mouseClicked(MouseEvent e) {
                         try {
                             showBR();
-                        } catch (IOException ex) {
-                            Log.err.print(getClass(), "显示生日列表失败: \n" + ex.getMessage());
-                            throw new RuntimeException(ex);
+                        } catch (Exception ex) {
+                            Log.err.print(getClass(), "显示生日列表失败", ex);
                         }
                     }
                 });
@@ -87,8 +86,7 @@ public class BRPanel extends CTPanel {
                     gbc.gridy++;
                     this.add(PeoPanelProcess.getShowPeoPanel(oldBRNameList), gbc);
                 } catch (Exception e) {
-                    Log.err.print(getClass(), "获取生日列表失败: \n" + e.getMessage());
-                    throw new RuntimeException(e);
+                    Log.err.print(getClass(), "获取生日列表失败", e);
                 }
 
                 JLabel titleLabel2 = new JLabel("<html>即将过生日:</html>");
@@ -99,9 +97,8 @@ public class BRPanel extends CTPanel {
                     public void mouseClicked(MouseEvent e) {
                         try {
                             showWB();
-                        } catch (IOException ex) {
-                            Log.err.print(getClass(), "显示生日列表失败: \n" + ex.getMessage());
-                            throw new RuntimeException(ex);
+                        } catch (Exception ex) {
+                            Log.err.print(getClass(), "显示生日列表失败", ex);
                         }
                     }
                 });
@@ -118,8 +115,7 @@ public class BRPanel extends CTPanel {
                     gbc.gridy++;
                     this.add(PeoPanelProcess.getShowPeoPanel(oldWBNameList), gbc);
                 } catch (Exception e) {
-                    Log.err.print(getClass(), "获取生日列表失败: \n" + e.getMessage());
-                    throw new RuntimeException(e);
+                    Log.err.print(getClass(), "获取生日列表失败", e);
                 }
 
                 this.revalidate();
@@ -127,8 +123,8 @@ public class BRPanel extends CTPanel {
 
                 try {
                     Thread.sleep(3000);
-                } catch (InterruptedException e) {
-                    throw new RuntimeException(e);
+                } catch (Exception e) {
+                    Log.err.print(getClass(), "错误", e);
                 }
 
             }

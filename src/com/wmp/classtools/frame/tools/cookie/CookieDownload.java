@@ -206,7 +206,7 @@ public class CookieDownload {
                 try {
                     StrInfo.set(GetWebInf.getWebInf(info.getString("browser_download_url")));
                 } catch (Exception e) {
-                    throw new RuntimeException(e);
+                    Log.err.print(getClass(), "信息获取失败", e);
                 }
             }
 

@@ -34,7 +34,7 @@ public class ZipPack {
                 return;
             }
         }catch (Exception e) {
-            Log.err.print(ZipPack.class, "找不到压缩包!");
+            Log.err.print(ZipPack.class, "找不到压缩包!", e);
 
             return;
         }
@@ -65,13 +65,13 @@ public class ZipPack {
                 SwingUtilities.invokeLater(() -> {
                     dialog.setVisible(false);
                 });
-                Log.err.print(ZipPack.class, "解压失败！\n" + e.getMessage());
+                Log.err.print(ZipPack.class, "解压失败！", e);
                 throw new RuntimeException(e);
             }
             try {
                 runnable.run();
             }catch (Exception e) {
-                Log.err.print(ZipPack.class, "运行失败！\n" + e.getMessage());
+                Log.err.print(ZipPack.class, "运行失败！", e);
                 throw new RuntimeException(e);
             }
         }).start();
@@ -146,7 +146,7 @@ public class ZipPack {
                 Log.info.print("ZipPack-压缩", "压缩完成!");
                 dialog.setVisible(false);
             } catch (IOException e) {
-                Log.err.print(ZipPack.class, "压缩失败！\n" + e.getMessage());
+                Log.err.print(ZipPack.class, "压缩失败！", e);
                 dialog.setVisible(false);
             }
         }).start();

@@ -100,7 +100,7 @@ public class InfSetDialog extends JDialog {
             try {
                 this.repaintSetsPanel(map.get(choice));
             } catch (IOException ex) {
-                Log.err.print(getClass(), "刷新设置页面失败");
+                Log.err.print(getClass(), "刷新设置页面失败", ex);
                 throw new RuntimeException(ex);
             }
         });
@@ -258,12 +258,16 @@ public class InfSetDialog extends JDialog {
 
 
             ctSetsPanelList.forEach(panel -> {
-                try {
-                    panel.save();
-                } catch (Exception e) {
-                    Log.err.print(getClass(), "保存失败：" + e);
-                    throw new RuntimeException(e);
+
+                if (panel.getName().equals(openedPanel)) {
+                    try {
+                        panel.save();
+                    } catch (Exception e) {
+                        Log.err.print(getClass(), "保存失败", e);
+                    }
                 }
+
+
             });
 
             // 保存成功后执行回调

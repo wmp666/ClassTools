@@ -27,7 +27,7 @@ public class ResourceLocalizer {
                     Paths.get(outputPath, fileName),
                     StandardCopyOption.REPLACE_EXISTING);
         } catch (IOException e) {
-            Log.err.print(ResourceLocalizer.class, "文件[" + fileName + "]本地化失败");
+            Log.err.print(ResourceLocalizer.class, "文件[" + fileName + "]本地化失败", e);
         }
     }
 

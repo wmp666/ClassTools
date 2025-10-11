@@ -41,37 +41,44 @@ public class ClassFormPanel extends CTPanel {
                     continue;
                 }
 
+
+                //课程数据
+                String[] nowClasses = CFInfoControl.getNowClasses();
+                String nextClass = CFInfoControl.getNextClass();
+                try {
+
+                    if (nowClasses.length == 0) {
+                        nowClasses = new String[]{"无"};
+                    }
+                    if (nextClass == null || nextClass.isEmpty()) nextClass = "无";
+
+                    if (!oldNowClassNameList.equals(List.of(nowClasses)) ||
+                            !oldNextClassName.equals(nextClass)) showClassForm(nowClasses, nextClass);
+
+                    //数据更新
+                    this.oldNowClassNameList.clear();
+                    this.oldNowClassNameList.addAll(List.of(nowClasses));
+
+                    oldNextClassName = nextClass;
+
+
+                } catch (Exception e) {
+                    Log.err.print(getClass(), "获取课程表失败", e);
+                }
+
+
                 GridBagConstraints gbc = new GridBagConstraints();
                 gbc.fill = GridBagConstraints.HORIZONTAL;
                 gbc.gridx = 0;
                 gbc.gridy = 0;
-
 
                 JLabel titleLabel = new JLabel("<html>本节课:</html>");
                 titleLabel.setForeground(CTColor.textColor);
                 titleLabel.setFont(CTFont.getCTFont(Font.BOLD, CTFontSizeStyle.NORMAL));
                 this.add(titleLabel, gbc);
 
-
-                //现在的课程
-                try {
-                    String[] nowClasses = CFInfoControl.getNowClasses();
-                    if (nowClasses.length == 0) {
-                        nowClasses = new String[]{"无"};
-                    }
-                    if (!oldNowClassNameList.equals(List.of(nowClasses))) showNowClasses(nowClasses);
-
-
-                    this.oldNowClassNameList.clear();
-                    this.oldNowClassNameList.addAll(List.of(nowClasses));
-
-
-                    gbc.gridy++;
-                    this.add(PeoPanelProcess.getShowPeoPanel(List.of(nowClasses)), gbc);
-                } catch (Exception e) {
-                    Log.err.print(getClass(), "获取课程列表失败: \n" + e.getMessage());
-                    throw new RuntimeException(e);
-                }
+                gbc.gridy++;
+                this.add(PeoPanelProcess.getShowPeoPanel(List.of(nowClasses)), gbc);
 
                 JLabel titleLabel2 = new JLabel("<html>下节课:</html>");
                 titleLabel2.setForeground(CTColor.textColor);
@@ -79,7 +86,9 @@ public class ClassFormPanel extends CTPanel {
                 gbc.gridy++;
                 this.add(titleLabel2, gbc);
 
-                try {
+                gbc.gridy++;
+                this.add(PeoPanelProcess.getShowPeoPanel(List.of(nextClass)), gbc);
+                /*try {
                     String nextClass = CFInfoControl.getNextClass();
                     if (nextClass == null || nextClass.isEmpty()) nextClass = "无";
                     if (!oldNextClassName.equals(nextClass)) showNextClasses(nextClass);
@@ -92,7 +101,7 @@ public class ClassFormPanel extends CTPanel {
                 } catch (Exception e) {
                     Log.err.print(getClass(), "获取课程表失败: \n" + e.getMessage());
                     throw new RuntimeException(e);
-                }
+                }*/
 
                 this.revalidate();
                 this.repaint();
@@ -107,36 +116,32 @@ public class ClassFormPanel extends CTPanel {
         }).start();
     }
 
-    private void showNowClasses(String[] list) {
+    private void showClassForm(String[] nowClassesList, String nextClass) {
 
-        if (!List.of(list).contains("无")) {
-            StringBuilder sb = new StringBuilder();
-
-            for (int i = 0; i < list.length; i++) {
-                if (i != list.length - 1)
-                    sb.append(list[i]).append(", ");
-                else sb.append(list[i]);
-
-            }
-            if (Main.allArgs.get("screenProduct:show").contains(Main.argsList))
-                CTOptionPane.showFullScreenMessageDialog("课程提醒", "现在的课程:" + sb, 60);
-            else
-                Log.info.systemPrint("现在的课程", "现在的课程:" + sb);
+        if (List.of(nowClassesList).contains("无") && nextClass.equals("无")) {
+            return;
         }
 
+        StringBuilder sb = new StringBuilder();
 
-    }
+        for (int i = 0; i < nowClassesList.length; i++) {
+            if (i != nowClassesList.length - 1)
+                sb.append(nowClassesList[i]).append(", ");
+            else sb.append(nowClassesList[i]);
 
-    private void showNextClasses(String className) {
-
-        if (!className.equals("无")) {
-
-            if (Main.allArgs.get("screenProduct:show").contains(Main.argsList))
-                CTOptionPane.showFullScreenMessageDialog("课程提醒", "下节课程:" + className, 60);
-            else
-                Log.info.systemPrint("课程提醒", "下节课程:" + className);
         }
 
+        StringBuilder infoSB = new StringBuilder();
+        infoSB.append("现在的课程:")
+                .append(sb)
+                .append("\n")
+                .append("下节课:")
+                .append(nextClass);
+
+        if (Main.allArgs.get("screenProduct:show").contains(Main.argsList))
+            CTOptionPane.showFullScreenMessageDialog("课程提醒", infoSB.toString(), 120);
+        else
+            Log.info.systemPrint("课程提醒", infoSB.toString());
 
     }
 

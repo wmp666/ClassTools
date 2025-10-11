@@ -75,9 +75,8 @@ public class DataControlUnit extends JPanel {
             deleteButton.addActionListener(e -> {
                 try {
                     IOForInfo.deleteDirectoryRecursively(Path.of(path));
-                } catch (IOException ex) {
-                    Log.err.print(getClass(), "删除失败:\n" + ex.getMessage());
-                    throw new RuntimeException(ex);
+                } catch (Exception ex) {
+                    Log.err.print(getClass(), "删除失败", ex);
                 }
             });
             deleteButton.setEnabled(canDelete);

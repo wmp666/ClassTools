@@ -54,9 +54,9 @@ public class IOForInfo {
             Log.info.print("IOForInfo-获取数据", "数据内容: " + sb);
             return sb.toString();// 读取第一行
         } catch (IOException e) {
-            Log.err.print(IOForInfo.class, file.getPath() + "文件读取失败");
-            throw new RuntimeException(e);
+            Log.err.print(IOForInfo.class, file.getPath() + "文件读取失败", e);
         }
+        return null;
     }
 
     public String[] getInfo() throws IOException {
@@ -99,7 +99,7 @@ public class IOForInfo {
             Log.info.print("IOForInfo-获取数据", file.getPath() + "文件读取完成");
             return !s.isEmpty() ? s : "err";
         } catch (IOException e) {
-            Log.err.print(IOForInfo.class, file.getPath() + "文件读取失败");
+            Log.err.print(IOForInfo.class, file.getPath() + "文件读取失败", e);
             return "err";
         }
     }
@@ -139,7 +139,7 @@ public class IOForInfo {
                 }
             }
         } catch (IOException e) {
-            Log.err.print(IOForInfo.class, file.getPath() + "文件写入失败");
+            Log.err.print(IOForInfo.class, file.getPath() + "文件写入失败", e);
         }
     }
 

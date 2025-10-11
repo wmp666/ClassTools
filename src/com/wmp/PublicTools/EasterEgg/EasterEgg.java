@@ -150,7 +150,7 @@ public class EasterEgg {
                             String s = GetWebInf.getWebInf(browser_download_url);
                             info.set(new JSONArray(s));
                         } catch (Exception e) {
-                            throw new RuntimeException(e);
+                            Log.err.print(EasterEgg.class, "数据获取失败", e);
                         }
                     } else {
                         otherMap.put(name, browser_download_url);
@@ -219,8 +219,7 @@ public class EasterEgg {
 
 
         } catch (Exception e) {
-            Log.err.print(null, EasterEgg.class, "获取彩蛋失败\n" + e.getMessage());
-            throw new RuntimeException(e);
+            Log.err.print(null, EasterEgg.class, "获取彩蛋失败", e);
         }
     }
 
@@ -265,15 +264,13 @@ public class EasterEgg {
                         }
 
                     } catch (IOException e) {
-                        Log.err.print(null, EasterEgg.class, "播放失败: " + e.getMessage());
-                        throw new RuntimeException(e);
+                        Log.err.print(null, EasterEgg.class, "播放失败", e);
                     }
 
 
 
                 } catch (Exception e) {
-                    Log.err.print(null, EasterEgg.class, "下载失败: " + e.getMessage());
-                    throw new RuntimeException(e);
+                    Log.err.print(null, EasterEgg.class, "下载失败", e);
                 }
             }
         }.execute();
@@ -355,8 +352,7 @@ public class EasterEgg {
 
 
         } catch (Exception e) {
-            Log.err.print(EasterEgg.class, "获取彩蛋文字失败: \n" + e.getMessage());
-            throw new RuntimeException(e);
+            Log.err.print(EasterEgg.class, "获取彩蛋文字失败", e);
         }
         if (style == 1 && !b.get()) Log.info.message(null, "EasterEgg", "今日无彩蛋");
     }

@@ -75,7 +75,7 @@ public class StartCookie {
                         }
                     }
                 } catch (Exception e) {
-                    Log.err.print(StartCookie.class, "运行失败！\n" + e.getMessage());
+                    Log.err.print(StartCookie.class, "运行失败！", e);
                     throw new RuntimeException(e);
                 }
                 new Thread(() -> {
@@ -87,7 +87,7 @@ public class StartCookie {
                 Log.err.print(StartCookie.class, "错误的pin");
             }
         } catch (IOException e) {
-            Log.err.print(StartCookie.class, "运行失败！\n" + e.getMessage());
+            Log.err.print(StartCookie.class, "运行失败！", e);
         }
 
     }

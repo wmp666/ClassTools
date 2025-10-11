@@ -50,7 +50,7 @@ public class ShowCookieDialog extends JDialog implements WindowListener {
                         try {
                             refreshCookiePanel();
                         } catch (IOException ex) {
-                            ex.printStackTrace();
+                            Log.err.print(getClass(), "错误", ex);
                         }
                     });
                 //}
@@ -107,11 +107,11 @@ public class ShowCookieDialog extends JDialog implements WindowListener {
                     try {
                         CookieSets.CookieSetsDialog(cookieMap.get(cookiePin));
                     } catch (IOException ex) {
-                        Log.err.print(c, getClass(), "快速启动单元设置文件打开失败");
+                        Log.err.print(c, getClass(), "快速启动单元设置文件打开失败", ex);
                         throw new RuntimeException(ex);
 
                     } catch (JSONException ex) {
-                        Log.err.print(c, getClass(), "快速启动单元设置文件格式错误");
+                        Log.err.print(c, getClass(), "快速启动单元设置文件格式错误", ex);
                         throw new RuntimeException(ex);
                     }
                 }
@@ -203,7 +203,7 @@ public class ShowCookieDialog extends JDialog implements WindowListener {
                 } catch (IOException ex) {
                     throw new RuntimeException(ex);
                 } catch (JSONException ex) {
-                    Log.err.print(c, getClass(), "快速启动单元设置文件格式错误");
+                    Log.err.print(c, getClass(), "快速启动单元设置文件格式错误", ex);
                     throw new RuntimeException(ex);
                 }
             }
@@ -398,7 +398,7 @@ public class ShowCookieDialog extends JDialog implements WindowListener {
             } catch (IOException ex) {
                 throw new RuntimeException(ex);
             } catch (JSONException ex){
-                Log.err.print(this, getClass(), "快速启动单元设置文件格式错误");
+                Log.err.print(this, getClass(), "快速启动单元设置文件格式错误", ex);
                 throw new RuntimeException(ex);
             }
         });

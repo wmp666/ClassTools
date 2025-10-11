@@ -34,9 +34,8 @@ public class BRSetsPanel extends CTSetsPanel {
         //绘制UI
         try {
             initTable(getArray());
-        } catch (MalformedURLException e) {
-            Log.err.print(getClass(), "获取生日数据失败:\n" + e.getMessage());
-            throw new RuntimeException(e);
+        } catch (Exception e) {
+            Log.err.print(getClass(), "获取生日数据失败", e);
         }
     }
 
@@ -132,10 +131,9 @@ public class BRSetsPanel extends CTSetsPanel {
             }
             return temp;
         } catch (Exception e) {
-            Log.err.print(getClass(), "获取生日数据失败:\n" + e.getMessage());
-            throw new RuntimeException(e);
+            Log.err.print(getClass(), "获取生日数据失败", e);
         }
-        //
+        return null;
     }
 
     @Override
@@ -172,8 +170,8 @@ public class BRSetsPanel extends CTSetsPanel {
     public void refresh() throws IOException {
         try {
             initTable(getArray());
-        } catch (MalformedURLException e) {
-            Log.err.print(getClass(), "获取生日数据失败:\n" + e.getMessage());
+        } catch (Exception e) {
+            Log.err.print(getClass(), "获取生日数据失败", e);
             throw new RuntimeException(e);
         }
 

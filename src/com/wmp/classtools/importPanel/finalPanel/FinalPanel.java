@@ -58,8 +58,7 @@ public class FinalPanel extends CTPanel {
 
 
         CTIconButton moreButton = new CTIconButton("更多功能",
-                "/image/%s/more.png",
-                "/image/%s/more.png", 30, () -> {
+                "/image/%s/more.png", () -> {
             //moreDialog.setVisible(true);
         });
         moreButton.setCallback(() -> {
@@ -71,61 +70,53 @@ public class FinalPanel extends CTPanel {
         allButList.clear();
 
         CTIconButton settings = new CTIconButton("设置",
-                "/image/%s/settings_0.png",
-                "/image/%s/settings_1.png", 30, () -> {
+                "/image/%s/settings_0.png", () -> {
 
             try {
                 new InfSetDialog(MainWindow::refreshPanel);
             } catch (Exception e) {
-                Log.err.print(getClass(), "设置打开失败\n" + e);
-                throw new RuntimeException(e);
+                Log.err.print(getClass(), "设置打开失败", e);
             }
 
         });
         allButList.add(settings);
 
         CTIconButton cookie = new CTIconButton("快速启动页",
-                "/image/%s/cookie_0.png",
-                "/image/%s/cookie_1.png", 30, () -> {
+                "/image/%s/cookie_0.png", () -> {
             try {
                 new ShowCookieDialog();
             } catch (IOException e) {
-                throw new RuntimeException(e);
+                Log.err.print(getClass(), "打开失败", e);
             }
         });
         allButList.add(cookie);
 
 
         CTIconButton about = new CTIconButton("软件信息",
-                "/image/%s/about_0.png",
-                "/image/%s/about_1.png", 30, () -> {
+                "/image/%s/about_0.png", () -> {
             try {
                 new AboutDialog().setVisible(true);
-            } catch (MalformedURLException e) {
-                throw new RuntimeException(e);
+            } catch (Exception e) {
+                Log.err.print(getClass(), "打开失败", e);
             }
         });
         allButList.add(about);
 
         CTIconButton update = new CTIconButton("检查更新",
-                "/image/%s/update_0.png",
-                "/image/%s/update_1.png", 30, () -> GetNewerVersion.checkForUpdate(null, null, true));
+                "/image/%s/update_0.png", () -> GetNewerVersion.checkForUpdate(null, null, true));
         allButList.add(update);
 
         // 自定义刷新方法
         CTIconButton refresh = new CTIconButton("刷新",
-                "/image/%s/refresh_0.png",
-                "/image/%s/refresh_1.png", 30, MainWindow::refreshPanel);
+                "/image/%s/refresh_0.png", MainWindow::refreshPanel);
         allButList.add(refresh);
 
         CTIconButton holidayBlessings = new CTIconButton("查看祝词",
-                "/image/wish.png",
-                "/image/wish.png", 30, () -> EasterEgg.showHolidayBlessings(1));
+                "/image/wish.png", () -> EasterEgg.showHolidayBlessings(1));
         allButList.add(holidayBlessings);
 
         CTIconButton showLog = new CTIconButton("查看日志",
-                "/image/%s/showLog_0.png",
-                "/image/%s/showLog_1.png", 30, Log::showLogDialog);
+                "/image/%s/showLog_0.png", Log::showLogDialog);
         showLog.setPreferredSize(showLog.getSize());
         showLog.setMaximumSize(showLog.getSize());
         showLog.setMinimumSize(showLog.getSize());
@@ -136,10 +127,7 @@ public class FinalPanel extends CTPanel {
         //按钮展示
         allButList.forEach(ctButton -> {
             if (CTInfo.disButList.contains(ctButton.getName())) {
-                ctButton.setText(ctButton.getToolTipText());
-                ctButton.setForeground(Color.BLACK);
-                //moreDialog.add(ctButton);
-                moreMenu.add(ctButton);
+                moreMenu.add(ctButton.toTextButton(false));
                 length.getAndIncrement();
             } else {
                 CTIconButton temp = null;
@@ -150,8 +138,7 @@ public class FinalPanel extends CTPanel {
                     temp.setMinimumSize(ctButton.getSize());
                     this.add(temp);
                 } catch (MalformedURLException e) {
-                    Log.err.print(getClass(), "初始化按钮时出错\n" + e);
-                    throw new RuntimeException(e);
+                    Log.err.print(getClass(), "初始化按钮时出错", e);
                 }
             }
         });
@@ -165,8 +152,7 @@ public class FinalPanel extends CTPanel {
         //设置关闭按钮
         if (!CTInfo.isError && CTInfo.canExit && !Main.allArgs.get("screenProduct:show").contains(Main.argsList)) {
             CTIconButton exit = new CTIconButton("关闭",
-                    "/image/%s/exit_0.png",
-                    "/image/%s/exit_1.png", 30, () -> {
+                    "/image/%s/exit_0.png", () -> {
                 int i = Log.info.showChooseDialog(null, "CTPanel-按钮组", "确认退出?");
                 if (i == JOptionPane.YES_OPTION) {
                     Log.exit(0);

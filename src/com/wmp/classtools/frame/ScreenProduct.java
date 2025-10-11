@@ -70,8 +70,7 @@ public class ScreenProduct extends JDialog {
 
         //添加退出按钮 - 左侧
         CTIconButton exitButton = new CTIconButton(
-                "/image/%s/exit_0.png",
-                "/image/%s/exit_1.png", 1, () -> {
+                "/image/%s/exit_0.png", () -> {
             this.setVisible(false);
             Log.exit(0);
         });

@@ -18,10 +18,8 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URI;
-import java.net.URISyntaxException;
 
 public class AboutDialog extends JDialog {
 
@@ -83,14 +81,13 @@ public class AboutDialog extends JDialog {
         infos.add(icon, BorderLayout.WEST);
         infos.add(info, BorderLayout.CENTER);
 
-        CTIconButton getNew = new CTIconButton(CTIconButton.ButtonText, "检查更新",
+        CTIconButton getNew = new CTIconButton("检查更新",
                 "/image/%s/update_0.png",
-                "/image/%s/update_1.png", 150, 35,
                 () -> GetNewerVersion.checkForUpdate(this, view, true));
         getNew.setBackground(CTColor.backColor);
 
         this.add(view, BorderLayout.CENTER);
-        this.add(getNew, BorderLayout.SOUTH);
+        this.add(getNew.toTextButton(false), BorderLayout.SOUTH);
         this.add(infos, BorderLayout.NORTH);
 
         initMenuBar();
@@ -123,7 +120,7 @@ public class AboutDialog extends JDialog {
             try {
                 Desktop.getDesktop().browse(new URI("https://space.bilibili.com/1075810224/"));
             } catch (Exception ex) {
-                ex.printStackTrace();
+                Log.err.print(getClass(), "网页打开失败", ex);
             }
         });
 
@@ -140,7 +137,7 @@ public class AboutDialog extends JDialog {
             try {
                 Desktop.getDesktop().browse(new URI("https://github.com/wmp666"));
             } catch (Exception ex) {
-                ex.printStackTrace();
+                Log.err.print(getClass(), "网页打开失败", ex);
             }
         });
 
@@ -150,7 +147,7 @@ public class AboutDialog extends JDialog {
             try {
                 Desktop.getDesktop().browse(new URI("https://github.com/wmp666/ClassTools"));
             } catch (Exception ex) {
-                ex.printStackTrace();
+                Log.err.print(getClass(), "网页打开失败", ex);
             }
         });
 
@@ -201,8 +198,8 @@ public class AboutDialog extends JDialog {
         helpDoc.addActionListener(e -> {
             try {
                 new ShowHelpDoc();
-            } catch (URISyntaxException | IOException ex) {
-                throw new RuntimeException(ex);
+            } catch (Exception ex) {
+                Log.err.print(getClass(), "帮助打开失败", ex);
             }
 
         });

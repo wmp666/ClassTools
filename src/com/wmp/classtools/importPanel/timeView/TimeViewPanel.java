@@ -11,7 +11,6 @@ import com.wmp.classTools.CTComponent.CTOptionPane;
 import com.wmp.classTools.CTComponent.CTPanel;
 import com.wmp.classTools.CTComponent.CTTextButton;
 import com.wmp.classTools.frame.MainWindow;
-import com.wmp.classTools.importPanel.finalPanel.FinalPanel;
 import com.wmp.classTools.importPanel.timeView.settings.ScreenProductSetsPanel;
 import com.wmp.classTools.infSet.InfSetDialog;
 
@@ -43,7 +42,7 @@ public class TimeViewPanel extends CTPanel {
             try {
                 Thread.sleep(300);
             } catch (InterruptedException e) {
-                e.printStackTrace();
+                Log.err.print(getClass(), "错误", e);
             }
             repaint();
         }
@@ -65,7 +64,7 @@ public class TimeViewPanel extends CTPanel {
             try {
                 new InfSetDialog(MainWindow::refreshPanel, "屏保设置");
             } catch (Exception ex) {
-                Log.err.print(getClass(), "设置打开失败\n" + ex);
+                Log.err.print(getClass(), "设置打开失败", ex);
                 throw new RuntimeException(ex);
             }
         });
@@ -101,8 +100,7 @@ public class TimeViewPanel extends CTPanel {
         this.add(timeView, BorderLayout.CENTER);
 
         CTIconButton viewTimeButton = new CTIconButton("全屏显示时间",
-                "/image/%s/view_0.png",
-                "/image/%s/view_1.png", 30, () -> {
+                "/image/%s/view_0.png", () -> {
             try {
                 int i = Log.info.showChooseDialog(null, "doge", "若当成了关闭按钮,\n请按\"是\",想要显示时间请按\"否\"");
                 if (i == JOptionPane.YES_OPTION) return;
@@ -151,8 +149,7 @@ public class TimeViewPanel extends CTPanel {
 
 
         CTIconButton exitButton = new CTIconButton(
-                "/image/%s/exit_0.png",
-                "/image/%s/exit_1.png", 1, () -> {
+                "/image/%s/exit_0.png", () -> {
                 window.setVisible(false);
 
             timeView.setFont(CTFont.getCTFont(Font.BOLD, CTFontSizeStyle.BIG));

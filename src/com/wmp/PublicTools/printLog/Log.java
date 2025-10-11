@@ -114,8 +114,7 @@ public class Log {
                     temp.setForeground(Color.BLACK);
                     moreDialog.add(temp);
                 } catch (MalformedURLException ex) {
-                    Log.err.print(Log.class, "初始化按钮时出错\n" + ex);
-                    throw new RuntimeException(ex);
+                    Log.err.print(Log.class, "初始化按钮时出错", ex);
                 }
             });
 
@@ -282,7 +281,7 @@ public class Log {
                 else title = "世界拒绝了我";
                 Icon icon = null;
                 if (CTInfo.isError) icon = GetIcon.getIcon(Log.class.getResource("/image/error/icon.png"), 100, 100);
-                CTOptionPane.showMessageDialog(c, title, owner + ":\n" + logInfo, icon, CTOptionPane.ERROR_MESSAGE, true);
+                CTOptionPane.showMessageDialog(c, title, logInfo, icon, CTOptionPane.ERROR_MESSAGE, true);
 
                 logInfList.add(info);
             }
@@ -294,6 +293,10 @@ public class Log {
     }
 
     public static void showLogDialog() {
+        showLogDialog(false);
+    }
+
+    public static void showLogDialog(boolean happenSystemErr) {
         //dialog.removeAll();
         JDialog dialog = new JDialog((Frame) null, false);
         dialog.setTitle("日志");
@@ -324,7 +327,15 @@ public class Log {
 
         JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT));
         JButton closeButton = new JButton("关闭");
-        closeButton.addActionListener(e -> dialog.dispose());
+        closeButton.addActionListener(e -> {
+            dialog.dispose();
+
+            if (happenSystemErr) {
+                saveLog(false);
+
+                System.exit(-1);
+            }
+        });
 
 
         JButton clearButton = new JButton("清空");
@@ -393,9 +404,7 @@ public class Log {
             if (showMessageDialog)
                 Log.info.message(null, "Log", "日志保存成功");
         } catch (IOException e) {
-            if (showMessageDialog)
-                Log.err.print(Log.class, "日志保存失败");
-            throw new RuntimeException(e);
+            Log.err.print(Log.class, "日志保存失败", e);
         }
     }
 }

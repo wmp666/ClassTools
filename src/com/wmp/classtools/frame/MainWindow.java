@@ -226,8 +226,7 @@ public class MainWindow extends JDialog {
             });// 自定义刷新方法
 
         } catch (Exception e) {
-            Log.err.print(MainWindow.class, "刷新失败\n错误信息:" + e.getMessage());
-            throw new RuntimeException(e);
+            Log.err.print(MainWindow.class, "刷新失败", e);
         }
     }
 

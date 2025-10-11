@@ -1,5 +1,7 @@
 package com.wmp.PublicTools.printLog;
 
+import com.wmp.PublicTools.ExceptionStringConverter;
+
 import java.awt.*;
 
 public class ErrorLogStyle extends PrintLogStyle {
@@ -13,5 +15,16 @@ public class ErrorLogStyle extends PrintLogStyle {
 
     public void print(Container c, Class<?> owner, String logInfo) {
         super.print(c, owner.toString(), logInfo);
+    }
+
+    public void print(Class<?> owner, String logInfo, Exception e) {
+
+        super.print(owner.toString(), logInfo + "\n" +
+                ExceptionStringConverter.convertToString(e, true));
+    }
+
+    public void print(Container c, Class<?> owner, String logInfo, Exception e) {
+        super.print(c, owner.toString(), logInfo + "\n" +
+                ExceptionStringConverter.convertToString(e, true));
     }
 }

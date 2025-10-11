@@ -185,7 +185,7 @@ public class ShowHelpDoc extends JFrame {
                             try {
                                 MediaPlayer.playOther(CTInfo.TEMP_PATH + "help\\WebFile\\helpdoc.docx");
                             } catch (IOException ex) {
-                                Log.err.print(getClass(), ex.getMessage());
+                                Log.err.print(getClass(), "", ex);
                                 throw new RuntimeException(ex);
                             }
                         }
@@ -197,7 +197,7 @@ public class ShowHelpDoc extends JFrame {
 
                 popupMenu.show(downloadDocButton, 0, downloadDocButton.getHeight());
             } catch (Exception ex) {
-                Log.err.print(getClass(), ex.toString());
+                Log.err.print(getClass(), "", ex);
                 throw new RuntimeException(ex);
             }
 
@@ -241,7 +241,7 @@ public class ShowHelpDoc extends JFrame {
                 showHelpDoc(choice);
                 ShowHelpDoc.this.repaint();
             } catch (Exception ex) {
-                Log.err.print(getClass(), "文档打开失败:\n" + ex.getMessage());
+                Log.err.print(getClass(), "文档打开失败", ex);
                 throw new RuntimeException(ex);
             }
         }

@@ -35,7 +35,7 @@ public class CookieSets {
 
     public static void CookieSetsDialog(File file) throws IOException, JSONException {
 
-        Log.info.print("插件设置窗口", "开始加载窗口...");
+        Log.info.print("启动单元设置窗口", "开始加载窗口...");
 
         JDialog dialog = new JDialog();
         Container container = dialog.getContentPane();
@@ -50,7 +50,7 @@ public class CookieSets {
         } else {
             File setsFile = new File(file, "setUp.json");
             if (!setsFile.exists()) {
-                Log.err.print(dialog, CookieSets.class, "此插件无配置文件");
+                Log.err.print(dialog, CookieSets.class, "此启动单元无配置文件");
                 return;
             }
             JSONObject jsonObject;
@@ -121,27 +121,27 @@ public class CookieSets {
 
             JPanel step1Panel = new JPanel(new GridLayout(7, 1, 7, 5));
             {
-                step1Panel.setBorder(CTBorderFactory.createTitledBorder("设置插件配置文件"));
+                step1Panel.setBorder(CTBorderFactory.createTitledBorder("设置启动单元配置文件"));
 
                 JPanel namePanel = new JPanel();
                 namePanel.setLayout(new GridLayout(1, 2));
-                namePanel.add(new JLabel("插件名称:"));
+                namePanel.add(new JLabel("启动单元名称:"));
                 namePanel.add(nameTextField);
 
                 JPanel pinPanel = new JPanel();
                 pinPanel.setLayout(new GridLayout(1, 2));
-                pinPanel.add(new JLabel("插件pin:"));
+                pinPanel.add(new JLabel("启动单元pin:"));
                 pinPanel.add(pinTextField);
 
                 JPanel stylePanel = new JPanel();
                 stylePanel.setLayout(new GridLayout(1, 2));
-                stylePanel.add(new JLabel("插件样式:"));
+                stylePanel.add(new JLabel("启动单元样式:"));
                 styleComboBox.setFont(CTFont.getCTFont(-1, CTFontSizeStyle.SMALL));
                 stylePanel.add(styleComboBox);
 
                 JPanel iconPanel = new JPanel();
                 iconPanel.setLayout(new GridLayout(1, 2));
-                iconPanel.add(new JLabel("插件图标路径:"));
+                iconPanel.add(new JLabel("启动单元图标路径:"));
                 iconPanel.add(iconTextField);
 
 
@@ -183,11 +183,11 @@ public class CookieSets {
             JPanel step2Panel = new JPanel(new BorderLayout());
             {
                 step2Panel.setBorder(CTBorderFactory.createTitledBorder("添加必要文件"));
-                JLabel label = new JLabel("将点击打开插件目录,将必要文件添加至目录");
+                JLabel label = new JLabel("将点击打开启动单元目录,将必要文件添加至目录");
                 label.setFont(CTFont.getCTFont(-1, CTFontSizeStyle.SMALL));
                 step2Panel.add(label, BorderLayout.NORTH);
 
-                CTTextButton openDirButton = new CTTextButton("打开插件目录", GetIcon.getIcon(Main.class.getResource("/image/openExp.png"), 30, 30));
+                CTTextButton openDirButton = new CTTextButton("打开启动单元目录", GetIcon.getIcon(Main.class.getResource("/image/openExp.png"), 30, 30));
                 openDirButton.addActionListener(e -> {
                     File cookiePath = cookie.getCookiePath();
                     if (cookiePath == null || !cookiePath.exists()) {
@@ -196,7 +196,7 @@ public class CookieSets {
                             System.out.println(CTInfo.DATA_PATH + "Cookie\\" + finalPin + "\\");
                             cookiePath = new File(CTInfo.DATA_PATH + "Cookie\\" + finalPin + "\\");
                         } catch (Exception ex) {
-                            Log.err.print(dialog, CookieSets.class, "打开插件目录失败:" + ex.getMessage());
+                            Log.err.print(dialog, CookieSets.class, "打开启动单元目录失败", ex);
                         }
                         cookiePath.mkdirs();
                         System.out.println(cookiePath.getPath());
@@ -283,18 +283,18 @@ public class CookieSets {
 
                     try {
                         // 显式指定UTF-8编码，添加路径规范化处理
-                        Log.info.print("插件设置窗口", "setUp.json设置中...");
-                        Log.info.print("插件设置窗口", "setUp.json数据:" + result.toString());
+                        Log.info.print("启动单元设置窗口", "setUp.json设置中...");
+                        Log.info.print("启动单元设置窗口", "setUp.json数据:" + result.toString());
                         Files.writeString(
                                 Paths.get(cookiePath).normalize().resolve("setUp.json"),
                                 result.toString(),
                                 StandardOpenOption.CREATE,
                                 StandardOpenOption.TRUNCATE_EXISTING
                         );
-                        Log.info.message(dialog, "插件设置窗口", "设置完成");
+                        Log.info.message(dialog, "启动单元设置窗口", "设置完成");
 
-                    } catch (IOException ex) {
-                        Log.err.print(dialog, CookieSets.class, "设置失败\n" + ex.getMessage());
+                    } catch (Exception ex) {
+                        Log.err.print(dialog, CookieSets.class, "设置失败", ex);
                         return;
                     }
 
@@ -302,8 +302,8 @@ public class CookieSets {
                     dialog.setVisible(false);
                     try {
                         refreshParentWindow();
-                    } catch (IOException ex) {
-                        Log.err.print(dialog, CookieSets.class, "刷新失败\n" + ex.getMessage());
+                    } catch (Exception ex) {
+                        Log.err.print(dialog, CookieSets.class, "刷新失败", ex);
                         return;
                     }
                 }
@@ -335,23 +335,23 @@ public class CookieSets {
             try {
                 refreshParentWindow();
             } catch (IOException e) {
-                throw new RuntimeException(e);
+                Log.err.print(CookieSets.class, "添加失败失败", e);
             }
         });
 
     }
 
     public static void deleteCookie(File file) {
-        Log.info.print("删除插件", "询问是否删除");
+        Log.info.print("删除启动单元", "询问是否删除");
         final int CONFIRM = Log.info.showChooseDialog(null,
-                "删除插件",
+                "删除启动单元",
                 "确认删除该 Cookie 配置？");
 
         if (CONFIRM != JOptionPane.YES_OPTION) {
-            Log.info.print("删除插件", "取消删除");
+            Log.info.print("删除启动单元", "取消删除");
             return;
         }
-        Log.info.print("删除插件", "删除");
+        Log.info.print("删除启动单元", "删除");
 
         JDialog dialog = new JDialog();
 
@@ -392,10 +392,8 @@ public class CookieSets {
                             String errorType = file.canWrite() ? "文件被占用" : "权限不足";
                             Log.err.print(CookieSets.class, "删除失败：" + errorType);
                         }
-                    } catch (IOException e) {
-                        Log.err.print(CookieSets.class, "删除失败：文件遍历异常-" + e.getMessage());
-                    } catch (SecurityException e) {
-                        Log.err.print(CookieSets.class, "删除失败：安全限制-" + e.getMessage());
+                    } catch (Exception e) {
+                        Log.err.print(CookieSets.class, "删除失败", e);
                     }
                     return null;
                 }
@@ -406,8 +404,8 @@ public class CookieSets {
                     dialog.setVisible(false);
                     try {
                         refreshParentWindow();
-                    } catch (IOException e) {
-                        throw new RuntimeException(e);
+                    } catch (Exception e) {
+                        Log.err.print(getClass(), "刷新失败", e);
                     }
                 }
             }.execute();

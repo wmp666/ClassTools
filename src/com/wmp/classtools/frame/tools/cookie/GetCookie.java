@@ -48,7 +48,7 @@ public class GetCookie {
                         try {
                             JSONCookieSets = new JSONObject(s.toString());
                         } catch (JSONException e) {
-                            Log.err.print(null, getClass(), cookieSets.getParent() + "setUp.json数据出错\n" + e.getMessage());
+                            Log.err.print(null, getClass(), cookieSets.getParent() + "setUp.json数据出错", e);
                             continue;
                         }
 

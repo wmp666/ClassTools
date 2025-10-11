@@ -47,8 +47,7 @@ public class CountDownPanel extends CTPanel {
                 // 获取时间, 并计算时间差
                 time = dateFormat.parse(targetTime).getTime() - System.currentTimeMillis();
             } catch (ParseException ex) {
-                Log.err.print(getClass(), "时间数据化异常:\n" + ex.getMessage());
-                throw new RuntimeException(ex);
+                Log.err.print(getClass(), "时间数据化异常", ex);
             }
             //Log.info.print("时间显示","时间差:" + time);
 

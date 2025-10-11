@@ -22,7 +22,7 @@ public class SetsScrInfo {
                 fileWriter.write("{}");
                 fileWriter.close();
             } catch (IOException e) {
-                Log.err.print(SetsScrInfo.class, "初始化失败:" + e.getMessage());
+                Log.err.print(SetsScrInfo.class, "初始化失败", e);
                 throw new RuntimeException(e);
             }
         }
@@ -57,10 +57,10 @@ public class SetsScrInfo {
                 String path = jsonObject.getString("path");
                 File[] files = new File(path).listFiles();
                 if (files != null && files.length > index) {
-                    return files[index].getPath().isEmpty() ? files[index].getPath() : null;
+                    return files[index].getPath().isEmpty() ? null : files[index].getPath();
                 }
             } else {
-                return jsonObject.getString("path").isEmpty() ? jsonObject.getString("path") : null;
+                return jsonObject.getString("path").isEmpty() ? null : jsonObject.getString("path");
             }
 
         }

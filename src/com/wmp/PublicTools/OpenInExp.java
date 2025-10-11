@@ -25,7 +25,7 @@ public class OpenInExp {
                 Runtime.getRuntime().exec(new String[]{"cmd", "/c", "start", targetDir.getAbsolutePath()});
             }
         } catch (IOException ex) {
-            ex.printStackTrace();
+            Log.err.print(OpenInExp.class, "错误", ex);
         }
     }
 }

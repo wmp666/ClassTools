@@ -112,8 +112,8 @@ public class AllStuSetsPanel extends CTSetsPanel {
             String[] inf = null;
             try {
                 inf = ioForInfo.getInfo();
-            } catch (IOException e) {
-                throw new RuntimeException(e);
+            } catch (Exception e) {
+                Log.err.print(getClass(), "获取失败", e);
             }
 
             //System.out.println(inf);
@@ -142,8 +142,8 @@ public class AllStuSetsPanel extends CTSetsPanel {
 
         try {
             new IOForInfo(AllStuPath).setInfo(sb.toString());
-        } catch (IOException e) {
-            throw new RuntimeException(e);
+        } catch (Exception e) {
+            Log.err.print(getClass(), "设置失败", e);
         }
 
 

@@ -42,8 +42,7 @@ public class ScreenProductSetsPanel extends CTSetsPanel {
         try {
             initUI();
         } catch (IOException e) {
-            Log.err.print(getClass(), "初始化失败:" + e.getMessage());
-            throw new RuntimeException(e);
+            Log.err.print(getClass(), "初始化失败", e);
         }
 
     }
@@ -76,8 +75,7 @@ public class ScreenProductSetsPanel extends CTSetsPanel {
 
             }
         } catch (Exception e) {
-            Log.err.print(ScreenProductSetsPanel.class, "初始化失败:" + e.getMessage());
-            throw new RuntimeException(e);
+            Log.err.print(ScreenProductSetsPanel.class, "初始化失败", e);
         }
 
         viewLabel.revalidate();
@@ -101,7 +99,7 @@ public class ScreenProductSetsPanel extends CTSetsPanel {
                 fileWriter.write("{}");
                 fileWriter.close();
             } catch (IOException e) {
-                e.printStackTrace();
+                Log.err.print(getClass(), "错误", e);
             }
         }
 
@@ -152,8 +150,7 @@ public class ScreenProductSetsPanel extends CTSetsPanel {
                                     try {
                                         Files.delete(file);
                                     } catch (IOException ex) {
-                                        Log.err.print(getClass(), "文件: " + file + "\n删除失败: " + ex.getMessage());
-                                        throw new RuntimeException(ex);
+                                        Log.err.print(getClass(), "文件: " + file + "\n删除失败", ex);
                                     }
                                     return FileVisitResult.CONTINUE;
                                 }
@@ -165,8 +162,7 @@ public class ScreenProductSetsPanel extends CTSetsPanel {
                                     try {
                                         Files.delete(dir);
                                     } catch (IOException ex) {
-                                        Log.err.print(getClass(), "文件夹: " + dir + "\n删除失败: " + ex.getMessage());
-                                        throw new RuntimeException(ex);
+                                        Log.err.print(getClass(), "文件夹: " + dir + "\n删除失败", ex);
                                     }
                                     return FileVisitResult.CONTINUE;
                                 }
@@ -202,8 +198,7 @@ public class ScreenProductSetsPanel extends CTSetsPanel {
                     try {
                         Files.copy(Paths.get(path), Paths.get(target), StandardCopyOption.REPLACE_EXISTING);
                     } catch (IOException ex) {
-                        Log.err.print(getClass(), "图片复制失败:" + ex.getMessage());
-                        throw new RuntimeException(ex);
+                        Log.err.print(getClass(), "图片复制失败", ex);
                     }
                     jsonObject.put("path", target);
                 }

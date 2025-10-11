@@ -30,8 +30,8 @@ public class Main{
         CTInfo.init();
 
         Log.info.systemPrint("Main", "正在初始化...");
-        boolean b;
-        boolean startUpdate;
+        boolean b = false;
+        boolean startUpdate = true;
         try {
             //GetSetsJSON setsJSON = new GetSetsJSON();
 
@@ -49,9 +49,9 @@ public class Main{
                 Log.info.print("Main", "使用的启动参数:" + Arrays.toString(args));
             }
         } catch (Exception e) {
-            Log.err.print(Main.class, "初始化失败:" + e.getMessage());
-            Log.showLogDialog();
-            throw new RuntimeException(e);
+            Log.err.print(Main.class, "初始化失败", e);
+            Log.showLogDialog(true);
+
         }
 
         CTInfo.isError = EasterEgg.getEasterEggItem(EasterEgg.STYLE_ERROR);
@@ -72,9 +72,8 @@ public class Main{
         try {
             SwingRun.show(b, startUpdate);
         } catch (Exception e) {
-            Log.err.print(Main.class, "窗口初始化失败:" + e.getMessage());
-            Log.showLogDialog();
-            throw new RuntimeException(e);
+            Log.err.print(Main.class, "窗口初始化失败", e);
+            Log.showLogDialog(true);
         }
 
         Log.info.print("Main", "初始化完毕");

@@ -78,8 +78,7 @@ public class DayIsNow {
 
             }
         } catch (Exception e) {
-            Log.err.print(DayIsNow.class, "获取目标时间失败: \n" + e.getMessage());
-            throw new RuntimeException(e);
+            Log.err.print(DayIsNow.class, "获取目标时间失败", e);
         }
 
         return day;
@@ -126,8 +125,7 @@ public class DayIsNow {
 
             time = calendar.getTime().getTime() - new Date().getTime();
         } catch (Exception e) {
-            Log.err.print(DayIsNow.class, "获取目标时间失败: \n" + e.getMessage());
-            throw new RuntimeException(e);
+            Log.err.print(DayIsNow.class, "获取目标时间失败", e);
         }
         return time;
     }

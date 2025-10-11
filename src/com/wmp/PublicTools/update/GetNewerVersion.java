@@ -93,9 +93,9 @@ public class GetNewerVersion {
 
             return version;
         } catch (Exception e) {
-            e.printStackTrace();
-            throw new RuntimeException("版本信息解析失败", e);
+            Log.err.print(GetNewerVersion.class, "版本获取失败", e);
         }
+        return null;
     }
 
     public static void checkForUpdate(Window dialog, JPanel panel, boolean showMessage) {
@@ -298,13 +298,9 @@ public class GetNewerVersion {
                 if (result == JOptionPane.YES_OPTION) {
                     try {
                         downloadSource(sourceURL);
-                    } catch (URISyntaxException e) {
-                        Log.err.print(dialog, GetNewerVersion.class, "下载失败");
-                        throw new RuntimeException(e);
-                    } catch (IOException e) {
-                        throw new RuntimeException(e);
+                    } catch (Exception e) {
+                        Log.err.print(dialog, GetNewerVersion.class, "下载失败", e);
                     }
-                    //openGithubRelease();
                 }
             }
         }.execute();
@@ -330,9 +326,9 @@ public class GetNewerVersion {
 
             return sourceURL;
         } catch (Exception e) {
-            e.printStackTrace();
-            throw new RuntimeException("信息解析失败", e);
+            Log.err.print(GetNewerVersion.class, "信息解析失败", e);
         }
+        return null;
     }
     private static void downloadSource(String downloadUrl) throws URISyntaxException, IOException {
         Desktop.getDesktop().browse(new URI(downloadUrl));

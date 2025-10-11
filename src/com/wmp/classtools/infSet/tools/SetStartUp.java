@@ -1,5 +1,7 @@
 package com.wmp.classTools.infSet.tools;
 
+import com.wmp.PublicTools.printLog.Log;
+
 import java.io.*;
 
 public class SetStartUp {
@@ -36,7 +38,7 @@ public class SetStartUp {
             executeCommand(command);
             System.out.println("已移除开机自启动！");
         } catch (Exception e) {
-            e.printStackTrace();
+            Log.err.print(SetStartUp.class, "错误", e);
         }
     }
 
@@ -57,7 +59,7 @@ public class SetStartUp {
                 }
             }
         } catch (IOException e) {
-            e.printStackTrace();
+            Log.err.print(SetStartUp.class, "错误", e);
         }
         return false;
     }

@@ -431,8 +431,9 @@ public class PersonalizationPanel extends CTSetsPanel {
             Log.info.print("InfSetDialog", "保存数据: " + jsonObject.toString());
             try {
                 io.setInfo(jsonObject.toString());
-            } catch (IOException e) {
-                throw new RuntimeException(e);
+
+            } catch (Exception e) {
+                Log.err.print(PersonalizationPanel.class, "保存数据失败", e);
             }
 
         }

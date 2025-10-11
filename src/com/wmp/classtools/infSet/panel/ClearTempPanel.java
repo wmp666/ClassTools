@@ -1,6 +1,7 @@
 package com.wmp.classTools.infSet.panel;
 
 import com.wmp.PublicTools.CTInfo;
+import com.wmp.PublicTools.printLog.Log;
 import com.wmp.classTools.CTComponent.CTSetsPanel;
 import com.wmp.classTools.infSet.panel.tools.DataControlUnit;
 
@@ -17,8 +18,8 @@ public class ClearTempPanel extends CTSetsPanel {
 
         try {
             initUI();
-        } catch (MalformedURLException e) {
-            throw new RuntimeException(e);
+        } catch (Exception e) {
+            Log.err.print(getClass(), "UI初始化失败", e);
         }
 
     }
