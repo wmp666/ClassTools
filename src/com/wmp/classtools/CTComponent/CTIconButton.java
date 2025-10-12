@@ -1,5 +1,6 @@
 package com.wmp.classTools.CTComponent;
 
+import com.wmp.PublicTools.CTInfo;
 import com.wmp.PublicTools.UITools.CTColor;
 import com.wmp.PublicTools.UITools.CTFont;
 import com.wmp.PublicTools.UITools.CTFontSizeStyle;
@@ -113,8 +114,14 @@ public class CTIconButton extends JButton implements ActionListener {
         return new CTIconButton(this.text, this.defaultIconPath, this.callback);
     }
 
-    public CTTextButton toTextButton(boolean showBoder) {
-        CTTextButton button = new CTTextButton(this.text, this.defaultIcon, showBoder);
+    public CTTextButton toTextButton(boolean showBorder) {
+        CTTextButton button = new CTTextButton(this.text, this.defaultIcon, showBorder);
+        button.addActionListener(this);
+        return button;
+    }
+
+    public CTRoundTextButton toRoundTextButton() {
+        CTRoundTextButton button = new CTRoundTextButton(this.text, this.defaultIcon);
         button.addActionListener(this);
         return button;
     }
@@ -134,15 +141,15 @@ public class CTIconButton extends JButton implements ActionListener {
 
         int width = getWidth();
         int height = getHeight();
+        int tempX = (width - this.defaultIcon.getIconWidth()) / 2;
+        int tempY = (height - this.defaultIcon.getIconHeight()) / 2;
 
         g2.setColor(getBackground());
-        g2.fill(new RoundRectangle2D.Float(0, 0, width, height, 10, 10));
+        g2.fill(new RoundRectangle2D.Float(tempX, tempY, this.defaultIcon.getIconWidth(), this.defaultIcon.getIconHeight(), CTInfo.arcw, CTInfo.arch));
 
         // 绘制图标（如果存在）
         if (this.defaultIconImage != null) {
 
-            int tempX = (width - this.defaultIcon.getIconWidth()) / 2;
-            int tempY = (height - this.defaultIcon.getIconHeight()) / 2;
 
             g2.drawImage(this.defaultIconImage, tempX, tempY, this.defaultIcon.getIconWidth(), this.defaultIcon.getIconHeight(), null);
         }

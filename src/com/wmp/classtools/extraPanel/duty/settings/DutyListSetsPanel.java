@@ -52,9 +52,12 @@ public class DutyListSetsPanel extends CTSetsPanel {
         DutyTable.setModel(model);
 
         JScrollPane scrollPane = new JScrollPane(DutyTable);
+        scrollPane.setOpaque(false);
+        scrollPane.getViewport().setOpaque(false);
         this.add(scrollPane, BorderLayout.CENTER);
 
         JPanel buttonPanel = new JPanel();
+        buttonPanel.setOpaque(false);
         buttonPanel.setLayout(new FlowLayout(FlowLayout.LEFT, 5, 5));
 
         //新建

@@ -6,6 +6,7 @@ import com.wmp.PublicTools.EasterEgg.EasterEgg;
 import com.wmp.PublicTools.UITools.*;
 import com.wmp.PublicTools.printLog.Log;
 import com.wmp.classTools.CTComponent.CTPanel;
+import com.wmp.classTools.CTComponent.CTPopupMenu;
 import com.wmp.classTools.CTComponent.CTTextButton;
 
 import javax.swing.*;
@@ -133,7 +134,7 @@ public class ETPanel extends CTPanel implements MouseListener {
     public void mouseClicked(MouseEvent e) {
         int button = e.getButton();
         if (button == MouseEvent.BUTTON3) {
-            JPopupMenu ETPopupMenu = new JPopupMenu();
+            CTPopupMenu ETPopupMenu = new CTPopupMenu();
 
             CTTextButton edit = new CTTextButton("编辑");
             edit.setIcon(GetIcon.getIcon(getClass().getResource("/image/edit.png"), 20, 20));

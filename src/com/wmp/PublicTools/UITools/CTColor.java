@@ -19,7 +19,7 @@ public class CTColor {
     public static final String STYLE_LIGHT = "light";
 
     public static String style = STYLE_LIGHT;
-    public static Color mainColor = new Color(0x0090FF);
+    public static Color mainColor = new Color(0x29A8E3);
     public static Color textColor = Color.BLACK;
     public static Color backColor = Color.WHITE;
 
@@ -41,7 +41,7 @@ public class CTColor {
     public static void setErrorColor() {
         canRemove = false;
 
-        textColor = mainColor;
+        textColor = new Color(0x29A8E3);
         backColor = new Color(246, 250, 255);
         style = "error";
     }
@@ -67,7 +67,7 @@ public class CTColor {
             }
 
             case MAIN_COLOR_BLUE->{
-                mainColor = new Color(0x0090FF);
+                mainColor = new Color(0x29A8E3);
 
             }
             case MAIN_COLOR_GREEN->{

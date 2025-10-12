@@ -3,6 +3,7 @@ package com.wmp.classTools.frame;
 import com.wmp.Main;
 import com.wmp.PublicTools.CTInfo;
 import com.wmp.PublicTools.OpenInExp;
+import com.wmp.PublicTools.UITools.CTColor;
 import com.wmp.PublicTools.UITools.CTFont;
 import com.wmp.PublicTools.UITools.CTFontSizeStyle;
 import com.wmp.PublicTools.UITools.GetIcon;
@@ -66,11 +67,7 @@ public class ShowCookieDialog extends JDialog implements WindowListener {
 
         initDialog();
 
-        Container c = this.getContentPane();
-
-        c.setLayout(new BorderLayout());
-
-        initShowCookies(c);
+        initShowCookies(this.getContentPane());
 
         initMenuBar();
 
@@ -97,7 +94,7 @@ public class ShowCookieDialog extends JDialog implements WindowListener {
 
     private initCookieSetsPanel initCookieSets(Container c) throws MalformedURLException {
         JPanel cookieSettingPanel = new JPanel();
-        cookieSettingPanel.setBackground(Color.WHITE);
+        cookieSettingPanel.setOpaque(false);
         cookieSettingPanel.setLayout(new GridLayout(6, 1, 20, 5));
 
         CTTextButton removeCookie = new CTTextButton("修改快速启动单元", GetIcon.getIcon(getClass().getResource("/image/light/settings_0.png"), 30, 30));
@@ -139,9 +136,10 @@ public class ShowCookieDialog extends JDialog implements WindowListener {
         cookieMap.clear();
 
         JPanel cookiesPanel = new JPanel();
+
         cookiesPanel.removeAll();
 
-        cookiesPanel.setBackground(Color.WHITE);
+        cookiesPanel.setOpaque(false);
         cookiesPanel.setLayout(new GridLayout(0, 1, 20, 10));
 
         GetCookie getCookie = new GetCookie();
@@ -171,7 +169,7 @@ public class ShowCookieDialog extends JDialog implements WindowListener {
                 for (JButton label : cookiePanelList) {
                     if (!label.getText().equals(s[1])) {
                         //label.setBorder(BorderFactory.createLineBorder(Color.BLACK, 1));
-                        label.setForeground(Color.BLACK);
+                        label.setForeground(CTColor.textColor);
                     }
                 }
                 cookieButton.repaint();
@@ -188,7 +186,7 @@ public class ShowCookieDialog extends JDialog implements WindowListener {
 
         //添加文件
         FileDragDropLabel addCookie = new FileDragDropLabel();
-        addCookie.setBackground(Color.WHITE);
+        addCookie.setOpaque(false);
         addCookie.setIcon(GetIcon.getIcon(getClass().getResource("/image/light/new_0.png"),
                 30, 30));
         addCookie.setHorizontalAlignment(JLabel.CENTER);
@@ -233,8 +231,8 @@ public class ShowCookieDialog extends JDialog implements WindowListener {
 
         cookiesPanel.setMaximumSize(cookiesPanel.getPreferredSize());
         JScrollPane scrollPane = new JScrollPane(cookiesPanel);
-        //在接触滚动面板最右侧时,让cookiesPanel不能向右添加
-
+        scrollPane.setOpaque(false);
+        scrollPane.getViewport().setOpaque(false);
         scrollPane.getVerticalScrollBar().setUnitIncrement(16);// 设置滚动速度
         //让滚动面板无法水平滚动
         scrollPane.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);// 禁止水平滚动
@@ -246,7 +244,7 @@ public class ShowCookieDialog extends JDialog implements WindowListener {
 
     private initControlPanel getInitControlPanel(Container c) throws MalformedURLException {
         JPanel controlPanel = new JPanel();
-        controlPanel.setBackground(Color.WHITE);
+        controlPanel.setOpaque(false);
         controlPanel.setLayout(new FlowLayout(FlowLayout.LEFT, 5, 15));
 
         CTTextButton openInExp = new CTTextButton("打开所在目录", GetIcon.getIcon(Main.class.getResource("/image/openExp.png"), 30, 30));
@@ -277,6 +275,8 @@ public class ShowCookieDialog extends JDialog implements WindowListener {
         controlPanel.add(runCookie);
 
         JScrollPane controlScrollPane = new JScrollPane(controlPanel);
+        controlScrollPane.setOpaque(false);
+        controlScrollPane.getViewport().setOpaque(false);
 
         c.add(controlScrollPane, BorderLayout.SOUTH);
         return new initControlPanel(openInExp, outputBtn, runCookie);
@@ -440,8 +440,11 @@ public class ShowCookieDialog extends JDialog implements WindowListener {
                         32, 32).getImage());
         this.setLocationRelativeTo(null);
         this.setModal(true);
-        //this.setMaximumSize(new Dimension(600, 400));
-        this.setResizable(false);//禁止改变大小
+
+        Container c = this.getContentPane();
+
+        c.setLayout(new BorderLayout());
+        c.setBackground(CTColor.backColor);
     }
 
     public void refreshCookiePanel() throws IOException {

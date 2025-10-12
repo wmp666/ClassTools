@@ -1,6 +1,7 @@
 package com.wmp.classTools.CTComponent;
 
 import com.wmp.PublicTools.CTInfo;
+import com.wmp.PublicTools.UITools.CTColor;
 
 import javax.swing.*;
 import javax.swing.plaf.basic.BasicComboBoxUI;
@@ -27,7 +28,8 @@ public class CTComboBox extends JComboBox<String> {
 
 
         this.setBorder(CTBorderFactory.BASIC_LINE_BORDER);//设置按钮的边框 - 5px 实线
-        this.setBackground(new Color(255, 255, 255));
+        this.setBackground(CTColor.backColor);
+        this.setForeground(CTColor.textColor);
         this.setFont(new Font("Microsoft YaHei UI", Font.PLAIN, (int) (15 * CTInfo.dpi)));
         JComboBox<String> comboBox = this;
         this.addFocusListener(new FocusListener() {

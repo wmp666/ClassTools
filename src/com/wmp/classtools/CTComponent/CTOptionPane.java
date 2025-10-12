@@ -3,6 +3,7 @@ package com.wmp.classTools.CTComponent;
 import com.wmp.Main;
 import com.wmp.PublicTools.CTInfo;
 import com.wmp.PublicTools.EasterEgg.EasterEgg;
+import com.wmp.PublicTools.UITools.CTColor;
 import com.wmp.PublicTools.UITools.CTFont;
 import com.wmp.PublicTools.UITools.CTFontSizeStyle;
 import com.wmp.PublicTools.UITools.GetIcon;
@@ -165,6 +166,7 @@ public class CTOptionPane {
         dialog.setModal(true);
         dialog.setAlwaysOnTop(isAlwaysOnTop);
         dialog.setTitle(title);
+        dialog.getContentPane().setBackground(CTColor.backColor);
         dialog.setLayout(new BorderLayout(10, 10));
         dialog.setDefaultCloseOperation(JDialog.DO_NOTHING_ON_CLOSE);
 
@@ -198,6 +200,7 @@ public class CTOptionPane {
         AtomicReference<String> inputStr = new AtomicReference<>("");
 
         JPanel toolsPanel = new JPanel(new GridLayout(0, 1, 5, 5));
+        toolsPanel.setOpaque(false);
 
         CTTextField inputField = new CTTextField();
         CTComboBox choiceBox = new CTComboBox();
@@ -206,6 +209,7 @@ public class CTOptionPane {
         }
         {
             JPanel panel = new JPanel(new BorderLayout(10, 10));
+            panel.setOpaque(false);
 
             // 创建消息文本区域
             {
@@ -228,8 +232,11 @@ public class CTOptionPane {
                 messageArea.setOpaque(false);//设置文本区域不透明
                 messageArea.setLineWrap(true);//设置文本区域自动换行
                 messageArea.setWrapStyleWord(true);//设置文本区域自动换行时单词不被分割
+                messageArea.setForeground(CTColor.textColor);
                 messageArea.setFont(new Font("Microsoft YaHei UI", Font.PLAIN, (int) (15 * CTInfo.dpi)));
                 messagePanel = new JScrollPane(messageArea);
+                messagePanel.setOpaque(false);
+                messagePanel.getViewport().setOpaque(false);
                 messagePanel.setBorder(null);
 
                 messageArea.addFocusListener(new FocusAdapter() {
@@ -244,7 +251,7 @@ public class CTOptionPane {
                     public void mouseClicked(MouseEvent e) {
                         int button = e.getButton();
                         if (button == MouseEvent.BUTTON3) {
-                            JPopupMenu ETPopupMenu = new JPopupMenu();
+                            CTPopupMenu ETPopupMenu = new CTPopupMenu();
 
                             CTTextButton edit = new CTTextButton("编辑");
                             edit.setIcon(GetIcon.getIcon(getClass().getResource("/image/edit.png"), 20, 20));
@@ -321,6 +328,7 @@ public class CTOptionPane {
                     }
                 };
                 JPanel buttonPanel = new JPanel(new GridLayout(1, 2, 10, 10));
+                buttonPanel.setOpaque(false);
                 buttonPanel.add(yesButton);
                 buttonPanel.add(noButton);
                 dialog.add(buttonPanel, BorderLayout.SOUTH);//设置按钮面板的位置 - 下
@@ -343,6 +351,7 @@ public class CTOptionPane {
                 });
 
                 JPanel buttonPanel = new JPanel(new GridLayout(1, 1, 10, 10));
+                buttonPanel.setOpaque(false);
                 buttonPanel.add(yesButton);
                 dialog.add(buttonPanel, BorderLayout.SOUTH);//设置按钮面板的位置 - 下
 

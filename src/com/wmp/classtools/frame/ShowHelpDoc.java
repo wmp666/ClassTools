@@ -11,6 +11,7 @@ import com.wmp.PublicTools.printLog.Log;
 import com.wmp.PublicTools.videoView.MediaPlayer;
 import com.wmp.PublicTools.web.GetWebInf;
 import com.wmp.classTools.CTComponent.CTList;
+import com.wmp.classTools.CTComponent.CTPopupMenu;
 import org.commonmark.parser.Parser;
 import org.commonmark.renderer.html.HtmlRenderer;
 import org.json.JSONArray;
@@ -169,7 +170,7 @@ public class ShowHelpDoc extends JFrame {
                     }
                 });
 
-                JPopupMenu popupMenu = new JPopupMenu();
+                CTPopupMenu popupMenu = new CTPopupMenu();
 
                 JMenuItem helpDocMenuItem = new JMenuItem("帮助文档(helpdoc.docx)");
                 helpDocMenuItem.addActionListener(e1 -> {

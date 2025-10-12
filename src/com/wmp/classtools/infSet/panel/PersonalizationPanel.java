@@ -1,6 +1,7 @@
 package com.wmp.classTools.infSet.panel;
 
 import com.wmp.PublicTools.CTInfo;
+import com.wmp.PublicTools.UITools.CTColor;
 import com.wmp.PublicTools.UITools.CTFont;
 import com.wmp.PublicTools.UITools.CTFontSizeStyle;
 import com.wmp.PublicTools.io.IOForInfo;
@@ -56,7 +57,10 @@ public class PersonalizationPanel extends CTSetsPanel {
 
 
         JPanel SetsPanel = new JPanel();
+        SetsPanel.setOpaque(false);
         JScrollPane mainPanelScroll = new JScrollPane(SetsPanel);
+        mainPanelScroll.setOpaque(false);
+        mainPanelScroll.getViewport().setOpaque(false);
         //调整滚动灵敏度
         mainPanelScroll.getVerticalScrollBar().setUnitIncrement(16);
         mainPanelScroll.setSize(400, 400);
@@ -66,17 +70,20 @@ public class PersonalizationPanel extends CTSetsPanel {
 
 
         JPanel ColorPanel = new JPanel();
+        ColorPanel.setOpaque(false);
         ColorPanel.setLayout(new GridLayout(1, 2));
         ColorPanel.setBorder(CTBorderFactory.createTitledBorder("颜色设置"));
         //颜色设置
         {
             //主题色设置
             JPanel MainColorSets = new JPanel();
+            MainColorSets.setOpaque(false);
             {
 
                 MainColorSets.setLayout(new FlowLayout(FlowLayout.LEFT));
 
                 JLabel mainColorLabel = new JLabel("主题色:");
+                mainColorLabel.setForeground(CTColor.textColor);
                 mainColorLabel.setFont(CTFont.getCTFont(Font.PLAIN, CTFontSizeStyle.SMALL));
 
 
@@ -92,11 +99,13 @@ public class PersonalizationPanel extends CTSetsPanel {
 
             //主题设置
             JPanel MainThemeSets = new JPanel();
+            MainThemeSets.setOpaque(false);
             {
 
                 MainThemeSets.setLayout(new FlowLayout(FlowLayout.LEFT));
 
                 JLabel mainThemeLabel = new JLabel("主题:");
+                mainThemeLabel.setForeground(CTColor.textColor);
                 mainThemeLabel.setFont(CTFont.getCTFont(Font.PLAIN, CTFontSizeStyle.SMALL));
 
                 mainThemeComboBox.setFont(CTFont.getCTFont(Font.PLAIN, CTFontSizeStyle.SMALL));
@@ -115,17 +124,20 @@ public class PersonalizationPanel extends CTSetsPanel {
         }
 
         JPanel reSetFontPanel = new JPanel();
+        reSetFontPanel.setOpaque(false);
         reSetFontPanel.setLayout(new GridBagLayout());
         reSetFontPanel.setBorder(CTBorderFactory.createTitledBorder("字体设置"));
         //字体设置
         {
             //字体设置
             JPanel setFontName = new JPanel();
+            setFontName.setOpaque(false);
             {
 
                 setFontName.setLayout(new FlowLayout(FlowLayout.LEFT));
 
                 JLabel FontNameLabel = new JLabel("字体:");
+                FontNameLabel.setForeground(CTColor.textColor);
                 FontNameLabel.setFont(CTFont.getCTFont(Font.PLAIN, CTFontSizeStyle.SMALL));
 
                 FontNameComboBox.setFont(CTFont.getCTFont(Font.PLAIN, CTFontSizeStyle.SMALL));
@@ -140,9 +152,11 @@ public class PersonalizationPanel extends CTSetsPanel {
             }
             //字体大小设置
             JPanel setFontSize = new JPanel();
+            setFontSize.setOpaque(false);
             {
                 setFontSize.setLayout(new FlowLayout(FlowLayout.LEFT));
                 JLabel FontSizeLabel = new JLabel("字体大小-大:");
+                FontSizeLabel.setForeground(CTColor.textColor);
                 FontSizeLabel.setFont(CTFont.getCTFont(Font.PLAIN, CTFontSizeStyle.SMALL));
                 CTTextField FontSizeTextField = new CTTextField();
                 FontSizeTextField.setFont(CTFont.getCTFont(Font.PLAIN, CTFontSizeStyle.SMALL));
@@ -174,7 +188,7 @@ public class PersonalizationPanel extends CTSetsPanel {
         }
 
         JPanel disButPanel = new JPanel();
-        //disposePanel.setBackground(CTColor.backColor);
+        disButPanel.setOpaque(false);
         disButPanel.setLayout(new GridLayout(0, 2));
         //设置按钮隐藏
         disButPanel.setBorder(CTBorderFactory.createTitledBorder("隐藏部分按钮"));
@@ -183,8 +197,8 @@ public class PersonalizationPanel extends CTSetsPanel {
             FinalPanel.allButList.forEach(button -> {
                 JCheckBox checkBox = new JCheckBox(button.getName());
                 checkBox.setFont(CTFont.getCTFont(Font.PLAIN, CTFontSizeStyle.SMALL));
-                //checkBox.setBackground(CTColor.backColor);
-                //checkBox.setForeground(CTColor.textColor);
+                checkBox.setBackground(CTColor.backColor);
+                checkBox.setForeground(CTColor.textColor);
                 disposeButton.put(button.getName(), checkBox);
             });
 
@@ -194,7 +208,7 @@ public class PersonalizationPanel extends CTSetsPanel {
         }
 
         JPanel disPanPanel = new JPanel();
-        //disposePanel.setBackground(CTColor.backColor);
+        disPanPanel.setOpaque(false);
         disPanPanel.setLayout(new GridLayout(0, 2));
         //设置组件隐藏
         disPanPanel.setBorder(CTBorderFactory.createTitledBorder("隐藏部分组件"));
@@ -210,8 +224,8 @@ public class PersonalizationPanel extends CTSetsPanel {
 
                 JCheckBox checkBox = new JCheckBox(panel.getName());
                 checkBox.setFont(CTFont.getCTFont(Font.PLAIN, CTFontSizeStyle.SMALL));
-                //checkBox.setBackground(CTColor.backColor);
-                //checkBox.setForeground(CTColor.textColor);
+                checkBox.setBackground(CTColor.backColor);
+                checkBox.setForeground(CTColor.textColor);
                 disposePanel.put(panel.getID(), checkBox);
             });
 
@@ -221,15 +235,22 @@ public class PersonalizationPanel extends CTSetsPanel {
         }
 
         JPanel otherPanel = new JPanel();
-        //otherPanel.setBackground(CTColor.backColor);
+        otherPanel.setOpaque(false);
         otherPanel.setLayout(new GridLayout(0, 2));
         otherPanel.setBorder(CTBorderFactory.createTitledBorder("其他设置"));
         //其他设置
         {
+
+            startUp.setBackground(CTColor.backColor);
+            startUp.setForeground(CTColor.textColor);
             startUp.setFont(CTFont.getCTFont(Font.PLAIN, CTFontSizeStyle.SMALL));
 
+            canExit.setBackground(CTColor.backColor);
+            canExit.setForeground(CTColor.textColor);
             canExit.setFont(CTFont.getCTFont(Font.PLAIN, CTFontSizeStyle.SMALL));
 
+            StartUpdate.setBackground(CTColor.backColor);
+            StartUpdate.setForeground(CTColor.textColor);
             StartUpdate.setFont(CTFont.getCTFont(Font.PLAIN, CTFontSizeStyle.SMALL));
             StartUpdate.setSelected(true);
 
@@ -241,15 +262,17 @@ public class PersonalizationPanel extends CTSetsPanel {
         }
 
         JPanel compatiblePanel = new JPanel();
-        //otherPanel.setBackground(CTColor.backColor);
+        compatiblePanel.setOpaque(false);
         compatiblePanel.setLayout(new GridLayout(0, 2));
         compatiblePanel.setBorder(CTBorderFactory.createTitledBorder("其他设置"));
         //其他设置
         {
             JPanel dpiPanel = new JPanel();
+            dpiPanel.setOpaque(false);
             dpiPanel.setLayout(new FlowLayout(FlowLayout.LEFT));
             {
                 JLabel dpiLabel = new JLabel("组件放大倍率:");
+                dpiLabel.setForeground(CTColor.textColor);
                 dpiLabel.setFont(CTFont.getCTFont(Font.PLAIN, CTFontSizeStyle.SMALL));
 
                 dpi.setFont(CTFont.getCTFont(Font.PLAIN, CTFontSizeStyle.SMALL));

@@ -1,6 +1,5 @@
 package com.wmp.classTools.frame;
 
-import com.wmp.Main;
 import com.wmp.PublicTools.CTInfo;
 import com.wmp.PublicTools.EasterEgg.EETextStyle;
 import com.wmp.PublicTools.EasterEgg.EasterEgg;
@@ -11,6 +10,7 @@ import com.wmp.PublicTools.printLog.Log;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.geom.RoundRectangle2D;
 import java.net.URL;
 import java.util.Arrays;
 
@@ -56,10 +56,6 @@ public class LoadingWindow extends JDialog {
         int maxLength = Arrays.stream(lines).mapToInt(String::length).max().orElse(0);
 
         // 计算新的窗口尺寸（基础尺寸 + 动态调整）
-        int baseWidth = 350;
-        int baseHeight = 200;
-        int newWidth = Math.max(baseWidth, maxLength * 20 + 200); // 每个字符约20像素宽度
-        int newHeight = Math.max(baseHeight, lineCount * 30);  // 每多一行增加30像素高度
         time = Math.max(time, plainText.length() * 90L);
 
         JLabel label = new JLabel(showText, GetIcon.getIcon(url, width, height), SwingConstants.CENTER);
@@ -72,6 +68,11 @@ public class LoadingWindow extends JDialog {
         this.setUndecorated(true);
         this.setAlwaysOnTop(true);
         this.pack();
+
+
+        this.setShape(new RoundRectangle2D.Double(0, 0, this.getWidth(), this.getHeight(), 20, 20));
+
+
         this.setLocationRelativeTo(null);
 
         this.setVisible(true);
@@ -97,4 +98,6 @@ public class LoadingWindow extends JDialog {
         }*/
         return easterEgg;
     }
+
+
 }

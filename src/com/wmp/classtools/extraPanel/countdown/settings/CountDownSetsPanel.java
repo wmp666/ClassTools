@@ -1,5 +1,6 @@
 package com.wmp.classTools.extraPanel.countdown.settings;
 
+import com.wmp.PublicTools.UITools.CTColor;
 import com.wmp.PublicTools.UITools.CTFont;
 import com.wmp.PublicTools.UITools.CTFontSizeStyle;
 import com.wmp.classTools.CTComponent.CTSetsPanel;
@@ -12,9 +13,6 @@ import java.io.IOException;
 
 public class CountDownSetsPanel extends CTSetsPanel {
 
-    private final String path;
-
-
     private final CTTextField titleField = new CTTextField();
     private final CTTextField targetTimeField = new CTTextField();
 
@@ -25,7 +23,6 @@ public class CountDownSetsPanel extends CTSetsPanel {
         this.setName("倒计时设置");
         this.setLayout(new GridBagLayout());
 
-        path = basicDataPath + "\\CountDown.json";
 
         initInfo();
         initUI();
@@ -47,6 +44,7 @@ public class CountDownSetsPanel extends CTSetsPanel {
         titlePanel.setOpaque(false);
 
         JLabel title = new JLabel("标题:");
+        title.setForeground(CTColor.textColor);
         title.setFont(CTFont.getCTFont(Font.PLAIN, CTFontSizeStyle.SMALL));
         titlePanel.add(title);
         titlePanel.add(titleField);
@@ -58,6 +56,7 @@ public class CountDownSetsPanel extends CTSetsPanel {
         targetTimePanel.setOpaque(false);
 
         JLabel targetTimeLabel = new JLabel("目标时间 (yyyy.MM.dd HH:mm:ss):");
+        targetTimeLabel.setForeground(CTColor.textColor);
         targetTimeLabel.setFont(CTFont.getCTFont(Font.PLAIN, CTFontSizeStyle.SMALL));
         targetTimePanel.add(targetTimeLabel);
         targetTimePanel.add(targetTimeField);

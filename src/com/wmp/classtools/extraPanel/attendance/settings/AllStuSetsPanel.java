@@ -54,9 +54,12 @@ public class AllStuSetsPanel extends CTSetsPanel {
         allStuTable.setModel(model);
 
         JScrollPane scrollPane = new JScrollPane(allStuTable);
+        scrollPane.setOpaque(false);
+        scrollPane.getViewport().setOpaque(false);
         this.add(scrollPane, BorderLayout.CENTER);
 
         JPanel buttonPanel = new JPanel();
+        buttonPanel.setOpaque(false);
         buttonPanel.setLayout(new FlowLayout(FlowLayout.LEFT, 5, 5));
 
 

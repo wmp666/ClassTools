@@ -18,6 +18,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.awt.geom.RoundRectangle2D;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -158,11 +159,12 @@ public class MainWindow extends JDialog {
                 //刷新
 
                 Timer repaint = new Timer(200, e -> {
-                    //刷新窗口大小
 
                     showPanelList.forEach(ctPanel -> {
                         ctPanel.setBackground(CTColor.backColor);
                     });
+
+                    centerPane.setBackground(CTColor.backColor);
 
                     // 重新验证中心面板以更新布局
                     centerPane.revalidate();
@@ -178,7 +180,11 @@ public class MainWindow extends JDialog {
 
                     if (this.getHeight() >= Toolkit.getDefaultToolkit().getScreenSize().getHeight() * 4 / 5)
                         this.setSize(new Dimension(this.getWidth(), (int) (Toolkit.getDefaultToolkit().getScreenSize().getHeight() * 4 / 5)));
-                    this.setLocation(Toolkit.getDefaultToolkit().getScreenSize().width - this.getWidth(), 0);
+                    this.setLocation(Toolkit.getDefaultToolkit().getScreenSize().width - this.getWidth() - 5, 5);
+
+                    this.getContentPane().setBackground(CTColor.backColor);
+                    this.setShape(new RoundRectangle2D.Double(0, 0, this.getWidth(), this.getHeight(), 20, 20));
+
                     this.repaint();
                 });
                 repaintSize.start();
@@ -242,4 +248,5 @@ public class MainWindow extends JDialog {
 
 
     }
+
 }

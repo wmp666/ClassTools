@@ -1,6 +1,7 @@
 package com.wmp.classTools.CTComponent;
 
 import com.wmp.PublicTools.CTInfo;
+import com.wmp.PublicTools.UITools.CTColor;
 
 import javax.swing.*;
 import java.awt.*;
@@ -22,7 +23,8 @@ public class CTTextField extends JTextField {
         }
 
         this.setBorder(CTBorderFactory.BASIC_LINE_BORDER);//设置按钮的边框 - 5px 实线
-        this.setBackground(new Color(255, 255, 255));
+        this.setBackground(CTColor.backColor);
+        this.setForeground(CTColor.textColor);
         this.setFont(new Font("Microsoft YaHei UI", Font.PLAIN, (int) (15 * CTInfo.dpi)));
         JTextField textField = this;
         this.addFocusListener(new FocusListener() {

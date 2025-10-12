@@ -5,6 +5,7 @@ import com.wmp.PublicTools.UITools.*;
 import com.wmp.PublicTools.io.IOForInfo;
 import com.wmp.PublicTools.printLog.Log;
 import com.wmp.classTools.CTComponent.CTPanel;
+import com.wmp.classTools.CTComponent.CTPopupMenu;
 import com.wmp.classTools.CTComponent.CTSetsPanel;
 import com.wmp.classTools.CTComponent.CTTextButton;
 import com.wmp.classTools.extraPanel.attendance.settings.AllStuSetsPanel;
@@ -87,7 +88,7 @@ public class ATPanel extends CTPanel {
                 int button = e.getButton();
                 if (button != MouseEvent.BUTTON3) return;
 
-                JPopupMenu popupMenu = new JPopupMenu();
+                CTPopupMenu popupMenu = new CTPopupMenu();
 
                 JMenu editMenu = new JMenu("编辑");
                 editMenu.setIcon(GetIcon.getIcon(getClass().getResource("/image/edit.png"), 20, 20));

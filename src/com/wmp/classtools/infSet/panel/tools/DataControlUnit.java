@@ -1,6 +1,9 @@
 package com.wmp.classTools.infSet.panel.tools;
 
 import com.wmp.PublicTools.OpenInExp;
+import com.wmp.PublicTools.UITools.CTColor;
+import com.wmp.PublicTools.UITools.CTFont;
+import com.wmp.PublicTools.UITools.CTFontSizeStyle;
 import com.wmp.PublicTools.io.IOForInfo;
 import com.wmp.PublicTools.printLog.Log;
 import com.wmp.classTools.CTComponent.CTBorderFactory;
@@ -10,7 +13,6 @@ import com.wmp.classTools.CTComponent.CTTextField;
 import javax.swing.*;
 import java.awt.*;
 import java.io.File;
-import java.io.IOException;
 import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
@@ -40,17 +42,21 @@ public class DataControlUnit extends JPanel {
         this.specialChildPathList.addAll(List.of(specialChildPaths));
 
         this.setBorder(CTBorderFactory.createTitledBorder(name));
+        this.setBackground(CTColor.backColor);
         this.setLayout(new BorderLayout(5, 5));
 
         //路径显示
         {
             JPanel pathPanel = new JPanel(new GridBagLayout());
+            pathPanel.setOpaque(false);
             GridBagConstraints gbc = new GridBagConstraints();
             gbc.fill = GridBagConstraints.HORIZONTAL;
             gbc.gridy = 0;
             gbc.gridx = 0;
 
             JLabel pathLabel = new JLabel("路径: ");
+            pathLabel.setForeground(CTColor.textColor);
+            pathLabel.setFont(CTFont.getCTFont(Font.PLAIN, CTFontSizeStyle.SMALL));
             CTTextField pathTextField = new CTTextField(path);
             pathTextField.setColumns(20);
             pathTextField.setEditable(false);
@@ -70,6 +76,7 @@ public class DataControlUnit extends JPanel {
         // 管理按钮
         {
             JPanel buttonPanel = new JPanel();
+            buttonPanel.setOpaque(false);
             buttonPanel.setLayout(new GridLayout(1, 0, 10, 10));
             CTTextButton deleteButton = new CTTextButton("删除");
             deleteButton.addActionListener(e -> {

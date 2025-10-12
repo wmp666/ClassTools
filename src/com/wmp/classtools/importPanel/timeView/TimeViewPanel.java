@@ -6,10 +6,7 @@ import com.wmp.PublicTools.UITools.CTFont;
 import com.wmp.PublicTools.UITools.CTFontSizeStyle;
 import com.wmp.PublicTools.UITools.GetIcon;
 import com.wmp.PublicTools.printLog.Log;
-import com.wmp.classTools.CTComponent.CTIconButton;
-import com.wmp.classTools.CTComponent.CTOptionPane;
-import com.wmp.classTools.CTComponent.CTPanel;
-import com.wmp.classTools.CTComponent.CTTextButton;
+import com.wmp.classTools.CTComponent.*;
 import com.wmp.classTools.frame.MainWindow;
 import com.wmp.classTools.importPanel.timeView.settings.ScreenProductSetsPanel;
 import com.wmp.classTools.infSet.InfSetDialog;
@@ -48,7 +45,7 @@ public class TimeViewPanel extends CTPanel {
         }
     });
 
-    private final JPopupMenu ETPopupMenu = new JPopupMenu();
+    private final CTPopupMenu ETPopupMenu = new CTPopupMenu();
 
     public TimeViewPanel() throws IOException {
 

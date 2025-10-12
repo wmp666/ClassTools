@@ -1,5 +1,6 @@
 package com.wmp.classTools.CTComponent;
 
+import com.wmp.PublicTools.UITools.CTColor;
 import com.wmp.PublicTools.UITools.CTFont;
 import com.wmp.PublicTools.UITools.CTFontSizeStyle;
 
@@ -30,7 +31,7 @@ public class CTList extends JPanel {
         this.direct = direct;
         this.choices = choices;
 
-        this.setBackground(Color.WHITE);
+        this.setBackground(CTColor.backColor);
         this.setLayout(new GridBagLayout());
 
         initUI();

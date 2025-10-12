@@ -1,6 +1,7 @@
 package com.wmp.classTools.CTComponent;
 
 import com.wmp.PublicTools.CTInfo;
+import com.wmp.PublicTools.UITools.CTColor;
 import com.wmp.PublicTools.UITools.CTFont;
 import com.wmp.PublicTools.UITools.CTFontSizeStyle;
 
@@ -44,6 +45,6 @@ public class CTBorderFactory {
      *                           </ul>
      */
     public static Border createTitledBorder(String title, int titleJustification, int titlePosition) {
-        return BorderFactory.createTitledBorder(BASIC_LINE_BORDER, title, titleJustification, titlePosition, CTFont.getCTFont(Font.PLAIN, CTFontSizeStyle.SMALL));
+        return BorderFactory.createTitledBorder(BASIC_LINE_BORDER, title, titleJustification, titlePosition, CTFont.getCTFont(Font.PLAIN, CTFontSizeStyle.SMALL), CTColor.textColor);
     }
 }

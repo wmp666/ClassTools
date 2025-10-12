@@ -42,20 +42,18 @@ public class InfSetDialog extends JDialog {
     public InfSetDialog(Runnable refreshCallback, String showPanel) throws Exception {
         Log.info.systemPrint("设置", "正在初始化设置...");
 
-        this.setBackground(CTColor.backColor);
+        this.openedPanel = showPanel;
+
+        this.c = this.getContentPane();
+        this.refreshCallback = refreshCallback;
+
+        c.setBackground(CTColor.backColor);
         this.setIconImage(GetIcon.getImageIcon(getClass().getResource("/image/light/settings_0.png"), 32, 32).getImage());
         this.setTitle("设置");
         this.setSize(400, 550);
         this.setLocationRelativeTo(null);
         this.setModal(true);
-        //this.setLayout(null);
-        //this.setResizable(false);
         this.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-
-        this.openedPanel = showPanel;
-
-        this.c = this.getContentPane();
-        this.refreshCallback = refreshCallback;
 
         Log.info.systemPrint("设置", "正在获取设置页面...");
 
@@ -244,6 +242,7 @@ public class InfSetDialog extends JDialog {
         c.add(mainPanelScroll, BorderLayout.WEST);
         initMenuBar();
         initSaveButton();
+        panel.setBackground(CTColor.backColor);
         c.add(panel, BorderLayout.CENTER);
         panel.refresh();
 

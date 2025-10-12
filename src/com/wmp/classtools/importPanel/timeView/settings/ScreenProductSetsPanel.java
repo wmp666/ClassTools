@@ -1,5 +1,6 @@
 package com.wmp.classTools.importPanel.timeView.settings;
 
+import com.wmp.PublicTools.UITools.CTColor;
 import com.wmp.PublicTools.UITools.CTFont;
 import com.wmp.PublicTools.UITools.CTFontSizeStyle;
 import com.wmp.PublicTools.io.GetPath;
@@ -84,6 +85,8 @@ public class ScreenProductSetsPanel extends CTSetsPanel {
 
     private void initUI() throws IOException {
         JPanel panel = new JPanel(new GridBagLayout());
+        panel.setOpaque(false);
+
 
         GridBagConstraints gbc = new GridBagConstraints();
         gbc.fill = GridBagConstraints.HORIZONTAL;
@@ -106,6 +109,7 @@ public class ScreenProductSetsPanel extends CTSetsPanel {
         JSONObject jsonObject = new JSONObject(new IOForInfo(BGPath).getInfos());
 
         JPanel bgPanel = new JPanel(new BorderLayout());
+        bgPanel.setOpaque(false);
         bgPanel.setBorder(CTBorderFactory.createTitledBorder("背景设置"));
 
         //预览
@@ -116,6 +120,8 @@ public class ScreenProductSetsPanel extends CTSetsPanel {
 
 
         JScrollPane comp = new JScrollPane(viewLabel);
+        comp.setOpaque(false);
+        comp.getViewport().setOpaque(false);
         comp.setPreferredSize(new Dimension(300, 300));
         //设置灵敏度
         comp.getVerticalScrollBar().setUnitIncrement(10);
@@ -123,6 +129,7 @@ public class ScreenProductSetsPanel extends CTSetsPanel {
 
 
         JPanel iconSetsPanel = new JPanel(new GridLayout(1, 2));
+        iconSetsPanel.setOpaque(false);
         CTTextButton pathChoiceButton = new CTTextButton("选择图片");
         pathChoiceButton.addActionListener(e -> {
 
@@ -231,6 +238,7 @@ public class ScreenProductSetsPanel extends CTSetsPanel {
             dialog.setModal(true);
             dialog.setAlwaysOnTop(true);
             dialog.setTitle("背景设置");
+            dialog.getContentPane().setBackground(CTColor.backColor);
             dialog.setLayout(new GridBagLayout());
 
             GridBagConstraints BGGbc = new GridBagConstraints();
@@ -262,6 +270,7 @@ public class ScreenProductSetsPanel extends CTSetsPanel {
             //刷新间隔
             {
                 JPanel repaintTimerPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
+                repaintTimerPanel.setOpaque(false);
 
                 JLabel repaintTimerLabel = new JLabel("刷新间隔(秒):");
 
@@ -289,14 +298,16 @@ public class ScreenProductSetsPanel extends CTSetsPanel {
         panel.add(bgPanel, gbc);
 
         JPanel ColorPanel = new JPanel();
+        ColorPanel.setOpaque(false);
         ColorPanel.setLayout(new GridLayout(1, 2));
         ColorPanel.setBorder(CTBorderFactory.createTitledBorder("颜色设置"));
         //颜色设置
         {
             //主题色设置
             JPanel MainColorSets = new JPanel();
-            {
 
+            {
+                MainColorSets.setOpaque(false);
                 MainColorSets.setLayout(new FlowLayout(FlowLayout.LEFT));
 
                 JLabel mainColorLabel = new JLabel("主题色:");
@@ -317,6 +328,7 @@ public class ScreenProductSetsPanel extends CTSetsPanel {
             JPanel MainThemeSets = new JPanel();
             {
 
+                MainThemeSets.setOpaque(false);
                 MainThemeSets.setLayout(new FlowLayout(FlowLayout.LEFT));
 
                 JLabel mainThemeLabel = new JLabel("主题:");
@@ -369,6 +381,8 @@ public class ScreenProductSetsPanel extends CTSetsPanel {
 
 
         JScrollPane scrollPane = new JScrollPane(panel);
+        scrollPane.setOpaque(false);
+        scrollPane.getViewport().setOpaque(false);
         //scrollPane.setBorder(BorderFactory.createEmptyBorder());
 
         this.add(scrollPane, BorderLayout.CENTER);

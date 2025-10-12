@@ -8,6 +8,7 @@ import com.wmp.PublicTools.printLog.Log;
 import com.wmp.PublicTools.update.GetNewerVersion;
 import com.wmp.classTools.CTComponent.CTIconButton;
 import com.wmp.classTools.CTComponent.CTPanel;
+import com.wmp.classTools.CTComponent.CTPopupMenu;
 import com.wmp.classTools.frame.AboutDialog;
 import com.wmp.classTools.frame.MainWindow;
 import com.wmp.classTools.frame.ShowCookieDialog;
@@ -45,7 +46,7 @@ public class FinalPanel extends CTPanel {
         this.setBackground(CTColor.backColor);
         // 添加弹性空间
         this.add(Box.createHorizontalGlue()); // 左侧弹簧
-        this.add(Box.createRigidArea(new Dimension(5, 0))); // 按钮间距
+        this.add(Box.createRigidArea(new Dimension(0, 0))); // 按钮间距
         this.add(Box.createHorizontalGlue()); // 右侧弹簧
 
 
@@ -53,7 +54,7 @@ public class FinalPanel extends CTPanel {
 
     private void initButton() throws MalformedURLException {
 
-        JPopupMenu moreMenu = new JPopupMenu();
+        CTPopupMenu moreMenu = new CTPopupMenu();
         moreMenu.setBackground(CTColor.backColor);
 
 
@@ -121,13 +122,17 @@ public class FinalPanel extends CTPanel {
         showLog.setMaximumSize(showLog.getSize());
         showLog.setMinimumSize(showLog.getSize());
 
+
+        this.add(Box.createHorizontalStrut(2));
         this.add(moreButton);
+        this.add(Box.createHorizontalStrut(2)); // 按钮后添加间距
+
         AtomicInteger length = new AtomicInteger();
 
         //按钮展示
         allButList.forEach(ctButton -> {
             if (CTInfo.disButList.contains(ctButton.getName())) {
-                moreMenu.add(ctButton.toTextButton(false));
+                moreMenu.add(ctButton.toRoundTextButton());
                 length.getAndIncrement();
             } else {
                 CTIconButton temp = null;
@@ -136,14 +141,19 @@ public class FinalPanel extends CTPanel {
                     temp.setPreferredSize(ctButton.getSize());
                     temp.setMaximumSize(ctButton.getSize());
                     temp.setMinimumSize(ctButton.getSize());
+                    this.add(Box.createHorizontalStrut(2));
                     this.add(temp);
+                    this.add(Box.createHorizontalStrut(2)); // 按钮后添加间距
                 } catch (MalformedURLException e) {
                     Log.err.print(getClass(), "初始化按钮时出错", e);
                 }
             }
         });
 
+
+        this.add(Box.createHorizontalStrut(2));
         this.add(showLog);
+        this.add(Box.createHorizontalStrut(2)); // 按钮后添加间距
 
         if (length.get() == 0) {
             this.remove(moreButton);
@@ -163,8 +173,10 @@ public class FinalPanel extends CTPanel {
             exit.setMaximumSize(exit.getSize());
             exit.setMinimumSize(exit.getSize());
 
-            //exit.setLocation(210, 0);
+
+            this.add(Box.createHorizontalStrut(5));
             this.add(exit);
+            this.add(Box.createHorizontalStrut(5)); // 按钮后添加间距
         }
     }
 

@@ -91,9 +91,12 @@ public class ClassFormSetsPanel extends CTSetsPanel {
         CTTable ctTable = CFTableList.get(week - 1);
         DefaultTableModel model = (DefaultTableModel) ctTable.getModel();
         JScrollPane scrollPane = new JScrollPane(ctTable);
+        scrollPane.setOpaque(false);
+        scrollPane.getViewport().setOpaque(false);
         mainPanel.add(scrollPane, BorderLayout.CENTER);
 
         JPanel buttonPanel = new JPanel();
+        buttonPanel.setOpaque(false);
         buttonPanel.setLayout(new FlowLayout(FlowLayout.LEFT, 5, 5));
 
         //新建

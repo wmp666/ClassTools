@@ -1,5 +1,6 @@
 package com.wmp.classTools.frame.tools.cookie;
 
+import com.wmp.PublicTools.UITools.CTColor;
 import com.wmp.PublicTools.UITools.CTFont;
 import com.wmp.PublicTools.UITools.CTFontSizeStyle;
 import com.wmp.PublicTools.UITools.GetIcon;
@@ -58,6 +59,7 @@ public class CookieDownload {
         };
 
         JPanel panel = new JPanel();
+        panel.setOpaque(false);
         panel.setLayout(new GridBagLayout());
 
         GridBagConstraints showCookieGbc = new GridBagConstraints();
@@ -88,10 +90,13 @@ public class CookieDownload {
         });
 
         JScrollPane scrollPane = new JScrollPane(panel);
+        scrollPane.setOpaque(false);
+        scrollPane.getViewport().setOpaque(false);
         dialog.add(scrollPane, BorderLayout.CENTER);
 
         //展示按钮组
         JPanel buttonPanel = new JPanel();
+        buttonPanel.setOpaque(false);
         buttonPanel.setLayout(new FlowLayout(FlowLayout.TRAILING));
 
         CTTextButton downloadButton = new CTTextButton("下载");
@@ -177,6 +182,8 @@ public class CookieDownload {
         dialog.setModal(true);
         dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
         dialog.setTitle("快速启动单元下载");
+
+        dialog.getContentPane().setBackground(CTColor.backColor);
     }
 
     private void getInfo() throws Exception {

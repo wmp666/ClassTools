@@ -19,6 +19,15 @@ public class CTInfo {
 
     public static String appName = "ClassTools";
     public static String author = "wmp";
+    public static final int arch = 15;
+    public static String iconPath = "/image/icon.png";
+
+    public static double dpi = 1;
+    public static boolean isError = false;
+    public static boolean canExit = true;
+    public static boolean StartUpdate = true;
+    private static JSONObject jsonObject;
+    public static final int arcw = 15;
     /**
      * a.b.c.d.e
      * a:主版本号
@@ -27,15 +36,7 @@ public class CTInfo {
      * d:只修复的问题,问题较少
      * e:测试版本号
      */
-    public static String version = "1.37.6";
-    public static String iconPath = "/image/icon.png";
-
-    public static double dpi = 1;
-    public static boolean isError = false;
-    public static boolean canExit = true;
-    public static boolean StartUpdate = true;
-    private static JSONObject jsonObject;
-
+    public static String version = "1.38.0";
     public static void init() {
 
         disButList.clear();

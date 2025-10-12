@@ -47,13 +47,12 @@ public class LeaveListSetsPanel extends CTSetsPanel {
         // 请假人员设置组件
         JLabel leaveLabel = new JLabel("请假人员:");
         leaveLabel.setFont(CTFont.getCTFont(Font.PLAIN, CTFontSizeStyle.NORMAL));
-        //leaveLabel.setBounds(20, 0, 300, 25);
-        //leaveLabel.setForeground(CTColor.textColor);
+        leaveLabel.setForeground(CTColor.textColor);
         this.add(leaveLabel, BorderLayout.NORTH);
 
         JPanel leavePanel = new JPanel();
         leavePanel.setBounds(20, 0, 340, 300);
-        //leavePanel.setBackground(CTColor.backColor);
+        leavePanel.setBackground(CTColor.backColor);
         leavePanel.setLayout(new GridLayout(studentList.size() / 4 + 1, 4, 10, 10));
         //leavePanel.setBackground(Color.WHITE);
 
@@ -61,7 +60,6 @@ public class LeaveListSetsPanel extends CTSetsPanel {
         JScrollPane scrollPane = new JScrollPane(leavePanel);
         //修改滚轮的灵敏度
         scrollPane.getVerticalScrollBar().setUnitIncrement(12);
-        //scrollPane.setLayout(null);
         this.add(scrollPane, BorderLayout.CENTER);
 
         Log.info.print("数据设置界面-initATSet", "studentList:" + studentList);

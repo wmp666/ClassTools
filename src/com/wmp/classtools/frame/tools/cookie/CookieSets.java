@@ -109,6 +109,7 @@ public class CookieSets {
         //设置界面
         {
             JPanel helloPanel = new JPanel(new BorderLayout());
+            helloPanel.setOpaque(false);
 
             JLabel helloLabel = new JLabel("请按下一步开始设置!");
             helloLabel.setFont(CTFont.getCTFont(-1, CTFontSizeStyle.BIG));
@@ -121,36 +122,43 @@ public class CookieSets {
 
             JPanel step1Panel = new JPanel(new GridLayout(7, 1, 7, 5));
             {
+                step1Panel.setOpaque(false);
                 step1Panel.setBorder(CTBorderFactory.createTitledBorder("设置启动单元配置文件"));
 
                 JPanel namePanel = new JPanel();
+                namePanel.setOpaque(false);
                 namePanel.setLayout(new GridLayout(1, 2));
                 namePanel.add(new JLabel("启动单元名称:"));
                 namePanel.add(nameTextField);
 
                 JPanel pinPanel = new JPanel();
+                pinPanel.setOpaque(false);
                 pinPanel.setLayout(new GridLayout(1, 2));
                 pinPanel.add(new JLabel("启动单元pin:"));
                 pinPanel.add(pinTextField);
 
                 JPanel stylePanel = new JPanel();
+                stylePanel.setOpaque(false);
                 stylePanel.setLayout(new GridLayout(1, 2));
                 stylePanel.add(new JLabel("启动单元样式:"));
                 styleComboBox.setFont(CTFont.getCTFont(-1, CTFontSizeStyle.SMALL));
                 stylePanel.add(styleComboBox);
 
                 JPanel iconPanel = new JPanel();
+                iconPanel.setOpaque(false);
                 iconPanel.setLayout(new GridLayout(1, 2));
                 iconPanel.add(new JLabel("启动单元图标路径:"));
                 iconPanel.add(iconTextField);
 
 
                 JPanel runPanel = new JPanel();
+                runPanel.setOpaque(false);
                 runPanel.setLayout(new GridLayout(1, 2));
                 runPanel.add(new JLabel("运行指令:"));
                 runPanel.add(runTextField);
 
                 JPanel parametersPanel = new JPanel();
+                parametersPanel.setOpaque(false);
                 parametersPanel.setLayout(new GridLayout(1, 2));
                 parametersPanel.add(new JLabel("运行参数:"));
                 parametersPanel.add(parametersTextField);
@@ -182,6 +190,7 @@ public class CookieSets {
 
             JPanel step2Panel = new JPanel(new BorderLayout());
             {
+                step2Panel.setOpaque(false);
                 step2Panel.setBorder(CTBorderFactory.createTitledBorder("添加必要文件"));
                 JLabel label = new JLabel("将点击打开启动单元目录,将必要文件添加至目录");
                 label.setFont(CTFont.getCTFont(-1, CTFontSizeStyle.SMALL));
@@ -209,8 +218,9 @@ public class CookieSets {
             }
 
             JPanel step3Panel = new JPanel(new BorderLayout());
+            step3Panel.setOpaque(false);
             JLabel label = new JLabel("设置完成");
-            label.setFont(CTFont.getCTFont(-1, CTFontSizeStyle.BIG));
+            label.setFont(CTFont.getCTFont(Font.PLAIN, CTFontSizeStyle.BIG));
             label.setHorizontalAlignment(JLabel.CENTER);
             step3Panel.add(label, BorderLayout.CENTER);
 
@@ -221,6 +231,7 @@ public class CookieSets {
         //设置按钮组
         {
             JPanel buttonPanel = new JPanel();
+            buttonPanel.setOpaque(false);
             buttonPanel.setLayout(new FlowLayout(FlowLayout.RIGHT));
 
             CTTextButton lastButton = new CTTextButton("上一步");

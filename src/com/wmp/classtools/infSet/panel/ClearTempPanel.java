@@ -1,6 +1,7 @@
 package com.wmp.classTools.infSet.panel;
 
 import com.wmp.PublicTools.CTInfo;
+import com.wmp.PublicTools.UITools.CTColor;
 import com.wmp.PublicTools.printLog.Log;
 import com.wmp.classTools.CTComponent.CTSetsPanel;
 import com.wmp.classTools.infSet.panel.tools.DataControlUnit;
@@ -25,7 +26,7 @@ public class ClearTempPanel extends CTSetsPanel {
     }
 
     private void initUI() throws MalformedURLException {
-        this.setBackground(Color.WHITE);
+        this.setBackground(CTColor.backColor);
         this.setLayout(new GridLayout(0, 1, 5, 5));
 
         /*JPanel buttonPanel = new JPanel();
