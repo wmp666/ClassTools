@@ -46,7 +46,7 @@ public class CTGradientRoundProgressBarUI extends BasicProgressBarUI {
         int arc = height; // 圆角弧度，设置为高度可实现半圆形端角
 
         // 绘制背景
-        g2d.setColor(new Color(240, 240, 240));
+        g2d.setColor(new Color(200, 200, 200));
         g2d.fill(new RoundRectangle2D.Float(0, 0, width, height, arc, arc));
 
         // 计算进度条前景长度
@@ -83,13 +83,13 @@ public class CTGradientRoundProgressBarUI extends BasicProgressBarUI {
         g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 
         // 进度条内部区域
-        int insets = 1; // 内边距，避免边框被裁剪
+        int insets = 0; // 内边距，避免边框被裁剪
         int width = progressBar.getWidth() - insets * 2;
         int height = progressBar.getHeight() - insets * 2;
         int arc = height; // 圆角弧度，设置为高度可实现半圆形端角
 
         // 绘制背景
-        g2d.setColor(new Color(240, 240, 240));
+        g2d.setColor(new Color(200, 200, 200));
         g2d.fill(new RoundRectangle2D.Float(0, 0, width, height, arc, arc));
 
         /*// 绘制多个波浪块

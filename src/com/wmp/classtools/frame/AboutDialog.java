@@ -29,6 +29,7 @@ public class AboutDialog extends JDialog {
     static {
         view.setBackground(CTColor.backColor);
         view.setLayout(new BorderLayout());
+        view.setPreferredSize(new Dimension((int) (300 * CTInfo.dpi), (int) (100 * CTInfo.dpi)));
 
         GetNewerVersion.checkForUpdate(null, view, false, false);
     }
@@ -87,9 +88,22 @@ public class AboutDialog extends JDialog {
                 () -> GetNewerVersion.checkForUpdate(this, view, true));
         getNew.setBackground(CTColor.backColor);
 
-        this.add(view, BorderLayout.CENTER);
-        this.add(getNew.toTextButton(false), BorderLayout.SOUTH);
-        this.add(infos, BorderLayout.NORTH);
+        JPanel update = new JPanel(new GridBagLayout());
+        update.setOpaque(false);
+        {
+            GridBagConstraints gbc = new GridBagConstraints();
+            gbc.gridx = 0;
+            gbc.gridy = 0;
+            gbc.insets = new Insets(5, 5, 5, 5);
+            update.add(view, gbc);
+            gbc.gridy++;
+            update.add(getNew.toRoundTextButton(), gbc);
+
+
+        }
+
+        this.add(update, BorderLayout.SOUTH);
+        this.add(infos, BorderLayout.CENTER);
 
         initMenuBar();
 

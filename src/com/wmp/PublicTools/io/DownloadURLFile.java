@@ -28,7 +28,7 @@ public class DownloadURLFile {
 
         if (panel == null) {
             progressDialog.setIconImage(GetIcon.getImageIcon(DownloadURLFile.class.getResource("/image/input.png"), 30, 30).getImage());
-            progressDialog.setSize((int) (300 * CTInfo.dpi), (int) (175 * CTInfo.dpi));
+            progressDialog.setSize((int) (300 * CTInfo.dpi), (int) (100 * CTInfo.dpi));
             progressDialog.setTitle("下载中...");
             progressDialog.setLocationRelativeTo(parent);
             progressDialog.setLayout(new BorderLayout());

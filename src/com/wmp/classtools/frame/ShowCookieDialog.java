@@ -35,9 +35,10 @@ public class ShowCookieDialog extends JDialog implements WindowListener {
     private final TreeSet<JButton> cookiePanelList = new TreeSet<>(Comparator.comparing(JButton::getText));
     private final TreeMap<String, File> cookieMap = new TreeMap<>();
 
-    private final Thread repaintCookie = new Thread(() -> {
-        long lastModifyTime = 0;
-        File cookieDir = new File(CTInfo.DATA_PATH + "\\Cookie\\");
+    private long lastModifyTime = 0;
+    private File cookieDir = new File(CTInfo.DATA_PATH + "\\Cookie\\");
+    /*private final Thread repaintCookie = new Thread(() -> {
+
 
         // 监听文件修改
         while (!Thread.interrupted()) {
@@ -60,6 +61,22 @@ public class ShowCookieDialog extends JDialog implements WindowListener {
                 break;
             }
         }
+    });*/
+
+    private final Timer repaintCookie = new Timer(1000, e -> {
+        long currentModifyTime = cookieDir.lastModified();
+
+        //if (currentModifyTime != lastModifyTime) {
+        lastModifyTime = currentModifyTime;
+
+        SwingUtilities.invokeLater(() -> {
+            try {
+                refreshCookiePanel();
+            } catch (IOException ex) {
+                Log.err.print(getClass(), "错误", ex);
+            }
+        });
+        //}
     });
 
     public ShowCookieDialog() throws IOException {
@@ -289,7 +306,7 @@ public class ShowCookieDialog extends JDialog implements WindowListener {
 
     @Override
     public void windowClosing(WindowEvent e) {
-        repaintCookie.interrupt();
+        repaintCookie.stop();
         this.setVisible(false);
     }
 

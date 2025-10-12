@@ -10,6 +10,7 @@ public class CTProgressBar extends JProgressBar {
 
     public CTProgressBar(int min, int max) {
         super(min, max);
+        this.setOpaque(false);
         this.setBorderPainted(false);
         this.setUI(new CTGradientRoundProgressBarUI());
 

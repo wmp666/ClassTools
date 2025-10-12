@@ -6,9 +6,13 @@ import com.wmp.PublicTools.OpenInExp;
 import com.wmp.PublicTools.UITools.CTFont;
 import com.wmp.PublicTools.UITools.CTFontSizeStyle;
 import com.wmp.PublicTools.UITools.GetIcon;
+import com.wmp.PublicTools.io.IOForInfo;
 import com.wmp.PublicTools.io.ZipPack;
 import com.wmp.PublicTools.printLog.Log;
-import com.wmp.classTools.CTComponent.*;
+import com.wmp.classTools.CTComponent.CTBorderFactory;
+import com.wmp.classTools.CTComponent.CTComboBox;
+import com.wmp.classTools.CTComponent.CTTextButton;
+import com.wmp.classTools.CTComponent.CTTextField;
 import com.wmp.classTools.frame.ShowCookieDialog;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -19,10 +23,12 @@ import java.awt.event.ItemEvent;
 import java.io.*;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
-import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardOpenOption;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Objects;
+import java.util.TreeMap;
 
 public class CookieSets {
 
@@ -359,65 +365,8 @@ public class CookieSets {
             Log.info.print("删除启动单元", "取消删除");
             return;
         }
-        Log.info.print("删除启动单元", "删除");
 
-        JDialog dialog = new JDialog();
-
-        SwingUtilities.invokeLater(() -> {
-            dialog.setSize(300, 80);
-            dialog.setTitle("正在删除");
-            dialog.setLocationRelativeTo(null);
-            dialog.setModal(true);
-
-            CTProgressBar progressBar = new CTProgressBar();
-            progressBar.setIndeterminate(true);
-            dialog.add(progressBar);
-
-            dialog.setVisible(true);
-        });
-
-        new Thread(() -> {
-            new SwingWorker<Void, Void>() {
-                //  执行耗时操作
-                @Override
-                protected Void doInBackground() throws Exception {
-                    try {
-                        if (file == null || !file.exists()) {
-                            Log.err.print(CookieSets.class, "目标不存在");
-                            return null;
-                        }
-
-                        if (file.isDirectory()) {
-                            Files.walk(file.toPath())
-                                    .sorted(Comparator.reverseOrder())
-                                    .map(Path::toFile)
-                                    .forEach(File::delete);
-                        }
-
-                        if (file.delete() || !file.exists()) {
-                            Log.info.message(null, "删除 Cookie", "删除成功");
-                        } else {
-                            String errorType = file.canWrite() ? "文件被占用" : "权限不足";
-                            Log.err.print(CookieSets.class, "删除失败：" + errorType);
-                        }
-                    } catch (Exception e) {
-                        Log.err.print(CookieSets.class, "删除失败", e);
-                    }
-                    return null;
-                }
-
-                @Override
-                protected void done() {
-                    // 执行完成，关闭进度条对话框
-                    dialog.setVisible(false);
-                    try {
-                        refreshParentWindow();
-                    } catch (Exception e) {
-                        Log.err.print(getClass(), "刷新失败", e);
-                    }
-                }
-            }.execute();
-        }).start();
+        IOForInfo.deleteDirectoryRecursively(file.toPath());
 
 
     }
