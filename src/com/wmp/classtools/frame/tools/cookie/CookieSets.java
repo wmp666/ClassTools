@@ -8,10 +8,7 @@ import com.wmp.PublicTools.UITools.CTFontSizeStyle;
 import com.wmp.PublicTools.UITools.GetIcon;
 import com.wmp.PublicTools.io.ZipPack;
 import com.wmp.PublicTools.printLog.Log;
-import com.wmp.classTools.CTComponent.CTBorderFactory;
-import com.wmp.classTools.CTComponent.CTComboBox;
-import com.wmp.classTools.CTComponent.CTTextButton;
-import com.wmp.classTools.CTComponent.CTTextField;
+import com.wmp.classTools.CTComponent.*;
 import com.wmp.classTools.frame.ShowCookieDialog;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -372,7 +369,7 @@ public class CookieSets {
             dialog.setLocationRelativeTo(null);
             dialog.setModal(true);
 
-            JProgressBar progressBar = new JProgressBar();
+            CTProgressBar progressBar = new CTProgressBar();
             progressBar.setIndeterminate(true);
             dialog.add(progressBar);
 

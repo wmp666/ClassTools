@@ -1,6 +1,7 @@
 package com.wmp.PublicTools.io;
 
 import com.wmp.PublicTools.printLog.Log;
+import com.wmp.classTools.CTComponent.CTProgressBar;
 
 import javax.swing.*;
 import java.io.File;
@@ -16,7 +17,7 @@ import java.util.zip.ZipOutputStream;
 public class ZipPack {
 
     private static JDialog dialog = new JDialog();
-    private static JProgressBar progressBar = new JProgressBar(0,100);
+    private static CTProgressBar progressBar = new CTProgressBar(0, 100);
     public static void unzip(String zipFilePath, String destDir) {
         unzip(zipFilePath, destDir, () -> {
             // 运行其他操作

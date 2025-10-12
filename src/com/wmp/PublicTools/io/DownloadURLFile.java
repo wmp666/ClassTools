@@ -6,6 +6,7 @@ import com.wmp.PublicTools.UITools.CTFont;
 import com.wmp.PublicTools.UITools.CTFontSizeStyle;
 import com.wmp.PublicTools.UITools.GetIcon;
 import com.wmp.PublicTools.printLog.Log;
+import com.wmp.classTools.CTComponent.CTProgressBar;
 
 import javax.swing.*;
 import java.awt.*;
@@ -23,7 +24,7 @@ public class DownloadURLFile {
         JDialog progressDialog = new JDialog();
         JLabel label = new JLabel("正在下载文件，请稍候...");
         label.setFont(CTFont.getCTFont(Font.PLAIN, CTFontSizeStyle.MORE_SMALL));
-        JProgressBar progressBar = new JProgressBar(0, 100);
+        CTProgressBar progressBar = new CTProgressBar(0, 100);
 
         if (panel == null) {
             progressDialog.setIconImage(GetIcon.getImageIcon(DownloadURLFile.class.getResource("/image/input.png"), 30, 30).getImage());
