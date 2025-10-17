@@ -20,12 +20,14 @@ import java.io.IOException;
 import java.net.MalformedURLException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
 public class TimeViewPanel extends CTPanel {
 
     private final JLabel timeView = new JLabel();
+    private final JLabel other = new JLabel();
 
     private final Thread timeThread = new Thread(() -> {
 
@@ -37,6 +39,9 @@ public class TimeViewPanel extends CTPanel {
             //让时间在组件左侧显示
             timeView.setHorizontalAlignment(JLabel.CENTER);
             timeView.setText(dateFormat02.format(date02));
+
+            Calendar calendar = Calendar.getInstance();
+            other.setText("星期" + calendar.get(Calendar.DAY_OF_WEEK));
             try {
                 Thread.sleep(300);
             } catch (InterruptedException e) {
@@ -96,6 +101,13 @@ public class TimeViewPanel extends CTPanel {
         //timeView.setBackground(new Color(0x0ECECED, true));
         timeView.setForeground(CTColor.mainColor);
         this.add(timeView, BorderLayout.CENTER);
+
+        Calendar calendar = Calendar.getInstance();
+
+        other.setText(String.format("星期%s", calendar.get(Calendar.DAY_OF_WEEK)));
+        other.setFont(CTFont.getCTFont(Font.BOLD, CTFontSizeStyle.BIG));
+        other.setForeground(CTColor.mainColor);
+        this.add(other, BorderLayout.SOUTH);
 
         CTIconButton viewTimeButton = new CTIconButton("全屏显示时间",
                 "/image/%s/view_0.png", () -> {
