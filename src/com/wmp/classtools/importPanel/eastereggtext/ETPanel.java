@@ -6,7 +6,7 @@ import com.wmp.PublicTools.EasterEgg.EasterEgg;
 import com.wmp.PublicTools.UITools.*;
 import com.wmp.PublicTools.printLog.Log;
 import com.wmp.classTools.CTComponent.CTPanel;
-import com.wmp.classTools.CTComponent.CTPopupMenu;
+import com.wmp.classTools.CTComponent.Menu.CTPopupMenu;
 import com.wmp.classTools.CTComponent.CTTextButton;
 
 import javax.swing.*;

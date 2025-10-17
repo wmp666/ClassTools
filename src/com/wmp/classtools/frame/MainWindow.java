@@ -158,7 +158,7 @@ public class MainWindow extends JDialog {
                 this.setVisible(true);
                 //刷新
 
-                Timer repaint = new Timer(200, e -> {
+                Timer repaint = new Timer(500, e -> {
 
                     showPanelList.forEach(ctPanel -> {
                         ctPanel.setBackground(CTColor.backColor);
@@ -169,25 +169,19 @@ public class MainWindow extends JDialog {
                     // 重新验证中心面板以更新布局
                     centerPane.revalidate();
 
-
-                });
-                repaint.start();
-
-                //刷新大小
-                Timer repaintSize = new Timer(500, e -> {
-                    this.pack();
+                    Dimension size = this.getPreferredSize();
 
 
-                    if (this.getHeight() >= Toolkit.getDefaultToolkit().getScreenSize().getHeight() * 4 / 5)
-                        this.setSize(new Dimension(this.getWidth(), (int) (Toolkit.getDefaultToolkit().getScreenSize().getHeight() * 4 / 5)));
-                    this.setLocation(Toolkit.getDefaultToolkit().getScreenSize().width - this.getWidth() - 5, 5);
+                    if (size.getHeight() >= Toolkit.getDefaultToolkit().getScreenSize().getHeight() * 4 / 5)
+                        this.setSize(new Dimension((int) size.getWidth(), (int) (Toolkit.getDefaultToolkit().getScreenSize().getHeight() * 4 / 5)));
+                    this.setLocation((int) (Toolkit.getDefaultToolkit().getScreenSize().width - size.getWidth() - 5), 5);
 
                     this.getContentPane().setBackground(CTColor.backColor);
                     this.setShape(new RoundRectangle2D.Double(0, 0, this.getWidth(), this.getHeight(), 20, 20));
 
                     this.repaint();
                 });
-                repaintSize.start();
+                repaint.start();
 
                 //刷新数据
                 Timer strongRepaint = new Timer(60 * 1000, e -> {

@@ -1,22 +1,22 @@
-package com.wmp.classTools.CTComponent;
+package com.wmp.classTools.CTComponent.Menu;
 
 import com.wmp.PublicTools.CTInfo;
 
 import javax.swing.*;
 import java.awt.*;
 
-public class CTPopupMenu extends JPopupMenu {
-    public CTPopupMenu() {
-        this("");
+public class CTMenu extends JMenu {
+    public CTMenu() {
     }
 
-    public CTPopupMenu(String label) {
-        super(label);
+    public CTMenu(String s) {
+        super(s);
 
-        JPopupMenu.setDefaultLightWeightPopupEnabled(false);
+
         this.setBorderPainted(false);
 
         this.setLayout(new GridLayout(0, 1));
+
     }
 
     @Override
@@ -41,23 +41,5 @@ public class CTPopupMenu extends JPopupMenu {
         // 返回适当的边距，确保内容不会紧贴边框
         int margin = 5;
         return new Insets(margin, margin, margin, margin);
-    }
-
-    @Override
-    public void show(Component invoker, int x, int y) {
-        // 在显示前确保菜单项背景透明
-        Component[] components = getComponents();
-        for (Component comp : components) {
-            if (comp instanceof JComponent) {
-                ((JComponent) comp).setOpaque(false);
-            }
-        }
-        super.show(invoker, x, y);
-
-        // 使弹出菜单的窗口背景透明，确保圆角外部分不可见
-        Window window = SwingUtilities.getWindowAncestor(this);
-        if (window != null) {
-            window.setBackground(new Color(0, 0, 0, 0));
-        }
     }
 }

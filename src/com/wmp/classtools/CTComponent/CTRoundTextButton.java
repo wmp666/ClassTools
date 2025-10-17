@@ -68,7 +68,7 @@ public class CTRoundTextButton extends JButton {
             } else {
                 button.setOpaque(false);
                 button.setForeground(CTColor.textColor);
-                button.setBackground(new Color(255, 255, 255));
+                button.setBackground(CTColor.backColor);
             }
         });
 

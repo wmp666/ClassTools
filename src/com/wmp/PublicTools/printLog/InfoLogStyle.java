@@ -4,6 +4,7 @@ import com.wmp.Main;
 import com.wmp.PublicTools.CTInfo;
 import com.wmp.PublicTools.UITools.GetIcon;
 import com.wmp.classTools.CTComponent.CTOptionPane;
+import com.wmp.classTools.CTComponent.LoadingDialog;
 
 import javax.swing.*;
 import java.awt.*;
@@ -11,7 +12,7 @@ import java.util.Arrays;
 
 public class InfoLogStyle extends PrintLogStyle {
 
-
+    public final LoadingDialog loadingDialog = new LoadingDialog();
 
     public InfoLogStyle(LogStyle style) {
         super(style);

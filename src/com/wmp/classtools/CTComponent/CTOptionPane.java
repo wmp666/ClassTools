@@ -8,6 +8,7 @@ import com.wmp.PublicTools.UITools.CTFont;
 import com.wmp.PublicTools.UITools.CTFontSizeStyle;
 import com.wmp.PublicTools.UITools.GetIcon;
 import com.wmp.PublicTools.printLog.Log;
+import com.wmp.classTools.CTComponent.Menu.CTPopupMenu;
 
 import javax.swing.*;
 import java.awt.*;
@@ -233,11 +234,13 @@ public class CTOptionPane {
                 messageArea.setLineWrap(true);//设置文本区域自动换行
                 messageArea.setWrapStyleWord(true);//设置文本区域自动换行时单词不被分割
                 messageArea.setForeground(CTColor.textColor);
+                messageArea.setAutoscrolls(false);
                 messageArea.setFont(new Font("Microsoft YaHei UI", Font.PLAIN, (int) (15 * CTInfo.dpi)));
                 messagePanel = new JScrollPane(messageArea);
                 messagePanel.setOpaque(false);
                 messagePanel.getViewport().setOpaque(false);
                 messagePanel.setBorder(null);
+
 
                 messageArea.addFocusListener(new FocusAdapter() {
                     @Override
@@ -402,7 +405,7 @@ public class CTOptionPane {
     }
 
     public static void showFullScreenMessageDialog(String title, String message) {
-        showFullScreenMessageDialog(title, message, 0);
+        showFullScreenMessageDialog(title, message, 60);
     }
 
     /**
@@ -444,7 +447,7 @@ public class CTOptionPane {
         scrollPane.setBorder(null);
         messageDialog.add(scrollPane, BorderLayout.CENTER);
 
-        CTTextButton exitButton = new CTTextButton("关闭(10s)");
+        CTTextButton exitButton = new CTTextButton("关闭(10s)", false);
         exitButton.setFont(CTFont.getCTFont(Font.PLAIN, CTFontSizeStyle.MORE_BIG));
 
         exitButton.setEnabled(false);
@@ -455,11 +458,14 @@ public class CTOptionPane {
             public void windowOpened(WindowEvent e) {
 
                 try {
-                    Thread.sleep(10000);
+                    for (int i = 0; i < 10; i++) {
+                        exitButton.setText("关闭(" + (10 - i) + "s)");
+                        Thread.sleep(1000);
+                    }
                 } catch (InterruptedException ex) {
                     Log.err.print(CTOptionPane.class, "发生异常", ex);
-                    throw new RuntimeException(ex);
                 }
+                exitButton.setText("关闭");
                 exitButton.setEnabled(true);
                 exitButton.addActionListener(ev -> {
                     messageDialog.dispose();

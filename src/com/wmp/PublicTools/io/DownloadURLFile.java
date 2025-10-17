@@ -14,40 +14,43 @@ import java.io.*;
 import java.net.*;
 import java.nio.charset.StandardCharsets;
 import java.util.Objects;
+import java.util.Random;
 
 public class DownloadURLFile {
     public static void downloadWebFile(Window parent, JPanel panel, String downloadUrl, String dataPath) {
-        //new Thread(() -> {
+        int id = new Random().nextInt();
 
         Log.info.print("DownloadURLFile-下载", "开始下载");
 
-        JDialog progressDialog = new JDialog();
+        //JDialog progressDialog = new JDialog();
         JLabel label = new JLabel("正在下载文件，请稍候...");
         label.setFont(CTFont.getCTFont(Font.PLAIN, CTFontSizeStyle.MORE_SMALL));
         CTProgressBar progressBar = new CTProgressBar(0, 100);
 
         if (panel == null) {
-            progressDialog.setIconImage(GetIcon.getImageIcon(DownloadURLFile.class.getResource("/image/input.png"), 30, 30).getImage());
+            Log.info.loadingDialog.showDialog("文件下载" + id, "正在下载...");
+           /* progressDialog.setIconImage(GetIcon.getImageIcon(DownloadURLFile.class.getResource("/image/input.png"), 30, 30).getImage());
             progressDialog.setSize((int) (300 * CTInfo.dpi), (int) (100 * CTInfo.dpi));
             progressDialog.setTitle("下载中...");
             progressDialog.setLocationRelativeTo(parent);
             progressDialog.setLayout(new BorderLayout());
             progressDialog.setModal(true);
-            progressDialog.setDefaultCloseOperation(JDialog.DO_NOTHING_ON_CLOSE);
+            progressDialog.setDefaultCloseOperation(JDialog.DO_NOTHING_ON_CLOSE);*/
+        }else{
+            // 设置进度对话框
+            progressBar.setForeground(CTColor.mainColor);
+            // 进度条自适应 作用: 进度条自动滚动
+            progressBar.setAutoscrolls(true);
         }
 
 
-        // 设置进度对话框
-        progressBar.setForeground(CTColor.mainColor);
-        // 进度条自适应 作用: 进度条自动滚动
-        progressBar.setAutoscrolls(true);
 
 
-        if (panel == null) {
+        if (panel != null) /*{
             progressDialog.add(label, BorderLayout.NORTH);
             progressDialog.add(progressBar, BorderLayout.CENTER);
             new Thread(() -> progressDialog.setVisible(true)).start();
-        } else {
+        } else */{
             panel.add(label, BorderLayout.NORTH);
             panel.add(progressBar, BorderLayout.CENTER);
             panel.setVisible(true);
@@ -59,7 +62,9 @@ public class DownloadURLFile {
             label.setText("正在创建目标目录，请稍候...");
             //设置为不确定
             progressBar.setIndeterminate(true);
-            Objects.requireNonNullElse(panel, progressDialog).repaint();
+            if (panel != null) {
+                panel.repaint();
+            }
 
 
             // 创建缓存目录
@@ -70,8 +75,12 @@ public class DownloadURLFile {
             //String fileUrl = downloadUrl.replace("github", "kkgithub");
 
             Log.info.print("DownloadURLFile-下载", "正在初始化数据，请稍候...");
-            label.setText("正在初始化数据，请稍候...");
-            Objects.requireNonNullElse(panel, progressDialog).repaint();
+            if (panel != null) {
+                label.setText("正在初始化数据，请稍候...");
+                panel.repaint();
+            }else{
+                Log.info.loadingDialog.updateDialog("文件下载" + id, "正在初始化数据，请稍候...");
+            }
 
             // 开始下载
             URL url = new URL(downloadUrl);
@@ -95,10 +104,16 @@ public class DownloadURLFile {
 
 
                 Log.info.print("DownloadURLFile-下载", "正在下载文件 0KB/0KB");
-                label.setText("正在下载文件 0KB/0KB");
-                progressBar.setIndeterminate(false);
-                progressBar.setValue(0);
-                Objects.requireNonNullElse(panel, progressDialog).repaint();
+
+                if (panel != null) {
+                    label.setText("正在下载文件 0KB/0KB");
+                    progressBar.setIndeterminate(false);
+                    progressBar.setValue(0);
+                    panel.repaint();
+                } else {
+                    Log.info.loadingDialog.updateDialog("文件下载" + id, "正在下载文件 0KB/0KB");
+
+                }
 
                 long startTime = System.currentTimeMillis();
                 while ((read = in.read(buffer)) > 0) {
@@ -136,15 +151,23 @@ public class DownloadURLFile {
 
                     Log.info.print("DownloadURLFile-下载", "下载文件 " + v);
                     label.setText("下载文件 " + v);
-                    SwingUtilities.invokeLater(() -> progressBar.setValue(progress));
+                    if (panel == null) {
+                        Log.info.loadingDialog.updateDialog("文件下载" + id, v,  progress);
+
+                    }else{
+                        SwingUtilities.invokeLater(() -> progressBar.setValue(progress));
+                    }
                 }
 
                 in.close();
 
-                label.setText("正在拷贝，请稍候...");
-                label.setText("正在拷贝，请稍候...");
-                progressBar.setValue(0);
-                Objects.requireNonNullElse(panel, progressDialog).repaint();
+                if (panel == null) {
+                    Log.info.loadingDialog.updateDialog("文件下载" + id, "正在拷贝...");
+                }else{
+                    label.setText("正在拷贝，请稍候...");
+                    progressBar.setValue(0);
+                    panel.repaint();
+                }
 
                 //将文件移至app
                 try {
@@ -172,7 +195,12 @@ public class DownloadURLFile {
                         Log.info.print("DownloadURLFile-下载", "拷贝进度: " + ((total2 * 100L) / fileSize));
                         // 更新进度条
                         int finalTotal = (int) (total2 * 100 / fileSize);
-                        SwingUtilities.invokeLater(() -> progressBar.setValue(finalTotal));
+                        if (panel == null) {
+
+                            Log.info.loadingDialog.updateDialog("文件下载" + id,  finalTotal);
+                        }else{
+                            SwingUtilities.invokeLater(() -> progressBar.setValue(finalTotal));
+                        }
                     }
 
                 } catch (IOException e) {
@@ -183,19 +211,16 @@ public class DownloadURLFile {
 
                     }
                 }
-
-                if (panel != null) {
-                    panel.removeAll();
-                } else {
-                    progressDialog.setVisible(false);
-                }
                 Log.info.message(parent, "DownloadURLFile-下载", "下载完成！");
 
             }
         } catch (Exception ex) {
             Log.err.print(DownloadURLFile.class, "下载失败", ex);
-                progressDialog.setVisible(false);
-
+        }
+        if (panel != null) {
+            panel.removeAll();
+        } else {
+            Log.info.loadingDialog.closeDialog("文件下载" + id);
         }
         //}).start();
     }

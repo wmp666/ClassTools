@@ -89,7 +89,7 @@ public class CTGradientRoundProgressBarUI extends BasicProgressBarUI {
         int arc = height; // 圆角弧度，设置为高度可实现半圆形端角
 
         // 绘制背景
-        g2d.setColor(new Color(200, 200, 200));
+        g2d.setColor(CTColor.backColor);
         g2d.fill(new RoundRectangle2D.Float(0, 0, width, height, arc, arc));
 
         /*// 绘制多个波浪块

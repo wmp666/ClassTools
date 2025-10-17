@@ -234,6 +234,7 @@ public class InfSetDialog extends JDialog {
 
         c.removeAll();
 
+        this.openedPanel = panel.getName();
 
         JScrollPane mainPanelScroll = new JScrollPane(this.switchPanel);
         mainPanelScroll.setBorder(BorderFactory.createEmptyBorder());
@@ -257,8 +258,9 @@ public class InfSetDialog extends JDialog {
 
 
             ctSetsPanelList.forEach(panel -> {
+                //Log.err.print("panel", panel.getName() + "\n" + this.switchPanel.getName() );
+                if (panel.getName().equals(this.openedPanel)) {
 
-                if (panel.getName().equals(openedPanel)) {
                     try {
                         panel.save();
                     } catch (Exception e) {

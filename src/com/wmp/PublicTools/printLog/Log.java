@@ -107,15 +107,7 @@ public class Log {
             moreDialog.setIconImage(GetIcon.getImageIcon(Log.class.getResource("/image/light/more.png"), 32, 32).getImage());
 
             FinalPanel.allButList.forEach(but -> {
-                CTIconButton temp = null;
-                try {
-                    temp = but.copy();
-                    temp.setText(temp.getToolTipText());
-                    temp.setForeground(Color.BLACK);
-                    moreDialog.add(temp);
-                } catch (MalformedURLException ex) {
-                    Log.err.print(Log.class, "初始化按钮时出错", ex);
-                }
+                    moreDialog.add(but.toRoundTextButton());
             });
 
             moreDialog.setVisible(true);

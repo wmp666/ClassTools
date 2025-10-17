@@ -341,7 +341,7 @@ public class EasterEgg {
                         String text = jsonObject1.getString("text");
                         String title = jsonObject1.getString("title");
 
-                        CTOptionPane.showFullScreenMessageDialog(title, text);
+                        CTOptionPane.showFullScreenMessageDialog(title, text, 0);
 
                     }
 

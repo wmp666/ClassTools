@@ -3,10 +3,12 @@ package com.wmp.classTools.frame;
 import com.wmp.PublicTools.CTInfo;
 import com.wmp.PublicTools.EasterEgg.EETextStyle;
 import com.wmp.PublicTools.EasterEgg.EasterEgg;
+import com.wmp.PublicTools.UITools.CTColor;
 import com.wmp.PublicTools.UITools.CTFont;
 import com.wmp.PublicTools.UITools.CTFontSizeStyle;
 import com.wmp.PublicTools.UITools.GetIcon;
 import com.wmp.PublicTools.printLog.Log;
+import com.wmp.classTools.CTComponent.CTProgressBar;
 
 import javax.swing.*;
 import java.awt.*;
@@ -41,6 +43,7 @@ public class LoadingWindow extends JDialog {
 
         Log.info.print("LoadingWindow-窗口", "开始初始化加载窗口");
 
+        this.setLayout(new BorderLayout());
 
         String showText = text;
         if (showText.equals("useLoadingText")){
@@ -49,21 +52,22 @@ public class LoadingWindow extends JDialog {
 
         // 根据文字数量调整窗口大小
         String plainText = showText.replaceAll("<html>|</html>", "").replaceAll("<br>", "\n"); // 去除HTML标签
-        String[] lines = plainText.split("\n"); // 按换行符分割
-        int lineCount = lines.length;
-        // 计算最长行的长度 .mapToInt(String::length) 将每个字符串映射为其长度，然后使用 max() 方法找到最大值
-        //.orElse(0) 如果数组为空，返回默认值 0
-        int maxLength = Arrays.stream(lines).mapToInt(String::length).max().orElse(0);
-
         // 计算新的窗口尺寸（基础尺寸 + 动态调整）
         time = Math.max(time, plainText.length() * 90L);
 
         JLabel label = new JLabel(showText, GetIcon.getIcon(url, width, height), SwingConstants.CENTER);
-        label.setBackground(Color.WHITE);
+        label.setForeground(CTColor.textColor);
         label.setFont(CTFont.getCTFont(Font.BOLD, CTFontSizeStyle.NORMAL));
 
-        this.getContentPane().setBackground(Color.WHITE);
-        this.add(label);
+        this.getContentPane().setBackground(CTColor.backColor);
+        this.add(label, BorderLayout.CENTER);
+
+        CTProgressBar progressBar = new CTProgressBar();
+        progressBar.setIndeterminate(true);
+
+        this.add(progressBar, BorderLayout.SOUTH);
+
+
 
         this.setUndecorated(true);
         this.setAlwaysOnTop(true);

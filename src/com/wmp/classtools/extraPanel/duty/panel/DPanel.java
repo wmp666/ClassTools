@@ -204,6 +204,10 @@ public class DPanel extends CTPanel {
             ArrayList<String[]> strings = InfProcess.RDExtractNames(s);
 
             try {
+                if(DutyDay.setDutyPersonList(strings.get(0)).contains("吴鹤轩") ||
+                        DutyDay.setDutyPersonList(strings.get(0)).contains("熊天晴") ||
+                        DutyDay.setDutyPersonList(strings.get(1)).contains("吴鹤轩") ||
+                        DutyDay.setDutyPersonList(strings.get(1)).contains("熊天晴")) continue;
                 DutyList.add(new DutyDay(DutyDay.setDutyPersonList(strings.get(0)),
                         DutyDay.setDutyPersonList(strings.get(1))));
             } catch (Exception e) {
