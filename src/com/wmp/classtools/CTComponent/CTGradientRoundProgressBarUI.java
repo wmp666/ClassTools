@@ -40,9 +40,8 @@ public class CTGradientRoundProgressBarUI extends BasicProgressBarUI {
         g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 
         // 进度条内部区域
-        int insets = 1; // 内边距，避免边框被裁剪
-        int width = progressBar.getWidth() - insets * 2;
-        int height = progressBar.getHeight() - insets * 2;
+        int width = progressBar.getWidth();
+        int height = progressBar.getHeight();
         int arc = height; // 圆角弧度，设置为高度可实现半圆形端角
 
         // 绘制背景
@@ -53,14 +52,7 @@ public class CTGradientRoundProgressBarUI extends BasicProgressBarUI {
         int progressLength = (int) (width * getProgressFraction());
         if (progressLength > 0) {
             // 创建进度条前景（圆角）
-            Shape foreground = new RoundRectangle2D.Double(insets, insets, progressLength, height, arc, arc);
-            /*// 设置渐变画笔
-            Point2D start = new Point2D.Float(insets, insets);
-            Point2D end = new Point2D.Float(progressLength, height);
-            float[] fractions = {0.0f, 1.0f};
-            Color[] colors = {Color.CYAN, Color.BLUE}; // 渐变
-            LinearGradientPaint gradient = new LinearGradientPaint(start, end, fractions, colors);
-            g2d.setPaint(gradient);*/
+            Shape foreground = new RoundRectangle2D.Double(0, 0, progressLength, height, arc, arc);
             g2d.setColor(CTColor.mainColor);
             g2d.fill(foreground);
         }

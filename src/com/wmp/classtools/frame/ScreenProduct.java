@@ -31,6 +31,7 @@ public class ScreenProduct extends JDialog {
     private int index = 0;
 
     public ScreenProduct() throws IOException {
+
         initTimePanel();
 
         initWindow();
@@ -110,7 +111,7 @@ public class ScreenProduct extends JDialog {
         scrollPane.setViewportView(tempPanel);
         c.add(scrollPane, BorderLayout.EAST);
 
-        //刷新颜色
+        //刷新
         MainWindow.refreshPanel();
 
         this.setVisible(true);

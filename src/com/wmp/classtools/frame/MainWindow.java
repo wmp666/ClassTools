@@ -1,5 +1,6 @@
 package com.wmp.classTools.frame;
 
+import com.wmp.Main;
 import com.wmp.PublicTools.CTInfo;
 import com.wmp.PublicTools.UITools.CTColor;
 import com.wmp.PublicTools.printLog.Log;
@@ -171,106 +172,106 @@ public class MainWindow extends JDialog {
             CTBorderFactory.BASIC_LINE_BORDER = BorderFactory.createLineBorder(new Color(200, 200, 200), (int) (2 * CTInfo.dpi));
             CTBorderFactory.FOCUS_GAINTED_BORDER = BorderFactory.createLineBorder(new Color(112, 112, 112), (int) (2 * CTInfo.dpi));
 
-            //showPanelList.clear();
-            panelMap.clear();
-            panelMap.put("上方", new CTPanel[]{new CTPanel() {
-                @Override
-                public void refresh() throws IOException {
+            if (!allArgs.get("screenProduct:show").contains(argsList)) {//showPanelList.clear();
+                panelMap.clear();
+                panelMap.put("上方", new CTPanel[]{new CTPanel() {
+                    @Override
+                    public void refresh() throws IOException {
 
-                }
-            }});
-            panelMap.put("下方", new CTPanel[]{new CTPanel() {
-                @Override
-                public void refresh() throws IOException {
-
-                }
-            }});
-            panelMap.put("中间", new CTPanel[]{new CTPanel() {
-                @Override
-                public void refresh() throws IOException {
-
-                }
-            }});
-
-            allPanelList.forEach(panel -> {
-
-                if (!CTInfo.disPanelList.contains(panel.getID())) {
-                    //showPanelList.add(panel);
-
-                    if (Arrays.asList(panelLocationMap.get("上方")).contains(panel.getID())) {
-                        java.util.List<CTPanel> temp = new java.util.ArrayList<>(Arrays.asList(panelMap.get("上方")));
-                        temp.add(panel);
-                        panelMap.put("上方", temp.toArray(new CTPanel[0]));
-                    } else if (Arrays.asList(panelLocationMap.get("下方")).contains(panel.getID())) {
-                        java.util.List<CTPanel> temp = new java.util.ArrayList<>(Arrays.asList(panelMap.get("下方")));
-                        temp.add(panel);
-                        panelMap.put("下方", temp.toArray(new CTPanel[0]));
-                    } else {
-                        // 使用 new ArrayList 包装，创建可变列表
-                        java.util.List<CTPanel> temp = new java.util.ArrayList<>(Arrays.asList(panelMap.get("中间")));
-                        temp.add(panel);
-                        panelMap.put("中间", temp.toArray(new CTPanel[0]));
                     }
-                }
-            });
+                }});
+                panelMap.put("下方", new CTPanel[]{new CTPanel() {
+                    @Override
+                    public void refresh() throws IOException {
 
-            JPanel northPanel = new JPanel();
-            JPanel southPanel = new JPanel();
-            JPanel centerPanel = new JPanel();
-
-            northPanel.setLayout(new GridBagLayout());
-            southPanel.setLayout(new GridBagLayout());
-            centerPanel.setLayout(new GridBagLayout());
-
-            northPanel.setOpaque(false);
-            southPanel.setOpaque(false);
-            centerPanel.setOpaque(false);
-
-            GridBagConstraints gbc = new GridBagConstraints();
-            gbc.anchor = GridBagConstraints.WEST;
-            gbc.gridx = 0;
-            gbc.gridy = 0;
-            gbc.weightx = 1; // 添加水平权重
-            //gbc.fill = GridBagConstraints.HORIZONTAL; // 水平填充
-            gbc.insets = new Insets(0, 0, 0, 0); // 确保没有额外的边距
-
-            TreeMap<String, Integer> countMap = new TreeMap<>();
-
-            //1.将要显示的组件添加到显示列表
-            panelMap.forEach((key, value) -> {
-                for (CTPanel panel : value) {
-                    countMap.put(key, countMap.getOrDefault(key, 0) + 1);
-                    gbc.gridy = countMap.get(key);
-                    if (key.equals("上方")) {
-                        northPanel.add(panel, gbc);
-                    } else if (key.equals("下方")) {
-                        southPanel.add(panel, gbc);
-                    } else {
-                        centerPanel.add(panel, gbc);
                     }
-                }
-            });
+                }});
+                panelMap.put("中间", new CTPanel[]{new CTPanel() {
+                    @Override
+                    public void refresh() throws IOException {
 
-            JScrollPane scrollPane = new JScrollPane(centerPanel);
-            scrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
-            scrollPane.getViewport().setOpaque(false);
-            scrollPane.setOpaque(false);
-            scrollPane.setBorder(BorderFactory.createEmptyBorder());
+                    }
+                }});
+
+                allPanelList.forEach(panel -> {
+
+                    if (!CTInfo.disPanelList.contains(panel.getID())) {
+                        //showPanelList.add(panel);
+
+                        if (Arrays.asList(panelLocationMap.get("上方")).contains(panel.getID())) {
+                            java.util.List<CTPanel> temp = new java.util.ArrayList<>(Arrays.asList(panelMap.get("上方")));
+                            temp.add(panel);
+                            panelMap.put("上方", temp.toArray(new CTPanel[0]));
+                        } else if (Arrays.asList(panelLocationMap.get("下方")).contains(panel.getID())) {
+                            java.util.List<CTPanel> temp = new java.util.ArrayList<>(Arrays.asList(panelMap.get("下方")));
+                            temp.add(panel);
+                            panelMap.put("下方", temp.toArray(new CTPanel[0]));
+                        } else {
+                            // 使用 new ArrayList 包装，创建可变列表
+                            java.util.List<CTPanel> temp = new java.util.ArrayList<>(Arrays.asList(panelMap.get("中间")));
+                            temp.add(panel);
+                            panelMap.put("中间", temp.toArray(new CTPanel[0]));
+                        }
+                    }
+                });
+
+                JPanel northPanel = new JPanel();
+                JPanel southPanel = new JPanel();
+                JPanel centerPanel = new JPanel();
+
+                northPanel.setLayout(new GridBagLayout());
+                southPanel.setLayout(new GridBagLayout());
+                centerPanel.setLayout(new GridBagLayout());
+
+                northPanel.setOpaque(false);
+                southPanel.setOpaque(false);
+                centerPanel.setOpaque(false);
+
+                GridBagConstraints gbc = new GridBagConstraints();
+                gbc.anchor = GridBagConstraints.WEST;
+                gbc.gridx = 0;
+                gbc.gridy = 0;
+                gbc.weightx = 1; // 添加水平权重
+                //gbc.fill = GridBagConstraints.HORIZONTAL; // 水平填充
+                gbc.insets = new Insets(0, 0, 0, 0); // 确保没有额外的边距
+
+                TreeMap<String, Integer> countMap = new TreeMap<>();
+
+                //1.将要显示的组件添加到显示列表
+                panelMap.forEach((key, value) -> {
+                    for (CTPanel panel : value) {
+                        countMap.put(key, countMap.getOrDefault(key, 0) + 1);
+                        gbc.gridy = countMap.get(key);
+                        if (key.equals("上方")) {
+                            northPanel.add(panel, gbc);
+                        } else if (key.equals("下方")) {
+                            southPanel.add(panel, gbc);
+                        } else {
+                            centerPanel.add(panel, gbc);
+                        }
+                    }
+                });
+
+                JScrollPane scrollPane = new JScrollPane(centerPanel);
+                scrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
+                scrollPane.getViewport().setOpaque(false);
+                scrollPane.setOpaque(false);
+                scrollPane.setBorder(BorderFactory.createEmptyBorder());
 
 
+                // 在添加新组件前移除所有现有组件
+                mainWindow.getContentPane().removeAll();
+                mainWindow.add(northPanel, BorderLayout.NORTH);
+                mainWindow.add(southPanel, BorderLayout.SOUTH);
+                mainWindow.add(scrollPane, BorderLayout.CENTER);
 
-            // 在添加新组件前移除所有现有组件
-            mainWindow.getContentPane().removeAll();
-            mainWindow.add(northPanel, BorderLayout.NORTH);
-            mainWindow.add(southPanel, BorderLayout.SOUTH);
-            mainWindow.add(scrollPane, BorderLayout.CENTER);
+                mainWindow.revalidate();
+                mainWindow.repaint();
 
-            mainWindow.revalidate();
-            mainWindow.repaint();
-            
-            // 确保窗口可见并置于前端
-            mainWindow.setVisible(true);
-            //mainWindow.toFront();
+                // 确保窗口可见并置于前端
+                mainWindow.setVisible(true);
+                //mainWindow.toFront();}
+            }
 
             allPanelList.forEach(panel -> {
                 try {

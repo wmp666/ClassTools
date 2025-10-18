@@ -410,7 +410,7 @@ public class CTOptionPane {
     }
 
     public static void showFullScreenMessageDialog(String title, String message) {
-        showFullScreenMessageDialog(title, message, 60);
+        showFullScreenMessageDialog(title, message, 0);
     }
 
     /**
@@ -452,32 +452,45 @@ public class CTOptionPane {
         scrollPane.setBorder(null);
         messageDialog.add(scrollPane, BorderLayout.CENTER);
 
-        CTTextButton exitButton = new CTTextButton("关闭(10s)", false);
-        exitButton.setFont(CTFont.getCTFont(Font.PLAIN, CTFontSizeStyle.MORE_BIG));
+        JPanel southPanel = new JPanel(new BorderLayout());
+        southPanel.setOpaque(false);
 
+        CTProgressBar progressBar = new CTProgressBar(0, 1000);
+        southPanel.add(progressBar, BorderLayout.NORTH);
+
+        CTTextButton exitButton = new CTTextButton("关闭(10s)", GetIcon.getIcon(CTOptionPane.class.getResource("/image/dark/exit_0.png"), 100, 100), false);
+        exitButton.setFont(CTFont.getCTFont(Font.PLAIN, CTFontSizeStyle.MORE_BIG));
         exitButton.setEnabled(false);
-        messageDialog.add(exitButton, BorderLayout.SOUTH);
+        southPanel.add(exitButton, BorderLayout.CENTER);
+
+        messageDialog.add(southPanel, BorderLayout.SOUTH);
 
         messageDialog.addWindowListener(new WindowAdapter() {
             @Override
             public void windowOpened(WindowEvent e) {
 
-                try {
-                    for (int i = 0; i < 10; i++) {
-                        exitButton.setText("关闭(" + (10 - i) + "s)");
-                        Thread.sleep(1000);
+                new Thread(() -> {
+                    try {
+                        for (int i = 0; i < 1000; i++) {
+                            progressBar.setValue(1000 - i);
+                            exitButton.setText("关闭(" + (int)(10 - i*0.01) + "s)");
+                            Thread.sleep(10);
+                        }
+                    } catch (InterruptedException ex) {
+                        Log.err.print(CTOptionPane.class, "发生异常", ex);
                     }
-                } catch (InterruptedException ex) {
-                    Log.err.print(CTOptionPane.class, "发生异常", ex);
-                }
-                exitButton.setText("关闭");
-                exitButton.setEnabled(true);
-                exitButton.addActionListener(ev -> {
-                    messageDialog.dispose();
 
-                });
+                    exitButton.setText("关闭");
+                    exitButton.setEnabled(true);
+                    exitButton.addActionListener(ev -> {
+                        messageDialog.dispose();
 
-                exitButton.requestFocus();
+                    });
+                }).start();
+
+
+
+
             }
         });
 
@@ -495,7 +508,6 @@ public class CTOptionPane {
                 }
 
                 messageDialog.setVisible(true);
-
 
 
                 return null;
