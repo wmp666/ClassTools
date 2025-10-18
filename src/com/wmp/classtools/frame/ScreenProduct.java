@@ -1,5 +1,7 @@
 package com.wmp.classTools.frame;
 
+import com.nlf.calendar.Lunar;
+import com.wmp.PublicTools.DayIsNow;
 import com.wmp.PublicTools.UITools.CTColor;
 import com.wmp.PublicTools.UITools.CTFont;
 import com.wmp.PublicTools.UITools.CTFontSizeStyle;
@@ -15,6 +17,7 @@ import java.io.File;
 import java.io.IOException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.Objects;
 import java.util.Random;
@@ -65,9 +68,11 @@ public class ScreenProduct extends JDialog {
         //让时间在组件中央显示
         timeView.setHorizontalAlignment(JLabel.CENTER);
         timeView.setFont(CTFont.getCTFont(Font.BOLD, CTFontSizeStyle.BIG_BIG));
-        timeView.setForeground(Color.WHITE);
-        c.setBackground(Color.BLACK);
         c.add(timeView, BorderLayout.CENTER);
+
+        //让农历在上方显示
+        otherLabel.setFont(CTFont.getCTFont(Font.BOLD, CTFontSizeStyle.NORMAL));
+        c.add(otherLabel, BorderLayout.NORTH);
 
         //添加退出按钮 - 左侧
         CTIconButton exitButton = new CTIconButton(
@@ -125,7 +130,36 @@ public class ScreenProduct extends JDialog {
             //格式化 11.22 23:05
             DateFormat dateFormat = new SimpleDateFormat("MM.dd HH:mm:ss");
             timeView.setText(dateFormat.format(date));
+            timeView.setFont(CTFont.getCTFont(Font.BOLD, CTFontSizeStyle.BIG_BIG));
             timeView.setForeground(CTColor.mainColor);
+
+            Calendar calendar = Calendar.getInstance();
+            String week = "周" + new String[]{"天", "一", "二", "三", "四", "五", "六"}[calendar.get(Calendar.DAY_OF_WEEK) - 1];
+
+            Lunar lunar = Lunar.fromDate(new Date());
+
+            StringBuilder sb = new StringBuilder();
+
+            if (lunar.getMonth() < 0) {
+                sb.append("闰");
+            }
+            //周六 八月廿七 乙巳[蛇]年 大雪
+            sb.append(week)
+                    .append(" ")
+                    .append(DayIsNow.months[lunar.getMonth() - 1])//月
+                    .append(DayIsNow.days[lunar.getDay() - 1])//日
+                    .append(" ")
+                    .append(lunar.getYearInGanZhi())
+                    .append("[")
+                    .append(lunar.getYearShengXiao())
+                    .append("]年 ")
+                    .append(lunar.getJieQi());
+
+            otherLabel.setText(sb.toString());
+            otherLabel.setFont(CTFont.getCTFont(Font.BOLD, CTFontSizeStyle.MORE_BIG));
+            otherLabel.setForeground(CTColor.mainColor);
+
+
             repaint();
         });
         timer.start();

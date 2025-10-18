@@ -1,6 +1,8 @@
 package com.wmp.classTools.importPanel.timeView;
 
+import com.nlf.calendar.Lunar;
 import com.wmp.PublicTools.CTInfo;
+import com.wmp.PublicTools.DayIsNow;
 import com.wmp.PublicTools.UITools.CTColor;
 import com.wmp.PublicTools.UITools.CTFont;
 import com.wmp.PublicTools.UITools.CTFontSizeStyle;
@@ -41,7 +43,29 @@ public class TimeViewPanel extends CTPanel {
             timeView.setText(dateFormat02.format(date02));
 
             Calendar calendar = Calendar.getInstance();
-            other.setText("星期" + calendar.get(Calendar.DAY_OF_WEEK));
+            String week = "周" + new String[]{"天", "一", "二", "三", "四", "五", "六"}[calendar.get(Calendar.DAY_OF_WEEK) - 1];
+
+            Lunar lunar = Lunar.fromDate(new Date());
+
+
+            StringBuilder sb = new StringBuilder();
+
+            if (lunar.getMonth() < 0) {
+                sb.append("闰");
+            }
+            //周六 八月廿七 乙巳[蛇]年 大雪
+            sb.append(week)
+                    .append(" ")
+                    .append(DayIsNow.months[lunar.getMonth() - 1])//月
+                    .append(DayIsNow.days[lunar.getDay() - 1])//日
+                    .append(" ")
+                    .append(lunar.getYearInGanZhi())
+                    .append("[")
+                    .append(lunar.getYearShengXiao())
+                    .append("]年 ")
+                    .append(lunar.getJieQi());
+
+            other.setText(sb.toString());
             try {
                 Thread.sleep(300);
             } catch (InterruptedException e) {
