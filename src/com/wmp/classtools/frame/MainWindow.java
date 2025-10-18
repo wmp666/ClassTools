@@ -133,26 +133,21 @@ public class MainWindow extends JDialog {
                     allPanelList.forEach(ctPanel -> {
                         ctPanel.setOpaque(false);
 
+
+
                         ctPanel.revalidate();
                         ctPanel.repaint();
                     });
 
-                    /*showPanelList.forEach(ctPanel -> {
-                        ctPanel.setBackground(CTColor.backColor);
-                    });
-
-                    centerPane.setBackground(CTColor.backColor);
-
-                    // 重新验证中心面板以更新布局
-                    centerPane.revalidate();*/
 
                     Dimension size = this.getPreferredSize();
 
+                    if (size.height >= Toolkit.getDefaultToolkit().getScreenSize().getHeight() * 4 / 5)
+                        this.setSize(new Dimension( size.width, (int) (Toolkit.getDefaultToolkit().getScreenSize().getHeight() * 4 / 5)));
+                    else this.setSize(new Dimension( size.width, size.height));
+                    this.setLocation(Toolkit.getDefaultToolkit().getScreenSize().width - size.width - 5, 5);
 
-                    if (size.getHeight() >= Toolkit.getDefaultToolkit().getScreenSize().getHeight() * 4 / 5)
-                        this.setSize(new Dimension((int) size.getWidth(), (int) (Toolkit.getDefaultToolkit().getScreenSize().getHeight() * 4 / 5)));
-                    this.setLocation((int) (Toolkit.getDefaultToolkit().getScreenSize().width - size.getWidth() - 5), 5);
-
+                    //this.setLocation(0,0);
                     this.getContentPane().setBackground(CTColor.backColor);
                     this.setShape(new RoundRectangle2D.Double(0, 0, this.getWidth(), this.getHeight(), 20, 20));
 
@@ -279,6 +274,13 @@ public class MainWindow extends JDialog {
             mainWindow.setVisible(true);
             mainWindow.toFront();
 
+            allPanelList.forEach(panel -> {
+                try {
+                    panel.refresh();
+                } catch (IOException e) {
+                    Log.err.print(MainWindow.class, "刷新失败", e);
+                }
+            });
         } catch (Exception e) {
             Log.err.print(MainWindow.class, "刷新失败", e);
         }
@@ -293,7 +295,6 @@ public class MainWindow extends JDialog {
         this.setLayout(new BorderLayout());
         //设置屏幕大小
         Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
-        this.setSize((int)(screenSize.width * 0.8), (int)(screenSize.height * 0.8));
         this.setLocationRelativeTo(null);
 
         this.setForeground(CTColor.backColor);
@@ -303,8 +304,8 @@ public class MainWindow extends JDialog {
             Log.err.print(MainWindow.class, "图标加载失败", e);
         }
         
-        // 确保窗口有最小尺寸
-        this.setMinimumSize(new Dimension(400, 300));
+        // 确保窗口有最大尺寸
+        this.setMaximumSize(new Dimension(screenSize.width, screenSize.height * 4/5));
         this.pack();
     }
 }

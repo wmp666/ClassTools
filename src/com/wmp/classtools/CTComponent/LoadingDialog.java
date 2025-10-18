@@ -23,7 +23,7 @@ public class LoadingDialog extends JDialog {
             this.setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
             this.setModal(true);
             this.setLocationRelativeTo(null);
-            this.setLayout(new FlowLayout());
+            this.setLayout(new GridLayout(0,1));
             this.setAlwaysOnTop(true);
 
             this.getContentPane().setBackground(CTColor.backColor);

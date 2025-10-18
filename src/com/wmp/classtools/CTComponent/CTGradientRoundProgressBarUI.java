@@ -46,7 +46,7 @@ public class CTGradientRoundProgressBarUI extends BasicProgressBarUI {
         int arc = height; // 圆角弧度，设置为高度可实现半圆形端角
 
         // 绘制背景
-        g2d.setColor(new Color(200, 200, 200));
+        g2d.setColor(CTColor.backColor);
         g2d.fill(new RoundRectangle2D.Float(0, 0, width, height, arc, arc));
 
         // 计算进度条前景长度
@@ -83,47 +83,23 @@ public class CTGradientRoundProgressBarUI extends BasicProgressBarUI {
         g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 
         // 进度条内部区域
-        int insets = 0; // 内边距，避免边框被裁剪
-        int width = progressBar.getWidth() - insets * 2;
-        int height = progressBar.getHeight() - insets * 2;
+        int width = progressBar.getWidth();
+        int height = progressBar.getHeight();
         int arc = height; // 圆角弧度，设置为高度可实现半圆形端角
 
         // 绘制背景
         g2d.setColor(CTColor.backColor);
         g2d.fill(new RoundRectangle2D.Float(0, 0, width, height, arc, arc));
 
-        /*// 绘制多个波浪块
-        int blockCount = 4;
-        int blockWidth = width / 6;
-
-        for (int i = 0; i < blockCount; i++) {
-            float blockPhase = (phase + i * 0.25f) % 1.0f;
-            int x = (int) (blockPhase * (width + blockWidth) - blockWidth);
-
-            if (x < width) {
-                int drawWidth = Math.min(blockWidth, width - x);
-
-                // 计算颜色强度（基于位置）
-                float intensity = 0.3f + 0.7f * (1.0f - Math.abs(blockPhase - 0.5f) * 2);
-                Color blockColor = new Color(
-                        (int)(50 * intensity),
-                        (int)(150 * intensity),
-                        (int)(255 * intensity)
-                );
-
-                g2d.setColor(blockColor);
-                g2d.fillRect(x, 0, drawWidth, height);
-            }
-        }*/
         //绘制进度条
         if (phase < 0.5f) {
             double progressLength = (phase * width);
-            Shape foreground = new RoundRectangle2D.Double((phase * width) - progressLength, insets, progressLength, height, arc, arc);
+            Shape foreground = new RoundRectangle2D.Double(progressLength/2, 0, progressLength, height, arc, arc);
             g2d.setColor(CTColor.mainColor);
             g2d.fill(foreground);
         } else {
-            double progressLength = ((1.0f - phase) * width);
-            Shape foreground = new RoundRectangle2D.Double((phase * width) - progressLength, insets, progressLength, height, arc, arc);
+            double progressLength = ((1 - phase) * width);
+            Shape foreground = new RoundRectangle2D.Double( width*((phase- 0.5f)*3/2 + 0.25f), 0,  progressLength, height, arc, arc);
             g2d.setColor(CTColor.mainColor);
             g2d.fill(foreground);
         }

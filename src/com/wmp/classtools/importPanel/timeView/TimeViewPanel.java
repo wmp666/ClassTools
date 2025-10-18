@@ -90,6 +90,8 @@ public class TimeViewPanel extends CTPanel {
     }
 
     private void initPanel() throws MalformedURLException {
+        this.removeAll();
+
         //获取时间
         Date date = new Date();
         //格式化 11.22 23:05

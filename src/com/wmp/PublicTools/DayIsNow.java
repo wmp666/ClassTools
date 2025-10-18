@@ -92,10 +92,7 @@ public class DayIsNow {
      * @return true:在指定时间段内
      */
     public static boolean isInTimePeriod(String beginTime, String endTime) {
-
-        long i = getRemainderTime(beginTime);
-        return i <= 0 && getRemainderTime(endTime) >= 0;
-
+        return getRemainderTime(beginTime) < 0 && getRemainderTime(endTime) > 0;
     }
 
     /**
@@ -105,24 +102,50 @@ public class DayIsNow {
      * @return 间隔时间
      */
     public static long getRemainderTime(String targetTime) {
+
+        return getRemainderTime(targetTime, "HH:mm");
+    }
+
+    /**
+     * 获取两个时间间隔时间
+     *
+     * @param targetTime 目标时间
+     * @param format     时间格式
+     * @return 间隔时间
+     */
+    public static long getRemainderTime(String targetTime, String format) {
         long time = 0;
 
-        if (targetTime == null || targetTime.isEmpty()) return time;
+        if (targetTime == null || targetTime.isEmpty()) {
+            Log.err.print(DayIsNow.class, "获取目标时间失败: \n" + "请输入目标时间");
+            return time;
+        }
 
         if (targetTime.startsWith("lunar")) {
             Log.err.print(DayIsNow.class, "获取目标时间失败: \n" + "不支持农历");
         }
         try {
-
-            //1.分割目标时间
-            String[] split = targetTime.split(":");
-            int targetHour = Integer.parseInt(split[0]);
-            int targetMin = Integer.parseInt(split[1]);
-
+            DateFormat dateFormat = new SimpleDateFormat(format);
             Calendar calendar = Calendar.getInstance();
-            calendar.set(Calendar.HOUR_OF_DAY, targetHour);
-            calendar.set(Calendar.MINUTE, targetMin);
+            calendar.setTime(dateFormat.parse(targetTime));
+            
+            // 设置lenient为false，使解析更严格
+            dateFormat.setLenient(false);
 
+            // 获取当前时间作为基准
+            Calendar now = Calendar.getInstance();
+
+            // 如果format只包含时间部分，使用当前日期补充
+            if (!format.contains("y")) {
+
+                calendar.set(Calendar.YEAR, now.get(Calendar.YEAR));
+            }
+            if (!format.contains("M")) {
+                calendar.set(Calendar.MONTH, now.get(Calendar.MONTH));
+            }
+            if (!format.contains("d")) {
+                calendar.set(Calendar.DAY_OF_MONTH, now.get(Calendar.DAY_OF_MONTH));
+            }
             time = calendar.getTime().getTime() - new Date().getTime();
         } catch (Exception e) {
             Log.err.print(DayIsNow.class, "获取目标时间失败", e);

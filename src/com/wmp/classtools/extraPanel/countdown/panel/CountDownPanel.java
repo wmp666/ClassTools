@@ -2,6 +2,7 @@ package com.wmp.classTools.extraPanel.countdown.panel;
 
 import com.wmp.Main;
 import com.wmp.PublicTools.CTInfo;
+import com.wmp.PublicTools.DayIsNow;
 import com.wmp.PublicTools.UITools.CTColor;
 import com.wmp.PublicTools.UITools.CTFont;
 import com.wmp.PublicTools.UITools.CTFontSizeStyle;
@@ -45,8 +46,8 @@ public class CountDownPanel extends CTPanel {
             long time = 0;
             try {
                 // 获取时间, 并计算时间差
-                time = dateFormat.parse(targetTime).getTime() - System.currentTimeMillis();
-            } catch (ParseException ex) {
+                time = DayIsNow.getRemainderTime(targetTime, "yyyy.MM.dd HH:mm:ss");
+            } catch (Exception ex) {
                 Log.err.print(getClass(), "时间数据化异常", ex);
             }
             //Log.info.print("时间显示","时间差:" + time);

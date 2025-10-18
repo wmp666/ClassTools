@@ -23,7 +23,6 @@ public class NewUITest {
             } else {
                 progressBar.setValue(0);
             }
-            System.out.println(value);
         });
         timer.start();
 

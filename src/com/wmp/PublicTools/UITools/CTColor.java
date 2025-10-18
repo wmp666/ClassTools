@@ -41,6 +41,7 @@ public class CTColor {
     public static void setErrorColor() {
         canRemove = false;
 
+        mainColor = new Color(0x29A8E3);
         textColor = new Color(0x29A8E3);
         backColor = new Color(246, 250, 255);
         style = "error";
