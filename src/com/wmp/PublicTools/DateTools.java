@@ -3,6 +3,7 @@ package com.wmp.PublicTools;
 import com.nlf.calendar.Lunar;
 import com.nlf.calendar.Solar;
 import com.wmp.PublicTools.printLog.Log;
+import com.wmp.classTools.CTComponent.CTOptionPane;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -156,5 +157,31 @@ public class DateTools {
             Log.err.print(DateTools.class, "获取目标时间失败", e);
         }
         return time;
+    }
+
+    /**
+     * 获取时间字符串
+     *
+     * @param time 时间数组
+     * @param type 时间类型
+     * @return 时间字符串
+     */
+    public static String getTimeStr(int[]  time, int  type){
+        if (type == CTOptionPane.HOURS_MINUTES) return String.format("%02d:%02d", time[0], time[1]);
+        else if (type == CTOptionPane.HOURS_MINUTES_SECOND)return String.format("%02d:%02d:%02d", time[0], time[1], time[2]);
+        else return "";
+    }
+
+    /**
+     * 获取日期字符串
+     *
+     * @param date 日期数组
+     * @param type 日期类型
+     * @return 日期字符串
+     */
+    public static String getDateStr(int[] date, int type){
+        if (type == CTOptionPane.YEAR_MONTH_DAY) return String.format("%04d-%02d-%02d", date[0], date[1], date[2]);
+        else if (type == CTOptionPane.MONTH_DAY) return String.format("%02d-%02d", date[0], date[1]);
+        else return "";
     }
 }

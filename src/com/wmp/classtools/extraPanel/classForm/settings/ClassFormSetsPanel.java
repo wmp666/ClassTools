@@ -1,12 +1,10 @@
 package com.wmp.classTools.extraPanel.classForm.settings;
 
+import com.wmp.PublicTools.DateTools;
 import com.wmp.PublicTools.UITools.GetIcon;
 import com.wmp.PublicTools.io.IOForInfo;
 import com.wmp.PublicTools.printLog.Log;
-import com.wmp.classTools.CTComponent.CTList;
-import com.wmp.classTools.CTComponent.CTSetsPanel;
-import com.wmp.classTools.CTComponent.CTTable;
-import com.wmp.classTools.CTComponent.CTTextButton;
+import com.wmp.classTools.CTComponent.*;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
@@ -117,15 +115,11 @@ public class ClassFormSetsPanel extends CTSetsPanel {
                     }
                 }
 
-                b = true;
-                while (b) {
-                    s2 = Log.info.showInputDialog(this, "CFSetsPanel-新建", "请输入时间段(HH:mm-HH:mm)\n如:11:45-14:45");
-                    if (s2 != null && !s2.trim().isEmpty()) {
-                        b = false;
-                    } else if (s2 == null) {
-                        return;
-                    }
-                }
+                    int[] beginTime = Log.info.showTimeChooseDialog(this, "CFSetsPanel-新建", "请选择开始时间", CTOptionPane.HOURS_MINUTES);
+                    int[] afterTime = Log.info.showTimeChooseDialog(this, "CFSetsPanel-新建", "请选择结束时间", CTOptionPane.HOURS_MINUTES);
+                    if (beginTime.length == 1 || afterTime.length == 1) return;
+                    s2 = DateTools.getTimeStr(beginTime, CTOptionPane.HOURS_MINUTES) + "-" + DateTools.getTimeStr(afterTime, CTOptionPane.HOURS_MINUTES);
+
 
                 model.addRow(new Object[]{s2, s1});
 

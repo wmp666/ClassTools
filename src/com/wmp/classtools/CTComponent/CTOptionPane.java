@@ -16,6 +16,8 @@ import java.awt.datatransfer.Clipboard;
 import java.awt.datatransfer.StringSelection;
 import java.awt.datatransfer.Transferable;
 import java.awt.event.*;
+import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicReference;
 
@@ -27,10 +29,19 @@ public class CTOptionPane {
     public static final int ERROR_MESSAGE = 0;
     public static final int INFORMATION_MESSAGE = 1;
     public static final int WARNING_MESSAGE = 2;
+
+    public static final int YEAR_MONTH_DAY = 3;
+    public static final int MONTH_DAY = 2;
+    public static final int HOURS_MINUTES = 1;
+    public static final int HOURS_MINUTES_SECOND = 0;
+
     private static final int YES_NO_BUTTONS = 0;
     private static final int YES_BUTTONS = 1;
+
     private static final int MESSAGE_TEXT = 0;
     private static final int MESSAGE_INPUT = 1;
+
+
 
     /**
      * 显示消息对话框
@@ -409,6 +420,218 @@ public class CTOptionPane {
         return null;
     }
 
+    /**
+     * 时间选择器
+     * @param owner         对话框的父组件
+     * @param  message       对话框内容
+     *  @param icon          对话框图标
+     *  @param iconType      对话框图标类型
+     * @param style         时间样式
+     *  @param isAlwaysOnTop 是否始终置顶
+     * @return  时间选择结果
+     */
+    public static int[] showTimeChooseDialog(Component owner, String message, Icon icon, int iconType, int style, boolean isAlwaysOnTop) {
+        JDialog dialog = new JDialog();
+        dialog.setSize((int) (380 * CTInfo.dpi), (int) (200 * CTInfo.dpi));
+        dialog.setLocationRelativeTo(owner);//设置对话框的位置相对于父组件
+        dialog.setModal(true);
+        dialog.setAlwaysOnTop(isAlwaysOnTop);
+        dialog.setTitle("时间选择器");
+        dialog.getContentPane().setBackground(CTColor.backColor);
+        dialog.setLayout(new BorderLayout(10, 10));
+        dialog.setDefaultCloseOperation(JDialog.DO_NOTHING_ON_CLOSE);
+
+        JLabel iconLabel = new JLabel();
+        JTextArea messageArea = new JTextArea();
+
+
+        // 创建图标标签
+        {
+            if (icon == null) {
+                Icon tempIcon = null;
+                switch (iconType) {
+
+                    case ERROR_MESSAGE:
+                        tempIcon = GetIcon.getIcon(Main.class.getResource("/image/optionDialogIcon/error.png"), 50, 50);
+                        break;
+                    case INFORMATION_MESSAGE:
+                        tempIcon = GetIcon.getIcon(Main.class.getResource("/image/optionDialogIcon/information.png"), 50, 50);
+                        break;
+                    case WARNING_MESSAGE:
+                        tempIcon = GetIcon.getIcon(Main.class.getResource("/image/optionDialogIcon/warn.png"), 50, 50);
+                        break;
+                }
+                iconLabel = new JLabel(tempIcon);
+                dialog.add(iconLabel, BorderLayout.WEST);//设置图标标签的位置 - 左
+            } else {
+                iconLabel = new JLabel(icon);
+                dialog.add(iconLabel, BorderLayout.WEST);//设置图标标签的位置 - 左
+            }
+        }
+
+        JLabel messageLabel = new JLabel(message);
+        messageLabel.setFont(new Font("微软雅黑", Font.PLAIN, CTFont.getSize(CTFontSizeStyle.SMALL)));
+        messageLabel.setForeground(CTColor.textColor);
+        dialog.add(messageLabel, BorderLayout.NORTH);
+
+
+        JPanel toolsPanel = new JPanel(new GridLayout(0, 1, 5, 5));
+        toolsPanel.setOpaque(false);
+
+        JPanel yearPanel = new JPanel(new BorderLayout());
+        JSpinner yearSpinner = new JSpinner(new SpinnerNumberModel(Calendar.getInstance().get(Calendar.YEAR), Calendar.getInstance().get(Calendar.YEAR), Calendar.getInstance().get(Calendar.YEAR) + 20, 1));
+        {
+            yearPanel.setOpaque(false);
+
+            yearSpinner.setFont(new Font("微软雅黑", Font.PLAIN, CTFont.getSize(CTFontSizeStyle.SMALL)));
+            JLabel yearLabel = new JLabel("年:");
+            yearLabel.setFont(new Font("微软雅黑", Font.PLAIN, CTFont.getSize(CTFontSizeStyle.SMALL)));
+            yearPanel.add(yearSpinner, BorderLayout.CENTER);
+            yearPanel.add(yearLabel, BorderLayout.WEST);
+        }
+
+        JPanel monthPanel = new JPanel(new BorderLayout());
+        JSpinner monthSpinner = new JSpinner(new SpinnerNumberModel(Calendar.getInstance().get(Calendar.MONTH) + 1, 1, 12, 1));
+        {
+            monthPanel.setOpaque(false);
+            monthSpinner.setFont(new Font("微软雅黑", Font.PLAIN, CTFont.getSize(CTFontSizeStyle.SMALL)));
+            JLabel monthLabel = new JLabel("月:");
+            monthLabel.setFont(new Font("微软雅黑", Font.PLAIN, CTFont.getSize(CTFontSizeStyle.SMALL)));
+            monthPanel.add(monthSpinner, BorderLayout.CENTER);
+            monthPanel.add(monthLabel, BorderLayout.WEST);
+        }
+
+        JPanel dayPanel = new JPanel(new BorderLayout());
+        JSpinner daySpinner = new JSpinner(new SpinnerNumberModel(Calendar.getInstance().get(Calendar.DAY_OF_MONTH), 1, 31, 1));
+        {
+            dayPanel.setOpaque(false);
+            daySpinner.setFont(new Font("微软雅黑", Font.PLAIN, CTFont.getSize(CTFontSizeStyle.SMALL)));
+            JLabel dayLabel = new JLabel("日:");
+            dayLabel.setFont(new Font("微软雅黑", Font.PLAIN, CTFont.getSize(CTFontSizeStyle.SMALL)));
+            dayPanel.add(daySpinner, BorderLayout.CENTER);
+            dayPanel.add(dayLabel, BorderLayout.WEST);
+        }
+
+        JPanel hourPanel = new JPanel(new BorderLayout());
+        JSpinner hourSpinner = new JSpinner(new SpinnerNumberModel(Calendar.getInstance().get(Calendar.HOUR_OF_DAY), 0, 23, 1));
+        {
+            hourPanel.setOpaque(false);
+            hourSpinner.setFont(new Font("微软雅黑", Font.PLAIN, CTFont.getSize(CTFontSizeStyle.SMALL)));
+            JLabel hourLabel = new JLabel("时:");
+            hourLabel.setFont(new Font("微软雅黑", Font.PLAIN, CTFont.getSize(CTFontSizeStyle.SMALL)));
+            hourPanel.add(hourSpinner, BorderLayout.CENTER);
+            hourPanel.add(hourLabel, BorderLayout.WEST);
+        }
+
+        JPanel minutePanel = new JPanel(new BorderLayout());
+        JSpinner minuteSpinner = new JSpinner(new SpinnerNumberModel(Calendar.getInstance().get(Calendar.MINUTE), 0, 59, 1));
+        {
+            minutePanel.setOpaque(false);
+            minuteSpinner.setFont(new Font("微软雅黑", Font.PLAIN, CTFont.getSize(CTFontSizeStyle.SMALL)));
+            JLabel minuteLabel = new JLabel("分:");
+            minuteLabel.setFont(new Font("微软雅黑", Font.PLAIN, CTFont.getSize(CTFontSizeStyle.SMALL)));
+            minutePanel.add(minuteSpinner, BorderLayout.CENTER);
+            minutePanel.add(minuteLabel, BorderLayout.WEST);
+        }
+
+        JPanel secondPanel = new JPanel(new BorderLayout());
+        JSpinner secondSpinner = new JSpinner(new SpinnerNumberModel(Calendar.getInstance().get(Calendar.SECOND), 0, 59, 1));
+        {
+             secondPanel.setOpaque(false);
+             secondSpinner.setFont(new Font("微软雅黑", Font.PLAIN, CTFont.getSize(CTFontSizeStyle.SMALL)));
+             JLabel secondLabel = new JLabel("秒:");
+             secondLabel.setFont(new Font("微软雅黑", Font.PLAIN, CTFont.getSize(CTFontSizeStyle.SMALL)));
+             secondPanel.add(secondSpinner, BorderLayout.CENTER);
+             secondPanel.add(secondLabel, BorderLayout.WEST);
+         }
+        if (style == YEAR_MONTH_DAY){
+            toolsPanel.add(yearPanel);
+            toolsPanel.add(monthPanel);
+            toolsPanel.add(dayPanel);
+        } else if (style == MONTH_DAY){
+            toolsPanel.add(monthPanel);
+            toolsPanel.add(dayPanel);
+        } else if (style == HOURS_MINUTES){
+            toolsPanel.add(hourPanel);
+            toolsPanel.add(minutePanel);
+        } else if (style == HOURS_MINUTES_SECOND){
+            toolsPanel.add(hourPanel);
+            toolsPanel.add(minutePanel);
+            toolsPanel.add(secondPanel);
+        }
+
+        dialog.add(toolsPanel, BorderLayout.CENTER);
+
+        AtomicInteger choose = new AtomicInteger(2);
+
+        ArrayList<Integer> result = new ArrayList<>();
+        // 创建按钮面板
+        {
+                ChooseButton yesButton = new ChooseButton("是") {
+                    @Override
+                    public void actionPerformed(ActionEvent e) {
+                        choose.set(YES_OPTION);
+
+                        if (style == YEAR_MONTH_DAY){
+                            result.add((Integer) yearSpinner.getValue());
+                            result.add((Integer) monthSpinner.getValue());
+                            result.add((Integer) daySpinner.getValue());
+                        } else if (style == MONTH_DAY) {
+                            result.add(Calendar.getInstance().get(Calendar.YEAR));
+                            result.add((Integer) monthSpinner.getValue());
+                            result.add((Integer) daySpinner.getValue());
+                        } else if (style == HOURS_MINUTES){
+                            result.add((Integer) hourSpinner.getValue());
+                            result.add((Integer) minuteSpinner.getValue());
+                        } else if (style == HOURS_MINUTES_SECOND){
+                            result.add((Integer) hourSpinner.getValue());
+                            result.add((Integer) minuteSpinner.getValue());
+                            result.add((Integer) secondSpinner.getValue());
+                        }
+                        dialog.dispose();
+                    }
+                };
+
+                dialog.addWindowListener(new WindowAdapter() {
+
+                    @Override
+                    public void windowOpened(WindowEvent e) {
+                        yesButton.requestFocus();
+                    }
+                });
+
+                ChooseButton noButton = new ChooseButton("否") {
+                    @Override
+                    public void actionPerformed(ActionEvent e) {
+                        choose.set(NO_OPTION);
+                        dialog.dispose();
+                    }
+                };
+                JPanel buttonPanel = new JPanel(new GridLayout(1, 2, 10, 10));
+                buttonPanel.setOpaque(false);
+                buttonPanel.add(yesButton);
+                buttonPanel.add(noButton);
+                dialog.add(buttonPanel, BorderLayout.SOUTH);//设置按钮面板的位置 - 下
+        }
+
+        JLabel finalIconLabel = iconLabel;
+        SwingUtilities.invokeLater(() -> finalIconLabel.repaint());
+
+        dialog.setVisible(true);
+
+
+
+        if (choose.get() == YES_OPTION) {
+            Integer[] array = result.toArray(new Integer[0]);
+            int[] arrayInt = new int[result.size()];
+            for (int i = 0; i < array.length; i++) {
+                arrayInt[i] = array[i];
+            }
+            return arrayInt;
+        }
+        return new int[0];
+    }
+
     public static void showFullScreenMessageDialog(String title, String message) {
         showFullScreenMessageDialog(title, message, 0);
     }
@@ -506,6 +729,8 @@ public class CTOptionPane {
                     t.setRepeats(false);
                     t.start();
                 }
+
+                Log.info.print("showFullScreenMessageDialog", "显示全屏弹窗：" + title + ":" + message);
 
                 messageDialog.setVisible(true);
 
