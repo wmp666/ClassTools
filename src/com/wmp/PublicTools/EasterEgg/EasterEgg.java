@@ -2,7 +2,7 @@ package com.wmp.PublicTools.EasterEgg;
 
 import com.wmp.Main;
 import com.wmp.PublicTools.CTInfo;
-import com.wmp.PublicTools.DayIsNow;
+import com.wmp.PublicTools.DateTools;
 import com.wmp.PublicTools.UITools.CTColor;
 import com.wmp.PublicTools.UITools.GetIcon;
 import com.wmp.PublicTools.io.IOForInfo;
@@ -38,32 +38,32 @@ public class EasterEgg {
             case STYLE_IMPORT_DAY -> {
                 //加载颜色(CTColor)数据
                 //判断当前时间是否是4月1日
-                boolean b = DayIsNow.dayIsNow("04-01");
+                boolean b = DateTools.dayIsNow("04-01");
                 if (b) {
                     CTColor.setAllColor(CTColor.MAIN_COLOR_GREEN, CTColor.STYLE_LIGHT);
                     return b;
                 }
 
                 ;
-                if (DayIsNow.dayIsNow("09-18") ||
-                        DayIsNow.dayIsNow("10-01") ||
-                        DayIsNow.dayIsNow("05-01")) {
+                if (DateTools.dayIsNow("09-18") ||
+                        DateTools.dayIsNow("10-01") ||
+                        DateTools.dayIsNow("05-01")) {
                     CTColor.setAllColor(CTColor.MAIN_COLOR_RED, CTColor.STYLE_LIGHT);
                 }
 
-                b = DayIsNow.dayIsNow("09-28") ||//原神周年庆
-                        DayIsNow.dayIsNow("lunar9-17") ||//author birthday
-                        DayIsNow.dayIsNow("09-03") ||//mc
-                        DayIsNow.dayIsNow("04-25");//崩铁
+                b = DateTools.dayIsNow("09-28") ||//原神周年庆
+                        DateTools.dayIsNow("lunar9-17") ||//author birthday
+                        DateTools.dayIsNow("09-03") ||//mc
+                        DateTools.dayIsNow("04-25");//崩铁
 
                 return b;
             }
             case STYLE_ERROR -> {
                 // 明确指定时区
                 LocalDate currentDate = LocalDate.now(ZoneId.of("Asia/Shanghai"));
-                boolean b = DayIsNow.dayIsNow("04-07");
+                boolean b = DateTools.dayIsNow("04-07");
                 if (!b) {
-                    if (DayIsNow.dayIsNow("04-25")) {//崩铁
+                    if (DateTools.dayIsNow("04-25")) {//崩铁
                         Random r = new Random();
                         int i = r.nextInt(5);
                         System.out.println("崩铁:" + i);
@@ -333,7 +333,7 @@ public class EasterEgg {
                 if (jsonObject instanceof JSONObject jsonObject1) {
 
                     String date1 = jsonObject1.getString("date");
-                    if (DayIsNow.dayIsNow(date1)) {
+                    if (DateTools.dayIsNow(date1)) {
 
                         b.set(true);
                         Main.argsList.add("-StartUpdate:false");

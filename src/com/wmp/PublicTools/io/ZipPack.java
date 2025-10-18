@@ -10,6 +10,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.Objects;
+import java.util.Random;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
 import java.util.zip.ZipOutputStream;
@@ -39,26 +40,15 @@ public class ZipPack {
 
             return;
         }
+        int id = new Random().nextInt();
 
-        /*//生成弹窗
-        SwingUtilities.invokeLater(() -> {
-            dialog.setTitle("正在解压...");
-            dialog.setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
-            dialog.setModal(true);
-            dialog.setSize(300, 80);
-            dialog.setLocationRelativeTo(null);
-            progressBar.setIndeterminate(true);  // 确保在EDT设置进度条
-            dialog.add(progressBar);
-            dialog.setVisible(true);
-        });*/
-
-        Log.info.loadingDialog.showDialog("ZipPack-解压", "正在解压...");
+        Log.info.loadingDialog.showDialog("ZipPack-解压" + id, "正在解压...");
 
         new Thread(() -> {
             try {
                 ZipInputStream zipInputStream = new ZipInputStream(new FileInputStream(zipFilePath));
                 // 解压缩文件
-                unzipFiles(zipInputStream, destDir);
+                unzipFiles(zipInputStream, destDir, id);
 
                 Log.info.print("ZipPack-解压", "解压完成!");
 
@@ -66,7 +56,7 @@ public class ZipPack {
                 Log.err.print(ZipPack.class, "解压失败！", e);
                 throw new RuntimeException(e);
             }
-            Log.info.loadingDialog.closeDialog("ZipPack-解压");
+            Log.info.loadingDialog.closeDialog("ZipPack-解压" + id);
             try {
                 runnable.run();
             }catch (Exception e) {
@@ -80,7 +70,7 @@ public class ZipPack {
         //return true;
     }
 
-    private static void unzipFiles(ZipInputStream zipInputStream, String outputFolder) throws IOException {
+    private static void unzipFiles(ZipInputStream zipInputStream, String outputFolder, int id) throws IOException {
         byte[] buffer = new byte[1024];
         ZipEntry entry;
 
@@ -91,7 +81,7 @@ public class ZipPack {
             File outputFile = new File(outputFolder + "/" + fileName);
 
             Log.info.print("ZipPack-解压", "解压文件: " + outputFile);
-            Log.info.loadingDialog.updateDialog("ZipPack-解压", "解压文件: " + outputFile);
+            Log.info.loadingDialog.updateDialog("ZipPack-解压" + id, "解压文件: " + outputFile);
             // 创建文件夹
             if (entry.isDirectory()) {
                 outputFile.mkdirs();
@@ -120,7 +110,9 @@ public class ZipPack {
 
         }else Log.info.print("ZipPack-压缩", "要打包的文件:全部");
 
-        Log.info.loadingDialog.showDialog("ZipPack-压缩", "正在压缩...");
+        int id = new Random().nextInt();
+
+        Log.info.loadingDialog.showDialog("ZipPack-压缩" + id, "正在压缩...");
 
 
         String sourceFolder = dataPath;
@@ -130,7 +122,7 @@ public class ZipPack {
             try (ZipOutputStream zos = new ZipOutputStream(
                     new FileOutputStream(outputPath + File.separator + zipName))) {
 
-                addFolderToZip(new File(sourceFolder), "", zos, ZipFiles);
+                addFolderToZip(new File(sourceFolder), "", zos, id, ZipFiles);
 
                 // 压缩完成后更新UI
                 Log.info.print("ZipPack-压缩", "压缩完成!");
@@ -138,13 +130,13 @@ public class ZipPack {
             } catch (IOException e) {
                 Log.err.print(ZipPack.class, "压缩失败！", e);
             }
-            Log.info.loadingDialog.closeDialog("ZipPack-压缩");
+            Log.info.loadingDialog.closeDialog("ZipPack-压缩" + id);
         }).start();
 
     }
 
     // 优化的压缩方法
-    private static void addFolderToZip(File folder, String parentPath, ZipOutputStream zos, String... ZipFiles) throws IOException {
+    private static void addFolderToZip(File folder, String parentPath, ZipOutputStream zos, int id, String... ZipFiles) throws IOException {
         for (File file : Objects.requireNonNull(folder.listFiles())) {
 
             if (ZipFiles.length != 0){
@@ -162,9 +154,9 @@ public class ZipPack {
                 // 处理目录时添加"/"后缀
                 zos.putNextEntry(new ZipEntry(entryName + "/"));
                 zos.closeEntry();
-                addFolderToZip(file, entryName + "/", zos);
+                addFolderToZip(file, entryName + "/", zos, id);
             } else {
-                Log.info.loadingDialog.updateDialog("ZipPack-压缩", "压缩文件: " + entryName);
+                Log.info.loadingDialog.updateDialog("ZipPack-压缩" + id, "压缩文件: " + entryName);
                 try (FileInputStream fis = new FileInputStream(file)) {
                     ZipEntry entry = new ZipEntry(entryName);
                     zos.putNextEntry(entry);

@@ -1,7 +1,7 @@
 package com.wmp.classTools.frame;
 
 import com.nlf.calendar.Lunar;
-import com.wmp.PublicTools.DayIsNow;
+import com.wmp.PublicTools.DateTools;
 import com.wmp.PublicTools.UITools.CTColor;
 import com.wmp.PublicTools.UITools.CTFont;
 import com.wmp.PublicTools.UITools.CTFontSizeStyle;
@@ -146,8 +146,8 @@ public class ScreenProduct extends JDialog {
             //周六 八月廿七 乙巳[蛇]年 大雪
             sb.append(week)
                     .append(" ")
-                    .append(DayIsNow.months[lunar.getMonth() - 1])//月
-                    .append(DayIsNow.days[lunar.getDay() - 1])//日
+                    .append(DateTools.months[lunar.getMonth() - 1])//月
+                    .append(DateTools.days[lunar.getDay() - 1])//日
                     .append(" ")
                     .append(lunar.getYearInGanZhi())
                     .append("[")

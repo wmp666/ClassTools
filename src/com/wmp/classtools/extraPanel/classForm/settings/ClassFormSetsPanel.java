@@ -24,7 +24,6 @@ public class ClassFormSetsPanel extends CTSetsPanel {
     private final String path;
 
     private final ArrayList<CTTable> CFTableList = new ArrayList<>();
-    private final AtomicInteger index = new AtomicInteger();
 
     public ClassFormSetsPanel(String basicDataPath) {
         super(basicDataPath);
@@ -143,12 +142,6 @@ public class ClassFormSetsPanel extends CTSetsPanel {
                 int selectedRow = ctTable.getSelectedRow();
                 if (selectedRow != -1) {
                     model.removeRow(selectedRow);
-                    if (selectedRow < index.get()) {
-                        index.getAndDecrement();
-                    }
-                    if (ctTable.getRowCount() == index.get()) {
-                        index.set(0);
-                    }
                 }
             });
             //deleteBtn.setToolTipText("删除选中的值日生记录");

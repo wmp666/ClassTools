@@ -20,5 +20,16 @@ public class CTTable extends JTable {
         this.setCellEditor(new DefaultCellEditor(new CTTextField()));
     }
 
+    public Object[][] getData() {
+        int rowCount = this.getRowCount();
+        int columnCount = this.getColumnCount();
+        Object[][] data = new Object[rowCount][columnCount];
+        for (int i = 0; i < rowCount; i++) {
+            for (int j = 0; j < columnCount; j++) {
+                data[i][j] = this.getValueAt(i, j);
+            }
+        }
+        return data;
+    }
 
 }

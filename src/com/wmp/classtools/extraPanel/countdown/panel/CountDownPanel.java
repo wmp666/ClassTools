@@ -2,7 +2,7 @@ package com.wmp.classTools.extraPanel.countdown.panel;
 
 import com.wmp.Main;
 import com.wmp.PublicTools.CTInfo;
-import com.wmp.PublicTools.DayIsNow;
+import com.wmp.PublicTools.DateTools;
 import com.wmp.PublicTools.UITools.CTColor;
 import com.wmp.PublicTools.UITools.CTFont;
 import com.wmp.PublicTools.UITools.CTFontSizeStyle;
@@ -15,9 +15,6 @@ import com.wmp.classTools.extraPanel.countdown.settings.CountDownSetsPanel;
 import javax.swing.*;
 import java.awt.*;
 import java.io.IOException;
-import java.text.DateFormat;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicBoolean;
 
@@ -34,6 +31,7 @@ public class CountDownPanel extends CTPanel {
         this.setOpaque(false);
         this.setCtSetsPanelList(List.of(new CountDownSetsPanel(CTInfo.DATA_PATH)));
 
+        initInfo();
         initUI();
 
         this.add(titleLabel, BorderLayout.NORTH);
@@ -42,15 +40,21 @@ public class CountDownPanel extends CTPanel {
         AtomicBoolean b = new AtomicBoolean(false);
         Timer timer = new Timer(34, e -> {
             String targetTime = info.targetTime();
-            DateFormat dateFormat = new SimpleDateFormat("yyyy.MM.dd HH:mm:ss");
             long time = 0;
             try {
                 // 获取时间, 并计算时间差
-                time = DayIsNow.getRemainderTime(targetTime, "yyyy.MM.dd HH:mm:ss");
+                time = DateTools.getRemainderTime(targetTime, "yyyy.MM.dd HH:mm:ss");
             } catch (Exception ex) {
                 Log.err.print(getClass(), "时间数据化异常", ex);
             }
             //Log.info.print("时间显示","时间差:" + time);
+            if (time < -60*1000) {
+                CDInfoControl.CDInfo old = info;
+                initInfo();
+                if (!old.title().equals(info.title()) && info.title().equals("数据出错")) {
+                    Log.info.systemPrint("时间显示", "已切换倒计时");
+                }
+            }
 
             if (time <= 0) {
 
@@ -81,7 +85,7 @@ public class CountDownPanel extends CTPanel {
     }
 
     private void initUI() {
-        info = CDInfoControl.getCDInfo();
+
 
         titleLabel.setText("距" + info.title() + "还剩:");
         titleLabel.setForeground(CTColor.textColor);
@@ -91,8 +95,13 @@ public class CountDownPanel extends CTPanel {
         timeLabel.setFont(CTFont.getCTFont(Font.BOLD, CTFontSizeStyle.BIG));
     }
 
+    private static void initInfo() {
+        info = CDInfoControl.getCDInfo();
+    }
+
     @Override
     public void refresh() throws IOException {
+        initInfo();
         initUI();
         this.revalidate();
         this.repaint();

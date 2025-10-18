@@ -2,22 +2,16 @@ package com.wmp.classTools.importPanel.timeView;
 
 import com.nlf.calendar.Lunar;
 import com.wmp.PublicTools.CTInfo;
-import com.wmp.PublicTools.DayIsNow;
+import com.wmp.PublicTools.DateTools;
 import com.wmp.PublicTools.UITools.CTColor;
 import com.wmp.PublicTools.UITools.CTFont;
 import com.wmp.PublicTools.UITools.CTFontSizeStyle;
-import com.wmp.PublicTools.UITools.GetIcon;
 import com.wmp.PublicTools.printLog.Log;
 import com.wmp.classTools.CTComponent.*;
-import com.wmp.classTools.CTComponent.Menu.CTPopupMenu;
-import com.wmp.classTools.frame.MainWindow;
 import com.wmp.classTools.importPanel.timeView.settings.ScreenProductSetsPanel;
-import com.wmp.classTools.infSet.InfSetDialog;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.text.DateFormat;
@@ -56,8 +50,8 @@ public class TimeViewPanel extends CTPanel {
             //周六 八月廿七 乙巳[蛇]年 大雪
             sb.append(week)
                     .append(" ")
-                    .append(DayIsNow.months[lunar.getMonth() - 1])//月
-                    .append(DayIsNow.days[lunar.getDay() - 1])//日
+                    .append(DateTools.months[lunar.getMonth() - 1])//月
+                    .append(DateTools.days[lunar.getDay() - 1])//日
                     .append(" ")
                     .append(lunar.getYearInGanZhi())
                     .append("[")

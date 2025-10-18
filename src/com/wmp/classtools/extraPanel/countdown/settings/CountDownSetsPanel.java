@@ -3,79 +3,136 @@ package com.wmp.classTools.extraPanel.countdown.settings;
 import com.wmp.PublicTools.UITools.CTColor;
 import com.wmp.PublicTools.UITools.CTFont;
 import com.wmp.PublicTools.UITools.CTFontSizeStyle;
+import com.wmp.PublicTools.UITools.GetIcon;
+import com.wmp.PublicTools.printLog.Log;
 import com.wmp.classTools.CTComponent.CTSetsPanel;
+import com.wmp.classTools.CTComponent.CTTable;
+import com.wmp.classTools.CTComponent.CTTextButton;
 import com.wmp.classTools.CTComponent.CTTextField;
 import com.wmp.classTools.extraPanel.countdown.CDInfoControl;
 
 import javax.swing.*;
+import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Arrays;
 
 public class CountDownSetsPanel extends CTSetsPanel {
 
-    private final CTTextField titleField = new CTTextField();
-    private final CTTextField targetTimeField = new CTTextField();
+    private final CTTable CDTable = new CTTable();
+
 
     public CountDownSetsPanel(String basicDataPath) {
         super(basicDataPath);
 
         this.setID("CountDownSetsPanel");
         this.setName("倒计时设置");
-        this.setLayout(new GridBagLayout());
+        this.setLayout(new BorderLayout());
 
-
-        initInfo();
-        initUI();
+        initTable();
     }
 
-    private void initInfo() {
-        CDInfoControl.CDInfo info = CDInfoControl.getCDInfo();
-        titleField.setText(info.title());
-        targetTimeField.setText(info.targetTime());
+    private Object[][] getInfo() {
+        CDInfoControl.CDInfo[] cdInfos = CDInfoControl.getCDInfos();
+        Object[][] data = new Object[cdInfos.length][2];
+
+        for (int i = 0; i < cdInfos.length; i++) {
+            data[i][0] = cdInfos[i].title();
+            data[i][1] = cdInfos[i].targetTime();
+        }
+        if (cdInfos.length == 0) {
+            data = new Object[][]{{"null", "9999.12.30 23:59:59"}};
+        }
+
+        return data;
     }
 
-    private void initUI() {
-        GridBagConstraints gbc = new GridBagConstraints();
-        gbc.gridx = 0;
-        gbc.gridy = 0;
-        //gbc.insets = new Insets(5, 5, 5, 5);
 
-        JPanel titlePanel = new JPanel(new GridLayout(0, 2));
-        titlePanel.setOpaque(false);
 
-        JLabel title = new JLabel("标题:");
-        title.setForeground(CTColor.textColor);
-        title.setFont(CTFont.getCTFont(Font.PLAIN, CTFontSizeStyle.SMALL));
-        titlePanel.add(title);
-        titlePanel.add(titleField);
+    private void initTable() {
+        Log.info.print("CDSetsPanel", "倒计时设置面板");
 
-        this.add(titlePanel, gbc);
-        gbc.gridy++;
+        DefaultTableModel model = new DefaultTableModel(getInfo(), new String[]{"标题", "目标时间"});
 
-        JPanel targetTimePanel = new JPanel(new GridLayout(2, 0));
-        targetTimePanel.setOpaque(false);
+        CDTable.setModel(model);
 
-        JLabel targetTimeLabel = new JLabel("目标时间 (yyyy.MM.dd HH:mm:ss):");
-        targetTimeLabel.setForeground(CTColor.textColor);
-        targetTimeLabel.setFont(CTFont.getCTFont(Font.PLAIN, CTFontSizeStyle.SMALL));
-        targetTimePanel.add(targetTimeLabel);
-        targetTimePanel.add(targetTimeField);
+        JScrollPane scrollPane = new JScrollPane(CDTable);
+        scrollPane.setOpaque(false);
+        scrollPane.getViewport().setOpaque(false);
+        this.add(scrollPane, BorderLayout.CENTER);
 
-        this.add(targetTimePanel, gbc);
-        gbc.gridy++;
+        JPanel buttonPanel = new JPanel();
+        buttonPanel.setOpaque(false);
+        buttonPanel.setLayout(new FlowLayout(FlowLayout.LEFT, 5, 5));
+
+        //新建
+        {
+
+            CTTextButton newBtn = new CTTextButton("添加", GetIcon.getIcon(getClass().getResource("/image/light/new_0.png"), 30, 30));
+            newBtn.addActionListener(e -> {
+                //检测内容是否为空
+                boolean b = true;
+                String s1 = "null";
+                String s2 = "9999.12.30 23:59:59";
+                while (b) {
+                    s1 = Log.info.showInputDialog(this, "CDSetsPanel-新建", "请输入标题");
+
+                    if (s1 != null && !s1.trim().isEmpty()) {
+                        b = false;
+                    } else if (s1 == null) {
+                        return;
+                    }
+                }
+
+                b = true;
+                while (b) {
+                    s2 = Log.info.showInputDialog(this, "CFSetsPanel-新建", "请输入时间(yyyy.MM.dd HH:mm:ss)\n如:2000.11.14 11:45:14");
+                    if (s2 != null && !s2.trim().isEmpty()) {
+                        b = false;
+                    } else if (s2 == null) {
+                        return;
+                    }
+                }
+
+                model.addRow(new Object[]{s1, s2});
+
+            });
+            buttonPanel.add(newBtn);
+        }
+
+        // 删除
+        {
+
+            CTTextButton deleteBtn = new CTTextButton("删除", GetIcon.getIcon(getClass().getResource("/image/light/delete_0.png"), 30, 30));
+            deleteBtn.addActionListener(e -> {
+
+                int selectedRow = CDTable.getSelectedRow();
+                if (selectedRow != -1) {
+                    model.removeRow(selectedRow);
+                }
+            });
+            buttonPanel.add(deleteBtn);
+        }
+
+        this.add(buttonPanel, BorderLayout.SOUTH);
     }
 
     @Override
     public void save() throws Exception {
-        CDInfoControl.setCDInfo(new CDInfoControl.CDInfo(titleField.getText(), targetTimeField.getText()));
+        Object[][] data = CDTable.getData();
+        CDInfoControl.CDInfo[] cdInfo = new CDInfoControl.CDInfo[data.length];
+        for (int i = 0; i < data.length; i++) {
+            cdInfo[i] = new CDInfoControl.CDInfo(data[i][0].toString(), data[i][1].toString());
+        }
+        CDInfoControl.setCDInfo(cdInfo);
     }
 
     @Override
     public void refresh() throws IOException {
         this.removeAll();
 
-        initInfo();
-        initUI();
+        initTable();
 
         this.revalidate();
         this.repaint();

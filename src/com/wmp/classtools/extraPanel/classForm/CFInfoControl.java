@@ -1,7 +1,7 @@
 package com.wmp.classTools.extraPanel.classForm;
 
 import com.wmp.PublicTools.CTInfo;
-import com.wmp.PublicTools.DayIsNow;
+import com.wmp.PublicTools.DateTools;
 import com.wmp.PublicTools.io.IOForInfo;
 import com.wmp.PublicTools.printLog.Log;
 import org.json.JSONArray;
@@ -61,7 +61,7 @@ public class CFInfoControl {
 
                 String timePeriod = jsonObject.getString("time");
                 String[] time = timePeriod.split("-");
-                if (DayIsNow.isInTimePeriod(time[0], time[1])) {
+                if (DateTools.isInTimePeriod(time[0], time[1])) {
                     list.add(jsonObject.getString("class"));
                 }
             }
@@ -98,12 +98,12 @@ public class CFInfoControl {
                 String s = timePeriod.split("-")[0];//获取开始时间
 
 
-                if (DayIsNow.getRemainderTime(s) <= 0) {
+                if (DateTools.getRemainderTime(s) <= 0) {
                     return;
                 }
 
                 if (tempData[0] == null ||
-                        DayIsNow.getRemainderTime(s) < DayIsNow.getRemainderTime(tempData[0])) {
+                        DateTools.getRemainderTime(s) < DateTools.getRemainderTime(tempData[0])) {
                     tempData[0] = s;
                     tempData[1] = jsonObject.getString("class");
                 }

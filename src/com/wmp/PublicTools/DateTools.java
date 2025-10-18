@@ -9,7 +9,7 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 
-public class DayIsNow {
+public class DateTools {
     public static final String[] days = new String[]{"初一", "初二", "初三", "初四", "初五", "初六", "初七", "初八", "初九", "初十",
      "十一", "十二", "十三", "十四", "十五", "十六", "十七", "十八", "十九", "二十",
      "廿一", "廿二", "廿三", "廿四", "廿五", "廿六", "廿七", "廿八", "廿九", "三十"};
@@ -83,7 +83,7 @@ public class DayIsNow {
 
             }
         } catch (Exception e) {
-            Log.err.print(DayIsNow.class, "获取目标时间失败", e);
+            Log.err.print(DateTools.class, "获取目标时间失败", e);
         }
 
         return day;
@@ -104,7 +104,7 @@ public class DayIsNow {
      * 获取两个时间间隔时间
      *
      * @param targetTime 目标时间,格式为HH:mm
-     * @return 间隔时间
+     * @return 间隔时间(ms)
      */
     public static long getRemainderTime(String targetTime) {
 
@@ -116,18 +116,18 @@ public class DayIsNow {
      *
      * @param targetTime 目标时间
      * @param format     时间格式
-     * @return 间隔时间
+     * @return 间隔时间(ms)
      */
     public static long getRemainderTime(String targetTime, String format) {
         long time = 0;
 
         if (targetTime == null || targetTime.isEmpty()) {
-            Log.err.print(DayIsNow.class, "获取目标时间失败: \n" + "请输入目标时间");
+            Log.err.print(DateTools.class, "获取目标时间失败: \n" + "请输入目标时间");
             return time;
         }
 
         if (targetTime.startsWith("lunar")) {
-            Log.err.print(DayIsNow.class, "获取目标时间失败: \n" + "不支持农历");
+            Log.err.print(DateTools.class, "获取目标时间失败: \n" + "不支持农历");
         }
         try {
             DateFormat dateFormat = new SimpleDateFormat(format);
@@ -153,7 +153,7 @@ public class DayIsNow {
             }
             time = calendar.getTime().getTime() - new Date().getTime();
         } catch (Exception e) {
-            Log.err.print(DayIsNow.class, "获取目标时间失败", e);
+            Log.err.print(DateTools.class, "获取目标时间失败", e);
         }
         return time;
     }

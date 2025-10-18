@@ -1,7 +1,7 @@
 package com.wmp.classTools.extraPanel.reminderBir.panel;
 
 import com.wmp.PublicTools.CTInfo;
-import com.wmp.PublicTools.DayIsNow;
+import com.wmp.PublicTools.DateTools;
 import com.wmp.PublicTools.UITools.CTColor;
 import com.wmp.PublicTools.UITools.CTFont;
 import com.wmp.PublicTools.UITools.CTFontSizeStyle;
@@ -174,7 +174,7 @@ public class BRPanel extends CTPanel {
             if (item instanceof JSONObject infoObject) {
                 String name = infoObject.getString("name");
                 String birthday = infoObject.getString("birthday");
-                if (DayIsNow.dayIsNow(birthday)) {
+                if (DateTools.dayIsNow(birthday)) {
                     nameList.add(name);
                 }
             }
@@ -199,7 +199,7 @@ public class BRPanel extends CTPanel {
             if (item instanceof JSONObject infoObject) {
                 String name = infoObject.getString("name");
                 String birthday = infoObject.getString("birthday");
-                int remainderDay = DayIsNow.getRemainderDay(birthday);
+                int remainderDay = DateTools.getRemainderDay(birthday);
                 if (remainderDay < 11 && remainderDay > 0) {
                     nameList.add(name);
                 }
