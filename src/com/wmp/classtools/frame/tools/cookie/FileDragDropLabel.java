@@ -87,9 +87,10 @@ public class FileDragDropLabel extends JLabel {
                     Thread.sleep(1000); // 替换为实际上传逻辑
                     SwingUtilities.invokeLater(() -> {
                         //updateStatus("已上传", new Color(0, 150, 0)));
-
-                        Log.info.print("插件管理页-添加文件", "文件位置:" + file.getPath());
-                        CookieSets.addCookie(file);
+                        new Thread(()->{
+                            Log.info.print("插件管理页-添加文件", "文件位置:" + file.getPath());
+                            CookieSets.addCookie(file);
+                        }).start();
                     });
                 }
                 updateStatus("添加", Color.BLACK);

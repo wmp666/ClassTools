@@ -21,7 +21,7 @@ public class LoadingDialog extends JDialog {
         //生成弹窗
             this.setTitle("...");
             this.setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
-            this.setModal(true);
+            //this.setModal(true);
             this.setLocationRelativeTo(null);
             this.setLayout(new GridLayout(0,1));
             this.setAlwaysOnTop(true);
