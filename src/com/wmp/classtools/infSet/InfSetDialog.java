@@ -10,6 +10,8 @@ import com.wmp.PublicTools.printLog.Log;
 import com.wmp.classTools.CTComponent.CTList;
 import com.wmp.classTools.CTComponent.CTSetsPanel;
 import com.wmp.classTools.CTComponent.CTTextButton;
+import com.wmp.classTools.CTComponent.Menu.CTMenu;
+import com.wmp.classTools.CTComponent.Menu.CTMenuItem;
 import com.wmp.classTools.frame.MainWindow;
 import com.wmp.classTools.infSet.panel.ClearTempPanel;
 import com.wmp.classTools.infSet.panel.PersonalizationPanel;
@@ -116,31 +118,31 @@ public class InfSetDialog extends JDialog {
         menuBar.setBackground(CTColor.backColor);
         this.setJMenuBar(menuBar);
 
-        JMenu fileMenu = new JMenu("文件");
+        CTMenu fileMenu = new CTMenu("文件");
         //fileMenu.setIcon(getClass().getResource("/image/file.png"));
 
-        JMenu openFile = new JMenu("打开文件");
+        CTMenu openFile = new CTMenu("打开文件");
         openFile.setIcon(GetIcon.getIcon(getClass().getResource("/image/openExp.png"), 16, 16));
 
-        JMenuItem openAppList = new JMenuItem("软件位置");
+        CTMenuItem openAppList = new CTMenuItem("软件位置");
         openAppList.setIcon(GetIcon.getIcon(getClass().getResource("/image/openExp.png"), 16, 16));
         openAppList.addActionListener(e -> {
             OpenInExp.open(System.getProperty("user.dir"));
         });
 
-        JMenuItem openSetsList = new JMenuItem("数据位置");
+        CTMenuItem openSetsList = new CTMenuItem("数据位置");
         openSetsList.setIcon(GetIcon.getIcon(getClass().getResource("/image/openExp.png"), 16, 16));
         openSetsList.addActionListener(e -> {
             OpenInExp.open(CTInfo.DATA_PATH);
         });
 
-        JMenu InfSets = new JMenu("数据设置");
+        CTMenu InfSets = new CTMenu("数据设置");
         InfSets.setIcon(GetIcon.getIcon(getClass().getResource("/image/light/setting_0.png"), 16, 16));
 
-        JMenu getInf = new JMenu("导入数据");
+        CTMenu getInf = new CTMenu("导入数据");
         getInf.setIcon(GetIcon.getIcon(getClass().getResource("/image/input.png"), 16, 16));
 
-        JMenuItem getAllInf = new JMenuItem("导入所有数据(.ctdatas)");
+        CTMenuItem getAllInf = new CTMenuItem("导入所有数据(.ctdatas)");
         getAllInf.setIcon(GetIcon.getIcon(getClass().getResource("/image/input.png"), 16, 16));
         getAllInf.addActionListener(e -> {
             String filePath = GetPath.getFilePath(this, "请选择所有数据", ".ctdatas", "ClassTools");
@@ -150,10 +152,10 @@ public class InfSetDialog extends JDialog {
             refreshCallback.run();
         });
 
-        JMenu inputInf = new JMenu("导出数据");
+        CTMenu inputInf = new CTMenu("导出数据");
         inputInf.setIcon(GetIcon.getIcon(getClass().getResource("/image/light/update_0.png"), 16, 16));
 
-        JMenuItem inputAllInf = new JMenuItem("导出所有数据(.ctdatas)");
+        CTMenuItem inputAllInf = new CTMenuItem("导出所有数据(.ctdatas)");
         inputAllInf.setIcon(GetIcon.getIcon(getClass().getResource("/image/light/update_0.png"), 16, 16));
         inputAllInf.addActionListener(e -> {
             String path = GetPath.getDirectoryPath(this, "请选择导出目录");
@@ -162,7 +164,7 @@ public class InfSetDialog extends JDialog {
         });
 
 
-        JMenuItem exitMenuItem = new JMenuItem("退出");
+        CTMenuItem exitMenuItem = new CTMenuItem("退出");
         exitMenuItem.setIcon(GetIcon.getIcon(getClass().getResource("/image/light/exit_0.png"), 16, 16));
         exitMenuItem.addActionListener(e -> {
             save();
@@ -187,13 +189,13 @@ public class InfSetDialog extends JDialog {
         menuBar.add(fileMenu);
 
         //编辑
-        JMenu editMenu = new JMenu("编辑");
+        CTMenu editMenu = new CTMenu("编辑");
 
-        JMenu setMenu = new JMenu("设置界面");
+        CTMenu setMenu = new CTMenu("设置界面");
         setMenu.setIcon(GetIcon.getIcon(getClass().getResource("/image/light/settings_0.png"), 16, 16));
 
         ctSetsPanelList.forEach(ctSetsPanel -> {
-            JMenuItem tempMenuItem = new JMenuItem(ctSetsPanel.getName());
+            CTMenuItem tempMenuItem = new CTMenuItem(ctSetsPanel.getName());
             tempMenuItem.addActionListener(e -> {
                 try {
                     repaintSetsPanel(ctSetsPanel);
@@ -204,7 +206,7 @@ public class InfSetDialog extends JDialog {
             setMenu.add(tempMenuItem);
         });
 
-        JMenuItem saveMenuItem = new JMenuItem("保存");
+        CTMenuItem saveMenuItem = new CTMenuItem("保存");
         saveMenuItem.setIcon(GetIcon.getIcon(getClass().getResource("/image/light/save_0.png"), 16, 16));
         saveMenuItem.addActionListener(e -> {
             save();

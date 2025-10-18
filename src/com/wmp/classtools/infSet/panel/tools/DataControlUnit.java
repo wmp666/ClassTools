@@ -80,6 +80,8 @@ public class DataControlUnit extends JPanel {
             buttonPanel.setLayout(new GridLayout(1, 0, 10, 10));
             CTTextButton deleteButton = new CTTextButton("删除");
             deleteButton.addActionListener(e -> {
+                int i = Log.info.showChooseDialog(this, "是否删除", "是否删除?");
+                if (i != JOptionPane.YES_OPTION) return;
                 try {
                     IOForInfo.deleteDirectoryRecursively(Path.of(path));
                 } catch (Exception ex) {

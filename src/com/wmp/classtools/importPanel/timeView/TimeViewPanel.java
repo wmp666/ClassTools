@@ -51,8 +51,6 @@ public class TimeViewPanel extends CTPanel {
         }
     });
 
-    private final CTPopupMenu ETPopupMenu = new CTPopupMenu();
-
     public TimeViewPanel() throws IOException {
 
         this.setName("时间显示组件");
@@ -60,29 +58,6 @@ public class TimeViewPanel extends CTPanel {
         this.setLayout(new BorderLayout());
         this.setCtSetsPanelList(List.of(new ScreenProductSetsPanel(CTInfo.DATA_PATH)));
         initPanel();
-
-        CTTextButton edit = new CTTextButton("编辑");
-        edit.setIcon(GetIcon.getIcon(getClass().getResource("/image/edit.png"), 20, 20));
-        edit.addActionListener(e -> {
-            try {
-                new InfSetDialog(MainWindow::refreshPanel, "屏保设置");
-            } catch (Exception ex) {
-                Log.err.print(getClass(), "设置打开失败", ex);
-                throw new RuntimeException(ex);
-            }
-        });
-
-        ETPopupMenu.add(edit);
-
-        timeView.addMouseListener(new MouseAdapter() {
-            @Override
-            public void mouseClicked(MouseEvent e) {
-                if (e.getButton() == MouseEvent.BUTTON3) {
-                    ETPopupMenu.show(e.getComponent(), e.getX(), e.getY());
-                }
-
-            }
-        });
 
         //时间刷新
         timeThread.setDaemon(true);

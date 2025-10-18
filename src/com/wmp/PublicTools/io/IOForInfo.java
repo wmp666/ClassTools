@@ -4,6 +4,7 @@ import com.wmp.PublicTools.printLog.Log;
 import com.wmp.classTools.CTComponent.CTProgressBar;
 import com.wmp.classTools.frame.tools.cookie.CookieSets;
 
+import javax.security.auth.callback.Callback;
 import javax.swing.*;
 import java.io.*;
 import java.net.URI;
@@ -13,6 +14,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.Arrays;
 import java.util.Comparator;
+import java.util.Random;
 
 public class IOForInfo {
 
@@ -151,22 +153,12 @@ public class IOForInfo {
     }
 
     public static void deleteDirectoryRecursively(Path path) {
+        deleteDirectoryRecursively(path, null);
+    }
+    public static void deleteDirectoryRecursively(Path path, Runnable callback) {
         Log.info.print("删除文件", "删除");
 
-        JDialog dialog = new JDialog();
-
-        SwingUtilities.invokeLater(() -> {
-            dialog.setSize(300, 80);
-            dialog.setTitle("正在删除");
-            dialog.setLocationRelativeTo(null);
-            dialog.setModal(true);
-
-            CTProgressBar progressBar = new CTProgressBar();
-            progressBar.setIndeterminate(true);
-            dialog.add(progressBar);
-
-            dialog.setVisible(true);
-        });
+        Log.info.loadingDialog.showDialog("文件删除", "正在删除文件...");
 
         File file = new File(path.toUri());
 
@@ -202,8 +194,10 @@ public class IOForInfo {
 
                 @Override
                 protected void done() {
-                    dialog.setVisible(false);
-                    dialog.dispose();
+                    Log.info.loadingDialog.closeDialog("文件删除");
+                    if (callback != null) {
+                        callback.run();
+                    }
                 }
             }.execute();
         }).start();

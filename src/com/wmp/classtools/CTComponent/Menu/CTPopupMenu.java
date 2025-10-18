@@ -25,7 +25,6 @@ public class CTPopupMenu extends JPopupMenu {
 
         g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 
-
         // 绘制圆角矩形背景
         g2.setColor(getBackground());
         g2.fillRoundRect(0, 0, getWidth(), getHeight(), CTInfo.arcw, CTInfo.arch);

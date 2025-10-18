@@ -12,6 +12,8 @@ import com.wmp.PublicTools.io.GetPath;
 import com.wmp.PublicTools.printLog.Log;
 import com.wmp.PublicTools.update.GetNewerVersion;
 import com.wmp.classTools.CTComponent.CTIconButton;
+import com.wmp.classTools.CTComponent.Menu.CTMenu;
+import com.wmp.classTools.CTComponent.Menu.CTMenuItem;
 import com.wmp.classTools.CTComponent.Menu.CTPopupMenu;
 import com.wmp.classTools.CTComponent.CTTextButton;
 
@@ -114,22 +116,22 @@ public class AboutDialog extends JDialog {
         JMenuBar menuBar = new JMenuBar();
         this.setJMenuBar(menuBar);
 
-        JMenu menu = new JMenu("转到");
+        CTMenu menu = new CTMenu("转到");
 
-        JMenu chat = new JMenu("社交");
+        CTMenu chat = new CTMenu("社交");
 
-        JMenuItem weChat = new JMenuItem("微信");
+        CTMenuItem weChat = new CTMenuItem("微信");
         weChat.setIcon(GetIcon.getIcon(getClass().getResource("/image/wechat.png"), 20, 20));
         weChat.addActionListener(e ->
                 Log.info.message(this, "关于-个人信息", "微信: w13607088913")
         );
 
-        JMenuItem qq = new JMenuItem("QQ");
+        CTMenuItem qq = new CTMenuItem("QQ");
         qq.setIcon(GetIcon.getIcon(getClass().getResource("/image/qq.png"), 20, 20));
         qq.addActionListener(e ->
                 Log.info.message(this, "关于-个人信息", "QQ: 2134868121"));
 
-        JMenuItem bilibili = new JMenuItem("哔哩哔哩");
+        CTMenuItem bilibili = new CTMenuItem("哔哩哔哩");
         bilibili.setIcon(GetIcon.getIcon(getClass().getResource("/image/bilibili.png"), 20, 20));
         bilibili.addActionListener(e -> {
             try {
@@ -143,10 +145,10 @@ public class AboutDialog extends JDialog {
         chat.add(qq);
         chat.add(bilibili);
 
-        JMenu github = new JMenu("Github");
+        CTMenu github = new CTMenu("Github");
         github.setIcon(GetIcon.getIcon(getClass().getResource("/image/github.png"), 20, 20));
 
-        JMenuItem authorGithub = new JMenuItem("作者");
+        CTMenuItem authorGithub = new CTMenuItem("作者");
         authorGithub.setIcon(GetIcon.getIcon(getClass().getResource("/image/github.png"), 20, 20));
         authorGithub.addActionListener(e -> {
             try {
@@ -156,7 +158,7 @@ public class AboutDialog extends JDialog {
             }
         });
 
-        JMenuItem repo = new JMenuItem("仓库");
+        CTMenuItem repo = new CTMenuItem("仓库");
         repo.setIcon(GetIcon.getIcon(getClass().getResource("/image/github.png"), 20, 20));
         repo.addActionListener(e -> {
             try {
@@ -169,14 +171,14 @@ public class AboutDialog extends JDialog {
         github.add(authorGithub);
         github.add(repo);
 
-        JMenuItem appPath = new JMenuItem("程序路径");
+        CTMenuItem appPath = new CTMenuItem("程序路径");
         appPath.setIcon(GetIcon.getIcon(getClass().getResource("/image/openExp.png"), 20, 20));
         appPath.addActionListener(e -> {
             OpenInExp.open(GetPath.getAppPath(GetPath.APPLICATION_PATH));
 
         });
 
-        JMenuItem dataPath = new JMenuItem("数据路径");
+        CTMenuItem dataPath = new CTMenuItem("数据路径");
         dataPath.setIcon(GetIcon.getIcon(getClass().getResource("/image/openExp.png"), 20, 20));
         dataPath.addActionListener(e -> {
             OpenInExp.open(CTInfo.DATA_PATH);
@@ -184,6 +186,7 @@ public class AboutDialog extends JDialog {
 
         menu.add(chat);
         menu.add(github);
+        menu.addSeparator();
         menu.add(appPath);
         menu.add(dataPath);
 
@@ -191,13 +194,13 @@ public class AboutDialog extends JDialog {
 
         // 在现有菜单中添加
 
-        JMenu downloadMenu = new JMenu("下载");
+        CTMenu downloadMenu = new CTMenu("下载");
 
         //获取源代码
-        JMenuItem getSource = new JMenuItem("获取源代码");
+        CTMenuItem getSource = new CTMenuItem("获取源代码");
         getSource.addActionListener(e -> GetNewerVersion.getSource(this, view));
 
-        JMenuItem checkUpdate = new JMenuItem("检查更新");
+        CTMenuItem checkUpdate = new CTMenuItem("检查更新");
         checkUpdate.setIcon(GetIcon.getIcon(getClass().getResource("/image/light/update_0.png"), 20, 20));
         checkUpdate.addActionListener(e -> GetNewerVersion.checkForUpdate(this, view, true));
 
@@ -206,9 +209,9 @@ public class AboutDialog extends JDialog {
 
         menuBar.add(downloadMenu);
 
-        JMenu helpMenu = new JMenu("帮助");
+        CTMenu helpMenu = new CTMenu("帮助");
 
-        JMenuItem helpDoc = new JMenuItem("帮助文档");
+        CTMenuItem helpDoc = new CTMenuItem("帮助文档");
         helpDoc.setIcon(GetIcon.getIcon(getClass().getResource("/image/doc.png"), 20, 20));
         helpDoc.addActionListener(e -> {
             try {
@@ -219,7 +222,7 @@ public class AboutDialog extends JDialog {
 
         });
 
-        JMenuItem easterEgg = new JMenuItem("■■");
+        CTMenuItem easterEgg = new CTMenuItem("■■");
         easterEgg.setIcon(GetIcon.getIcon(getClass().getResource("/image/wish.png"), 20, 20));
         easterEgg.addActionListener(e ->
             EasterEgg.getPin());

@@ -50,7 +50,7 @@ public class LoadingDialog extends JDialog {
         Log.info.print("LoadingDialog", "显示进度条" + id);
 
         SwingUtilities.invokeLater(() -> {
-            JLabel textLabel = new JLabel(id + " : " +text);
+            JLabel textLabel = new JLabel(text);
             textLabel.setFont(CTFont.getCTFont(Font.BOLD, CTFontSizeStyle.SMALL));
             textLabel.setForeground(CTColor.textColor);
 
@@ -62,6 +62,7 @@ public class LoadingDialog extends JDialog {
             }
 
             JPanel panel = new JPanel();
+            panel.setBorder(CTBorderFactory.createTitledBorder(id));
             panel.setLayout(new BorderLayout(10, 0));
             panel.add(textLabel, BorderLayout.NORTH);
             panel.add(progressBar, BorderLayout.CENTER);
@@ -80,10 +81,36 @@ public class LoadingDialog extends JDialog {
     }
 
     public void updateDialog(String id, int value) {
-        updateDialog(id, textPanelList.get(id).getText(), value);
+        SwingUtilities.invokeLater(() -> {
+            if (!PanelList.containsKey(id)) {
+                Log.warn.print("LoadingDialog", "未找到id为" + id + "的进度条");
+                return;
+            }
+
+            CTProgressBar progressBar = progressBarPanelList.get(id);
+            if (value < 0) {
+                progressBar.setIndeterminate(true);
+                return;
+            }
+            progressBar.setIndeterminate(false);
+            progressBar.setValue(value);
+
+            resetDialog();
+        });
     }
     public void updateDialog(String id, String text) {
-        updateDialog(id, text, -1);
+        SwingUtilities.invokeLater(() -> {
+            if (!PanelList.containsKey(id)) {
+                Log.warn.print("LoadingDialog", "未找到id为" + id + "的进度条");
+                return;
+            }
+
+            JLabel textLabel = textPanelList.get(id);
+            textLabel.setText(text);
+            textLabel.repaint();
+
+            resetDialog();
+        });
     }
 
     public void updateDialog(String id, String text, int value) {
@@ -96,7 +123,7 @@ public class LoadingDialog extends JDialog {
             }
 
             JLabel textLabel = textPanelList.get(id);
-            textLabel.setText(id + " : " + text);
+            textLabel.setText(text);
             textLabel.repaint();
 
             CTProgressBar progressBar = progressBarPanelList.get(id);

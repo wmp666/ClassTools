@@ -172,6 +172,9 @@ public class CTOptionPane {
         dialog.setDefaultCloseOperation(JDialog.DO_NOTHING_ON_CLOSE);
 
         JLabel iconLabel = new JLabel();
+        JTextArea messageArea = new JTextArea();
+
+
         // 创建图标标签
         {
             if (icon == null) {
@@ -226,7 +229,7 @@ public class CTOptionPane {
 
                 }
                 //创建一个文本区域
-                JTextArea messageArea = new JTextArea();
+
                 messageArea.setText(message);
                 messageArea.setEditable(false);//设置文本区域不可编辑
                 //messageArea.setFocusable(false);//设置文本区域可聚焦
@@ -365,6 +368,8 @@ public class CTOptionPane {
         dialog.addWindowListener(new WindowAdapter() {
             @Override
             public void windowClosing(WindowEvent e) {
+                if (title.equals("doge")) return;
+
                 CTOptionPane.showMessageDialog(dialog, "doge", "请认真看窗口内容!!!\n请不要尝试跳过选择过程(按下关闭键),\n请认真选择", GetIcon.getIcon(CTOptionPane.class.getResource("/image/error/xtll.png"), 100, 100), CTOptionPane.INFORMATION_MESSAGE, true);
             }
 

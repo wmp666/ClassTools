@@ -366,7 +366,13 @@ public class CookieSets {
             return;
         }
 
-        IOForInfo.deleteDirectoryRecursively(file.toPath());
+        IOForInfo.deleteDirectoryRecursively(file.toPath(), () -> {
+            try {
+                refreshParentWindow();
+            } catch (IOException e) {
+                Log.err.print(CookieSets.class, "刷新失败", e);
+            }
+        });
 
 
     }

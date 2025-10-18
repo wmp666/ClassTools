@@ -133,8 +133,6 @@ public class MainWindow extends JDialog {
                     allPanelList.forEach(ctPanel -> {
                         ctPanel.setOpaque(false);
 
-
-
                         ctPanel.revalidate();
                         ctPanel.repaint();
                     });
@@ -272,7 +270,7 @@ public class MainWindow extends JDialog {
             
             // 确保窗口可见并置于前端
             mainWindow.setVisible(true);
-            mainWindow.toFront();
+            //mainWindow.toFront();
 
             allPanelList.forEach(panel -> {
                 try {
@@ -295,9 +293,8 @@ public class MainWindow extends JDialog {
         this.setLayout(new BorderLayout());
         //设置屏幕大小
         Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
-        this.setLocationRelativeTo(null);
 
-        this.setForeground(CTColor.backColor);
+        this.getContentPane().setForeground(CTColor.backColor);
         try {
             this.setIconImage(new ImageIcon(Objects.requireNonNull(getClass().getResource(CTInfo.iconPath))).getImage());
         } catch (Exception e) {
@@ -305,7 +302,7 @@ public class MainWindow extends JDialog {
         }
         
         // 确保窗口有最大尺寸
-        this.setMaximumSize(new Dimension(screenSize.width, screenSize.height * 4/5));
+        //this.setMaximumSize(new Dimension(screenSize.width, screenSize.height * 4/5));
         this.pack();
     }
 }

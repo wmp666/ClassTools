@@ -11,6 +11,8 @@ import com.wmp.PublicTools.io.GetPath;
 import com.wmp.PublicTools.io.ZipPack;
 import com.wmp.PublicTools.printLog.Log;
 import com.wmp.classTools.CTComponent.CTTextButton;
+import com.wmp.classTools.CTComponent.Menu.CTMenu;
+import com.wmp.classTools.CTComponent.Menu.CTMenuItem;
 import com.wmp.classTools.frame.tools.cookie.*;
 import org.json.JSONException;
 
@@ -28,7 +30,7 @@ import java.util.Comparator;
 import java.util.TreeMap;
 import java.util.TreeSet;
 
-public class ShowCookieDialog extends JDialog implements WindowListener {
+public class ShowCookieDialog extends JDialog{
 
     private String[] s = {"null", "null"};
 
@@ -37,47 +39,7 @@ public class ShowCookieDialog extends JDialog implements WindowListener {
 
     private long lastModifyTime = 0;
     private File cookieDir = new File(CTInfo.DATA_PATH + "\\Cookie\\");
-    /*private final Thread repaintCookie = new Thread(() -> {
 
-
-        // 监听文件修改
-        while (!Thread.interrupted()) {
-            try {
-                long currentModifyTime = cookieDir.lastModified();
-
-                //if (currentModifyTime != lastModifyTime) {
-                    lastModifyTime = currentModifyTime;
-
-                    SwingUtilities.invokeLater(() -> {
-                        try {
-                            refreshCookiePanel();
-                        } catch (IOException ex) {
-                            Log.err.print(getClass(), "错误", ex);
-                        }
-                    });
-                //}
-                Thread.sleep(1000);
-            } catch (InterruptedException e) {
-                break;
-            }
-        }
-    });*/
-
-    private final Timer repaintCookie = new Timer(1000, e -> {
-        long currentModifyTime = cookieDir.lastModified();
-
-        //if (currentModifyTime != lastModifyTime) {
-        lastModifyTime = currentModifyTime;
-
-        SwingUtilities.invokeLater(() -> {
-            try {
-                refreshCookiePanel();
-            } catch (IOException ex) {
-                Log.err.print(getClass(), "错误", ex);
-            }
-        });
-        //}
-    });
 
     public ShowCookieDialog() throws IOException {
         Log.info.systemPrint("ShowCookieDialog", "正在初始化快速启动单元展示页...");
@@ -88,11 +50,8 @@ public class ShowCookieDialog extends JDialog implements WindowListener {
 
         initMenuBar();
 
-        this.addWindowListener(this);
         this.setVisible(true);
 
-
-        repaintCookie.start();
     }
 
     private void initShowCookies(Container c) throws IOException {
@@ -299,42 +258,6 @@ public class ShowCookieDialog extends JDialog implements WindowListener {
         return new initControlPanel(openInExp, outputBtn, runCookie);
     }
 
-    @Override
-    public void windowOpened(WindowEvent e) {
-
-    }
-
-    @Override
-    public void windowClosing(WindowEvent e) {
-        repaintCookie.stop();
-        this.setVisible(false);
-    }
-
-    @Override
-    public void windowClosed(WindowEvent e) {
-
-    }
-
-    @Override
-    public void windowIconified(WindowEvent e) {
-
-    }
-
-    @Override
-    public void windowDeiconified(WindowEvent e) {
-
-    }
-
-    @Override
-    public void windowActivated(WindowEvent e) {
-
-    }
-
-    @Override
-    public void windowDeactivated(WindowEvent e) {
-
-    }
-
     private record initControlPanel(CTTextButton openInExp, CTTextButton outputBtn, CTTextButton runCookie) {
     }
 
@@ -344,10 +267,10 @@ public class ShowCookieDialog extends JDialog implements WindowListener {
         JMenuBar menuBar = new JMenuBar();
         this.setJMenuBar(menuBar);
 
-        JMenu fileMenu = new JMenu("文件");
+        CTMenu fileMenu = new CTMenu("文件");
         fileMenu.setMnemonic('F');
 
-        JMenuItem inputCookie = new JMenuItem("导入启动单元(.zip)");
+        CTMenuItem inputCookie = new CTMenuItem("导入启动单元(.zip)");
         inputCookie.setIcon( GetIcon.getIcon(getClass().getResource("/image/input.png"),16,16));
         inputCookie.addActionListener(e -> {
             String filePath = GetPath.getFilePath(this, "导入启动单元", ".zip", "ClassTools快速启动单元");
@@ -365,7 +288,7 @@ public class ShowCookieDialog extends JDialog implements WindowListener {
             }
         });
 
-        JMenuItem outputMenuItem = new JMenuItem("导出启动单元(.zip)");
+        CTMenuItem outputMenuItem = new CTMenuItem("导出启动单元(.zip)");
         outputMenuItem.setIcon( GetIcon.getIcon(getClass().getResource("/image/light/update_0.png"),16,16));
         outputMenuItem.addActionListener(e -> {
             String path = GetPath.getDirectoryPath(this, "请选择导出目录");
@@ -374,14 +297,14 @@ public class ShowCookieDialog extends JDialog implements WindowListener {
 
         });
 
-        JMenuItem openInExp = new JMenuItem("打开启动单元所在目录");
+        CTMenuItem openInExp = new CTMenuItem("打开启动单元所在目录");
         openInExp.setIcon( GetIcon.getIcon(getClass().getResource("/image/openExp.png"),16,16));
         openInExp.addActionListener(e -> {
             OpenInExp.open(CTInfo.DATA_PATH + "\\Cookie\\");
         });
 
 
-        JMenuItem exit = new JMenuItem("退出");
+        CTMenuItem exit = new CTMenuItem("退出");
         exit.setIcon( GetIcon.getIcon(getClass().getResource("/image/light/exit_0.png"),16,16));
         exit.addActionListener(e -> {
             this.setVisible(false);
@@ -394,10 +317,10 @@ public class ShowCookieDialog extends JDialog implements WindowListener {
 
         menuBar.add(fileMenu);
 
-        JMenu editMenu = new JMenu("编辑");
+        CTMenu editMenu = new CTMenu("编辑");
         editMenu.setMnemonic('E');
 
-        JMenuItem cookieDownload = new JMenuItem("下载启动单元");
+        CTMenuItem cookieDownload = new CTMenuItem("下载启动单元");
         cookieDownload.setIcon(GetIcon.getIcon(getClass().getResource("/image/input.png"), 16, 16));
         cookieDownload.addActionListener(e -> {
             try {
@@ -407,7 +330,7 @@ public class ShowCookieDialog extends JDialog implements WindowListener {
             }
         });
 
-        JMenuItem cookieSets = new JMenuItem("修改启动单元");
+        CTMenuItem cookieSets = new CTMenuItem("修改启动单元");
         cookieSets.setIcon( GetIcon.getIcon(getClass().getResource("/image/light/settings_0.png"),16,16));
         cookieSets.addActionListener(e -> {
             try {
@@ -420,7 +343,7 @@ public class ShowCookieDialog extends JDialog implements WindowListener {
             }
         });
 
-        JMenuItem deleteCookie = new JMenuItem("删除启动单元");
+        CTMenuItem deleteCookie = new CTMenuItem("删除启动单元");
         deleteCookie.setIcon( GetIcon.getIcon(getClass().getResource("/image/light/delete_0.png"),16,16));
         deleteCookie.addActionListener(e -> {
             CookieSets.deleteCookie(cookieMap.get(s[0]));
@@ -432,10 +355,10 @@ public class ShowCookieDialog extends JDialog implements WindowListener {
 
         menuBar.add(editMenu);
 
-        JMenu helpMenu = new JMenu("帮助");
+        CTMenu helpMenu = new CTMenu("帮助");
         helpMenu.setMnemonic('H');
 
-        JMenuItem helpDoc = new JMenuItem("帮助文档");
+        CTMenuItem helpDoc = new CTMenuItem("帮助文档");
         helpDoc.setIcon( GetIcon.getIcon(getClass().getResource("/image/doc.png"),16,16));
         helpDoc.addActionListener(e -> {
             try {
