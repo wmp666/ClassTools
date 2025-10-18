@@ -181,7 +181,8 @@ public class IOForInfo {
                         }
 
                         if (file.delete() || !file.exists()) {
-                            Log.info.message(null, "删除文件", "删除成功");
+
+                            Log.info.message(null, "IOForInfo-删除文件", "删除文件/文件夹: " + path);
                         } else {
                             String errorType = file.canWrite() ? "文件被占用" : "权限不足";
                             Log.err.print(IOForInfo.class, "删除失败" + errorType);
@@ -218,7 +219,6 @@ public class IOForInfo {
                 }
             });
         }*/
-        Log.info.message(null, "IOForInfo-删除文件", "删除文件/文件夹: " + path);
     }
 
     @Override

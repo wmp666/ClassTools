@@ -43,6 +43,7 @@ public class InfSetDialog extends JDialog {
     // 添加文件路径参数
     public InfSetDialog(Runnable refreshCallback, String showPanel) throws Exception {
         Log.info.systemPrint("设置", "正在初始化设置...");
+        Log.info.loadingDialog.showDialog("设置", "正在初始化设置...");
 
         this.openedPanel = showPanel;
 
@@ -84,6 +85,8 @@ public class InfSetDialog extends JDialog {
         c.add(initSetsPanelSwitchBar(), BorderLayout.WEST);
 
         this.pack();
+
+        Log.info.loadingDialog.closeDialog("设置");
         this.setVisible(true);
     }
 

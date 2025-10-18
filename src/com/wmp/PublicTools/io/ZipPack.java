@@ -40,7 +40,7 @@ public class ZipPack {
             return;
         }
 
-        //生成弹窗
+        /*//生成弹窗
         SwingUtilities.invokeLater(() -> {
             dialog.setTitle("正在解压...");
             dialog.setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
@@ -50,8 +50,9 @@ public class ZipPack {
             progressBar.setIndeterminate(true);  // 确保在EDT设置进度条
             dialog.add(progressBar);
             dialog.setVisible(true);
-        });
+        });*/
 
+        Log.info.loadingDialog.showDialog("ZipPack-解压", "正在解压...");
 
         new Thread(() -> {
             try {
@@ -60,15 +61,12 @@ public class ZipPack {
                 unzipFiles(zipInputStream, destDir);
 
                 Log.info.print("ZipPack-解压", "解压完成!");
-                dialog.setVisible(false);
 
             } catch (IOException e) {
-                SwingUtilities.invokeLater(() -> {
-                    dialog.setVisible(false);
-                });
                 Log.err.print(ZipPack.class, "解压失败！", e);
                 throw new RuntimeException(e);
             }
+            Log.info.loadingDialog.closeDialog("ZipPack-解压");
             try {
                 runnable.run();
             }catch (Exception e) {
@@ -93,6 +91,7 @@ public class ZipPack {
             File outputFile = new File(outputFolder + "/" + fileName);
 
             Log.info.print("ZipPack-解压", "解压文件: " + outputFile);
+            Log.info.loadingDialog.updateDialog("ZipPack-解压", "解压文件: " + outputFile);
             // 创建文件夹
             if (entry.isDirectory()) {
                 outputFile.mkdirs();
@@ -121,17 +120,7 @@ public class ZipPack {
 
         }else Log.info.print("ZipPack-压缩", "要打包的文件:全部");
 
-        SwingUtilities.invokeLater(() -> {
-            dialog.setTitle("正在压缩...");
-            dialog.setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
-            dialog.setModal(true);
-            dialog.setSize(300, 80);
-            dialog.setLocationRelativeTo(null);
-            progressBar.setIndeterminate(true);  // 确保在EDT设置进度条
-            dialog.add(progressBar);
-            dialog.setVisible(true);
-        });
-
+        Log.info.loadingDialog.showDialog("ZipPack-压缩", "正在压缩...");
 
 
         String sourceFolder = dataPath;
@@ -145,11 +134,11 @@ public class ZipPack {
 
                 // 压缩完成后更新UI
                 Log.info.print("ZipPack-压缩", "压缩完成!");
-                dialog.setVisible(false);
+
             } catch (IOException e) {
                 Log.err.print(ZipPack.class, "压缩失败！", e);
-                dialog.setVisible(false);
             }
+            Log.info.loadingDialog.closeDialog("ZipPack-压缩");
         }).start();
 
     }
@@ -175,6 +164,7 @@ public class ZipPack {
                 zos.closeEntry();
                 addFolderToZip(file, entryName + "/", zos);
             } else {
+                Log.info.loadingDialog.updateDialog("ZipPack-压缩", "压缩文件: " + entryName);
                 try (FileInputStream fis = new FileInputStream(file)) {
                     ZipEntry entry = new ZipEntry(entryName);
                     zos.putNextEntry(entry);
