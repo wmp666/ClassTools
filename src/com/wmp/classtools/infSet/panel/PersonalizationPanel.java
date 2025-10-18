@@ -169,7 +169,7 @@ public class PersonalizationPanel extends CTSetsPanel {
                 CTFont.setFontName("微软雅黑");
                 FontNameComboBox.setSelectedItem("微软雅黑");
                 FontSizeList.forEach(textField -> textField.setText(String.valueOf(CTFont.getBasicSize()[0])));
-                MainWindow.showPanelList.forEach(ctPanel -> {
+                MainWindow.allPanelList.forEach(ctPanel -> {
                     try {
                         ctPanel.refresh();
                     } catch (IOException ex) {

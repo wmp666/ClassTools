@@ -22,6 +22,7 @@ import java.util.Random;
 public class ScreenProduct extends JDialog {
 
     private final JLabel timeView = new JLabel();
+    private final JLabel otherLabel = new JLabel();
 
     private final JLabel viewLabel = new JLabel();
 
@@ -44,6 +45,7 @@ public class ScreenProduct extends JDialog {
         initColor();
 
 
+        //背景更新
         Timer updateBG = new Timer(setsScrInfo.getRepaintTimer() * 1000, e -> {
 
             try {
@@ -58,8 +60,6 @@ public class ScreenProduct extends JDialog {
         updateBG.setRepeats(true);
         updateBG.start();
 
-
-        c.setLayout(new BorderLayout());
 
         //让时间在组件中央显示
         timeView.setHorizontalAlignment(JLabel.CENTER);
@@ -141,6 +141,8 @@ public class ScreenProduct extends JDialog {
         this.setIconImage(new ImageIcon(getClass().getResource("/image/icon.png")).getImage());
         this.setSize(screenWidth, screenHeight);
         this.setLocation(0, 0);
+
+        c.setLayout(new BorderLayout());
     }
 
     private static Image resizeImage(ImageIcon icon, Dimension screenSize) {
@@ -215,6 +217,9 @@ public class ScreenProduct extends JDialog {
 
         timeView.setText("初始化...");
         timeView.setForeground(CTColor.mainColor);
+
+        otherLabel.setText("初始化...");
+        otherLabel.setForeground(CTColor.mainColor);
 
     }
 }

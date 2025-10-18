@@ -49,9 +49,9 @@ public class BRPanel extends CTPanel {
             while (true) {
                 this.removeAll();
 
-                if (CTInfo.disPanelList.contains(getID())) {
+                /*if (CTInfo.disPanelList.contains(getID())) {
                     continue;
-                }
+                }*/
 
                 GridBagConstraints gbc = new GridBagConstraints();
                 gbc.fill = GridBagConstraints.HORIZONTAL;

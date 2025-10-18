@@ -22,36 +22,38 @@ import java.awt.geom.RoundRectangle2D;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Objects;
+import java.util.TreeMap;
 
 import static com.wmp.Main.allArgs;
 import static com.wmp.Main.argsList;
 
 public class MainWindow extends JDialog {
-    private final JPanel centerPane = new JPanel(); // 用于放置中间组件的面板
+    //private final JPanel centerPane = new JPanel(); // 用于放置中间组件的面板
 
     public static final ArrayList<CTPanel> allPanelList = new ArrayList<>();
-    public static final ArrayList<CTPanel> showPanelList = new ArrayList<>();
+    //public static final ArrayList<CTPanel> showPanelList = new ArrayList<>();
+
+    private static final TreeMap<String, String[]> panelLocationMap = new TreeMap<>();
+    private static final TreeMap<String, CTPanel[]> panelMap = new TreeMap<>();
+
+    private static JDialog mainWindow = new JDialog();
 
     public MainWindow(String path) throws IOException {
 
-        this.setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
-        this.setTitle(CTInfo.appName + "-V" + CTInfo.version);
-        //删除边框
-        this.setUndecorated(true);
+        mainWindow = this;
 
-        this.setLayout(new BorderLayout());
+        panelLocationMap.put("上方", new String[]{"TimeViewPanel"});
+        panelLocationMap.put("下方", new String[]{"ETPanel", "FinalPanel"});
 
-        // 创建中心区域的滚动面板
-        centerPane.setBackground(CTColor.backColor);
-        centerPane.setLayout(new GridBagLayout());
-
-        JScrollPane centerScrollPane = new JScrollPane(centerPane);
+        /*JScrollPane centerScrollPane = new JScrollPane(centerPane);
         centerScrollPane.setBorder(null);
         centerScrollPane.getViewport().setOpaque(false);
         // 设置滚动面板的水平滚动条策略
-        centerScrollPane.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
-        
-        File DutyListPath = new File( path + "Duty\\DutyList.txt");
+        centerScrollPane.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);*/
+
+        File DutyListPath = new File(path + "Duty\\DutyList.txt");
         File indexPath = new File(path + "Duty\\index.txt");
         File AllStuPath = new File(path + "Att\\AllStu.txt");
         File LeaveListPath = new File(path + "Att\\LeaveList.txt");
@@ -90,7 +92,7 @@ public class MainWindow extends JDialog {
         if (allArgs.get("screenProduct:view").contains(argsList)) {
             JDialog view = new JDialog();
             view.setLocationRelativeTo(null);
-            view.setLayout(null);
+            view.setLayout(new BorderLayout());
             view.setAlwaysOnTop(true);
 
             view.addWindowListener(new WindowAdapter() {
@@ -100,52 +102,17 @@ public class MainWindow extends JDialog {
                 }
             });
 
-            view.add(timeViewPanel);
+            view.add(timeViewPanel, BorderLayout.CENTER);
 
             view.pack();
             view.setVisible(true);
 
         } else {
-            // 使用BorderLayout重新组织组件
-            this.add(timeViewPanel, BorderLayout.NORTH);
-            this.add(centerScrollPane, BorderLayout.CENTER);
-            this.add(southPanel, BorderLayout.SOUTH);
-
-            GridBagConstraints gbc = new GridBagConstraints();
-            gbc.anchor = GridBagConstraints.WEST;
-            gbc.gridx = 0;
-            gbc.gridy = 0;
-            gbc.weightx = 1; // 添加水平权重
-            //gbc.fill = GridBagConstraints.HORIZONTAL; // 水平填充
-            gbc.insets = new Insets(0, 0, 0, 0); // 确保没有额外的边距
-
-            allPanelList.forEach(ctPanel -> {
-                ctPanel.setBackground(CTColor.backColor);
-
-                // 只将不在南北区域的面板添加到中心区域
-                if (ctPanel != timeViewPanel && ctPanel != eEPanel && ctPanel != finalPanel) {
-                    centerPane.add(ctPanel, gbc);
-                    gbc.gridy++;
-                }
-
-                if (CTInfo.disPanelList.contains(ctPanel.getID())) {
-                    ctPanel.removeAll();
-                    ctPanel.revalidate();
-                    ctPanel.repaint();
-                }
-            });
-
-            showPanelList.forEach(ctPanel -> {
-                ctPanel.setBackground(CTColor.backColor);
-                centerPane.add(ctPanel, gbc);
-                gbc.gridy++;
-            });
-
             initFrame();
 
             if (allArgs.get("screenProduct:show").contains(argsList)) {
                 CTColor.setScreenProductColor();
-                showPanelList.forEach(ctPanel -> {
+                allPanelList.forEach(ctPanel -> {
                     try {
                         ctPanel.refresh();
                     } catch (IOException e) {
@@ -155,19 +122,29 @@ public class MainWindow extends JDialog {
 
                 new ScreenProduct();
             } else {
+                refreshPanel();
+                // 确保窗口可见
                 this.setVisible(true);
-                //刷新
+                this.toFront();
 
+                //刷新
                 Timer repaint = new Timer(500, e -> {
 
-                    showPanelList.forEach(ctPanel -> {
+                    allPanelList.forEach(ctPanel -> {
+                        ctPanel.setOpaque(false);
+
+                        ctPanel.revalidate();
+                        ctPanel.repaint();
+                    });
+
+                    /*showPanelList.forEach(ctPanel -> {
                         ctPanel.setBackground(CTColor.backColor);
                     });
 
                     centerPane.setBackground(CTColor.backColor);
 
                     // 重新验证中心面板以更新布局
-                    centerPane.revalidate();
+                    centerPane.revalidate();*/
 
                     Dimension size = this.getPreferredSize();
 
@@ -192,38 +169,115 @@ public class MainWindow extends JDialog {
         }
     }
 
+
     public static void refreshPanel() {
         try {
             CTInfo.init();
 
-
+            //初始化边框
             CTBorderFactory.BASIC_LINE_BORDER = BorderFactory.createLineBorder(new Color(200, 200, 200), (int) (2 * CTInfo.dpi));
             CTBorderFactory.FOCUS_GAINTED_BORDER = BorderFactory.createLineBorder(new Color(112, 112, 112), (int) (2 * CTInfo.dpi));
 
-            showPanelList.clear();
+            //showPanelList.clear();
+            panelMap.clear();
+            panelMap.put("上方", new CTPanel[]{new CTPanel() {
+                @Override
+                public void refresh() throws IOException {
 
-            //Log.err.print("FinalPanel", "已折叠的Panel:" + disPanelList);
+                }
+            }});
+            panelMap.put("下方", new CTPanel[]{new CTPanel() {
+                @Override
+                public void refresh() throws IOException {
 
-            //1.判断需要显示的CTPanel,不需要的清除其中的内容
+                }
+            }});
+            panelMap.put("中间", new CTPanel[]{new CTPanel() {
+                @Override
+                public void refresh() throws IOException {
+
+                }
+            }});
+
             allPanelList.forEach(panel -> {
+
                 if (!CTInfo.disPanelList.contains(panel.getID())) {
-                    showPanelList.add(panel);
-                } else {
-                    panel.removeAll();
-                    panel.revalidate();
-                    panel.repaint();
+                    //showPanelList.add(panel);
+
+                    if (Arrays.asList(panelLocationMap.get("上方")).contains(panel.getID())) {
+                        java.util.List<CTPanel> temp = new java.util.ArrayList<>(Arrays.asList(panelMap.get("上方")));
+                        temp.add(panel);
+                        panelMap.put("上方", temp.toArray(new CTPanel[0]));
+                    } else if (Arrays.asList(panelLocationMap.get("下方")).contains(panel.getID())) {
+                        java.util.List<CTPanel> temp = new java.util.ArrayList<>(Arrays.asList(panelMap.get("下方")));
+                        temp.add(panel);
+                        panelMap.put("下方", temp.toArray(new CTPanel[0]));
+                    } else {
+                        // 使用 new ArrayList 包装，创建可变列表
+                        java.util.List<CTPanel> temp = new java.util.ArrayList<>(Arrays.asList(panelMap.get("中间")));
+                        temp.add(panel);
+                        panelMap.put("中间", temp.toArray(new CTPanel[0]));
+                    }
                 }
             });
 
-            //刷新要显示的CTPanel的内容
-            showPanelList.forEach(panel -> {
-                try {
-                    panel.refresh();
-                } catch (IOException e) {
-                    throw new RuntimeException(e);
-                }
+            JPanel northPanel = new JPanel();
+            JPanel southPanel = new JPanel();
+            JPanel centerPanel = new JPanel();
 
-            });// 自定义刷新方法
+            northPanel.setLayout(new GridBagLayout());
+            southPanel.setLayout(new GridBagLayout());
+            centerPanel.setLayout(new GridBagLayout());
+
+            northPanel.setOpaque(false);
+            southPanel.setOpaque(false);
+            centerPanel.setOpaque(false);
+
+            GridBagConstraints gbc = new GridBagConstraints();
+            gbc.anchor = GridBagConstraints.WEST;
+            gbc.gridx = 0;
+            gbc.gridy = 0;
+            gbc.weightx = 1; // 添加水平权重
+            //gbc.fill = GridBagConstraints.HORIZONTAL; // 水平填充
+            gbc.insets = new Insets(0, 0, 0, 0); // 确保没有额外的边距
+
+            TreeMap<String, Integer> countMap = new TreeMap<>();
+
+            //1.将要显示的组件添加到显示列表
+            panelMap.forEach((key, value) -> {
+                for (CTPanel panel : value) {
+                    countMap.put(key, countMap.getOrDefault(key, 0) + 1);
+                    gbc.gridy = countMap.get(key);
+                    if (key.equals("上方")) {
+                        northPanel.add(panel, gbc);
+                    } else if (key.equals("下方")) {
+                        southPanel.add(panel, gbc);
+                    } else {
+                        centerPanel.add(panel, gbc);
+                    }
+                }
+            });
+
+            JScrollPane scrollPane = new JScrollPane(centerPanel);
+            scrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
+            scrollPane.getViewport().setOpaque(false);
+            scrollPane.setOpaque(false);
+            scrollPane.setBorder(BorderFactory.createEmptyBorder());
+
+
+
+            // 在添加新组件前移除所有现有组件
+            mainWindow.getContentPane().removeAll();
+            mainWindow.add(northPanel, BorderLayout.NORTH);
+            mainWindow.add(southPanel, BorderLayout.SOUTH);
+            mainWindow.add(scrollPane, BorderLayout.CENTER);
+
+            mainWindow.revalidate();
+            mainWindow.repaint();
+            
+            // 确保窗口可见并置于前端
+            mainWindow.setVisible(true);
+            mainWindow.toFront();
 
         } catch (Exception e) {
             Log.err.print(MainWindow.class, "刷新失败", e);
@@ -231,16 +285,26 @@ public class MainWindow extends JDialog {
     }
 
     private void initFrame() {
+        this.setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
+        this.setTitle(CTInfo.appName + "-V" + CTInfo.version);
+        //删除边框
+        this.setUndecorated(true);
+
+        this.setLayout(new BorderLayout());
         //设置屏幕大小
         Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
-        int screenWidth = (int) screenSize.getWidth();
-        int screenHeight = (int) screenSize.getHeight();
+        this.setSize((int)(screenSize.width * 0.8), (int)(screenSize.height * 0.8));
+        this.setLocationRelativeTo(null);
 
         this.setForeground(CTColor.backColor);
-        this.setIconImage(new ImageIcon(getClass().getResource(CTInfo.iconPath)).getImage());
+        try {
+            this.setIconImage(new ImageIcon(Objects.requireNonNull(getClass().getResource(CTInfo.iconPath))).getImage());
+        } catch (Exception e) {
+            Log.err.print(MainWindow.class, "图标加载失败", e);
+        }
+        
+        // 确保窗口有最小尺寸
+        this.setMinimumSize(new Dimension(400, 300));
         this.pack();
-
-
     }
-
 }

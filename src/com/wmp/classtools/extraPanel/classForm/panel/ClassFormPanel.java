@@ -37,9 +37,9 @@ public class ClassFormPanel extends CTPanel {
             while (true) {
                 this.removeAll();
 
-                if (CTInfo.disPanelList.contains(getID())) {
+                /*if (CTInfo.disPanelList.contains(getID())) {
                     continue;
-                }
+                }*/
 
 
                 //课程数据
