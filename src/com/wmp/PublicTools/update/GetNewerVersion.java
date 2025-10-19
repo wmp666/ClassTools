@@ -8,6 +8,7 @@ import com.wmp.PublicTools.io.IOForInfo;
 import com.wmp.PublicTools.printLog.Log;
 import com.wmp.PublicTools.web.GetWebInf;
 import com.wmp.PublicTools.web.SslUtils;
+import com.wmp.classTools.CTComponent.CTOptionPane;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import org.jsoup.Jsoup;
@@ -153,6 +154,8 @@ public class GetNewerVersion {
                     int i = isNewerVersion(latestVersion, CTInfo.version);
 
                     Thread updateThread = new Thread(() -> {
+                        Log.info.message(dialog, "更新至 " + latestVersion, "即将开始更新, 无论更新是否完成都将关闭程序, 没有提醒");
+
                         IOForInfo.deleteDirectoryRecursively(Path.of(CTInfo.TEMP_PATH + "UpdateFile\\"));
 
                         DownloadURLFile.downloadWebFile(dialog, panel, downloadUrl, CTInfo.TEMP_PATH + "UpdateFile\\");
@@ -162,6 +165,8 @@ public class GetNewerVersion {
                         } catch (IOException e) {
                             Log.err.print(dialog, GetNewerVersion.class, "更新文件失败", e);
                         }
+
+                        System.exit(0);
                     });
 
                     if (i == 1) {
