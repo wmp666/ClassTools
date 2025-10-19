@@ -118,7 +118,7 @@ public class ClassFormSetsPanel extends CTSetsPanel {
                     int[] beginTime = Log.info.showTimeChooseDialog(this, "CFSetsPanel-新建", "请选择开始时间", CTOptionPane.HOURS_MINUTES);
                     int[] afterTime = Log.info.showTimeChooseDialog(this, "CFSetsPanel-新建", "请选择结束时间", CTOptionPane.HOURS_MINUTES);
                     if (beginTime.length == 1 || afterTime.length == 1) return;
-                    s2 = DateTools.getTimeStr(beginTime, CTOptionPane.HOURS_MINUTES) + "-" + DateTools.getTimeStr(afterTime, CTOptionPane.HOURS_MINUTES);
+                    s2 = DateTools.getTimeStr(beginTime, CTOptionPane.HOURS_MINUTES, ':') + "-" + DateTools.getTimeStr(afterTime, CTOptionPane.HOURS_MINUTES, ':');
 
 
                 model.addRow(new Object[]{s2, s1});

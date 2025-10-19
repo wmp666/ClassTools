@@ -94,7 +94,7 @@ public class CountDownSetsPanel extends CTSetsPanel {
                     }
                     
                     // 将数组中的数据转换为字符串, 格式化为yyyy.MM.dd HH:mm:ss
-                    s2 = DateTools.getDateStr(date, CTOptionPane.YEAR_MONTH_DAY) + " " + DateTools.getTimeStr(time, CTOptionPane.HOURS_MINUTES_SECOND);
+                    s2 = DateTools.getDateStr(date, CTOptionPane.YEAR_MONTH_DAY, '.') + " " + DateTools.getTimeStr(time, CTOptionPane.HOURS_MINUTES_SECOND, ':');
 
                     if (!s2.trim().isEmpty()) {
                         b = false;

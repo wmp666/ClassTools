@@ -166,9 +166,9 @@ public class DateTools {
      * @param type 时间类型
      * @return 时间字符串
      */
-    public static String getTimeStr(int[]  time, int  type){
-        if (type == CTOptionPane.HOURS_MINUTES) return String.format("%02d:%02d", time[0], time[1]);
-        else if (type == CTOptionPane.HOURS_MINUTES_SECOND)return String.format("%02d:%02d:%02d", time[0], time[1], time[2]);
+    public static String getTimeStr(int[]  time, int  type, char separator){
+        if (type == CTOptionPane.HOURS_MINUTES) return String.format("%02d" + separator + "%02d", time[0], time[1]);
+        else if (type == CTOptionPane.HOURS_MINUTES_SECOND)return String.format("%02d" + separator + "%02d" + separator + "%02d", time[0], time[1], time[2]);
         else return "";
     }
 
@@ -179,9 +179,9 @@ public class DateTools {
      * @param type 日期类型
      * @return 日期字符串
      */
-    public static String getDateStr(int[] date, int type){
-        if (type == CTOptionPane.YEAR_MONTH_DAY) return String.format("%04d-%02d-%02d", date[0], date[1], date[2]);
-        else if (type == CTOptionPane.MONTH_DAY) return String.format("%02d-%02d", date[0], date[1]);
+    public static String getDateStr(int[] date, int type, char separator){
+        if (type == CTOptionPane.YEAR_MONTH_DAY) return String.format("%04d" + separator + "%02d" + separator + "%02d", date[0], date[1], date[2]);
+        else if (type == CTOptionPane.MONTH_DAY) return String.format("%02d" + separator + "%02d", date[0], date[1]);
         else return "";
     }
 }
