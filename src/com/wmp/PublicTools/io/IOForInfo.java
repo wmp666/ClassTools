@@ -221,6 +221,39 @@ public class IOForInfo {
         }*/
     }
 
+    public static void copyFile(Path source, Path target) throws IOException {
+
+        int id = new Random().nextInt();
+        Log.info.loadingDialog.showDialog("更新文件" + id, "正在复制文件...");
+
+        File sourceFile =source.toFile();
+        File targetFile = target.toFile();
+        if (!targetFile.exists()) {
+            targetFile.getParentFile().mkdirs();
+            targetFile.createNewFile();
+        }
+
+
+        FileOutputStream targetOut = new FileOutputStream(targetFile);
+        FileInputStream sourceIn = new FileInputStream(sourceFile);
+
+
+        byte[] temp = new byte[1024 * 10];
+        int total2 = 0;
+
+        while (true) {
+            int i = sourceIn.read(temp);
+            if (i == -1) break;
+            targetOut.write(temp, 0, i);
+            total2 += i;
+
+            Log.info.print("DownloadURLFile-下载", "拷贝进度: " + ((total2 * 100L) / sourceFile.length()));
+            // 更新进度条
+            int finalTotal = (int) (total2 * 100 / sourceFile.length());
+            Log.info.loadingDialog.updateDialog("更新文件" + id,  finalTotal);
+        }
+    }
+
     @Override
     public String toString() {
 

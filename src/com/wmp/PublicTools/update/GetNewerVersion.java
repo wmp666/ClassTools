@@ -4,6 +4,7 @@ import com.wmp.Main;
 import com.wmp.PublicTools.CTInfo;
 import com.wmp.PublicTools.io.DownloadURLFile;
 import com.wmp.PublicTools.io.GetPath;
+import com.wmp.PublicTools.io.IOForInfo;
 import com.wmp.PublicTools.printLog.Log;
 import com.wmp.PublicTools.web.GetWebInf;
 import com.wmp.PublicTools.web.SslUtils;
@@ -16,6 +17,8 @@ import java.awt.*;
 import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.nio.file.Path;
+import java.util.Random;
 import java.util.concurrent.atomic.AtomicReference;
 
 public class GetNewerVersion {
@@ -148,6 +151,19 @@ public class GetNewerVersion {
                         return;
                     }
                     int i = isNewerVersion(latestVersion, CTInfo.version);
+
+                    Thread updateThread = new Thread(() -> {
+                        IOForInfo.deleteDirectoryRecursively(Path.of(CTInfo.TEMP_PATH + "UpdateFile\\"));
+
+                        DownloadURLFile.downloadWebFile(dialog, panel, downloadUrl, CTInfo.TEMP_PATH + "UpdateFile\\");
+
+                        try {
+                            IOForInfo.copyFile(Path.of(CTInfo.TEMP_PATH, "UpdateFile", "ClassTools.jar"), Path.of(GetPath.getAppPath(GetPath.SOURCE_FILE_PATH), "ClassTools.jar"));
+                        } catch (IOException e) {
+                            Log.err.print(dialog, GetNewerVersion.class, "更新文件失败", e);
+                        }
+                    });
+
                     if (i == 1) {
                         Log.info.print("发现新版本", "发现新版本 " + latestVersion);
                         int result = Log.info.showChooseDialog(dialog, "发现新版本",
@@ -155,23 +171,14 @@ public class GetNewerVersion {
 
 
                         if (result == JOptionPane.YES_OPTION) {
-                            new Thread(() -> {
-                                DownloadURLFile.downloadWebFile(dialog, panel, downloadUrl, GetPath.getAppPath(GetPath.SOURCE_FILE_PATH));
-                                JOptionPane.showMessageDialog(dialog, "更新可能，即将退出程序...", "提示", JOptionPane.INFORMATION_MESSAGE);
-                                System.exit(0);
-                            }).start();
+                            updateThread.start();
 
                         }
                     } else if (i == 2) {
                         Log.info.message(dialog, "发现新版本",
                                 "发现新版本 " + latestVersion + "，是否下载？\n" + versionContent);
 
-
-                        new Thread(() -> {
-                            DownloadURLFile.downloadWebFile(dialog, panel, downloadUrl, GetPath.getAppPath(GetPath.SOURCE_FILE_PATH));
-                            JOptionPane.showMessageDialog(dialog, "更新完成，即将退出程序...", "提示", JOptionPane.INFORMATION_MESSAGE);
-                            System.exit(0);
-                        }).start();
+                        updateThread.start();
                     } else {
                         if (showMessage) {
                             Log.info.message(dialog, "获取新版本", "当前已是最新版本");
