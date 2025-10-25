@@ -6,7 +6,7 @@ import com.wmp.PublicTools.io.InfProcess;
 import com.wmp.PublicTools.printLog.Log;
 import com.wmp.classTools.CTComponent.CTPanel.CTSetsPanel;
 import com.wmp.classTools.CTComponent.CTTable;
-import com.wmp.classTools.CTComponent.CTTextButton;
+import com.wmp.classTools.CTComponent.CTButton.CTTextButton;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;

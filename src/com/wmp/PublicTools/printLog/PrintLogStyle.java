@@ -17,11 +17,11 @@ public class PrintLogStyle {
         this.style = style;
     }
 
-    public void print(String owner, String logInfo) {
+    public void print(String owner, Object logInfo) {
         Log.print(style, owner, logInfo, null);
     }
 
-    public void print(Container c, String owner, String logInfo) {
+    public void print(Container c, String owner, Object logInfo) {
         Log.print(style, owner, logInfo, c);
     }
 }

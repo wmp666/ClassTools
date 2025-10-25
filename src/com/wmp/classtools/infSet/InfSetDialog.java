@@ -1,5 +1,6 @@
 package com.wmp.classTools.infSet;
 
+import com.wmp.Main;
 import com.wmp.PublicTools.CTInfo;
 import com.wmp.PublicTools.OpenInExp;
 import com.wmp.PublicTools.UITools.CTColor;
@@ -9,7 +10,7 @@ import com.wmp.PublicTools.io.ZipPack;
 import com.wmp.PublicTools.printLog.Log;
 import com.wmp.classTools.CTComponent.CTList;
 import com.wmp.classTools.CTComponent.CTPanel.CTSetsPanel;
-import com.wmp.classTools.CTComponent.CTTextButton;
+import com.wmp.classTools.CTComponent.CTButton.CTTextButton;
 import com.wmp.classTools.CTComponent.Menu.CTMenu;
 import com.wmp.classTools.CTComponent.Menu.CTMenuItem;
 import com.wmp.classTools.frame.MainWindow;
@@ -18,15 +19,12 @@ import com.wmp.classTools.infSet.panel.PersonalizationPanel;
 
 import javax.swing.*;
 import java.awt.*;
-import java.io.IOException;
-import java.net.MalformedURLException;
 import java.util.ArrayList;
 import java.util.TreeMap;
 
 public class InfSetDialog extends JDialog {
 
     private final Container c;
-    private final Runnable refreshCallback;
 
     private final ArrayList<CTSetsPanel> ctSetsPanelList = new ArrayList<>();
 
@@ -35,20 +33,19 @@ public class InfSetDialog extends JDialog {
 
     private CTList switchPanel;
 
-    public InfSetDialog(Runnable refreshCallback) throws Exception {
-        this(refreshCallback, "个性化");
+    public InfSetDialog() throws Exception {
+        this(Main.allArgs.get("screenProduct:show").contains(Main.argsList)?"屏保设置":"个性化");
     }
 
 
     // 添加文件路径参数
-    public InfSetDialog(Runnable refreshCallback, String showPanel) throws Exception {
+    public InfSetDialog(String showPanel) throws Exception {
         Log.info.systemPrint("设置", "正在初始化设置...");
         Log.info.loadingDialog.showDialog("设置", "正在初始化设置...");
 
         this.openedPanel = showPanel;
 
         this.c = this.getContentPane();
-        this.refreshCallback = refreshCallback;
 
         c.setBackground(CTColor.backColor);
         this.setIconImage(GetIcon.getImageIcon(getClass().getResource("/image/light/settings_0.png"), 32, 32).getImage());
@@ -102,9 +99,8 @@ public class InfSetDialog extends JDialog {
         this.switchPanel = new CTList(list, 0, (e, choice) -> {
             try {
                 this.repaintSetsPanel(map.get(choice));
-            } catch (IOException ex) {
+            } catch (Exception ex) {
                 Log.err.print(getClass(), "刷新设置页面失败", ex);
-                throw new RuntimeException(ex);
             }
         });
 
@@ -152,7 +148,7 @@ public class InfSetDialog extends JDialog {
             ZipPack.unzip(filePath, CTInfo.DATA_PATH);
             //刷新数据
             this.setVisible(false);
-            refreshCallback.run();
+            MainWindow.refreshPanel();
         });
 
         CTMenu inputInf = new CTMenu("导出数据");
@@ -202,8 +198,8 @@ public class InfSetDialog extends JDialog {
             tempMenuItem.addActionListener(e -> {
                 try {
                     repaintSetsPanel(ctSetsPanel);
-                } catch (IOException ex) {
-                    throw new RuntimeException(ex);
+                } catch (Exception ex) {
+                    Log.err.print(getClass(), "刷新设置页面失败", ex);
                 }
             });
             setMenu.add(tempMenuItem);
@@ -225,7 +221,7 @@ public class InfSetDialog extends JDialog {
 
     }
 
-    private void initSaveButton() throws MalformedURLException {
+    private void initSaveButton(){
 
         CTTextButton saveButton = new CTTextButton("保存数据", GetIcon.getIcon(getClass().getResource("/image/light/save_0.png"), 30, 30), false);
         saveButton.addActionListener(e -> save());
@@ -235,7 +231,7 @@ public class InfSetDialog extends JDialog {
 
     }
 
-    private void repaintSetsPanel(CTSetsPanel panel) throws IOException {
+    private void repaintSetsPanel(CTSetsPanel panel) throws Exception {
 
         c.removeAll();
 
@@ -275,9 +271,8 @@ public class InfSetDialog extends JDialog {
 
 
             });
+            MainWindow.refresh();
 
-            // 保存成功后执行回调
-            refreshCallback.run();
             //this.setVisible(false);
 
         }

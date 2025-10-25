@@ -14,7 +14,6 @@ public abstract class CTViewPanel extends CTPanel{
     public CTViewPanel()
     {
         super();
-        this.setBackground(CTColor.backColor);
     }
 
     public List<CTSetsPanel> getCtSetsPanelList() {

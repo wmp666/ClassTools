@@ -6,7 +6,7 @@ import com.wmp.PublicTools.EasterEgg.EasterEgg;
 import com.wmp.PublicTools.UITools.CTColor;
 import com.wmp.PublicTools.printLog.Log;
 import com.wmp.PublicTools.update.GetNewerVersion;
-import com.wmp.classTools.CTComponent.CTIconButton;
+import com.wmp.classTools.CTComponent.CTButton.CTIconButton;
 import com.wmp.classTools.CTComponent.CTPanel.CTViewPanel;
 import com.wmp.classTools.CTComponent.Menu.CTPopupMenu;
 import com.wmp.classTools.frame.AboutDialog;
@@ -20,9 +20,6 @@ import java.io.IOException;
 import java.net.MalformedURLException;
 import java.util.ArrayList;
 import java.util.concurrent.atomic.AtomicInteger;
-
-import static com.wmp.Main.allArgs;
-import static com.wmp.Main.argsList;
 
 
 public class FinalPanel extends CTViewPanel {
@@ -77,12 +74,7 @@ public class FinalPanel extends CTViewPanel {
                 "/image/%s/settings_0.png", () -> {
 
             try {
-                if (!allArgs.get("screenProduct:show").contains(argsList)) {
-                    new InfSetDialog(MainWindow::refreshPanel, "屏保设置");
-                }else{
-                    new InfSetDialog(MainWindow::refreshPanel);
-                }
-
+                    new InfSetDialog();
             } catch (Exception e) {
                 Log.err.print(getClass(), "设置打开失败", e);
             }
@@ -117,7 +109,7 @@ public class FinalPanel extends CTViewPanel {
 
         // 自定义刷新方法
         CTIconButton refresh = new CTIconButton("刷新",
-                "/image/%s/refresh_0.png", MainWindow::refreshPanel);
+                "/image/%s/refresh_0.png", MainWindow::refresh);
         allButList.add(refresh);
 
         CTIconButton holidayBlessings = new CTIconButton("查看祝词",

@@ -172,8 +172,8 @@ public class PersonalizationPanel extends CTSetsPanel {
                 MainWindow.allPanelList.forEach(ctPanel -> {
                     try {
                         ctPanel.refresh();
-                    } catch (IOException ex) {
-                        throw new RuntimeException(ex);
+                    } catch (Exception ex) {
+                        Log.err.print(getClass(), "刷新失败", ex);
                     }
                 });
                 save();

@@ -37,7 +37,7 @@ public class MainWindow extends JDialog {
     //public static final ArrayList<CTViewPanel> showPanelList = new ArrayList<>();
 
     private static final TreeMap<String, String[]> panelLocationMap = new TreeMap<>();
-    private static final TreeMap<String, CTViewPanel[]> panelMap = new TreeMap<>();
+    public static final TreeMap<String, CTViewPanel[]> panelMap = new TreeMap<>();
 
     private static JDialog mainWindow = new JDialog();
 
@@ -106,8 +106,9 @@ public class MainWindow extends JDialog {
                 CTColor.setScreenProductColor();
                 allPanelList.forEach(ctPanel -> {
                     try {
+                        ctPanel.toScreenProductViewPanel();
                         ctPanel.refresh();
-                    } catch (IOException e) {
+                    } catch (Exception e) {
                         throw new RuntimeException(e);
                     }
                 });
@@ -154,6 +155,11 @@ public class MainWindow extends JDialog {
         }
     }
 
+    public static void refresh(){
+        if (allArgs.get("screenProduct:show").contains(argsList))
+            ScreenProduct.refreshScreenProductPanel();
+        else refreshPanel();
+    }
 
     public static void refreshPanel() {
         try {
@@ -269,7 +275,7 @@ public class MainWindow extends JDialog {
             allPanelList.forEach(panel -> {
                 try {
                     panel.refresh();
-                } catch (IOException e) {
+                } catch (Exception e) {
                     Log.err.print(MainWindow.class, "刷新失败", e);
                 }
             });

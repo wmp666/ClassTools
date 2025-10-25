@@ -8,10 +8,9 @@ import com.wmp.classTools.CTComponent.CTPanel.CTViewPanel;
 import com.wmp.classTools.CTComponent.Menu.CTMenu;
 import com.wmp.classTools.CTComponent.Menu.CTPopupMenu;
 import com.wmp.classTools.CTComponent.CTPanel.CTSetsPanel;
-import com.wmp.classTools.CTComponent.CTTextButton;
+import com.wmp.classTools.CTComponent.CTButton.CTTextButton;
 import com.wmp.classTools.extraPanel.attendance.settings.AllStuSetsPanel;
 import com.wmp.classTools.extraPanel.attendance.settings.LeaveListSetsPanel;
-import com.wmp.classTools.frame.MainWindow;
 import com.wmp.classTools.infSet.InfSetDialog;
 
 import javax.swing.*;
@@ -98,7 +97,7 @@ public class ATPanel extends CTViewPanel {
                 allStuEdit.setIcon(GetIcon.getIcon(getClass().getResource("/image/edit.png"), 20, 20));
                 allStuEdit.addActionListener(event -> {
                     try {
-                        new InfSetDialog(MainWindow::refreshPanel, "学生名单");
+                        new InfSetDialog("学生名单");
                     } catch (Exception ex) {
                         Log.err.print(getClass(), "设置打开失败", ex);
                     }
@@ -108,7 +107,7 @@ public class ATPanel extends CTViewPanel {
                 LeaveStuEdit.setIcon(GetIcon.getIcon(getClass().getResource("/image/edit.png"), 20, 20));
                 LeaveStuEdit.addActionListener(event -> {
                     try {
-                        new InfSetDialog(MainWindow::refreshPanel, "迟到人员");
+                        new InfSetDialog("迟到人员");
                     } catch (Exception ex) {
                         Log.err.print(getClass(), "设置打开失败", ex);
                     }

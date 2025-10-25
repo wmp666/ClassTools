@@ -7,7 +7,7 @@ import com.wmp.PublicTools.UITools.GetIcon;
 import com.wmp.PublicTools.io.DownloadURLFile;
 import com.wmp.PublicTools.printLog.Log;
 import com.wmp.PublicTools.web.GetWebInf;
-import com.wmp.classTools.CTComponent.CTTextButton;
+import com.wmp.classTools.CTComponent.CTButton.CTTextButton;
 import org.json.JSONArray;
 import org.json.JSONObject;
 

@@ -9,15 +9,15 @@ public class ErrorLogStyle extends PrintLogStyle {
         super(style);
     }
 
-    public void print(Class<?> owner, String logInfo) {
+    public void print(Class<?> owner, Object logInfo) {
         super.print(owner.toString(), logInfo);
     }
 
-    public void print(Container c, Class<?> owner, String logInfo) {
+    public void print(Container c, Class<?> owner, Object logInfo) {
         super.print(c, owner.toString(), logInfo);
     }
 
-    public void print(Class<?> owner, String logInfo, Exception e) {
+    public void print(Class<?> owner, Object logInfo, Exception e) {
 
         super.print(owner.toString(), logInfo + "\n" +
                 ExceptionStringConverter.convertToString(e, true));

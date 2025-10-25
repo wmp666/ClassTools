@@ -9,7 +9,6 @@ import com.wmp.PublicTools.UITools.CTFont;
 import com.wmp.PublicTools.UITools.CTFontSizeStyle;
 import com.wmp.PublicTools.UITools.GetIcon;
 import com.wmp.PublicTools.videoView.MediaPlayer;
-import com.wmp.classTools.CTComponent.CTIconButton;
 import com.wmp.classTools.CTComponent.CTOptionPane;
 import com.wmp.classTools.frame.MainWindow;
 import com.wmp.classTools.importPanel.finalPanel.FinalPanel;
@@ -19,7 +18,6 @@ import java.awt.*;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.io.IOException;
-import java.net.MalformedURLException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.nio.file.StandardOpenOption;
@@ -228,7 +226,7 @@ public class Log {
         }
         Log.print(style, owner, logInfo, null);
     }
-    public static void print(LogStyle style, String owner, String logInfo, Container c) {
+    public static void print(LogStyle style, String owner, Object logInfo, Container c) {
         Date date = new Date();
         DateFormat dateFormat = new SimpleDateFormat("MM.dd HH:mm:ss");
         String dateStr = dateFormat.format(date);
@@ -251,7 +249,7 @@ public class Log {
                         "[警告]" +
                         "[" + owner + "] :" +
                         logInfo;
-                trayIcon.displayMessage(owner, logInfo, TrayIcon.MessageType.WARNING);
+                trayIcon.displayMessage(owner, logInfo.toString(), TrayIcon.MessageType.WARNING);
                 System.out.println(info);
                 logInfList.add(info);
             }
@@ -262,7 +260,7 @@ public class Log {
                         "[错误]" +
                         "[" + owner + "] :" +
                         logInfo;
-                trayIcon.displayMessage(owner, logInfo, TrayIcon.MessageType.ERROR);
+                trayIcon.displayMessage(owner, logInfo.toString(), TrayIcon.MessageType.ERROR);
                 System.err.println(info);
 
                 MediaPlayer.playMusic(MediaPlayer.MUSIC_STYLE_ERROR, true);
@@ -273,7 +271,7 @@ public class Log {
                 else title = "世界拒绝了我";
                 Icon icon = null;
                 if (CTInfo.isError) icon = GetIcon.getIcon(Log.class.getResource("/image/error/icon.png"), 100, 100);
-                CTOptionPane.showMessageDialog(c, title, logInfo, icon, CTOptionPane.ERROR_MESSAGE, true);
+                CTOptionPane.showMessageDialog(c, title, logInfo.toString(), icon, CTOptionPane.ERROR_MESSAGE, true);
 
                 logInfList.add(info);
             }

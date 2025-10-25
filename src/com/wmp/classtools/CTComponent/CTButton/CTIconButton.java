@@ -1,4 +1,4 @@
-package com.wmp.classTools.CTComponent;
+package com.wmp.classTools.CTComponent.CTButton;
 
 import com.wmp.PublicTools.CTInfo;
 import com.wmp.PublicTools.UITools.CTColor;
@@ -28,7 +28,7 @@ public class CTIconButton extends JButton implements ActionListener {
     }
 
     //图标 正方形
-    public CTIconButton(String defaultIconPath, Runnable callback) throws MalformedURLException {
+    public CTIconButton(String defaultIconPath, Runnable callback){
 
         this(null, defaultIconPath, callback);
 
@@ -36,7 +36,7 @@ public class CTIconButton extends JButton implements ActionListener {
 
     //文字 图标 正方形
 
-    public CTIconButton(String text, String defaultIconPath, Runnable callback) throws MalformedURLException {
+    public CTIconButton(String text, String defaultIconPath, Runnable callback){
         this.text = text;
         this.setToolTipText(text);
 
@@ -79,13 +79,11 @@ public class CTIconButton extends JButton implements ActionListener {
         this.addFocusListener(new FocusListener() {
             @Override
             public void focusGained(FocusEvent e) {
-                button.setOpaque(true);
                 button.setBackground(new Color(218, 218, 218));
             }
 
             @Override
             public void focusLost(FocusEvent e) {
-                button.setOpaque(false);
                 button.setBackground(CTColor.backColor);
             }
         });
@@ -93,13 +91,10 @@ public class CTIconButton extends JButton implements ActionListener {
         this.addChangeListener(e -> {
             ButtonModel model = button.getModel();
             if (model.isPressed()) {//鼠标按下
-                button.setOpaque(true);
                 button.setBackground(new Color(179, 179, 179));
             } else if (model.isRollover()) {//鼠标移入
-                button.setOpaque(true);
                 button.setBackground(new Color(218, 218, 218));
             } else {
-                button.setOpaque(false);
                 button.setBackground(CTColor.backColor);
             }
         });

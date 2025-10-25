@@ -6,7 +6,7 @@ import com.wmp.PublicTools.UITools.*;
 import com.wmp.PublicTools.printLog.Log;
 import com.wmp.classTools.CTComponent.CTPanel.CTViewPanel;
 import com.wmp.classTools.CTComponent.Menu.CTPopupMenu;
-import com.wmp.classTools.CTComponent.CTTextButton;
+import com.wmp.classTools.CTComponent.CTButton.CTTextButton;
 
 import javax.swing.*;
 import java.awt.*;
@@ -45,48 +45,37 @@ public class ETPanel extends CTViewPanel implements MouseListener {
                 label.setBackground(CTColor.backColor);
                 label.setFont(CTFont.getCTFont(Font.BOLD, CTFontSizeStyle.NORMAL));
 
+                FontMetrics fm = label.getFontMetrics(label.getFont());
 
-                int[] maxSize = GetMaxSize.getMaxSize(text, GetMaxSize.STYLE_HTML);
                 // 根据文字数量调整窗口大小
-                int lineCount = maxSize[1];
-                int maxLength = maxSize[0];
+                int lineCount = GetMaxSize.getLine(label.getText(), GetMaxSize.STYLE_HTML);// 行数
+
 
                 // 计算新的窗口尺寸（基础尺寸 + 动态调整）
-                int newWidth = maxLength * label.getFont().getSize(); // 每个字符约20像素宽度
+                int newWidth = GetMaxSize.getHTMLToTextMaxLength(label.getText(), fm); // 根据最大字符宽度计算总宽度
                 int newHeight = lineCount * label.getFont().getSize() + 5;  // 每多一行增加30像素高度
 
-                int maxShowHeight = 4 * label.getFont().getSize() + 5;
-                int maxShowWidth = 16 * label.getFont().getSize();
-                int minShowWidth = 13 * label.getFont().getSize();
+                int maxShowHeight = (this.isScreenProductViewPanel()?6:4) * label.getFont().getSize(); // 最大显示高度
 
-                long waitTime = Math.max(10000, text.replaceAll("<html>|</html>|<br>", "").length() * 100L);
                 // 设置窗口大小
-
-                if (newWidth >= maxShowWidth) {
-                    newWidth = maxShowWidth;
-                } else if (newWidth < minShowWidth) {
-                    newWidth = minShowWidth;
-                }
                 if (newHeight >= maxShowHeight) {
                     newHeight = maxShowHeight;
                 }
+
                 JScrollPane scrollPane = new JScrollPane(label);
                 scrollPane.getViewport().setOpaque(false);
                 scrollPane.setOpaque(false);
                 scrollPane.setBorder(BorderFactory.createEmptyBorder());
 
                 this.add(scrollPane, BorderLayout.CENTER);
-                System.out.printf("大小:%s|%s\n", newWidth, newHeight + 20);
-                scrollPane.setPreferredSize(new Dimension(newWidth, newHeight + 20));
+                scrollPane.setPreferredSize(new Dimension(this.isScreenProductViewPanel()?Toolkit.getDefaultToolkit().getScreenSize().width:newWidth, newHeight + 20));
 
 
                 this.revalidate();
                 this.repaint();
 
-                Log.info.print("ETPanel", String.format("内容: %s | 等待时间: %s 毫秒", text, waitTime));
-
                 try {
-                    Thread.sleep(waitTime);
+                    Thread.sleep(Math.max(10000, text.replaceAll("<html>|</html>|<br>", "").length() * 100L));
                 } catch (InterruptedException e) {
                     throw new RuntimeException(e);
                 }

@@ -1,7 +1,8 @@
-package com.wmp.classTools.CTComponent;
+package com.wmp.classTools.CTComponent.CTButton;
 
 import com.wmp.PublicTools.CTInfo;
 import com.wmp.PublicTools.UITools.CTColor;
+import com.wmp.classTools.CTComponent.CTBorderFactory;
 
 import javax.swing.*;
 import java.awt.*;

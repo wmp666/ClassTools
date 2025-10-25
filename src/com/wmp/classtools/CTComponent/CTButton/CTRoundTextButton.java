@@ -1,4 +1,4 @@
-package com.wmp.classTools.CTComponent;
+package com.wmp.classTools.CTComponent.CTButton;
 
 import com.wmp.PublicTools.CTInfo;
 import com.wmp.PublicTools.UITools.CTColor;
@@ -47,14 +47,12 @@ public class CTRoundTextButton extends JButton {
         this.addFocusListener(new FocusListener() {
             @Override
             public void focusGained(FocusEvent e) {
-                button.setOpaque(true);
                 button.setBackground(new Color(218, 218, 218));
                 button.setForeground(Color.BLACK);
             }
 
             @Override
             public void focusLost(FocusEvent e) {
-                button.setOpaque(false);
                 button.setBackground(CTColor.backColor);
                 button.setForeground(CTColor.textColor);
             }
@@ -63,15 +61,12 @@ public class CTRoundTextButton extends JButton {
         this.addChangeListener(e -> {
             ButtonModel model = button.getModel();
             if (model.isPressed()) {//鼠标按下
-                button.setOpaque(true);
                 button.setForeground(Color.BLACK);
                 button.setBackground(new Color(179, 179, 179));
             } else if (model.isRollover()) {//鼠标移入
-                button.setOpaque(true);
                 button.setForeground(Color.BLACK);
                 button.setBackground(new Color(218, 218, 218));
             } else {
-                button.setOpaque(false);
                 button.setForeground(CTColor.textColor);
                 button.setBackground(CTColor.backColor);
             }
