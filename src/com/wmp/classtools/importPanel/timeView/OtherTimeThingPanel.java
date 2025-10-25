@@ -16,6 +16,7 @@ import java.util.Calendar;
 import java.util.Date;
 
 public class OtherTimeThingPanel extends CTViewPanel {
+    private static String otherStrFormat = "<html>%s %s%s%s %s[%s]年<br>%s %s</html>";
     private final JLabel other = new JLabel();
 
     private final Thread timeThread = new Thread(() -> {
@@ -33,7 +34,7 @@ public class OtherTimeThingPanel extends CTViewPanel {
             for (String festival : lunar.getFestivals()) {
                 jie.append(festival).append( " ");
             }
-            other.setText(String.format("<html>%s %s%s%s %s[%s]年<br>%s %s</html>",
+            other.setText(String.format(otherStrFormat,
                     week, lunar.getMonth()<0?"闰":"", DateTools.months[Math.abs(lunar.getMonth()) - 1], DateTools.days[lunar.getDay() - 1], lunar.getYearInGanZhi(), lunar.getYearShengXiao(),
                     lunar.getJieQi(), jie));
             try {
@@ -50,31 +51,36 @@ public class OtherTimeThingPanel extends CTViewPanel {
         this.setName("时间详情");
         this.setID("OtherTimeThingPanel");
         this.setLayout(new BorderLayout());
-        initPanel();
+        initPanel(CTFontSizeStyle.BIG);
 
         //时间刷新
         timeThread.setDaemon(true);
         timeThread.start();
     }
 
-    private void initPanel() throws MalformedURLException {
+    private void initPanel(CTFontSizeStyle size) throws MalformedURLException {
         this.removeAll();
 
         Calendar calendar = Calendar.getInstance();
 
         other.setText(String.format("星期%s", calendar.get(Calendar.DAY_OF_WEEK)));
-        other.setFont(CTFont.getCTFont(Font.BOLD, CTFontSizeStyle.BIG));
+        other.setFont(CTFont.getCTFont(Font.BOLD, size));
         other.setForeground(CTColor.mainColor);
         this.add(other, BorderLayout.SOUTH);
 
     }
 
+
     @Override
     public void refresh() {
-        this.removeAll();
-
         try {
-            initPanel();
+            if (!isScreenProductViewPanel()) {
+                otherStrFormat = "<html>%s %s%s%s %s[%s]年<br>%s %s</html>";
+                initPanel(CTFontSizeStyle.BIG);
+            }else{
+                otherStrFormat = "<html>%s %s%s%s %s[%s]年 %s %s</html>";
+                initPanel(CTFontSizeStyle.MORE_BIG);
+            }
         } catch (MalformedURLException e) {
             throw new RuntimeException(e);
         }

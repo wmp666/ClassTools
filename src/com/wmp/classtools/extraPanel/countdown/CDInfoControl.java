@@ -37,12 +37,14 @@ public class CDInfoControl {
                         if (o instanceof JSONObject json){
                             CDInfo info = new CDInfo(json.getString("title"), json.getString("targetTime"));
                             long tempRemainderTime = DateTools.getRemainderTime(info.targetTime, "yyyy.MM.dd HH:mm:ss");
+
+                            if (resultInfo.get().title.equals("数据出错")) {
+                                resultInfo.set(info);
+                                remainderTime.set(tempRemainderTime);
+                                return;
+                            }
+
                             if (tempRemainderTime > 0){
-                                if (resultInfo.get().title.equals("数据出错")) {
-                                    resultInfo.set(info);
-                                    remainderTime.set(tempRemainderTime);
-                                    return;
-                                }
 
                                 if (remainderTime.get() > tempRemainderTime) {
                                     resultInfo.set(info);

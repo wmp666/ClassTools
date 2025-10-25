@@ -21,6 +21,9 @@ import java.net.MalformedURLException;
 import java.util.ArrayList;
 import java.util.concurrent.atomic.AtomicInteger;
 
+import static com.wmp.Main.allArgs;
+import static com.wmp.Main.argsList;
+
 
 public class FinalPanel extends CTViewPanel {
 
@@ -74,7 +77,12 @@ public class FinalPanel extends CTViewPanel {
                 "/image/%s/settings_0.png", () -> {
 
             try {
-                new InfSetDialog(MainWindow::refreshPanel);
+                if (!allArgs.get("screenProduct:show").contains(argsList)) {
+                    new InfSetDialog(MainWindow::refreshPanel, "屏保设置");
+                }else{
+                    new InfSetDialog(MainWindow::refreshPanel);
+                }
+
             } catch (Exception e) {
                 Log.err.print(getClass(), "设置打开失败", e);
             }

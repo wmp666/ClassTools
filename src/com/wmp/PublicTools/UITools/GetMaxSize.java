@@ -1,5 +1,8 @@
 package com.wmp.PublicTools.UITools;
 
+import com.wmp.PublicTools.CTInfo;
+
+import java.awt.*;
 import java.util.Arrays;
 
 public class GetMaxSize {
@@ -40,5 +43,15 @@ public class GetMaxSize {
         //.orElse(0) 如果数组为空，返回默认值 0
         String[] lines = temp.split("\n|\\\\n");
         return Arrays.stream(lines).mapToInt(String::length).max().orElse(0);
+    }
+
+    public static int getHTMLToTextMaxLength(String s, FontMetrics fm) {
+        String[] strings = s.replaceAll("<html>|</html>", "").replaceAll("<br>", "\n").split("\n");// 去除HTML标签
+        int maxLength = 0;
+        for (String string : strings) {
+            maxLength = Math.max(fm.stringWidth(string), maxLength);
+        }
+        return maxLength;
+
     }
 }

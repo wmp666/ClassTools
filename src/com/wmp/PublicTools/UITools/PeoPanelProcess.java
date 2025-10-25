@@ -53,13 +53,13 @@ public class PeoPanelProcess {
 
         JScrollPane scrollPane = new JScrollPane(personLabel);
 
-        int[] maxSize = GetMaxSize.getMaxSize(objects[0].toString(), GetMaxSize.STYLE_HTML);
         // 根据文字数量调整窗口大小
-        int lineCount = maxSize[1];// 行数
-        int maxLength = maxSize[0];// 最大长度
+        int lineCount = GetMaxSize.getLine(objects[0].toString(), GetMaxSize.STYLE_HTML);// 行数
+
+        FontMetrics fm = personLabel.getFontMetrics(personLabel.getFont());
 
         // 计算新的窗口尺寸（基础尺寸 + 动态调整）
-        int newWidth = maxLength * personLabel.getFont().getSize(); // 每个字符约23像素宽度
+        int newWidth = GetMaxSize.getHTMLToTextMaxLength(personLabel.getText(), fm); // 根据最大字符宽度计算总宽度
         int newHeight = lineCount * personLabel.getFont().getSize() + 5;  // 每多一行增加30像素高度
 
         int maxShowHeight = 4 * personLabel.getFont().getSize(); // 最大显示高度

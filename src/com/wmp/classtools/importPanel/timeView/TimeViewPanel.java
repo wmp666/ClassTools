@@ -134,14 +134,32 @@ public class TimeViewPanel extends CTViewPanel {
 
     @Override
     public void refresh() {
-        this.removeAll();
-
         try {
-            initPanel();
+            if (!isScreenProductViewPanel()) {
+                initPanel();
+            }else{
+                initSPPanel();
+            }
         } catch (MalformedURLException e) {
             throw new RuntimeException(e);
         }
 
+    }
+
+    private void initSPPanel() {
+        this.removeAll();
+
+        //获取时间
+        Date date = new Date();
+        //格式化 11.22 23:05
+        DateFormat dateFormat = new SimpleDateFormat("MM.dd HH:mm:ss");
+
+
+        timeView.setText(dateFormat.format(date));
+        timeView.setFont(CTFont.getCTFont(Font.BOLD, CTFontSizeStyle.BIG_BIG));
+        //timeView.setBackground(new Color(0x0ECECED, true));
+        timeView.setForeground(CTColor.mainColor);
+        this.add(timeView, BorderLayout.CENTER);
     }
 
 }

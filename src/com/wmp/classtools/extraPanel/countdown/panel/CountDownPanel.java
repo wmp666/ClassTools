@@ -61,7 +61,7 @@ public class CountDownPanel extends CTViewPanel {
                 timeLabel.setText("已结束");
                 if (!b.get()) {
                     if (Main.allArgs.get("screenProduct:show").contains(Main.argsList))
-                        CTOptionPane.showFullScreenMessageDialog(info.title() + "倒计时", "已结束", 60);
+                        CTOptionPane.showFullScreenMessageDialog(info.title() + "倒计时", "已结束", 60, 3);
                     else
                         Log.info.systemPrint(info.title() + "倒计时", "已结束");
                 }

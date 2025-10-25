@@ -2,8 +2,6 @@ package com.wmp.classTools.CTComponent.CTPanel;
 
 import com.wmp.PublicTools.UITools.CTColor;
 
-import javax.swing.*;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -11,6 +9,7 @@ public abstract class CTViewPanel extends CTPanel{
 
     private List<CTSetsPanel> ctSetsPanelList = new ArrayList<>();
 
+    private boolean isScreenProductViewPanel = false;
 
     public CTViewPanel()
     {
@@ -26,7 +25,11 @@ public abstract class CTViewPanel extends CTPanel{
         this.ctSetsPanelList = ctSetsPanelList;
     }
 
-    public CTViewPanel getScreenProductViewPanel(){
-        return this;
+    public void toScreenProductViewPanel(){
+        isScreenProductViewPanel = true;
+    }
+
+    public boolean isScreenProductViewPanel() {
+        return isScreenProductViewPanel;
     }
 }

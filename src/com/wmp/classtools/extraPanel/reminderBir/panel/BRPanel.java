@@ -53,6 +53,24 @@ public class BRPanel extends CTViewPanel {
                     continue;
                 }*/
 
+                try {
+
+                        List<String> BRTempList = getBRList();
+                        List<String> WBTempList = getWBList();
+
+                        if (!oldBRNameList.equals(BRTempList) || !oldWBNameList.equals(WBTempList)) showBRAndWB();
+
+                        this.oldBRNameList.clear();
+                        this.oldBRNameList.addAll(BRTempList);
+
+                        this.oldWBNameList.clear();
+                        this.oldWBNameList.addAll(WBTempList);
+
+
+                } catch (Exception e) {
+                    Log.err.print(getClass(), "获取生日列表失败", e);
+                }
+
                 GridBagConstraints gbc = new GridBagConstraints();
                 gbc.fill = GridBagConstraints.HORIZONTAL;
                 gbc.gridx = 0;
@@ -66,7 +84,7 @@ public class BRPanel extends CTViewPanel {
                     @Override
                     public void mouseClicked(MouseEvent e) {
                         try {
-                            showBR();
+                            showBRAndWB();
                         } catch (Exception ex) {
                             Log.err.print(getClass(), "显示生日列表失败", ex);
                         }
@@ -74,20 +92,11 @@ public class BRPanel extends CTViewPanel {
                 });
                 this.add(titleLabel, gbc);
 
+                gbc.gridy++;
+                this.add(PeoPanelProcess.getShowPeoPanel(oldBRNameList), gbc);
 
                 //EasterEgg.getText(EETextStyle.HTML)
-                try {
-                    List<String> temp = getBRList();
-                    if (!oldBRNameList.equals(temp)) showBR();
 
-
-                    this.oldBRNameList.clear();
-                    this.oldBRNameList.addAll(temp);
-                    gbc.gridy++;
-                    this.add(PeoPanelProcess.getShowPeoPanel(oldBRNameList), gbc);
-                } catch (Exception e) {
-                    Log.err.print(getClass(), "获取生日列表失败", e);
-                }
 
                 JLabel titleLabel2 = new JLabel("<html>即将过生日:</html>");
                 titleLabel2.setForeground(CTColor.textColor);
@@ -96,7 +105,7 @@ public class BRPanel extends CTViewPanel {
                     @Override
                     public void mouseClicked(MouseEvent e) {
                         try {
-                            showWB();
+                            showBRAndWB();
                         } catch (Exception ex) {
                             Log.err.print(getClass(), "显示生日列表失败", ex);
                         }
@@ -105,18 +114,9 @@ public class BRPanel extends CTViewPanel {
                 gbc.gridy++;
                 this.add(titleLabel2, gbc);
 
-                try {
-                    List<String> temp = getWBList();
-                    if (!oldWBNameList.equals(temp)) showWB();
+                gbc.gridy++;
+                this.add(PeoPanelProcess.getShowPeoPanel(oldWBNameList), gbc);
 
-
-                    this.oldWBNameList.clear();
-                    this.oldWBNameList.addAll(temp);
-                    gbc.gridy++;
-                    this.add(PeoPanelProcess.getShowPeoPanel(oldWBNameList), gbc);
-                } catch (Exception e) {
-                    Log.err.print(getClass(), "获取生日列表失败", e);
-                }
 
                 this.revalidate();
                 this.repaint();
@@ -131,34 +131,31 @@ public class BRPanel extends CTViewPanel {
         }).start();
     }
 
-    private void showBR() throws IOException {
-        List<String> temp = getBRList();
-        if (!temp.contains("无人生日") && !temp.contains("没有相关数据")) {
-            StringBuilder sb = new StringBuilder();
+    private void showBRAndWB() throws IOException {
+        List<String> BRTempList = getBRList();
+        StringBuilder BRsb = new StringBuilder();
 
-            for (int i = 0; i < temp.size(); i++) {
-                if (i != temp.size() - 1)
-                    sb.append(temp.get(i)).append(", ");
-                else sb.append(temp.get(i));
+        List<String> WBTempList = getWBList();
+        StringBuilder WBsb = new StringBuilder();
 
-            }
-            CTOptionPane.showFullScreenMessageDialog("生日祝福", "让我们祝->" + sb + "<-生日快乐", 60);
-        }
-    }
-
-    private void showWB() throws IOException {
-        List<String> temp = getWBList();
-        if (!temp.contains("无人即将生日") && !temp.contains("没有相关数据")) {
-            StringBuilder sb = new StringBuilder();
-
-            for (int i = 0; i < temp.size(); i++) {
-                if (i != temp.size() - 1)
-                    sb.append(temp.get(i)).append(", ");
-                else sb.append(temp.get(i));
+        if ((!WBTempList.contains("无人即将生日") && !WBTempList.contains("没有相关数据")) ||
+                !BRTempList.contains("无人生日") && !BRTempList.contains("没有相关数据")) {
+            for (int i = 0; i < BRTempList.size(); i++) {
+                if (i != BRTempList.size() - 1)
+                    BRsb.append(BRTempList.get(i)).append(", ");
+                else BRsb.append(BRTempList.get(i));
 
             }
-            CTOptionPane.showFullScreenMessageDialog("即将生日提醒", "这些人->" + sb + "<-即将生日", 60);
+
+            for (int i = 0; i < WBTempList.size(); i++) {
+                if (i != WBTempList.size() - 1)
+                    WBsb.append(WBTempList.get(i)).append(", ");
+                else WBsb.append(WBTempList.get(i));
+
+            }
+            CTOptionPane.showFullScreenMessageDialog("生日祝福", String.format("今日生日:%s\n即将生日:%s", BRsb, WBsb), 60, 8);
         }
+
     }
 
     private java.util.List<String> getBRList() throws IOException {
@@ -186,6 +183,11 @@ public class BRPanel extends CTViewPanel {
         return List.of("无人生日");
     }
 
+    /**
+     * 获取即将生日列表
+     *
+     * @return 即将生日列表
+     */
     private java.util.List<String> getWBList() throws IOException {
 
         if (!birthdayPath.exists()) {
@@ -201,7 +203,7 @@ public class BRPanel extends CTViewPanel {
                 String birthday = infoObject.getString("birthday");
                 int remainderDay = DateTools.getRemainderDay(birthday);
                 if (remainderDay < 11 && remainderDay > 0) {
-                    nameList.add(name);
+                    nameList.add(String.format("%s(差%d天)", name, remainderDay));
                 }
             }
         });

@@ -633,17 +633,21 @@ public class CTOptionPane {
     }
 
     public static void showFullScreenMessageDialog(String title, String message) {
-        showFullScreenMessageDialog(title, message, 0);
+        showFullScreenMessageDialog(title, message, 0, 10);
     }
 
+    public static void showFullScreenMessageDialog(String title, String message, int maxShowTime) {
+        showFullScreenMessageDialog(title, message, maxShowTime, 10);
+    }
     /**
      * 全屏弹窗
      *
      * @param title    标题
      * @param message  内容
-     * @param waitTime 最大显示时间
+     * @param maxShowTime 最大显示时间
+     * @param waitTime 等待时间
      */
-    public static void showFullScreenMessageDialog(String title, String message, int waitTime) {
+    public static void showFullScreenMessageDialog(String title, String message, int maxShowTime, int waitTime) {
         JDialog messageDialog = new JDialog();
         messageDialog.setAlwaysOnTop(true);
         //设置屏幕大小
@@ -678,10 +682,10 @@ public class CTOptionPane {
         JPanel southPanel = new JPanel(new BorderLayout());
         southPanel.setOpaque(false);
 
-        CTProgressBar progressBar = new CTProgressBar(0, 1000);
+        CTProgressBar progressBar = new CTProgressBar(0, waitTime * 100);
         southPanel.add(progressBar, BorderLayout.NORTH);
 
-        CTTextButton exitButton = new CTTextButton("关闭(10s)", GetIcon.getIcon(CTOptionPane.class.getResource("/image/dark/exit_0.png"), 100, 100), false);
+        CTTextButton exitButton = new CTTextButton("关闭("+waitTime+"s)", GetIcon.getIcon(CTOptionPane.class.getResource("/image/dark/exit_0.png"), 100, 100), false);
         exitButton.setFont(CTFont.getCTFont(Font.PLAIN, CTFontSizeStyle.MORE_BIG));
         exitButton.setEnabled(false);
         southPanel.add(exitButton, BorderLayout.CENTER);
@@ -694,9 +698,9 @@ public class CTOptionPane {
 
                 new Thread(() -> {
                     try {
-                        for (int i = 0; i < 1000; i++) {
-                            progressBar.setValue(1000 - i);
-                            exitButton.setText("关闭(" + (int)(10 - i*0.01) + "s)");
+                        for (int i = 0; i < waitTime * 100; i++) {
+                            progressBar.setValue(waitTime * 100 - i);
+                            exitButton.setText("关闭(" + (int)(waitTime - i*0.01) + "s)");
                             Thread.sleep(10);
                         }
                     } catch (InterruptedException ex) {
@@ -720,8 +724,8 @@ public class CTOptionPane {
         new SwingWorker<Void, Void>() {
             @Override
             protected Void doInBackground() throws Exception {
-                if (waitTime > 0) {
-                    Timer t = new Timer(waitTime * 1000, e -> {
+                if (maxShowTime > 0) {
+                    Timer t = new Timer(maxShowTime * 1000, e -> {
 
                         if (messageDialog.isVisible())
                             messageDialog.dispose();
