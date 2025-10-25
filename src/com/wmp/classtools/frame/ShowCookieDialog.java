@@ -42,7 +42,7 @@ public class ShowCookieDialog extends JDialog{
     public ShowCookieDialog() throws IOException {
         Log.info.systemPrint("ShowCookieDialog", "正在初始化快速启动单元展示页...");
 
-        Log.info.loadingDialog.showDialog("ShowCookieDialog", "正在初始化快速启动单元展示页...");
+        Log.info.loading.showDialog("ShowCookieDialog", "正在初始化快速启动单元展示页...");
 
         initDialog();
 
@@ -50,7 +50,7 @@ public class ShowCookieDialog extends JDialog{
 
         initMenuBar();
 
-        Log.info.loadingDialog.closeDialog("ShowCookieDialog");
+        Log.info.loading.closeDialog("ShowCookieDialog");
         this.setVisible(true);
 
     }

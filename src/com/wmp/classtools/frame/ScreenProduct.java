@@ -27,8 +27,12 @@ public class ScreenProduct extends JDialog {
 
     private int index = 0;
 
+    private static final HashMap<String, String[]> panelLocationMap = new HashMap<>();
     public ScreenProduct() throws IOException {
         screenProduct = this;
+        panelLocationMap.put("北方", new String[]{"OtherTimeThingPanel", "WeatherInfoPanel"});
+        panelLocationMap.put("南方", new String[]{"ETPanel"});
+        panelLocationMap.put("中间", new String[]{"TimeViewPanel"});
 
         initWindow();
 
@@ -88,25 +92,43 @@ public class ScreenProduct extends JDialog {
         //刷新要显示的组件
         MainWindow.refreshPanel();
 
-        TreeMap<String, CTViewPanel[]> panelList = new TreeMap<>();
+        TreeMap<String, CTViewPanel[]> panelMap = new TreeMap<>();
 
         MainWindow.panelMap.forEach((key, value) -> {
             for (CTViewPanel ctViewPanel : value) {
 
+                if (Arrays.asList(panelLocationMap.get("北方")).contains(ctViewPanel.getID())){
+                    java.util.List<CTViewPanel> temp = new java.util.ArrayList<>(Arrays.asList(panelMap.getOrDefault("北方", new CTViewPanel[0])));
+                    temp.add(ctViewPanel);
+                    panelMap.put("北方", temp.toArray(new CTViewPanel[0]));
+                } else if ( Arrays.asList(panelLocationMap.get("南方")).contains(ctViewPanel.getID())) {
+                    java.util.List<CTViewPanel> temp = new java.util.ArrayList<>(Arrays.asList(panelMap.getOrDefault("南方", new CTViewPanel[0])));
+                    temp.add(ctViewPanel);
+                    panelMap.put("南方", temp.toArray(new CTViewPanel[0]));
+                } else if (Arrays.asList(panelLocationMap.get("中间")).contains(ctViewPanel.getID())) {
+                    java.util.List<CTViewPanel> temp = new java.util.ArrayList<>(Arrays.asList(panelMap.getOrDefault("中间", new CTViewPanel[0])));
+                    temp.add(ctViewPanel);
+                    panelMap.put("中间", temp.toArray(new CTViewPanel[0]));
+                } else {
+                    java.util.List<CTViewPanel> temp = new java.util.ArrayList<>(Arrays.asList(panelMap.getOrDefault("东方", new CTViewPanel[0])));
+                    temp.add(ctViewPanel);
+                    panelMap.put("东方", temp.toArray(new CTViewPanel[0]));
+                }
+/*
                 switch (ctViewPanel.getID()) {
-                    case "TimeViewPanel" -> panelList.put("中间", List.of(ctViewPanel).toArray(new CTViewPanel[0]));
-                    case "ETPanel" -> panelList.put("南方", List.of(ctViewPanel).toArray(new CTViewPanel[0]));
+                    case "TimeViewPanel" -> panelMap.put("中间", List.of(ctViewPanel).toArray(new CTViewPanel[0]));
+                    case "ETPanel" -> panelMap.put("南方", List.of(ctViewPanel).toArray(new CTViewPanel[0]));
                     case "OtherTimeThingPanel" ->
-                            panelList.put("北方", List.of(ctViewPanel).toArray(new CTViewPanel[0]));
+                            panelMap.put("北方", List.of(ctViewPanel).toArray(new CTViewPanel[0]));
                     default -> {
-                        if (panelList.containsKey("东方")) {
-                            CTViewPanel[] tempPanels = panelList.get("东方");
+                        if (panelMap.containsKey("东方")) {
+                            CTViewPanel[] tempPanels = panelMap.get("东方");
                             tempPanels = Arrays.copyOf(tempPanels, tempPanels.length + 1);
                             tempPanels[tempPanels.length - 1] = ctViewPanel;
-                            panelList.put("东方", tempPanels);
-                        } else panelList.put("东方", List.of(ctViewPanel).toArray(new CTViewPanel[0]));
+                            panelMap.put("东方", tempPanels);
+                        } else panelMap.put("东方", List.of(ctViewPanel).toArray(new CTViewPanel[0]));
                     }
-                }
+                }*/
             }
         });
 
@@ -139,7 +161,7 @@ public class ScreenProduct extends JDialog {
         TreeMap<String, Integer> countMap = new TreeMap<>();
 
         //将要显示的组件添加到显示列表
-        panelList.forEach((key, value) -> {
+        panelMap.forEach((key, value) -> {
             for (CTViewPanel panel : value) {
                 countMap.put(key, countMap.getOrDefault(key, 0) + 1);
                 gbc.gridy = countMap.get(key);

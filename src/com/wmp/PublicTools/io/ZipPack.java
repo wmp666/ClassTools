@@ -42,7 +42,7 @@ public class ZipPack {
         }
         int id = new Random().nextInt();
 
-        Log.info.loadingDialog.showDialog("ZipPack-解压" + id, "正在解压...");
+        Log.info.loading.showDialog("ZipPack-解压" + id, "正在解压...");
 
         new Thread(() -> {
             try {
@@ -56,7 +56,7 @@ public class ZipPack {
                 Log.err.print(ZipPack.class, "解压失败！", e);
                 throw new RuntimeException(e);
             }
-            Log.info.loadingDialog.closeDialog("ZipPack-解压" + id);
+            Log.info.loading.closeDialog("ZipPack-解压" + id);
             try {
                 runnable.run();
             }catch (Exception e) {
@@ -81,7 +81,7 @@ public class ZipPack {
             File outputFile = new File(outputFolder + "/" + fileName);
 
             Log.info.print("ZipPack-解压", "解压文件: " + outputFile);
-            Log.info.loadingDialog.updateDialog("ZipPack-解压" + id, "解压文件: " + outputFile);
+            Log.info.loading.updateDialog("ZipPack-解压" + id, "解压文件: " + outputFile);
             // 创建文件夹
             if (entry.isDirectory()) {
                 outputFile.mkdirs();
@@ -112,7 +112,7 @@ public class ZipPack {
 
         int id = new Random().nextInt();
 
-        Log.info.loadingDialog.showDialog("ZipPack-压缩" + id, "正在压缩...");
+        Log.info.loading.showDialog("ZipPack-压缩" + id, "正在压缩...");
 
 
         String sourceFolder = dataPath;
@@ -130,7 +130,7 @@ public class ZipPack {
             } catch (IOException e) {
                 Log.err.print(ZipPack.class, "压缩失败！", e);
             }
-            Log.info.loadingDialog.closeDialog("ZipPack-压缩" + id);
+            Log.info.loading.closeDialog("ZipPack-压缩" + id);
         }).start();
 
     }
@@ -156,7 +156,7 @@ public class ZipPack {
                 zos.closeEntry();
                 addFolderToZip(file, entryName + "/", zos, id);
             } else {
-                Log.info.loadingDialog.updateDialog("ZipPack-压缩" + id, "压缩文件: " + entryName);
+                Log.info.loading.updateDialog("ZipPack-压缩" + id, "压缩文件: " + entryName);
                 try (FileInputStream fis = new FileInputStream(file)) {
                     ZipEntry entry = new ZipEntry(entryName);
                     zos.putNextEntry(entry);

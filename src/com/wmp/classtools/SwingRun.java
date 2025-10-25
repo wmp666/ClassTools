@@ -5,6 +5,7 @@ import com.wmp.PublicTools.CTInfo;
 import com.wmp.PublicTools.EasterEgg.EasterEgg;
 import com.wmp.PublicTools.printLog.Log;
 import com.wmp.PublicTools.update.GetNewerVersion;
+import com.wmp.classTools.frame.CTTools;
 import com.wmp.classTools.frame.LoadingWindow;
 import com.wmp.classTools.frame.MainWindow;
 
@@ -41,7 +42,7 @@ public class SwingRun {
 
 
         //loadingWindow.setVisible(true);
-
+        new CTTools();
 
         new MainWindow(CTInfo.DATA_PATH);
         loadingWindow.setVisible(false);

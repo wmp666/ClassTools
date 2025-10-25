@@ -1,10 +1,8 @@
 package com.wmp.PublicTools.io;
 
 import com.wmp.PublicTools.printLog.Log;
-import com.wmp.classTools.CTComponent.CTProgressBar;
 import com.wmp.classTools.frame.tools.cookie.CookieSets;
 
-import javax.security.auth.callback.Callback;
 import javax.swing.*;
 import java.io.*;
 import java.net.URI;
@@ -153,7 +151,7 @@ public class IOForInfo {
     public static void deleteDirectoryRecursively(Path path, Runnable callback) {
         Log.info.print("删除文件", "删除");
 
-        Log.info.loadingDialog.showDialog("文件删除", "正在删除文件...");
+        Log.info.loading.showDialog("文件删除", "正在删除文件...");
 
         File file = new File(path.toUri());
 
@@ -190,7 +188,7 @@ public class IOForInfo {
 
                 @Override
                 protected void done() {
-                    Log.info.loadingDialog.closeDialog("文件删除");
+                    Log.info.loading.closeDialog("文件删除");
                     if (callback != null) {
                         callback.run();
                     }
@@ -219,13 +217,13 @@ public class IOForInfo {
     public static void copyFile(Path source, Path target) throws IOException {
 
         int id = new Random().nextInt();
-        Log.info.loadingDialog.showDialog("更新文件" + id, "正在复制文件...");
+        Log.info.loading.showDialog("更新文件" + id, "正在复制文件...");
 
         File sourceFile =source.toFile();
         File targetFile = target.toFile();
 
         if(!sourceFile.exists()) {
-            Log.info.loadingDialog.closeDialog("更新文件" + id);
+            Log.info.loading.closeDialog("更新文件" + id);
             Log.err.print(IOForInfo.class, "源文件不存在");
             return;
         }
@@ -253,8 +251,10 @@ public class IOForInfo {
             Log.info.print("DownloadURLFile-下载", "拷贝进度: " + ((total2 * 100L) / sourceFile.length()));
             // 更新进度条
             int finalTotal = (int) (total2 * 100 / sourceFile.length());
-            Log.info.loadingDialog.updateDialog("更新文件" + id,  finalTotal);
+            Log.info.loading.updateDialog("更新文件" + id,  finalTotal);
         }
+
+        Log.info.loading.closeDialog("更新文件" + id);
     }
 
     @Override

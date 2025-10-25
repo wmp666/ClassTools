@@ -14,6 +14,7 @@ import com.wmp.classTools.importPanel.eastereggtext.ETPanel;
 import com.wmp.classTools.importPanel.finalPanel.FinalPanel;
 import com.wmp.classTools.importPanel.timeView.OtherTimeThingPanel;
 import com.wmp.classTools.importPanel.timeView.TimeViewPanel;
+import com.wmp.classTools.importPanel.weatherInfo.panel.WeatherInfoPanel;
 
 import javax.swing.*;
 import java.awt.*;
@@ -45,7 +46,7 @@ public class MainWindow extends JDialog {
 
         mainWindow = this;
 
-        panelLocationMap.put("上方", new String[]{"TimeViewPanel", "OtherTimeThingPanel"});
+        panelLocationMap.put("上方", new String[]{"TimeViewPanel", "OtherTimeThingPanel", "WeatherInfoPanel"});
         panelLocationMap.put("下方", new String[]{"ETPanel", "FinalPanel"});
 
 
@@ -58,6 +59,7 @@ public class MainWindow extends JDialog {
         //添加组件
         TimeViewPanel timeViewPanel = new TimeViewPanel();
         OtherTimeThingPanel otherTimeThingPanel = new OtherTimeThingPanel();
+        WeatherInfoPanel weatherInfoPanel = new WeatherInfoPanel();
         ETPanel eEPanel = new ETPanel();
         FinalPanel finalPanel = new FinalPanel();
 
@@ -78,6 +80,7 @@ public class MainWindow extends JDialog {
 
         allPanelList.add(timeViewPanel); // 添加到列表中以便统一管理
         allPanelList.add(otherTimeThingPanel);
+        allPanelList.add(weatherInfoPanel);
         allPanelList.add(eEPanel);
         allPanelList.add(finalPanel);
 
@@ -241,7 +244,10 @@ public class MainWindow extends JDialog {
                     for (CTViewPanel panel : value) {
                         countMap.put(key, countMap.getOrDefault(key, 0) + 1);
                         gbc.gridy = countMap.get(key);
+
+                        gbc.fill = GridBagConstraints.NONE;
                         if (key.equals("上方")) {
+                            gbc.fill = GridBagConstraints.BOTH;
                             northPanel.add(panel, gbc);
                         } else if (key.equals("下方")) {
                             southPanel.add(panel, gbc);

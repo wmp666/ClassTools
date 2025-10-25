@@ -60,6 +60,8 @@ public class CTIconButton extends JButton implements ActionListener {
 
 
             this.setIcon(defaultIcon);
+
+            this.setSize(defaultIcon.getIconWidth(), defaultIcon.getIconHeight());
         }
 
 
@@ -70,7 +72,7 @@ public class CTIconButton extends JButton implements ActionListener {
         this.setFont(CTFont.getCTFont(-1, CTFontSizeStyle.MORE_SMALL));
         this.setBackground(CTColor.backColor);
         this.setForeground(CTColor.textColor);
-        this.setSize(defaultIcon.getIconWidth(), defaultIcon.getIconHeight());
+
         this.callback = callback;
 
         this.addActionListener(this);

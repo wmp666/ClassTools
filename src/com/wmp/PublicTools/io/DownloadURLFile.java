@@ -4,7 +4,6 @@ import com.wmp.PublicTools.CTInfo;
 import com.wmp.PublicTools.UITools.CTColor;
 import com.wmp.PublicTools.UITools.CTFont;
 import com.wmp.PublicTools.UITools.CTFontSizeStyle;
-import com.wmp.PublicTools.UITools.GetIcon;
 import com.wmp.PublicTools.printLog.Log;
 import com.wmp.classTools.CTComponent.CTProgressBar;
 
@@ -13,7 +12,6 @@ import java.awt.*;
 import java.io.*;
 import java.net.*;
 import java.nio.charset.StandardCharsets;
-import java.util.Objects;
 import java.util.Random;
 
 public class DownloadURLFile {
@@ -32,7 +30,7 @@ public class DownloadURLFile {
         CTProgressBar progressBar = new CTProgressBar(0, 100);
 
         if (panel == null) {
-            Log.info.loadingDialog.showDialog("文件下载" + id, "正在下载...");
+            Log.info.loading.showDialog("文件下载" + id, "正在下载...");
         }else{
             // 设置进度对话框
             progressBar.setForeground(CTColor.mainColor);
@@ -72,7 +70,7 @@ public class DownloadURLFile {
                 label.setText("正在初始化数据，请稍候...");
                 panel.repaint();
             }else{
-                Log.info.loadingDialog.updateDialog("文件下载" + id, "正在初始化数据，请稍候...");
+                Log.info.loading.updateDialog("文件下载" + id, "正在初始化数据，请稍候...");
             }
 
             // 开始下载
@@ -104,7 +102,7 @@ public class DownloadURLFile {
                     progressBar.setValue(0);
                     panel.repaint();
                 } else {
-                    Log.info.loadingDialog.updateDialog("文件下载" + id, "正在下载文件 0KB/0KB");
+                    Log.info.loading.updateDialog("文件下载" + id, "正在下载文件 0KB/0KB");
 
                 }
 
@@ -145,7 +143,7 @@ public class DownloadURLFile {
                     Log.info.print("DownloadURLFile-下载", "下载文件 " + v);
                     label.setText("下载文件 " + v);
                     if (panel == null) {
-                        Log.info.loadingDialog.updateDialog("文件下载" + id, v,  progress);
+                        Log.info.loading.updateDialog("文件下载" + id, v,  progress);
 
                     }else{
                         SwingUtilities.invokeLater(() -> progressBar.setValue(progress));
@@ -155,7 +153,7 @@ public class DownloadURLFile {
                 in.close();
 
                 if (panel == null) {
-                    Log.info.loadingDialog.updateDialog("文件下载" + id, "正在拷贝...");
+                    Log.info.loading.updateDialog("文件下载" + id, "正在拷贝...");
                 }else{
                     label.setText("正在拷贝，请稍候...");
                     progressBar.setValue(0);
@@ -172,7 +170,7 @@ public class DownloadURLFile {
                     if (expectedSHA256 != null) {
                         label.setText("正在校验文件完整性...");
                         if (panel == null) {
-                            Log.info.loadingDialog.updateDialog("文件下载" + id, "正在校验文件完整性...");
+                            Log.info.loading.updateDialog("文件下载" + id, "正在校验文件完整性...");
                         }
 
                         //boolean md5Verified = expectedMD5 == null || FileChecksum.verifyMD5(targetFile, expectedMD5);
@@ -209,7 +207,7 @@ public class DownloadURLFile {
                         int finalTotal = (int) (total2 * 100 / fileSize);
                         if (panel == null) {
 
-                            Log.info.loadingDialog.updateDialog("文件下载" + id,  finalTotal);
+                            Log.info.loading.updateDialog("文件下载" + id,  finalTotal);
                         }else{
                             SwingUtilities.invokeLater(() -> progressBar.setValue(finalTotal));
                         }
@@ -240,7 +238,7 @@ public class DownloadURLFile {
         if (panel != null) {
             panel.removeAll();
         } else {
-            Log.info.loadingDialog.closeDialog("文件下载" + id);
+            Log.info.loading.closeDialog("文件下载" + id);
         }
         //}).start();
     }

@@ -1,4 +1,4 @@
-package com.wmp.classTools.test;
+package com.wmp.classTools.test.uiTest;
 
 import com.wmp.Main;
 import com.wmp.PublicTools.UITools.CTColor;

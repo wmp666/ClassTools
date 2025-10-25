@@ -26,7 +26,7 @@ public class GetIcon {
     }
 
     public static ImageIcon getImageIcon(URL path, int width, int height, boolean useDPI) {
-        return (ImageIcon) getIcon(path, width, height);
+        return (ImageIcon) getIcon(path, width, height, useDPI);
     }
 
     public static Icon getIcon(URL path, int width, int height) {

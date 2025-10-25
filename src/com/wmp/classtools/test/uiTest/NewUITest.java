@@ -1,4 +1,4 @@
-package com.wmp.classTools.test;
+package com.wmp.classTools.test.uiTest;
 
 import com.wmp.classTools.CTComponent.CTProgressBar;
 

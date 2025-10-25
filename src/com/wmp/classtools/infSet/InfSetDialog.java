@@ -41,7 +41,7 @@ public class InfSetDialog extends JDialog {
     // 添加文件路径参数
     public InfSetDialog(String showPanel) throws Exception {
         Log.info.systemPrint("设置", "正在初始化设置...");
-        Log.info.loadingDialog.showDialog("设置", "正在初始化设置...");
+        Log.info.loading.showDialog("设置", "正在初始化设置...");
 
         this.openedPanel = showPanel;
 
@@ -76,14 +76,16 @@ public class InfSetDialog extends JDialog {
 
         initSaveButton();
         ctSetsPanelList.forEach(ctSetsPanel -> {
-            if (ctSetsPanel.getName().equals(this.openedPanel))
+            String name = ctSetsPanel.getName();
+            if (name == null) return;
+            if (name.equals(this.openedPanel))
                 c.add(ctSetsPanel, BorderLayout.CENTER);
         });
         c.add(initSetsPanelSwitchBar(), BorderLayout.WEST);
 
         this.pack();
 
-        Log.info.loadingDialog.closeDialog("设置");
+        Log.info.loading.closeDialog("设置");
         this.setVisible(true);
     }
 
@@ -92,7 +94,11 @@ public class InfSetDialog extends JDialog {
         String[] list = new String[this.ctSetsPanelList.size()];
         TreeMap<String, CTSetsPanel> map = new TreeMap<>();
         for (int i = 0; i < list.length; i++) {
-            list[i] = this.ctSetsPanelList.get(i).getName();
+            String name = this.ctSetsPanelList.get(i).getName();
+            if (name == null) {
+                name = "未命名";
+            }
+            list[i] = name;
             map.put(list[i], this.ctSetsPanelList.get(i));
         }
 

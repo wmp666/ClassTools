@@ -1,4 +1,4 @@
-package com.wmp.classTools.test;
+package com.wmp.classTools.test.uiTest;
 
 import com.wmp.PublicTools.CTInfo;
 import com.wmp.PublicTools.io.IOForInfo;

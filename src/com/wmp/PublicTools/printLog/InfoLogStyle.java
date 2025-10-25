@@ -12,7 +12,7 @@ import java.util.Arrays;
 
 public class InfoLogStyle extends PrintLogStyle {
 
-    public final LoadingDialog loadingDialog = new LoadingDialog();
+    public final LoadingDialog loading = new LoadingDialog();
 
     public InfoLogStyle(LogStyle style) {
         super(style);

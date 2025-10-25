@@ -1,4 +1,4 @@
-package com.wmp.classTools.test;
+package com.wmp.classTools.test.uiTest;
 
 import javax.swing.*;
 import javax.swing.border.*;
