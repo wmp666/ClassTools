@@ -5,7 +5,7 @@ import com.wmp.PublicTools.UITools.CTFont;
 import com.wmp.PublicTools.UITools.CTFontSizeStyle;
 import com.wmp.PublicTools.io.IOForInfo;
 import com.wmp.PublicTools.printLog.Log;
-import com.wmp.classTools.CTComponent.CTSetsPanel;
+import com.wmp.classTools.CTComponent.CTPanel.CTSetsPanel;
 
 import javax.swing.*;
 import java.awt.*;

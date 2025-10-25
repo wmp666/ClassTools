@@ -120,11 +120,6 @@ public class IOForInfo {
                 new FileOutputStream(file), StandardCharsets.UTF_8)) {// 明确指定编码
             Log.info.print("IOForInfo-设置数据", file.getPath() + "文件开始写入");
 
-            //判断内容是否为空
-            if (infos.length == 0 || infos[0].isEmpty()) {
-                Log.warn.print("IOForInfo-设置数据", file.getPath() + "文件内容为空");
-            }
-
 
             String inf = String.join("\n", infos);
             Log.info.print("IOForInfo-设置数据", "数据内容: " + inf);
@@ -228,6 +223,14 @@ public class IOForInfo {
 
         File sourceFile =source.toFile();
         File targetFile = target.toFile();
+
+        if(!sourceFile.exists()) {
+            Log.info.loadingDialog.closeDialog("更新文件" + id);
+            Log.err.print(IOForInfo.class, "源文件不存在");
+            return;
+        }
+
+
         if (!targetFile.exists()) {
             targetFile.getParentFile().mkdirs();
             targetFile.createNewFile();

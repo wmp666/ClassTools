@@ -9,7 +9,7 @@ import com.wmp.PublicTools.UITools.PeoPanelProcess;
 import com.wmp.PublicTools.io.IOForInfo;
 import com.wmp.PublicTools.printLog.Log;
 import com.wmp.classTools.CTComponent.CTOptionPane;
-import com.wmp.classTools.CTComponent.CTPanel;
+import com.wmp.classTools.CTComponent.CTPanel.CTViewPanel;
 import com.wmp.classTools.extraPanel.reminderBir.settings.BRSetsPanel;
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -24,7 +24,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 
-public class BRPanel extends CTPanel {
+public class BRPanel extends CTViewPanel {
 
     private final JLabel label = new JLabel();
 

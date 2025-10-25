@@ -1,13 +1,12 @@
 package com.wmp.classTools.importPanel.timeView;
 
-import com.nlf.calendar.Lunar;
 import com.wmp.PublicTools.CTInfo;
-import com.wmp.PublicTools.DateTools;
 import com.wmp.PublicTools.UITools.CTColor;
 import com.wmp.PublicTools.UITools.CTFont;
 import com.wmp.PublicTools.UITools.CTFontSizeStyle;
 import com.wmp.PublicTools.printLog.Log;
 import com.wmp.classTools.CTComponent.*;
+import com.wmp.classTools.CTComponent.CTPanel.CTViewPanel;
 import com.wmp.classTools.importPanel.timeView.settings.ScreenProductSetsPanel;
 
 import javax.swing.*;
@@ -16,14 +15,12 @@ import java.io.IOException;
 import java.net.MalformedURLException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
-import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
-public class TimeViewPanel extends CTPanel {
+public class TimeViewPanel extends CTViewPanel {
 
     private final JLabel timeView = new JLabel();
-    private final JLabel other = new JLabel();
 
     private final Thread timeThread = new Thread(() -> {
 
@@ -36,30 +33,6 @@ public class TimeViewPanel extends CTPanel {
             timeView.setHorizontalAlignment(JLabel.CENTER);
             timeView.setText(dateFormat02.format(date02));
 
-            Calendar calendar = Calendar.getInstance();
-            String week = "周" + new String[]{"天", "一", "二", "三", "四", "五", "六"}[calendar.get(Calendar.DAY_OF_WEEK) - 1];
-
-            Lunar lunar = Lunar.fromDate(new Date());
-
-
-            StringBuilder sb = new StringBuilder();
-
-            if (lunar.getMonth() < 0) {
-                sb.append("闰");
-            }
-            //周六 八月廿七 乙巳[蛇]年 大雪
-            sb.append(week)
-                    .append(" ")
-                    .append(DateTools.months[lunar.getMonth() - 1])//月
-                    .append(DateTools.days[lunar.getDay() - 1])//日
-                    .append(" ")
-                    .append(lunar.getYearInGanZhi())
-                    .append("[")
-                    .append(lunar.getYearShengXiao())
-                    .append("]年 ")
-                    .append(lunar.getJieQi());
-
-            other.setText(sb.toString());
             try {
                 Thread.sleep(300);
             } catch (InterruptedException e) {
@@ -96,13 +69,6 @@ public class TimeViewPanel extends CTPanel {
         //timeView.setBackground(new Color(0x0ECECED, true));
         timeView.setForeground(CTColor.mainColor);
         this.add(timeView, BorderLayout.CENTER);
-
-        Calendar calendar = Calendar.getInstance();
-
-        other.setText(String.format("星期%s", calendar.get(Calendar.DAY_OF_WEEK)));
-        other.setFont(CTFont.getCTFont(Font.BOLD, CTFontSizeStyle.BIG));
-        other.setForeground(CTColor.mainColor);
-        this.add(other, BorderLayout.SOUTH);
 
         CTIconButton viewTimeButton = new CTIconButton("全屏显示时间",
                 "/image/%s/view_0.png", () -> {

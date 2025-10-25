@@ -1,20 +1,16 @@
 package com.wmp.classTools.extraPanel.countdown.settings;
 
 import com.wmp.PublicTools.DateTools;
-import com.wmp.PublicTools.UITools.CTColor;
-import com.wmp.PublicTools.UITools.CTFont;
-import com.wmp.PublicTools.UITools.CTFontSizeStyle;
 import com.wmp.PublicTools.UITools.GetIcon;
 import com.wmp.PublicTools.printLog.Log;
 import com.wmp.classTools.CTComponent.*;
+import com.wmp.classTools.CTComponent.CTPanel.CTSetsPanel;
 import com.wmp.classTools.extraPanel.countdown.CDInfoControl;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Arrays;
 
 public class CountDownSetsPanel extends CTSetsPanel {
 

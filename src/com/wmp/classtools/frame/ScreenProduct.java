@@ -7,7 +7,7 @@ import com.wmp.PublicTools.UITools.CTFont;
 import com.wmp.PublicTools.UITools.CTFontSizeStyle;
 import com.wmp.PublicTools.printLog.Log;
 import com.wmp.classTools.CTComponent.CTIconButton;
-import com.wmp.classTools.CTComponent.CTPanel;
+import com.wmp.classTools.CTComponent.CTPanel.CTViewPanel;
 import com.wmp.classTools.frame.tools.screenProduct.SetsScrInfo;
 
 import javax.imageio.ImageIO;
@@ -94,18 +94,18 @@ public class ScreenProduct extends JDialog {
         gbc.gridy = 0;
         gbc.fill = GridBagConstraints.VERTICAL;
         gbc.anchor = GridBagConstraints.WEST;// 左对齐
-        for (CTPanel ctPanel : MainWindow.allPanelList) {
+        for (CTViewPanel ctViewPanel : MainWindow.allPanelList) {
 
-            String name = Objects.isNull(ctPanel.getID()) ? "CTPanel" : ctPanel.getID();
+            String name = Objects.isNull(ctViewPanel.getID()) ? "CTViewPanel" : ctViewPanel.getID();
 
             if (name.equals("TimeViewPanel")) continue;
 
             //添加ETPanel - 下方
-            if (name.equals("ETPanel")) c.add(ctPanel, BorderLayout.SOUTH);
+            if (name.equals("ETPanel")) c.add(ctViewPanel, BorderLayout.SOUTH);
             else {
                 gbc.gridy++;
-                ctPanel.setOpaque(false);
-                tempPanel.add(ctPanel, gbc);
+                ctViewPanel.setOpaque(false);
+                tempPanel.add(ctViewPanel, gbc);
             }
 
         }

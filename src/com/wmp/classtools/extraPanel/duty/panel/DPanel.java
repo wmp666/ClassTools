@@ -9,8 +9,8 @@ import com.wmp.PublicTools.io.IOForInfo;
 import com.wmp.PublicTools.io.InfProcess;
 import com.wmp.PublicTools.printLog.Log;
 import com.wmp.classTools.CTComponent.CTIconButton;
-import com.wmp.classTools.CTComponent.CTPanel;
-import com.wmp.classTools.CTComponent.CTSetsPanel;
+import com.wmp.classTools.CTComponent.CTPanel.CTViewPanel;
+import com.wmp.classTools.CTComponent.CTPanel.CTSetsPanel;
 import com.wmp.classTools.extraPanel.duty.settings.DutyListSetsPanel;
 import com.wmp.classTools.extraPanel.duty.type.DutyDay;
 
@@ -20,7 +20,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 
-public class DPanel extends CTPanel {
+public class DPanel extends CTViewPanel {
 
 
     private final ArrayList<DutyDay> DutyList = new ArrayList<>();
@@ -98,7 +98,7 @@ public class DPanel extends CTPanel {
 
             CTIconButton last = new CTIconButton("上一天",
                     "/image/%s/last_0.png", () -> {
-                int i = Log.info.showChooseDialog(this, "CTPanel-DutyPanel-日期切换", "确认切换至上一天");
+                int i = Log.info.showChooseDialog(this, "CTViewPanel-DutyPanel-日期切换", "确认切换至上一天");
                 if (i == 0) {
                     if (index > 0) index--;
                     else index = DutyList.size() - 1;
@@ -120,7 +120,7 @@ public class DPanel extends CTPanel {
             CTIconButton next = new CTIconButton("下一天",
                     "/image/%s/next_0.png", () -> {
 
-                int i = Log.info.showChooseDialog(this, "CTPanel-DutyPanel-日期切换", "确认切换至下一天");
+                int i = Log.info.showChooseDialog(this, "CTViewPanel-DutyPanel-日期切换", "确认切换至下一天");
 
                 if (i == 0) {
                     if (index < DutyList.size() - 1) index++;

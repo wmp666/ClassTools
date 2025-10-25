@@ -1,4 +1,4 @@
-package com.wmp.classTools.CTComponent;
+package com.wmp.classTools.CTComponent.CTPanel;
 
 public abstract class CTSetsPanel extends CTPanel {
 

@@ -1,4 +1,4 @@
-package com.wmp.classTools.CTComponent;
+package com.wmp.classTools.CTComponent.CTPanel;
 
 import com.wmp.PublicTools.UITools.CTColor;
 
@@ -7,12 +7,12 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-public abstract class CTPanel extends JPanel{
+public abstract class CTViewPanel extends CTPanel{
 
     private List<CTSetsPanel> ctSetsPanelList = new ArrayList<>();
-    private String ID = "CTPanel";
 
-    public CTPanel()
+
+    public CTViewPanel()
     {
         super();
         this.setBackground(CTColor.backColor);
@@ -26,13 +26,7 @@ public abstract class CTPanel extends JPanel{
         this.ctSetsPanelList = ctSetsPanelList;
     }
 
-    public String getID() {
-        return ID;
+    public CTViewPanel getScreenProductViewPanel(){
+        return this;
     }
-
-    public void setID(String ID) {
-        this.ID = ID;
-    }
-
-    public abstract void refresh() throws IOException;
 }

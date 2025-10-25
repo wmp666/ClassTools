@@ -18,10 +18,10 @@ import java.util.Random;
 
 public class DownloadURLFile {
     public static void downloadWebFile(Window parent, JPanel panel, String downloadUrl, String dataPath) {
-        downloadWebFile(parent, panel, downloadUrl, dataPath, null, null);
+        downloadWebFile(parent, panel, downloadUrl, dataPath, null);
     }
     
-    public static void downloadWebFile(Window parent, JPanel panel, String downloadUrl, String dataPath, String expectedMD5, String expectedSHA256) {
+    public static void downloadWebFile(Window parent, JPanel panel, String downloadUrl, String dataPath, String expectedSHA256) {
         int id = new Random().nextInt();
 
         Log.info.print("DownloadURLFile-下载", "开始下载");
@@ -165,6 +165,27 @@ public class DownloadURLFile {
                 //将文件移至app
                 try {
                     File sourceFile = new File(appDir.getPath() + "/" + fileNameFromUrl);
+                    FileInputStream sourceIn = new FileInputStream(sourceFile);
+
+
+                    // 文件完整性校验
+                    if (expectedSHA256 != null) {
+                        label.setText("正在校验文件完整性...");
+                        if (panel == null) {
+                            Log.info.loadingDialog.updateDialog("文件下载" + id, "正在校验文件完整性...");
+                        }
+
+                        //boolean md5Verified = expectedMD5 == null || FileChecksum.verifyMD5(targetFile, expectedMD5);
+                        boolean sha256Verified = expectedSHA256 == null || FileChecksum.verifySHA256(sourceFile, expectedSHA256);
+
+                        if (!sha256Verified) {
+                            Log.err.print(parent, "DownloadURLFile-下载", "文件完整性校验失败，请重新下载！");
+                            sourceFile.delete(); // 删除损坏的文件
+                            return;
+                        } else {
+                            Log.info.print("DownloadURLFile-下载", "文件完整性校验通过");
+                        }
+                    }
 
                     File targetFile = new File(dataPath + "/" + fileNameFromUrl);
                     if (!targetFile.exists()) {
@@ -172,29 +193,7 @@ public class DownloadURLFile {
                         targetFile.createNewFile();
                     }
 
-
                     FileOutputStream targetOut = new FileOutputStream(targetFile);
-                    FileInputStream sourceIn = new FileInputStream(sourceFile);
-
-                    // 文件完整性校验
-                    if (expectedMD5 != null || expectedSHA256 != null) {
-                        label.setText("正在校验文件完整性...");
-                        if (panel == null) {
-                            Log.info.loadingDialog.updateDialog("文件下载" + id, "正在校验文件完整性...");
-                        }
-
-                        boolean md5Verified = expectedMD5 == null || FileChecksum.verifyMD5(targetFile, expectedMD5);
-                        boolean sha256Verified = expectedSHA256 == null || FileChecksum.verifySHA256(targetFile, expectedSHA256);
-
-                        if (!md5Verified || !sha256Verified) {
-                            Log.err.print(parent, "DownloadURLFile-下载", "文件完整性校验失败，请重新下载！");
-                            targetFile.delete(); // 删除损坏的文件
-                            return;
-                        } else {
-                            Log.info.print("DownloadURLFile-下载", "文件完整性校验通过");
-                        }
-                    }
-
 
                     byte[] temp = new byte[1024 * 10];
                     int total2 = 0;
@@ -215,6 +214,12 @@ public class DownloadURLFile {
                             SwingUtilities.invokeLater(() -> progressBar.setValue(finalTotal));
                         }
                     }
+
+
+
+
+
+
                     
 
 

@@ -8,7 +8,7 @@ import com.wmp.PublicTools.UITools.CTFontSizeStyle;
 import com.wmp.PublicTools.UITools.PeoPanelProcess;
 import com.wmp.PublicTools.printLog.Log;
 import com.wmp.classTools.CTComponent.CTOptionPane;
-import com.wmp.classTools.CTComponent.CTPanel;
+import com.wmp.classTools.CTComponent.CTPanel.CTViewPanel;
 import com.wmp.classTools.extraPanel.classForm.CFInfoControl;
 import com.wmp.classTools.extraPanel.classForm.settings.ClassFormSetsPanel;
 
@@ -18,7 +18,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ClassFormPanel extends CTPanel {
+public class ClassFormPanel extends CTViewPanel {
 
     private ArrayList<String> oldNowClassNameList = new ArrayList<>();
 

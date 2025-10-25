@@ -11,6 +11,7 @@ import com.wmp.PublicTools.printLog.Log;
 import com.wmp.PublicTools.videoView.MediaPlayer;
 import com.wmp.PublicTools.web.GetWebInf;
 import com.wmp.classTools.CTComponent.CTList;
+import com.wmp.classTools.CTComponent.CTRoundTextButton;
 import com.wmp.classTools.CTComponent.Menu.CTMenuItem;
 import com.wmp.classTools.CTComponent.Menu.CTPopupMenu;
 import org.commonmark.parser.Parser;
@@ -171,33 +172,45 @@ public class ShowHelpDoc extends JFrame {
                     }
                 });
 
-                CTPopupMenu popupMenu = new CTPopupMenu();
+                JDialog helpDocDialog = new JDialog(this, "下载详细文档");
+                helpDocDialog.setLayout(new GridLayout(0,1));
+                //CTPopupMenu popupMenu = new CTPopupMenu();
 
-                CTMenuItem helpDocMenuItem = new CTMenuItem("帮助文档(helpdoc.docx)");
-                helpDocMenuItem.addActionListener(e1 -> {
-                    new SwingWorker<Void, Void>() {
-                        @Override
-                        protected Void doInBackground() throws Exception {
-                            DownloadURLFile.downloadWebFile(ShowHelpDoc.this, null, helpDocMap.get("helpdoc.docx"), CTInfo.TEMP_PATH + "help\\WebFile");
-                            return null;
-                        }
+                helpDocMap.forEach((name, url) -> {
 
-                        @Override
-                        protected void done() {
-                            try {
-                                MediaPlayer.playOther(CTInfo.TEMP_PATH + "help\\WebFile\\helpdoc.docx");
-                            } catch (IOException ex) {
-                                Log.err.print(getClass(), "", ex);
-                                throw new RuntimeException(ex);
+                    String tempName = name;
+
+                    if (name.contains("help")) tempName = "帮助文档";
+
+                    CTRoundTextButton helpDocMenuItem = new CTRoundTextButton(tempName + "(" + name + ")");
+                    helpDocMenuItem.addActionListener(e1 -> {
+                        new SwingWorker<Void, Void>() {
+                            @Override
+                            protected Void doInBackground() throws Exception {
+                                DownloadURLFile.downloadWebFile(ShowHelpDoc.this, null, url, CTInfo.TEMP_PATH + "help\\WebFile");
+                                return null;
                             }
-                        }
 
-                    }.execute();
+                            @Override
+                            protected void done() {
+                                try {
+                                    MediaPlayer.playOther(CTInfo.TEMP_PATH + "help\\WebFile\\" + name);
+                                } catch (IOException ex) {
+                                    Log.err.print(getClass(), "", ex);
+                                    throw new RuntimeException(ex);
+                                }
+                            }
 
+                        }.execute();
+
+                    });
+                    helpDocDialog.add(helpDocMenuItem);
                 });
-                popupMenu.add(helpDocMenuItem);
 
-                popupMenu.show(downloadDocButton, 0, downloadDocButton.getHeight());
+
+                helpDocDialog.pack();
+                helpDocDialog.setLocationRelativeTo(this);
+                helpDocDialog.setVisible(true);
             } catch (Exception ex) {
                 Log.err.print(getClass(), "", ex);
                 throw new RuntimeException(ex);

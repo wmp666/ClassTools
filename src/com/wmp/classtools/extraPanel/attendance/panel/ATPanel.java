@@ -4,10 +4,10 @@ import com.wmp.PublicTools.CTInfo;
 import com.wmp.PublicTools.UITools.*;
 import com.wmp.PublicTools.io.IOForInfo;
 import com.wmp.PublicTools.printLog.Log;
-import com.wmp.classTools.CTComponent.CTPanel;
+import com.wmp.classTools.CTComponent.CTPanel.CTViewPanel;
 import com.wmp.classTools.CTComponent.Menu.CTMenu;
 import com.wmp.classTools.CTComponent.Menu.CTPopupMenu;
-import com.wmp.classTools.CTComponent.CTSetsPanel;
+import com.wmp.classTools.CTComponent.CTPanel.CTSetsPanel;
 import com.wmp.classTools.CTComponent.CTTextButton;
 import com.wmp.classTools.extraPanel.attendance.settings.AllStuSetsPanel;
 import com.wmp.classTools.extraPanel.attendance.settings.LeaveListSetsPanel;
@@ -24,7 +24,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-public class ATPanel extends CTPanel {
+public class ATPanel extends CTViewPanel {
 
     private final JLabel LateStuLabel = new JLabel();
     private final JLabel AttendStuLabel = new JLabel();

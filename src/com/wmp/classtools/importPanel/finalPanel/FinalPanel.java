@@ -7,7 +7,7 @@ import com.wmp.PublicTools.UITools.CTColor;
 import com.wmp.PublicTools.printLog.Log;
 import com.wmp.PublicTools.update.GetNewerVersion;
 import com.wmp.classTools.CTComponent.CTIconButton;
-import com.wmp.classTools.CTComponent.CTPanel;
+import com.wmp.classTools.CTComponent.CTPanel.CTViewPanel;
 import com.wmp.classTools.CTComponent.Menu.CTPopupMenu;
 import com.wmp.classTools.frame.AboutDialog;
 import com.wmp.classTools.frame.MainWindow;
@@ -22,7 +22,7 @@ import java.util.ArrayList;
 import java.util.concurrent.atomic.AtomicInteger;
 
 
-public class FinalPanel extends CTPanel {
+public class FinalPanel extends CTViewPanel {
 
     public static final ArrayList<CTIconButton> allButList = new ArrayList<>();
 
@@ -163,7 +163,7 @@ public class FinalPanel extends CTPanel {
         if (!CTInfo.isError && CTInfo.canExit && !Main.allArgs.get("screenProduct:show").contains(Main.argsList)) {
             CTIconButton exit = new CTIconButton("关闭",
                     "/image/%s/exit_0.png", () -> {
-                int i = Log.info.showChooseDialog(null, "CTPanel-按钮组", "确认退出?");
+                int i = Log.info.showChooseDialog(null, "CTViewPanel-按钮组", "确认退出?");
                 if (i == JOptionPane.YES_OPTION) {
                     Log.exit(0);
                 }

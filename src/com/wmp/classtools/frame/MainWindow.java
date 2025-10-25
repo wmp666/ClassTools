@@ -1,11 +1,10 @@
 package com.wmp.classTools.frame;
 
-import com.wmp.Main;
 import com.wmp.PublicTools.CTInfo;
 import com.wmp.PublicTools.UITools.CTColor;
 import com.wmp.PublicTools.printLog.Log;
 import com.wmp.classTools.CTComponent.CTBorderFactory;
-import com.wmp.classTools.CTComponent.CTPanel;
+import com.wmp.classTools.CTComponent.CTPanel.CTViewPanel;
 import com.wmp.classTools.extraPanel.attendance.panel.ATPanel;
 import com.wmp.classTools.extraPanel.classForm.panel.ClassFormPanel;
 import com.wmp.classTools.extraPanel.countdown.panel.CountDownPanel;
@@ -13,6 +12,7 @@ import com.wmp.classTools.extraPanel.duty.panel.DPanel;
 import com.wmp.classTools.extraPanel.reminderBir.panel.BRPanel;
 import com.wmp.classTools.importPanel.eastereggtext.ETPanel;
 import com.wmp.classTools.importPanel.finalPanel.FinalPanel;
+import com.wmp.classTools.importPanel.timeView.OtherTimeThingPanel;
 import com.wmp.classTools.importPanel.timeView.TimeViewPanel;
 
 import javax.swing.*;
@@ -33,11 +33,11 @@ import static com.wmp.Main.argsList;
 public class MainWindow extends JDialog {
     //private final JPanel centerPane = new JPanel(); // 用于放置中间组件的面板
 
-    public static final ArrayList<CTPanel> allPanelList = new ArrayList<>();
-    //public static final ArrayList<CTPanel> showPanelList = new ArrayList<>();
+    public static final ArrayList<CTViewPanel> allPanelList = new ArrayList<>();
+    //public static final ArrayList<CTViewPanel> showPanelList = new ArrayList<>();
 
     private static final TreeMap<String, String[]> panelLocationMap = new TreeMap<>();
-    private static final TreeMap<String, CTPanel[]> panelMap = new TreeMap<>();
+    private static final TreeMap<String, CTViewPanel[]> panelMap = new TreeMap<>();
 
     private static JDialog mainWindow = new JDialog();
 
@@ -45,14 +45,9 @@ public class MainWindow extends JDialog {
 
         mainWindow = this;
 
-        panelLocationMap.put("上方", new String[]{"TimeViewPanel"});
+        panelLocationMap.put("上方", new String[]{"TimeViewPanel", "OtherTimeThingPanel"});
         panelLocationMap.put("下方", new String[]{"ETPanel", "FinalPanel"});
 
-        /*JScrollPane centerScrollPane = new JScrollPane(centerPane);
-        centerScrollPane.setBorder(null);
-        centerScrollPane.getViewport().setOpaque(false);
-        // 设置滚动面板的水平滚动条策略
-        centerScrollPane.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);*/
 
         File DutyListPath = new File(path + "Duty\\DutyList.txt");
         File indexPath = new File(path + "Duty\\index.txt");
@@ -62,14 +57,9 @@ public class MainWindow extends JDialog {
 
         //添加组件
         TimeViewPanel timeViewPanel = new TimeViewPanel();
+        OtherTimeThingPanel otherTimeThingPanel = new OtherTimeThingPanel();
         ETPanel eEPanel = new ETPanel();
         FinalPanel finalPanel = new FinalPanel();
-
-        // 创建南方面板用于放置ETPanel和FinalPanel
-        JPanel southPanel = new JPanel(new BorderLayout());
-        southPanel.setBackground(CTColor.backColor);
-        southPanel.add(eEPanel, BorderLayout.CENTER);
-        southPanel.add(finalPanel, BorderLayout.SOUTH);
 
         DPanel dPanel = new DPanel(DutyListPath, indexPath);
         allPanelList.add(dPanel);
@@ -87,6 +77,7 @@ public class MainWindow extends JDialog {
         allPanelList.add(brPanel);
 
         allPanelList.add(timeViewPanel); // 添加到列表中以便统一管理
+        allPanelList.add(otherTimeThingPanel);
         allPanelList.add(eEPanel);
         allPanelList.add(finalPanel);
 
@@ -172,48 +163,50 @@ public class MainWindow extends JDialog {
             CTBorderFactory.BASIC_LINE_BORDER = BorderFactory.createLineBorder(new Color(200, 200, 200), (int) (2 * CTInfo.dpi));
             CTBorderFactory.FOCUS_GAINTED_BORDER = BorderFactory.createLineBorder(new Color(112, 112, 112), (int) (2 * CTInfo.dpi));
 
+            panelMap.clear();
+            panelMap.put("上方", new CTViewPanel[]{new CTViewPanel() {
+                @Override
+                public void refresh() throws IOException {
+
+                }
+            }});
+            panelMap.put("下方", new CTViewPanel[]{new CTViewPanel() {
+                @Override
+                public void refresh() throws IOException {
+
+                }
+            }});
+            panelMap.put("中间", new CTViewPanel[]{new CTViewPanel() {
+                @Override
+                public void refresh() throws IOException {
+
+                }
+            }});
+
+            allPanelList.forEach(panel -> {
+
+                if (!CTInfo.disPanelList.contains(panel.getID())) {
+                    //showPanelList.add(panel);
+
+                    if (Arrays.asList(panelLocationMap.get("上方")).contains(panel.getID())) {
+                        java.util.List<CTViewPanel> temp = new java.util.ArrayList<>(Arrays.asList(panelMap.get("上方")));
+                        temp.add(panel);
+                        panelMap.put("上方", temp.toArray(new CTViewPanel[0]));
+                    } else if (Arrays.asList(panelLocationMap.get("下方")).contains(panel.getID())) {
+                        java.util.List<CTViewPanel> temp = new java.util.ArrayList<>(Arrays.asList(panelMap.get("下方")));
+                        temp.add(panel);
+                        panelMap.put("下方", temp.toArray(new CTViewPanel[0]));
+                    } else {
+                        // 使用 new ArrayList 包装，创建可变列表
+                        java.util.List<CTViewPanel> temp = new java.util.ArrayList<>(Arrays.asList(panelMap.get("中间")));
+                        temp.add(panel);
+                        panelMap.put("中间", temp.toArray(new CTViewPanel[0]));
+                    }
+                }
+            });
+
             if (!allArgs.get("screenProduct:show").contains(argsList)) {//showPanelList.clear();
-                panelMap.clear();
-                panelMap.put("上方", new CTPanel[]{new CTPanel() {
-                    @Override
-                    public void refresh() throws IOException {
 
-                    }
-                }});
-                panelMap.put("下方", new CTPanel[]{new CTPanel() {
-                    @Override
-                    public void refresh() throws IOException {
-
-                    }
-                }});
-                panelMap.put("中间", new CTPanel[]{new CTPanel() {
-                    @Override
-                    public void refresh() throws IOException {
-
-                    }
-                }});
-
-                allPanelList.forEach(panel -> {
-
-                    if (!CTInfo.disPanelList.contains(panel.getID())) {
-                        //showPanelList.add(panel);
-
-                        if (Arrays.asList(panelLocationMap.get("上方")).contains(panel.getID())) {
-                            java.util.List<CTPanel> temp = new java.util.ArrayList<>(Arrays.asList(panelMap.get("上方")));
-                            temp.add(panel);
-                            panelMap.put("上方", temp.toArray(new CTPanel[0]));
-                        } else if (Arrays.asList(panelLocationMap.get("下方")).contains(panel.getID())) {
-                            java.util.List<CTPanel> temp = new java.util.ArrayList<>(Arrays.asList(panelMap.get("下方")));
-                            temp.add(panel);
-                            panelMap.put("下方", temp.toArray(new CTPanel[0]));
-                        } else {
-                            // 使用 new ArrayList 包装，创建可变列表
-                            java.util.List<CTPanel> temp = new java.util.ArrayList<>(Arrays.asList(panelMap.get("中间")));
-                            temp.add(panel);
-                            panelMap.put("中间", temp.toArray(new CTPanel[0]));
-                        }
-                    }
-                });
 
                 JPanel northPanel = new JPanel();
                 JPanel southPanel = new JPanel();
@@ -239,7 +232,7 @@ public class MainWindow extends JDialog {
 
                 //1.将要显示的组件添加到显示列表
                 panelMap.forEach((key, value) -> {
-                    for (CTPanel panel : value) {
+                    for (CTViewPanel panel : value) {
                         countMap.put(key, countMap.getOrDefault(key, 0) + 1);
                         gbc.gridy = countMap.get(key);
                         if (key.equals("上方")) {

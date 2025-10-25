@@ -1,11 +1,10 @@
 package com.wmp.classTools.importPanel.eastereggtext;
 
-import com.wmp.PublicTools.CTInfo;
 import com.wmp.PublicTools.EasterEgg.EETextStyle;
 import com.wmp.PublicTools.EasterEgg.EasterEgg;
 import com.wmp.PublicTools.UITools.*;
 import com.wmp.PublicTools.printLog.Log;
-import com.wmp.classTools.CTComponent.CTPanel;
+import com.wmp.classTools.CTComponent.CTPanel.CTViewPanel;
 import com.wmp.classTools.CTComponent.Menu.CTPopupMenu;
 import com.wmp.classTools.CTComponent.CTTextButton;
 
@@ -15,7 +14,7 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.io.IOException;
 
-public class ETPanel extends CTPanel implements MouseListener {
+public class ETPanel extends CTViewPanel implements MouseListener {
 
     private final JLabel label;
 

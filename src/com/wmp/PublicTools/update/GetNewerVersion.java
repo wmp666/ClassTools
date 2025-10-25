@@ -34,6 +34,7 @@ public class GetNewerVersion {
     //private static JDialog dialog;
     private static String versionContent = "";//更新说明
     private static String downloadUrl = "null";
+    private static String sha256 = null;
     //https://github.com/wmp666/ClassTools/releases/download/1.6.4/ClassTools.jar
 
     private static String getLatestVersion(int updateMode) {
@@ -54,6 +55,7 @@ public class GetNewerVersion {
                     JSONObject asset = assets.getJSONObject(i);
                     if (asset.getString("name").endsWith(".jar")) {
                         downloadUrl = asset.getString("browser_download_url");
+                        sha256 = asset.getString("digest").split(":")[1];
                         break;
                     }
                 }
@@ -84,6 +86,7 @@ public class GetNewerVersion {
                 for (int i = 0; i < assets.length(); i++) {
                     JSONObject asset = assets.getJSONObject(i);
                     if (asset.getString("name").endsWith(".jar")) {
+                        sha256 = asset.getString("digest").split(":")[1];
                         downloadUrl = asset.getString("browser_download_url");
                         break;
                     }
@@ -113,7 +116,7 @@ public class GetNewerVersion {
             return;
         }
 
-        int updateMode = NEW_VERSION;
+        int updateMode;
 
         if (inquireUpdateWay) {
             String s = Log.info.showChooseDialog(dialog, "检查更新", "选择更新版本", "最新版", "测试版");
@@ -124,6 +127,8 @@ public class GetNewerVersion {
                 Log.err.print(null, GetNewerVersion.class, "未设置更新方式");
                 return;
             }
+        } else {
+            updateMode = NEW_VERSION;
         }
 
 
@@ -134,13 +139,11 @@ public class GetNewerVersion {
 
         }
 
-        //获取最新版
-        if (updateMode == NEW_VERSION) {
             new SwingWorker<Void, Void>() {
                 String latestVersion;
 
                 protected Void doInBackground() throws Exception {
-                    latestVersion = getLatestVersion(NEW_VERSION);
+                    latestVersion = getLatestVersion(updateMode == NEW_VERSION?NEW_VERSION:TEST_VERSION);
                     return null;
                 }
 
@@ -158,7 +161,7 @@ public class GetNewerVersion {
 
                         IOForInfo.deleteDirectoryRecursively(Path.of(CTInfo.TEMP_PATH + "UpdateFile\\"));
 
-                        DownloadURLFile.downloadWebFile(dialog, panel, downloadUrl, CTInfo.TEMP_PATH + "UpdateFile\\");
+                        DownloadURLFile.downloadWebFile(dialog, panel, downloadUrl, CTInfo.TEMP_PATH + "UpdateFile\\", sha256);
 
                         try {
                             IOForInfo.copyFile(Path.of(CTInfo.TEMP_PATH, "UpdateFile", "ClassTools.jar"), Path.of(GetPath.getAppPath(GetPath.SOURCE_FILE_PATH), "ClassTools.jar"));
@@ -169,84 +172,55 @@ public class GetNewerVersion {
                         System.exit(0);
                     });
 
-                    if (i == 1) {
-                        Log.info.print("发现新版本", "发现新版本 " + latestVersion);
-                        int result = Log.info.showChooseDialog(dialog, "发现新版本",
-                                "发现新版本 " + latestVersion + "，是否下载？\n" + versionContent);
+                    if (updateMode == NEW_VERSION) {
+                        if (i == 1) {
+                            Log.info.print("发现新版本", "发现新版本 " + latestVersion);
+                            int result = Log.info.showChooseDialog(dialog, "发现新版本",
+                                    "发现新版本 " + latestVersion + "，是否下载？\n" + versionContent);
 
 
-                        if (result == JOptionPane.YES_OPTION) {
+                            if (result == JOptionPane.YES_OPTION) {
+                                updateThread.start();
+
+                            }
+                        } else if (i == 2) {
+                            Log.info.message(dialog, "发现新版本",
+                                    "发现新版本 " + latestVersion + "，是否下载？\n" + versionContent);
+
                             updateThread.start();
-
-                        }
-                    } else if (i == 2) {
-                        Log.info.message(dialog, "发现新版本",
-                                "发现新版本 " + latestVersion + "，是否下载？\n" + versionContent);
-
-                        updateThread.start();
-                    } else {
-                        if (showMessage) {
-                            Log.info.message(dialog, "获取新版本", "当前已是最新版本");
-
                         } else {
-                            Log.info.print("获取新版本", "当前已是最新版本");
-                        }
+                            if (showMessage) {
+                                Log.info.message(dialog, "获取新版本", "当前已是最新版本");
 
+                            } else {
+                                Log.info.print("获取新版本", "当前已是最新版本");
+                            }
+
+                        }
+                    }else{
+                        if (i != 0) {
+                            int result = Log.info.showChooseDialog(dialog, "发现测试版本",
+                                    "发现测试版本 " + latestVersion + "，是否下载？\n" + versionContent);
+
+
+                            if (result == JOptionPane.YES_OPTION) {
+                                updateThread.start();
+
+                            }
+                        } else {
+                            if (showMessage) {
+                                Log.info.message(dialog, "获取测试版本", "无最新测试版本");
+
+                            } else {
+                                Log.info.print("获取测试版本", "无最新测试版本");
+                            }
+
+                        }
                     }
 
 
                 }
             }.execute();// 开始执行异步任务
-        }
-        //获取测试版
-        else if (updateMode == TEST_VERSION) {
-            Log.info.print("检查更新", "开始获取最新测试版");
-
-            new SwingWorker<Void, Void>() {
-                String latestVersion;
-
-                protected Void doInBackground() throws Exception {
-                    latestVersion = getLatestVersion(TEST_VERSION);
-                    System.out.println(latestVersion);
-                    return null;
-                }
-
-                protected void done() {
-                    System.out.println(latestVersion);
-                    if (latestVersion == null) {
-
-                        Log.err.print(dialog, GetNewerVersion.class, "无法获取版本信息");
-
-                        return;
-                    }
-                    int i = isNewerVersion(latestVersion, CTInfo.version);
-                    if (i != 0) {
-                        int result = Log.info.showChooseDialog(dialog, "发现测试版本",
-                                "发现测试版本 " + latestVersion + "，是否下载？\n" + versionContent);
-
-
-                        if (result == JOptionPane.YES_OPTION) {
-                            new Thread(() -> {
-                                DownloadURLFile.downloadWebFile(dialog, panel, downloadUrl, GetPath.getAppPath(GetPath.SOURCE_FILE_PATH));
-                                JOptionPane.showMessageDialog(dialog, "更新可能，即将退出程序...", "提示", JOptionPane.INFORMATION_MESSAGE);
-                                System.exit(0);
-                            }).start();
-
-                        }
-                    } else {
-                        if (showMessage) {
-                            Log.info.message(dialog, "获取测试版本", "无最新测试版本");
-
-                        } else {
-                            Log.info.print("获取测试版本", "无最新测试版本");
-                        }
-
-                    }
-
-
-                }
-            }.execute();// 开始执行异步任务
-        }
     }
 
     /**

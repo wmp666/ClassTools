@@ -3,7 +3,7 @@ package com.wmp.classTools.infSet.panel;
 import com.wmp.PublicTools.CTInfo;
 import com.wmp.PublicTools.UITools.CTColor;
 import com.wmp.PublicTools.printLog.Log;
-import com.wmp.classTools.CTComponent.CTSetsPanel;
+import com.wmp.classTools.CTComponent.CTPanel.CTSetsPanel;
 import com.wmp.classTools.infSet.panel.tools.DataControlUnit;
 
 import java.awt.*;

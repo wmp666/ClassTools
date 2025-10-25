@@ -5,6 +5,7 @@ import com.wmp.PublicTools.UITools.GetIcon;
 import com.wmp.PublicTools.io.IOForInfo;
 import com.wmp.PublicTools.printLog.Log;
 import com.wmp.classTools.CTComponent.*;
+import com.wmp.classTools.CTComponent.CTPanel.CTSetsPanel;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
@@ -14,7 +15,6 @@ import java.awt.*;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.concurrent.atomic.AtomicInteger;
 
 public class ClassFormSetsPanel extends CTSetsPanel {
 

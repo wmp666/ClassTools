@@ -8,7 +8,7 @@ import com.wmp.PublicTools.UITools.CTFont;
 import com.wmp.PublicTools.UITools.CTFontSizeStyle;
 import com.wmp.PublicTools.printLog.Log;
 import com.wmp.classTools.CTComponent.CTOptionPane;
-import com.wmp.classTools.CTComponent.CTPanel;
+import com.wmp.classTools.CTComponent.CTPanel.CTViewPanel;
 import com.wmp.classTools.extraPanel.countdown.CDInfoControl;
 import com.wmp.classTools.extraPanel.countdown.settings.CountDownSetsPanel;
 
@@ -18,7 +18,7 @@ import java.io.IOException;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicBoolean;
 
-public class CountDownPanel extends CTPanel {
+public class CountDownPanel extends CTViewPanel {
 
     private static CDInfoControl.CDInfo info = CDInfoControl.getCDInfo();
     private final JLabel titleLabel = new JLabel();

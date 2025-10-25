@@ -3,7 +3,7 @@ package com.wmp.classTools.extraPanel.reminderBir.settings;
 import com.wmp.PublicTools.UITools.GetIcon;
 import com.wmp.PublicTools.io.IOForInfo;
 import com.wmp.PublicTools.printLog.Log;
-import com.wmp.classTools.CTComponent.CTSetsPanel;
+import com.wmp.classTools.CTComponent.CTPanel.CTSetsPanel;
 import com.wmp.classTools.CTComponent.CTTable;
 import com.wmp.classTools.CTComponent.CTTextButton;
 import org.json.JSONArray;

@@ -17,16 +17,22 @@ public class CTRoundTextButton extends JButton {
     private Icon defaultIcon;
     private Image defaultIconImage;
 
+    public CTRoundTextButton(String text) {
+        this(text, null);
+    }
+
     public CTRoundTextButton(String text, Icon icon) {
         super(text, icon);
 
         setName(text);
 
 
-        this.defaultIcon = icon;
-        this.defaultIconImage = ((ImageIcon) icon).getImage();
+        if (icon != null) {
+            this.defaultIcon = icon;
+            this.defaultIconImage = ((ImageIcon) icon).getImage();
 
-        this.setIcon(defaultIcon);
+            this.setIcon(defaultIcon);
+        }
 
 
         this.setContentAreaFilled(false);
@@ -36,7 +42,6 @@ public class CTRoundTextButton extends JButton {
         this.setFont(CTFont.getCTFont(Font.PLAIN, CTFontSizeStyle.SMALL));
         this.setBackground(CTColor.backColor);
         this.setForeground(CTColor.textColor);
-        this.setSize(defaultIcon.getIconWidth(), defaultIcon.getIconHeight());
 
         JButton button = this;
         this.addFocusListener(new FocusListener() {
