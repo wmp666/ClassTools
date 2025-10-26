@@ -20,7 +20,13 @@ public class CTTools extends JDialog {
     }
 
     private CTTools(int style){
+
         initFrame();
+
+        Timer timer = new Timer(10000, e -> {
+            this.setAlwaysOnTop(true);
+        });
+        timer.start();
 
         ArrayList<CTTool> tools = new ArrayList<>();
 

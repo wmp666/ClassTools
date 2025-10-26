@@ -42,6 +42,7 @@ public class DianMingTool extends CTTool {
         setsButton.setFont(CTFont.getCTFont(Font.BOLD, CTFontSizeStyle.BIG));
         setsButton.addActionListener(e -> {
             JDialog setsDialog = new JDialog();
+            setsDialog.setModal(true);
             setsDialog.setLayout(new BorderLayout());
             setsDialog.setTitle("设置");
 
