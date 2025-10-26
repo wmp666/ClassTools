@@ -250,7 +250,7 @@ public class Log {
                         "[" + owner + "] :" +
                         logInfo;
                 trayIcon.displayMessage(owner, logInfo.toString(), TrayIcon.MessageType.WARNING);
-                System.out.println(info);
+                System.err.println(info);
                 logInfList.add(info);
             }
 

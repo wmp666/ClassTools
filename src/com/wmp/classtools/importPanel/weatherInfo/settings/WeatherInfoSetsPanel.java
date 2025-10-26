@@ -22,6 +22,8 @@ public class WeatherInfoSetsPanel extends CTSetsPanel {
 
         this.setLayout(new BorderLayout());
 
+        cityCode = WeatherInfoControl.getWeatherInfo();
+
         initUI();
     }
 
@@ -66,6 +68,7 @@ public class WeatherInfoSetsPanel extends CTSetsPanel {
 
     @Override
     public void refresh() throws Exception {
+        cityCode = WeatherInfoControl.getWeatherInfo();
         initUI();
     }
 }

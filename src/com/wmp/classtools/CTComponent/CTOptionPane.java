@@ -701,7 +701,7 @@ public class CTOptionPane {
                     try {
                         for (int i = 0; i < waitTime * 100; i++) {
                             progressBar.setValue(waitTime * 100 - i);
-                            exitButton.setText("关闭(" + (int)(waitTime - i*0.01) + "s)");
+                            exitButton.setText("关闭(" + (int)(waitTime - i*0.01 + 1) + "s)");
                             Thread.sleep(10);
                         }
                     } catch (InterruptedException ex) {

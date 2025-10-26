@@ -8,8 +8,13 @@ import javax.swing.*;
 import java.awt.*;
 
 public class CTTable extends JTable {
+
     public CTTable() {
-        super();
+        this(new Object[][]{}, new Object[]{});
+    }
+
+    public CTTable(Object[][] data, Object[] columnNames) {
+        super(data, columnNames);
         this.getTableHeader().setReorderingAllowed(false);// 列不允许拖动
         this.setFont(CTFont.getCTFont(Font.PLAIN, CTFontSizeStyle.SMALL));
         this.setForeground(CTColor.textColor);

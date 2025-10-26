@@ -79,7 +79,7 @@ public class DianMingTool extends CTTool {
                 new Thread(()->{
                     //匀速循环
                     {
-                        int waitTime = 80;
+                        int waitTime = 50;
                         int count = 0;
                         for (int i = 0; i < 50; i++) {
                             int finalCount = count;
@@ -100,7 +100,7 @@ public class DianMingTool extends CTTool {
                     //减速循环
                     {
                         int step = 20;
-                        int waitTime = 80;
+                        int waitTime = 50;
                         int count = 0;
                         int index = 0;
                         while (true) {
@@ -118,7 +118,7 @@ public class DianMingTool extends CTTool {
                             count++;
 
                             waitTime += step * count;
-                            if (waitTime > 800) {
+                            if (waitTime > 600) {
                                 break;
                             }
 
@@ -135,7 +135,7 @@ public class DianMingTool extends CTTool {
                         nameLabel.repaint();
                     });
 
-                    CTOptionPane.showFullScreenMessageDialog("点名结果", resultName, 0, 5);
+                    CTOptionPane.showFullScreenMessageDialog("点名结果", resultName, 0, 3);
 
                 }).start();
             }

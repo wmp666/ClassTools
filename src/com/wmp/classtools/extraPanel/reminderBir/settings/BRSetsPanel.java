@@ -166,7 +166,7 @@ public class BRSetsPanel extends CTSetsPanel {
             jsonObject.put("birthday", dateList.get(nameList.indexOf(s)));
             jsonArray.put(jsonObject);
         });
-        ioForInfo.setInfo(jsonArray.toString());
+        ioForInfo.setInfo(jsonArray.toString(4));
     }
 
     @Override

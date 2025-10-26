@@ -419,7 +419,7 @@ public class ScreenProductSetsPanel extends CTSetsPanel {
 
         IOForInfo ioForInfo = new IOForInfo(dataPath + "\\background.json");
         try {
-            ioForInfo.setInfo(jsonObject.toString());
+            ioForInfo.setInfo(jsonObject.toString(4));
         } catch (IOException e) {
             throw new RuntimeException(e);
         }

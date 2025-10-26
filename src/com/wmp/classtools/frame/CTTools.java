@@ -3,6 +3,7 @@ package com.wmp.classTools.frame;
 import com.wmp.PublicTools.CTInfo;
 import com.wmp.PublicTools.CTTool.CTTool;
 import com.wmp.PublicTools.CTTool.dianMing.DianMingTool;
+import com.wmp.PublicTools.UITools.CTColor;
 import com.wmp.PublicTools.UITools.CTFont;
 import com.wmp.PublicTools.UITools.CTFontSizeStyle;
 import com.wmp.classTools.CTComponent.CTButton.CTRoundTextButton;
@@ -14,17 +15,22 @@ import java.util.ArrayList;
 
 public class CTTools extends JDialog {
     public CTTools() {
+        new CTTools(0);
+        new CTTools(1);
+    }
+
+    private CTTools(int style){
         initFrame();
 
         ArrayList<CTTool> tools = new ArrayList<>();
 
         tools.add(new DianMingTool());
 
-        CTRoundTextButton openButton = new CTRoundTextButton("<");
+        CTRoundTextButton openButton = new CTRoundTextButton(style == 0?"<":">");
         openButton.setFont(CTFont.getCTFont(Font.BOLD, CTFontSizeStyle.NORMAL));
         openButton.addActionListener(e -> {
             JDialog dialog = new JDialog();
-            dialog.setName("快捷工具");
+            dialog.setTitle("快捷工具");
             dialog.setModal(true);
             dialog.setLayout(new GridLayout(0,1));
 
@@ -45,19 +51,26 @@ public class CTTools extends JDialog {
 
 
         this.pack();
-        this.setShape(new RoundRectangle2D.Double(0, 0, this.getWidth() + CTInfo.arcw, this.getHeight(), CTInfo.arcw, CTInfo.arch));
-        Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
-        this.setLocation(screenSize.width - this.getWidth(), screenSize.height*3/5);
+        if (style == 0){
+            this.setShape(new RoundRectangle2D.Double(0, 0, this.getWidth() + CTInfo.arcw, this.getHeight(), CTInfo.arcw, CTInfo.arch));
+            Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+            this.setLocation(screenSize.width - this.getWidth(), screenSize.height * 3 / 5);
+        }else{
+            this.setShape(new RoundRectangle2D.Double(-CTInfo.arcw, 0, this.getWidth() + CTInfo.arcw, this.getHeight(), CTInfo.arcw, CTInfo.arch));
+            Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+            this.setLocation(0, screenSize.height * 3 / 5);
+        }
         this.setVisible(true);
     }
 
     private void initFrame() {
-        this.setName("快捷工具");
+        this.setTitle("快捷工具");
         this.setDefaultCloseOperation(JDialog.DO_NOTHING_ON_CLOSE);
         this.setUndecorated( true);
         this.setAlwaysOnTop(true);
         this.setSize(500, 500);
         this.setLayout(new BorderLayout());
 
+        this.setBackground(new Color(172, 172, 172));
     }
 }

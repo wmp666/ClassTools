@@ -191,7 +191,7 @@ public class ClassFormSetsPanel extends CTSetsPanel {
                         .put("class", table.getValueAt(j, 1))
                         .put("time", table.getValueAt(j, 0)));
             }
-            new IOForInfo(new File(this.path + (i + 1) + ".json")).setInfo(jsonArray.toString());
+            new IOForInfo(new File(this.path + (i + 1) + ".json")).setInfo(jsonArray.toString(4));
         }
     }
 

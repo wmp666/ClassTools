@@ -106,7 +106,7 @@ public class CDInfoControl {
             }
             IOForInfo io = new IOForInfo(path);
 
-            io.setInfo(jsonArray.toString());
+            io.setInfo(jsonArray.toString(4));
         }
     }
 

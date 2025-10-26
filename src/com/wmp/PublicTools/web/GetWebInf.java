@@ -10,13 +10,7 @@ public class GetWebInf {
     public static String getWebInf(String apiUrl) throws Exception {
         int id = new Random().nextInt();
         SslUtils.ignoreSsl();
-        new SwingWorker<Void, Void>() {
-            @Override
-            protected Void doInBackground() throws Exception {
-                Log.info.loading.showDialog("网络信息获取" + id, "正在获取Web信息...");
-                return null;
-            }
-        }.execute();
+        Log.info.loading.showDialog("网络信息获取" + id, "正在获取Web信息...");
         try {
             // 获取原始JSON响应
             String webInf = Jsoup.connect(apiUrl)
@@ -31,7 +25,7 @@ public class GetWebInf {
             Log.info.loading.closeDialog("网络信息获取" + id);
             return webInf;
         } catch (Exception e) {
-            Log.err.print(GetWebInf.class, "获取Web信息失败", e);
+            Log.warn.print("GetWebInf", "获取Web信息失败\n" + e);
         }
         Log.info.loading.closeDialog("网络信息获取" + id);
         return "";

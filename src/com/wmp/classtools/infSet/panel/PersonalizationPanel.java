@@ -451,9 +451,9 @@ public class PersonalizationPanel extends CTSetsPanel {
                 jsonObject.put("DPI", 1.0);
             }
 
-            Log.info.print("InfSetDialog", "保存数据: " + jsonObject.toString());
+            Log.info.print("InfSetDialog", "保存数据: " + jsonObject);
             try {
-                io.setInfo(jsonObject.toString());
+                io.setInfo(jsonObject.toString(2));
 
             } catch (Exception e) {
                 Log.err.print(PersonalizationPanel.class, "保存数据失败", e);

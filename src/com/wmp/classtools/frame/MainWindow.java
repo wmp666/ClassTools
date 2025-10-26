@@ -136,8 +136,8 @@ public class MainWindow extends JDialog {
 
                     Dimension size = this.getPreferredSize();
 
-                    if (size.height >= Toolkit.getDefaultToolkit().getScreenSize().getHeight() * 4 / 5)
-                        this.setSize(new Dimension( size.width, (int) (Toolkit.getDefaultToolkit().getScreenSize().getHeight() * 4 / 5)));
+                    if (size.height >= Toolkit.getDefaultToolkit().getScreenSize().getHeight() *9/10)
+                        this.setSize(new Dimension( size.width, (int) (Toolkit.getDefaultToolkit().getScreenSize().getHeight() * 9/10)));
                     else this.setSize(new Dimension( size.width, size.height));
                     this.setLocation(Toolkit.getDefaultToolkit().getScreenSize().width - size.width - 5, 5);
 
