@@ -9,6 +9,7 @@ import java.util.Objects;
 
 public class GetWeatherInfo {
 
+    public static String errCode = "";
 
 
     /**
@@ -20,16 +21,16 @@ public class GetWeatherInfo {
     public static JSONObject getNowWeather(String cityCode) throws Exception {
 
         // 构造请求URL (使用一个公开的免费天气接口示例)
-        String nowCloud = String.format("https://restapi.amap.com/v3/weather/weatherInfo?key=%s&city=%s", WeatherInfoControl.key, cityCode);
+        String nowCloud = String.format("https://restapi.amap.com/v3/weather/weatherInfo?key=%s&city=%s", WeatherInfoControl.getKey(), cityCode);
 
             // 解析JSON响应
-            JSONObject jsonResponse = new JSONObject(GetWebInf.getWebInf(nowCloud));
+            JSONObject jsonResponse = new JSONObject(GetWebInf.getWebInf(nowCloud, false));
             Log.info.print("GetWeatherInfo", "获取天气成功: " + jsonResponse);
             if (jsonResponse.getInt("status") == 1) { // 假设1000为成功状态码
                 JSONArray lives = jsonResponse.getJSONArray("lives");
                 if (!lives.isEmpty()) return lives.getJSONObject(0);
             } else {
-                Log.err.print(GetWeatherInfo.class, "获取天气失败: " + jsonResponse);
+                errCode = jsonResponse.getString("info");
             }
         return null;
     }
@@ -56,17 +57,17 @@ public class GetWeatherInfo {
      */
     public static JSONArray getWeatherForecasts(String cityCode) throws Exception {
         // 构造请求URL (使用一个公开的免费天气接口示例)
-        String nowCloud = String.format("https://restapi.amap.com/v3/weather/weatherInfo?key=%s&city=%s&extensions=all", WeatherInfoControl.key, cityCode);
+        String nowCloud = String.format("https://restapi.amap.com/v3/weather/weatherInfo?key=%s&city=%s&extensions=all", WeatherInfoControl.getKey(), cityCode);
 
 
         // 解析JSON响应
-        JSONObject jsonResponse = new JSONObject(GetWebInf.getWebInf(nowCloud));
+        JSONObject jsonResponse = new JSONObject(GetWebInf.getWebInf(nowCloud, false));
         Log.info.print("GetWeatherInfo", "获取天气成功: " + jsonResponse);
         if (jsonResponse.getInt("status") == 1) { // 假设1000为成功状态码
             JSONArray forecast = jsonResponse.getJSONArray("forecasts");
             return forecast.getJSONObject(0).getJSONArray("casts");
         } else {
-            Log.err.print(GetWeatherInfo.class, "获取天气失败: " + jsonResponse);
+            errCode = jsonResponse.getString("infocode");
         }
 
         return null;

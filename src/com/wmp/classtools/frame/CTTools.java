@@ -14,6 +14,7 @@ import java.awt.geom.RoundRectangle2D;
 import java.util.ArrayList;
 
 public class CTTools extends JDialog {
+    private static final ArrayList<CTTool> tools = new ArrayList<>();
     public CTTools() {
         new CTTools(0);
         new CTTools(1);
@@ -23,34 +24,14 @@ public class CTTools extends JDialog {
 
         initFrame();
 
-        Timer timer = new Timer(10000, e -> {
-            this.setAlwaysOnTop(true);
-        });
-        timer.start();
 
-        ArrayList<CTTool> tools = new ArrayList<>();
-
+        tools.clear();
         tools.add(new DianMingTool());
 
         CTRoundTextButton openButton = new CTRoundTextButton(style == 0?"<":">");
         openButton.setFont(CTFont.getCTFont(Font.BOLD, CTFontSizeStyle.NORMAL));
         openButton.addActionListener(e -> {
-            JDialog dialog = new JDialog();
-            dialog.setTitle("快捷工具");
-            dialog.setModal(true);
-            dialog.setLayout(new GridLayout(0,1));
-
-            tools.forEach(tool -> {
-                CTRoundTextButton button = new CTRoundTextButton(tool.getName());
-                button.addActionListener(ex -> {
-                    tool.showTool();
-                });
-                dialog.getContentPane().add(button);
-            });
-
-            dialog.pack();
-            dialog.setLocationRelativeTo(null);
-            dialog.setVisible(true);
+            showDialog();
 
         });
         this.add(openButton, BorderLayout.CENTER);
@@ -67,6 +48,26 @@ public class CTTools extends JDialog {
             this.setLocation(0, screenSize.height * 3 / 5);
         }
         this.setVisible(true);
+    }
+
+    public static void showDialog() {
+        JDialog dialog = new JDialog();
+        dialog.setTitle("快捷工具");
+        dialog.setModal(true);
+        dialog.setLayout(new GridLayout(0,1, (int) (5 * CTInfo.dpi), (int) (5 * CTInfo.dpi)));
+
+        tools.forEach(tool -> {
+            CTRoundTextButton button = new CTRoundTextButton(tool.getName());
+            button.setFont(CTFont.getCTFont(Font.BOLD, CTFontSizeStyle.BIG));
+            button.addActionListener(ex -> {
+                tool.showTool();
+            });
+            dialog.getContentPane().add(button);
+        });
+
+        dialog.pack();
+        dialog.setLocationRelativeTo(null);
+        dialog.setVisible(true);
     }
 
     private void initFrame() {

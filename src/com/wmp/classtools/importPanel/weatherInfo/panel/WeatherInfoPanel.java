@@ -6,7 +6,9 @@ import com.wmp.PublicTools.UITools.CTFont;
 import com.wmp.PublicTools.UITools.CTFontSizeStyle;
 import com.wmp.PublicTools.printLog.Log;
 import com.wmp.classTools.CTComponent.CTBorderFactory;
+import com.wmp.classTools.CTComponent.CTOptionPane;
 import com.wmp.classTools.CTComponent.CTTable;
+import com.wmp.classTools.frame.ShowHelpDoc;
 import com.wmp.classTools.importPanel.weatherInfo.GetWeatherInfo;
 import com.wmp.classTools.CTComponent.CTPanel.CTViewPanel;
 import com.wmp.classTools.importPanel.weatherInfo.WeatherInfoControl;
@@ -27,10 +29,6 @@ public class WeatherInfoPanel extends CTViewPanel {
     private String cityCode = WeatherInfoControl.getWeatherInfo();
     private final JLabel weather = new JLabel();
 
-    private final Timer time = new Timer(60*1000, e -> {
-        initWeather();
-    });
-
     private void initWeather() {
         try {
 
@@ -39,6 +37,7 @@ public class WeatherInfoPanel extends CTViewPanel {
             JSONObject nowWeather = GetWeatherInfo.getNowWeather(cityCode);
             JSONObject todayOtherWeather = GetWeatherInfo.getTodayOtherWeather(cityCode);
             if (nowWeather == null || todayOtherWeather == null) {
+                weather.setText(String.format("<html>获取天气数据失败<br>%s<br>点击查看详情</html>", GetWeatherInfo.errCode));
                 return;
             }
             weather.setText(String.format(format,
@@ -84,10 +83,6 @@ public class WeatherInfoPanel extends CTViewPanel {
         initWeather();
 
 
-
-        time.setRepeats(true);
-        time.start();
-
     }
 
     private void initPanel() {
@@ -98,7 +93,10 @@ public class WeatherInfoPanel extends CTViewPanel {
                     ArrayList<WeatherInfoControl.ForecastsWeatherInfo> forecastsWeatherInfoList = new ArrayList<>();
 
                     JSONArray weatherForecasts = GetWeatherInfo.getWeatherForecasts(WeatherInfoPanel.this.cityCode);
-                    if (weatherForecasts == null) return;
+                    if (weatherForecasts == null) {
+                        ShowHelpDoc.openWebHelpDoc("WIErrCode.md");
+                        return;
+                    }
                     weatherForecasts.forEach(weatherForecast -> {
                         if (weatherForecast instanceof JSONObject weatherForecastObject) {
                             WeatherInfoControl.ForecastsWeatherInfo info = new WeatherInfoControl.ForecastsWeatherInfo(

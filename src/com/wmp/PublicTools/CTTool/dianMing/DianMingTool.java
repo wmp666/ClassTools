@@ -1,6 +1,8 @@
 package com.wmp.PublicTools.CTTool.dianMing;
 
+import com.wmp.PublicTools.CTInfo;
 import com.wmp.PublicTools.CTTool.CTTool;
+import com.wmp.PublicTools.UITools.CTColor;
 import com.wmp.PublicTools.UITools.CTFont;
 import com.wmp.PublicTools.UITools.CTFontSizeStyle;
 import com.wmp.PublicTools.io.GetPath;
@@ -26,23 +28,28 @@ public class DianMingTool extends CTTool {
         JDialog dialog = new JDialog();
         dialog.setLayout(new BorderLayout());
         dialog.setTitle("点名器");
-        dialog.setSize(300, 400);
+        dialog.setSize((int)(300 * CTInfo.dpi), (int)(400 * CTInfo.dpi));
+        dialog.setBackground(CTColor.backColor);
 
         JLabel label = new JLabel("点名器");
+        label.setForeground(CTColor.textColor);
         label.setHorizontalAlignment(JLabel.CENTER);
         label.setFont(CTFont.getCTFont(Font.BOLD, CTFontSizeStyle.BIG));
         dialog.add(label, BorderLayout.NORTH);
 
+        nameLabel.setForeground(CTColor.mainColor);
         nameLabel.setFont(CTFont.getCTFont(Font.BOLD, CTFontSizeStyle.MORE_BIG));
         nameLabel.setHorizontalAlignment(JLabel.CENTER);
 
         JPanel buttonPanel = new JPanel();
+        buttonPanel.setOpaque(false);
         buttonPanel.setLayout(new GridLayout(1,0));
         CTTextButton setsButton = new CTTextButton("设置");
         setsButton.setFont(CTFont.getCTFont(Font.BOLD, CTFontSizeStyle.BIG));
         setsButton.addActionListener(e -> {
             JDialog setsDialog = new JDialog();
             setsDialog.setModal(true);
+            setsDialog.setAlwaysOnTop(true);
             setsDialog.setLayout(new BorderLayout());
             setsDialog.setTitle("设置");
 
@@ -136,7 +143,7 @@ public class DianMingTool extends CTTool {
                         nameLabel.repaint();
                     });
 
-                    CTOptionPane.showFullScreenMessageDialog("点名结果", resultName, 0, 3);
+                    CTOptionPane.showFullScreenMessageDialog("点名结果", resultName, 0, 1);
 
                 }).start();
             }

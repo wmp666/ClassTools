@@ -150,7 +150,7 @@ public class MainWindow extends JDialog {
                 repaint.start();
 
                 //刷新数据
-                Timer strongRepaint = new Timer(60 * 1000, e -> {
+                Timer strongRepaint = new Timer(60 * 60 * 1000, e -> {
                     refreshPanel();
                 });
                 strongRepaint.start();

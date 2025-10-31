@@ -38,7 +38,7 @@ public class OtherTimeThingPanel extends CTViewPanel {
                     week, lunar.getMonth()<0?"闰":"", DateTools.months[Math.abs(lunar.getMonth()) - 1], DateTools.days[lunar.getDay() - 1], lunar.getYearInGanZhi(), lunar.getYearShengXiao(),
                     lunar.getJieQi(), jie));
             try {
-                Thread.sleep(300);
+                Thread.sleep(2*60*1000);//2min
             } catch (InterruptedException e) {
                 Log.err.print(getClass(), "错误", e);
             }

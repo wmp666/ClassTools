@@ -122,7 +122,7 @@ public class BRPanel extends CTViewPanel {
                 this.repaint();
 
                 try {
-                    Thread.sleep(3000);
+                    Thread.sleep(2*60*1000);//2min
                 } catch (Exception e) {
                     Log.err.print(getClass(), "错误", e);
                 }

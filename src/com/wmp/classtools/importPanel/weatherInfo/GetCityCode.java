@@ -48,7 +48,7 @@ public class GetCityCode {
         Map<String, String> map = new HashMap<>();
 
 
-        String nowCloud = String.format("https://restapi.amap.com/v3/config/district?key=%s&keywords=%s", WeatherInfoControl.key, cityCode);
+        String nowCloud = String.format("https://restapi.amap.com/v3/config/district?key=%s&keywords=%s", WeatherInfoControl.getKey(), cityCode);
 
         // 解析JSON响应
         JSONObject jsonResponse = new JSONObject(GetWebInf.getWebInf(nowCloud));

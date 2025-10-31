@@ -10,6 +10,7 @@ import com.wmp.classTools.CTComponent.CTButton.CTIconButton;
 import com.wmp.classTools.CTComponent.CTPanel.CTViewPanel;
 import com.wmp.classTools.CTComponent.Menu.CTPopupMenu;
 import com.wmp.classTools.frame.AboutDialog;
+import com.wmp.classTools.frame.CTTools;
 import com.wmp.classTools.frame.MainWindow;
 import com.wmp.classTools.frame.ShowCookieDialog;
 import com.wmp.classTools.infSet.InfSetDialog;
@@ -102,6 +103,12 @@ public class FinalPanel extends CTViewPanel {
             }
         });
         allButList.add(about);
+
+        CTIconButton CTTools = new CTIconButton("快捷工具",
+                "/image/wish.png", () -> {
+            com.wmp.classTools.frame.CTTools.showDialog();
+        });
+        allButList.add(CTTools);
 
         CTIconButton update = new CTIconButton("检查更新",
                 "/image/%s/update_0.png", () -> GetNewerVersion.checkForUpdate(null, null, true));

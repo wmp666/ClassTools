@@ -19,7 +19,7 @@ public class LoadingDialog extends JDialog {
 
     public LoadingDialog() {
         //生成弹窗
-            this.setTitle("...");
+            this.setTitle("进度显示");
             this.setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
             //this.setModal(true);
             this.setLocationRelativeTo(null);

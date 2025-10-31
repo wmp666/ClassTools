@@ -8,14 +8,38 @@ import java.io.IOException;
 
 public class WeatherInfoControl {
 
-    public static final String key = "bfaf25fc5c695452951e7edb57ddcd49";
-    public static void setWeatherInfo(String cityCode) {
-        IOForInfo io = new IOForInfo(CTInfo.DATA_PATH + "WeatherInfo\\cityCode.txt");
-        try {
-            io.setInfo(cityCode);
-        } catch (IOException e) {
-            Log.err.print(WeatherInfoControl.class, "天气信息保存失败", e);
+    //bfaf25fc5c695452951e7edb57ddcd49
+    public static void setWeatherInfo(String cityCode, String key) {
+        {
+            IOForInfo io = new IOForInfo(CTInfo.DATA_PATH + "WeatherInfo\\cityCode.txt");
+            try {
+                io.setInfo(cityCode);
+            } catch (IOException e) {
+                Log.err.print(WeatherInfoControl.class, "天气信息保存失败", e);
+            }
         }
+        {
+            IOForInfo io = new IOForInfo(CTInfo.DATA_PATH + "WeatherInfo\\key.txt");
+            try {
+                io.setInfo(key);
+            } catch (IOException e) {
+                Log.err.print(WeatherInfoControl.class, "天气信息保存失败", e);
+            }
+        }
+    }
+
+    public static String getKey() {
+        IOForInfo io = new IOForInfo(CTInfo.DATA_PATH + "WeatherInfo\\key.txt");
+        try {
+            String infos = io.getInfos();
+            if (infos == null || infos.equals("err")) {
+                return "";
+            }
+            return infos;
+        } catch (IOException e) {
+            Log.err.print(WeatherInfoControl.class, "天气信息获取失败", e);
+        }
+        return null;
     }
 
     public static String getWeatherInfo() {
