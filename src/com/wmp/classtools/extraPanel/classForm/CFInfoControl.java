@@ -105,7 +105,7 @@ public class CFInfoControl {
                 if (tempData[0] == null ||
                         DateTools.getRemainderTime(s) < DateTools.getRemainderTime(tempData[0])) {
                     tempData[0] = s;
-                    tempData[1] = jsonObject.getString("class");
+                    tempData[1] = String.format("%s(%s分钟)", jsonObject.getString("class"), DateTools.getRemainderTime(s) / 1000 / 60 + 1);
                 }
 
             }
