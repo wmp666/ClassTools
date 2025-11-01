@@ -5,6 +5,7 @@ import com.wmp.classTools.frame.tools.cookie.CookieSets;
 
 import javax.swing.*;
 import java.io.*;
+import java.net.MalformedURLException;
 import java.net.URI;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
@@ -30,12 +31,30 @@ public class IOForInfo {
         this.file = new File(file);
     }
 
+    public static String[] getInfo(String file) {
+        String infos = getInfos(file);
+        if (infos.equals("err")) {
+            return new String[]{"err"};
+        }
+        return infos.split("\n");
+    }
     public static String[] getInfo(URL file) {
         String infos = getInfos(file);
         if (infos.equals("err")) {
             return new String[]{"err"};
         }
         return infos.split("\n");
+    }
+
+    public static String getInfos(String file){
+        try {
+            File file1 = new File(file);
+            if (!file1.exists()) return "err";
+            return getInfos(file1.toURI().toURL());
+        } catch (MalformedURLException e) {
+            Log.err.print(IOForInfo.class, file + "文件读取失败", e);
+            return "err";
+        }
     }
     public static String getInfos(URL file) {
         try { // 明确指定编码
@@ -145,17 +164,17 @@ public class IOForInfo {
         return file.createNewFile();
     }
 
-    public static void deleteDirectoryRecursively(Path path) {
-        deleteDirectoryRecursively(path, null);
+    public static Thread deleteDirectoryRecursively(Path path) {
+        return deleteDirectoryRecursively(path, null);
     }
-    public static void deleteDirectoryRecursively(Path path, Runnable callback) {
+    public static Thread deleteDirectoryRecursively(Path path, Runnable callback) {
         Log.info.print("删除文件", "删除");
 
         Log.info.loading.showDialog("文件删除", "正在删除文件...");
 
         File file = new File(path.toUri());
 
-        new Thread(() -> {
+        Thread thread = new Thread(() -> {
             new SwingWorker<Void, Void>() {
                 //  执行耗时操作
                 @Override
@@ -194,24 +213,10 @@ public class IOForInfo {
                     }
                 }
             }.execute();
-        }).start();
+        });
+        thread.start();
 
-
-        /*if (Files.exists(path)) {
-            Files.walkFileTree(path, new SimpleFileVisitor<Path>() {
-                @Override
-                public FileVisitResult visitFile(Path file, BasicFileAttributes attrs) throws IOException {
-                    Files.delete(file);
-                    return FileVisitResult.CONTINUE;
-                }
-
-                @Override
-                public FileVisitResult postVisitDirectory(Path dir, IOException exc) throws IOException {
-                    Files.delete(dir);
-                    return FileVisitResult.CONTINUE;
-                }
-            });
-        }*/
+        return thread;
     }
 
     public static void copyFile(Path source, Path target) throws IOException {

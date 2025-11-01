@@ -3,7 +3,7 @@
   {
     "style": "default",
     "name": "default",
-    "path": "/image/optionDialogIcon/error.png"
+    "path": "/image/default.png"
   },
 
   {
@@ -50,97 +50,5 @@
     "style": "gif",
     "name": "胡桃",
     "path": "/image/loading.gif"
-  },
-
-  {
-    "style": "png",
-    "name": "保存",
-    "path": "/image/light/save_0.png"
-  },
-
-  {
-    "style": "png",
-    "name": "更新",
-    "path": "/image/light/update_0.png"
-  }, {
-    "style": "png",
-    "name": "设置",
-    "path": "/image/light/settings_0.png"
-  },{
-  "style": "png",
-    "name": "快速启动",
-    "path": "/image/light/cookie_0.png"
-  }, {
-    "style": "png",
-    "name": "快捷工具",
-    "path": "/image/light/CTTools.png"
-  }, {
-    "style": "png",
-    "name": "刷新",
-    "path": "/image/light/refresh_0.png"
-  }, {
-  "style": "png",
-    "name": "关于",
-    "path": "/image/light/about_0.png"
-  },{
-  "style": "png",
-    "name": "日志",
-    "path": "/image/light/showLog_0.png"
-  },{
-  "style" : "png",
-    "name": "关闭",
-    "path": "/image/light/exit_0.png"
-  },{
-  "style" : "png",
-    "name": "更多",
-    "path": "/image/more.png"
-  },
-
-  {
-    "style": "png",
-    "name": "添加",
-    "path": "/image/light/new_0.png"
-  }, {
-    "style": "png",
-    "name": "删除",
-    "path": "/image/light/delete_0.png"
-  },
-
-  {
-    "style": "png",
-    "name": "展示",
-    "path": "/image/light/view_0.png"
-  },
-
-  {
-    "style": "png",
-    "name": "上一天",
-    "path": "/image/duty/last_0.png"
-  },{
-    "style": "png",
-    "name": "下一天",
-    "path": "/image/duty/next_0.png"
-  },
-
-  {
-  "style": "png",
-    "name": "文件夹",
-    "path": "/image/openExp.png"
-  },{
-  "style": "png",
-    "name": "导入",
-    "path": "/image/input.png"
-  },{
-  "style": "png",
-    "name": "祈愿",
-    "path": "/image/wish.png"
-  },{
-    "style": "png",
-    "name": "编辑",
-    "path": "/image/edit.png"
-  },{
-    "style": "png",
-    "name": "文档",
-    "path": "/image/doc.png"
   }
 ]

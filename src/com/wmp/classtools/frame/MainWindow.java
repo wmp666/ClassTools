@@ -173,29 +173,6 @@ public class MainWindow extends CTWindow {
             CTBorderFactory.FOCUS_GAINTED_BORDER = BorderFactory.createLineBorder(new Color(112, 112, 112), (int) (2 * CTInfo.dpi));
 
             panelMap.clear();
-            /*panelMap.put("上方", new CTViewPanel[]{new CTViewPanel() {
-                @Override
-                public void refresh() throws IOException {
-
-                }
-
-                @Override
-                protected void Refresh() throws IOException {
-
-                }
-            }});
-            panelMap.put("下方", new CTViewPanel[]{new CTViewPanel() {
-                @Override
-                public void refresh() throws IOException {
-
-                }
-            }});
-            panelMap.put("中间", new CTViewPanel[]{new CTViewPanel() {
-                @Override
-                public void refresh() throws IOException {
-
-                }
-            }});*/
 
             //初始化组件位置
             allPanelList.forEach(panel -> {

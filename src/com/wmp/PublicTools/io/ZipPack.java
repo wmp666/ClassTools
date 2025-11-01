@@ -19,13 +19,8 @@ public class ZipPack {
 
     private static JDialog dialog = new JDialog();
     private static CTProgressBar progressBar = new CTProgressBar(0, 100);
-    public static void unzip(String zipFilePath, String destDir) {
-        unzip(zipFilePath, destDir, () -> {
-            // 运行其他操作
-        });
-    }
 
-    public static void unzip(String zipFilePath, String destDir, Runnable runnable) {
+    public static Thread unzip(String zipFilePath, String destDir) {
         //new File(destDir).delete();
         //生成一个弹窗显示解压进度
         Log.info.print("ZipPack-解压", "正在解压...");
@@ -33,18 +28,18 @@ public class ZipPack {
         try {
             if (zipFilePath == null || !new File(zipFilePath).exists()) {
                 Log.err.print(ZipPack.class, "找不到压缩包!");
-                return;
+                return null;
             }
         }catch (Exception e) {
             Log.err.print(ZipPack.class, "找不到压缩包!", e);
 
-            return;
+            return null;
         }
         int id = new Random().nextInt();
 
         Log.info.loading.showDialog("ZipPack-解压" + id, "正在解压...");
 
-        new Thread(() -> {
+        Thread thread = new Thread(() -> {
             try {
                 ZipInputStream zipInputStream = new ZipInputStream(new FileInputStream(zipFilePath));
                 // 解压缩文件
@@ -57,17 +52,12 @@ public class ZipPack {
                 throw new RuntimeException(e);
             }
             Log.info.loading.closeDialog("ZipPack-解压" + id);
-            try {
-                runnable.run();
-            }catch (Exception e) {
-                Log.err.print(ZipPack.class, "运行失败！", e);
-                throw new RuntimeException(e);
-            }
-        }).start();
+        });
+        thread.start();
 
 
 
-        //return true;
+        return thread;
     }
 
     private static void unzipFiles(ZipInputStream zipInputStream, String outputFolder, int id) throws IOException {
@@ -75,7 +65,17 @@ public class ZipPack {
         ZipEntry entry;
 
         // 遍历压缩文件中的每个文件
-        while ((entry = zipInputStream.getNextEntry()) != null) {
+        while (true) {
+            try {
+                entry = zipInputStream.getNextEntry();
+                if (entry == null) {
+                    break;
+                }
+            } catch (IllegalArgumentException e) {
+                Log.warn.print(ZipPack.class.toString(), "文件名解码错误:\n"+e);
+                // 跳过这个损坏的条目
+                continue;
+            }
             // 处理文件
             String fileName = entry.getName();
             File outputFile = new File(outputFolder + "/" + fileName);

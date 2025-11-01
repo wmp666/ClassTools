@@ -2,6 +2,7 @@ package com.wmp.PublicTools;
 
 import com.wmp.PublicTools.UITools.CTColor;
 import com.wmp.PublicTools.UITools.CTFont;
+import com.wmp.PublicTools.UITools.IconControl;
 import com.wmp.PublicTools.io.IOForInfo;
 import com.wmp.PublicTools.printLog.Log;
 import org.json.JSONArray;
@@ -16,6 +17,7 @@ public class CTInfo {
 
     public static String DATA_PATH;
     public static String TEMP_PATH;
+    public static String APP_INFO_PATH;
 
     public static String appName = "班级工具";
     public static String author = "无名牌";
@@ -37,29 +39,27 @@ public class CTInfo {
      * d:只修复的问题,问题较少
      * e:测试版本号
      */
-    public static String version = "1.41.2";
+    public static String version = "1.41.3";
     public static void init() {
 
         disButList.clear();
         disPanelList.clear();
 
-
         //加载基础目录
         String path = System.getenv("LOCALAPPDATA");
 
+        APP_INFO_PATH = path + "\\ClassToolsAppFile\\";
         DATA_PATH = path + "\\ClassTools\\";
-
         TEMP_PATH = path + "\\ClassToolsTemp\\";
 
         if (version.split("\\.").length < 5) iconPath = "/image/icon/icon.png";
         else iconPath = "/image/icon/icon_bate.png";
 
+        IconControl.init();
 
         boolean exists = new File(CTInfo.DATA_PATH + "setUp.json").exists();
-
         if (exists) {
             IOForInfo sets = new IOForInfo(new File(CTInfo.DATA_PATH + "setUp.json"));
-
 
             try {
                 jsonObject = new JSONObject(sets.getInfos());

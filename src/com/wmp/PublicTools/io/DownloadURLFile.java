@@ -15,6 +15,13 @@ import java.nio.charset.StandardCharsets;
 import java.util.Random;
 
 public class DownloadURLFile {
+    /**
+     * 下载文件
+     * @param parent
+     * @param panel
+     * @param downloadUrl 下载链接
+     * @param dataPath 保存路径
+     */
     public static void downloadWebFile(Window parent, JPanel panel, String downloadUrl, String dataPath) {
         downloadWebFile(parent, panel, downloadUrl, dataPath, null);
     }

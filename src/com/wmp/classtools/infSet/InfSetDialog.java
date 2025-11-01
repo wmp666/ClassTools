@@ -153,7 +153,12 @@ public class InfSetDialog extends JDialog {
         getAllInf.setIcon(GetIcon.getIcon("导入", 16, 16));
         getAllInf.addActionListener(e -> {
             String filePath = GetPath.getFilePath(this, "请选择所有数据", ".ctdatas", "ClassTools");
-            ZipPack.unzip(filePath, CTInfo.DATA_PATH);
+            Thread thread = ZipPack.unzip(filePath, CTInfo.DATA_PATH);
+            try {
+                thread.join();
+            } catch (InterruptedException ex) {
+                throw new RuntimeException(ex);
+            }
             //刷新数据
             this.setVisible(false);
             MainWindow.refreshPanel();

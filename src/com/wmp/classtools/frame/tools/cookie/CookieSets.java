@@ -347,13 +347,16 @@ public class CookieSets {
     }
 
     public static void addCookie(File file) {
-        ZipPack.unzip(file.getPath(), CTInfo.DATA_PATH + "\\Cookie\\", () -> {
-            try {
-                refreshParentWindow();
-            } catch (IOException e) {
-                Log.err.print(CookieSets.class, "添加失败失败", e);
+        Thread thread = ZipPack.unzip(file.getPath(), CTInfo.DATA_PATH + "\\Cookie\\");
+        try {
+            if (thread != null) {
+                thread.join();
             }
-        });
+            refreshParentWindow();
+        } catch (Exception e) {
+            Log.err.print(CookieSets.class, "添加失败失败", e);
+        }
+
 
     }
 

@@ -24,8 +24,8 @@ import java.util.concurrent.atomic.AtomicReference;
 
 public class GetNewerVersion {
 
-    private static int newerVersion =  1;
-    private static int importUpdate = 2;
+    public static int newerVersion =  1;
+    public static int importUpdate = 2;
     private static JPanel view;
 
     private static final int NEW_VERSION = 1;
@@ -230,7 +230,7 @@ public class GetNewerVersion {
      * @param local  旧版本号
      * @return 0:已是最新，1:新版本，2:重要更新
      */
-    private static int isNewerVersion(String remote, String local) {
+    public static int isNewerVersion(String remote, String local) {
         // 实现版本号比较逻辑（需根据你的版本号格式调整）
         String[] remoteParts = remote.split("\\.");
         String[] localParts = local.split("\\.");

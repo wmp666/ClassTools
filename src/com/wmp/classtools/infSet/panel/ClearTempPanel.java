@@ -46,7 +46,11 @@ public class ClearTempPanel extends CTSetsPanel {
                 new DataControlUnit("值日数据", CTInfo.DATA_PATH + "Duty", false),
                 new DataControlUnit("迟到数据", CTInfo.DATA_PATH + "Att", false),
                 new DataControlUnit("插件", CTInfo.DATA_PATH + "Cookie", false),
+                new DataControlUnit("生日数据", CTInfo.DATA_PATH + "birthday.json", false),
+                new DataControlUnit("倒计时数据", CTInfo.DATA_PATH + "CountDown.json", false),
                 new DataControlUnit("个性化文件", CTInfo.DATA_PATH + "setUp.json", false)));
+        this.add(getControlUnit("软件数据", CTInfo.APP_INFO_PATH, false,
+                new DataControlUnit("图片数据", CTInfo.APP_INFO_PATH + "image", false)));
 
     }
 
