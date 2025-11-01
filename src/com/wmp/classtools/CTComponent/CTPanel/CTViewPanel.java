@@ -21,7 +21,6 @@ public abstract class CTViewPanel extends CTPanel{
 
     private Timer refreshTimer = new Timer(2*1000, e -> {
         try {
-            Log.info.print(getID(), "正在使用独立刷新线程");
             Refresh();
         } catch (Exception ex) {
             Log.err.print(getClass(), "刷新失败",  ex);

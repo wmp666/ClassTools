@@ -21,6 +21,7 @@ public class CTTextField extends JTextField {
         if (text != null) {
             this.setText(text);
         }
+        this.setCaretColor(CTColor.textColor);
 
         this.setBorder(CTBorderFactory.BASIC_LINE_BORDER);//设置按钮的边框 - 5px 实线
         this.setBackground(CTColor.backColor);

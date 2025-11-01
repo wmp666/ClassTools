@@ -72,7 +72,8 @@ public class ClassFormPanel extends CTViewPanel {
 
         //课程数据
         String[] nowClasses = CFInfoControl.getNowClasses();
-        String nextClass = CFInfoControl.getNextClass();
+        CFInfoControl.nextClassInfo nextClassInfo = CFInfoControl.getNextClass();
+        String nextClass = nextClassInfo.className();
         try {
 
             if (nowClasses.length == 0) {
@@ -81,7 +82,7 @@ public class ClassFormPanel extends CTViewPanel {
             if (nextClass == null || nextClass.isEmpty()) nextClass = "无";
 
             if (!oldNowClassNameList.equals(List.of(nowClasses)) ||
-                    !oldNextClassName.equals(nextClass)) showClassForm(nowClasses, nextClass);
+                    !oldNextClassName.equals(nextClass)) showClassForm(nowClasses, nextClass.equals("无")?"无":String.format("%s(%s分钟)", nextClass, nextClassInfo.time()));
 
             //数据更新
             this.oldNowClassNameList.clear();
@@ -115,7 +116,7 @@ public class ClassFormPanel extends CTViewPanel {
         this.add(titleLabel2, gbc);
 
         gbc.gridy++;
-        this.add(PeoPanelProcess.getShowPeoPanel(List.of(nextClass)), gbc);
+        this.add(PeoPanelProcess.getShowPeoPanel(List.of(nextClass.equals("无")?"无":String.format("%s(%s分钟)", nextClass, nextClassInfo.time()))), gbc);
 
 
         this.revalidate();

@@ -84,6 +84,7 @@ public class ClassFormSetsPanel extends CTSetsPanel {
         Log.info.print("CFSetsPanel", "重置课程表设置面板");
 
         JPanel mainPanel = new JPanel();
+        mainPanel.setOpaque(false);
 
         mainPanel.setLayout(new BorderLayout());
 

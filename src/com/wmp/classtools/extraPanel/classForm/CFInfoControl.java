@@ -74,7 +74,7 @@ public class CFInfoControl {
      *
      * @return 课程信息
      */
-    public static String getNextClass() {
+    public static nextClassInfo getNextClass() {
         Calendar calendar = Calendar.getInstance();
         int week = 0;
         switch (calendar.get(Calendar.DAY_OF_WEEK)) {
@@ -88,7 +88,7 @@ public class CFInfoControl {
         }
         //当天的课程表 [{"time":"HH:mm:ss-HH:mm:ss" , "class":"" }]
         JSONArray info = new JSONArray(getOneDayClasses(week));
-        String[] tempData = new String[2];// 0-时间 1-课程
+        String[] tempData = new String[3];// 0-时间 1-课程 2-间隔时间
         info.forEach(object -> {
             if (object instanceof JSONObject jsonObject) {
 
@@ -105,11 +105,14 @@ public class CFInfoControl {
                 if (tempData[0] == null ||
                         DateTools.getRemainderTime(s) < DateTools.getRemainderTime(tempData[0])) {
                     tempData[0] = s;
-                    tempData[1] = String.format("%s(%s分钟)", jsonObject.getString("class"), DateTools.getRemainderTime(s) / 1000 / 60 + 1);
+                    tempData[1] = jsonObject.getString("class");
+                    tempData[2] = String.valueOf(DateTools.getRemainderTime(s) / 1000 / 60 + 1);
                 }
 
             }
         });
-        return tempData[1];
+        return new nextClassInfo(tempData[2], tempData[1]);
     }
+
+    public record nextClassInfo(String time, String className){}
 }

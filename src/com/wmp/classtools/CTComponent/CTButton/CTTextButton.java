@@ -2,6 +2,8 @@ package com.wmp.classTools.CTComponent.CTButton;
 
 import com.wmp.PublicTools.CTInfo;
 import com.wmp.PublicTools.UITools.CTColor;
+import com.wmp.PublicTools.UITools.CTFont;
+import com.wmp.PublicTools.UITools.CTFontSizeStyle;
 import com.wmp.PublicTools.UITools.IconControl;
 import com.wmp.classTools.CTComponent.CTBorderFactory;
 
@@ -35,7 +37,7 @@ public class CTTextButton extends CTButton {
         }
         this.setText(text);
         this.setBackground(new Color(255, 255, 255));
-        this.setFont(new Font("Microsoft YaHei UI", Font.PLAIN, (int) (20 * CTInfo.dpi)));
+        this.setFont(new Font("Microsoft YaHei UI", Font.PLAIN, CTFont.getSize(CTFontSizeStyle.NORMAL)));
         this.setForeground(CTColor.textColor);
         this.setFocusPainted(false);
         this.setOpaque(false);

@@ -16,6 +16,7 @@ import java.awt.datatransfer.Transferable;
 import java.awt.event.*;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicReference;
 
@@ -476,68 +477,75 @@ public class CTOptionPane {
         JPanel toolsPanel = new JPanel(new GridLayout(0, 1, 5, 5));
         toolsPanel.setOpaque(false);
 
+
         JPanel yearPanel = new JPanel(new BorderLayout());
-        JSpinner yearSpinner = new JSpinner(new SpinnerNumberModel(Calendar.getInstance().get(Calendar.YEAR), Calendar.getInstance().get(Calendar.YEAR), Calendar.getInstance().get(Calendar.YEAR) + 20, 1));
+        CTSpinner yearSpinner = new CTSpinner(new SpinnerNumberModel(Calendar.getInstance().get(Calendar.YEAR), Calendar.getInstance().get(Calendar.YEAR), Calendar.getInstance().get(Calendar.YEAR) + 20, 1));
         {
             yearPanel.setOpaque(false);
 
             yearSpinner.setFont(new Font("微软雅黑", Font.PLAIN, CTFont.getSize(CTFontSizeStyle.SMALL)));
             JLabel yearLabel = new JLabel("年:");
+            yearLabel.setForeground(CTColor.textColor);
             yearLabel.setFont(new Font("微软雅黑", Font.PLAIN, CTFont.getSize(CTFontSizeStyle.SMALL)));
             yearPanel.add(yearSpinner, BorderLayout.CENTER);
             yearPanel.add(yearLabel, BorderLayout.WEST);
         }
 
         JPanel monthPanel = new JPanel(new BorderLayout());
-        JSpinner monthSpinner = new JSpinner(new SpinnerNumberModel(Calendar.getInstance().get(Calendar.MONTH) + 1, 1, 12, 1));
+        CTSpinner monthSpinner = new CTSpinner(new SpinnerNumberModel(Calendar.getInstance().get(Calendar.MONTH) + 1, 1, 12, 1));
         {
             monthPanel.setOpaque(false);
             monthSpinner.setFont(new Font("微软雅黑", Font.PLAIN, CTFont.getSize(CTFontSizeStyle.SMALL)));
             JLabel monthLabel = new JLabel("月:");
+            monthLabel.setForeground(CTColor.textColor);
             monthLabel.setFont(new Font("微软雅黑", Font.PLAIN, CTFont.getSize(CTFontSizeStyle.SMALL)));
             monthPanel.add(monthSpinner, BorderLayout.CENTER);
             monthPanel.add(monthLabel, BorderLayout.WEST);
         }
 
         JPanel dayPanel = new JPanel(new BorderLayout());
-        JSpinner daySpinner = new JSpinner(new SpinnerNumberModel(Calendar.getInstance().get(Calendar.DAY_OF_MONTH), 1, 31, 1));
+        CTSpinner daySpinner = new CTSpinner(new SpinnerNumberModel(Calendar.getInstance().get(Calendar.DAY_OF_MONTH), 1, 31, 1));
         {
             dayPanel.setOpaque(false);
             daySpinner.setFont(new Font("微软雅黑", Font.PLAIN, CTFont.getSize(CTFontSizeStyle.SMALL)));
             JLabel dayLabel = new JLabel("日:");
+            dayLabel.setForeground(CTColor.textColor);
             dayLabel.setFont(new Font("微软雅黑", Font.PLAIN, CTFont.getSize(CTFontSizeStyle.SMALL)));
             dayPanel.add(daySpinner, BorderLayout.CENTER);
             dayPanel.add(dayLabel, BorderLayout.WEST);
         }
 
         JPanel hourPanel = new JPanel(new BorderLayout());
-        JSpinner hourSpinner = new JSpinner(new SpinnerNumberModel(Calendar.getInstance().get(Calendar.HOUR_OF_DAY), 0, 23, 1));
+        CTSpinner hourSpinner = new CTSpinner(new SpinnerNumberModel(Calendar.getInstance().get(Calendar.HOUR_OF_DAY), 0, 23, 1));
         {
             hourPanel.setOpaque(false);
             hourSpinner.setFont(new Font("微软雅黑", Font.PLAIN, CTFont.getSize(CTFontSizeStyle.SMALL)));
             JLabel hourLabel = new JLabel("时:");
+            hourLabel.setForeground(CTColor.textColor);
             hourLabel.setFont(new Font("微软雅黑", Font.PLAIN, CTFont.getSize(CTFontSizeStyle.SMALL)));
             hourPanel.add(hourSpinner, BorderLayout.CENTER);
             hourPanel.add(hourLabel, BorderLayout.WEST);
         }
 
         JPanel minutePanel = new JPanel(new BorderLayout());
-        JSpinner minuteSpinner = new JSpinner(new SpinnerNumberModel(Calendar.getInstance().get(Calendar.MINUTE), 0, 59, 1));
+        CTSpinner minuteSpinner = new CTSpinner(new SpinnerNumberModel(Calendar.getInstance().get(Calendar.MINUTE), 0, 59, 1));
         {
             minutePanel.setOpaque(false);
             minuteSpinner.setFont(new Font("微软雅黑", Font.PLAIN, CTFont.getSize(CTFontSizeStyle.SMALL)));
             JLabel minuteLabel = new JLabel("分:");
+            minuteLabel.setForeground(CTColor.textColor);
             minuteLabel.setFont(new Font("微软雅黑", Font.PLAIN, CTFont.getSize(CTFontSizeStyle.SMALL)));
             minutePanel.add(minuteSpinner, BorderLayout.CENTER);
             minutePanel.add(minuteLabel, BorderLayout.WEST);
         }
 
         JPanel secondPanel = new JPanel(new BorderLayout());
-        JSpinner secondSpinner = new JSpinner(new SpinnerNumberModel(Calendar.getInstance().get(Calendar.SECOND), 0, 59, 1));
+        CTSpinner secondSpinner = new CTSpinner(new SpinnerNumberModel(Calendar.getInstance().get(Calendar.SECOND), 0, 59, 1));
         {
              secondPanel.setOpaque(false);
              secondSpinner.setFont(new Font("微软雅黑", Font.PLAIN, CTFont.getSize(CTFontSizeStyle.SMALL)));
              JLabel secondLabel = new JLabel("秒:");
+             secondLabel.setForeground(CTColor.textColor);
              secondLabel.setFont(new Font("微软雅黑", Font.PLAIN, CTFont.getSize(CTFontSizeStyle.SMALL)));
              secondPanel.add(secondSpinner, BorderLayout.CENTER);
              secondPanel.add(secondLabel, BorderLayout.WEST);
@@ -571,20 +579,20 @@ public class CTOptionPane {
                         choose.set(YES_OPTION);
 
                         if (style == YEAR_MONTH_DAY){
-                            result.add((Integer) yearSpinner.getValue());
-                            result.add((Integer) monthSpinner.getValue());
-                            result.add((Integer) daySpinner.getValue());
+                            result.add(Integer.valueOf(yearSpinner.getValue()) );
+                            result.add(Integer.valueOf(monthSpinner.getValue()));
+                            result.add(Integer.valueOf(daySpinner.getValue()));
                         } else if (style == MONTH_DAY) {
                             result.add(Calendar.getInstance().get(Calendar.YEAR));
-                            result.add((Integer) monthSpinner.getValue());
-                            result.add((Integer) daySpinner.getValue());
+                            result.add(Integer.valueOf( monthSpinner.getValue()));
+                            result.add(Integer.valueOf( daySpinner.getValue()));
                         } else if (style == HOURS_MINUTES){
-                            result.add((Integer) hourSpinner.getValue());
-                            result.add((Integer) minuteSpinner.getValue());
+                            result.add(Integer.valueOf( hourSpinner.getValue()));
+                            result.add(Integer.valueOf( minuteSpinner.getValue()));
                         } else if (style == HOURS_MINUTES_SECOND){
-                            result.add((Integer) hourSpinner.getValue());
-                            result.add((Integer) minuteSpinner.getValue());
-                            result.add((Integer) secondSpinner.getValue());
+                            result.add(Integer.valueOf( hourSpinner.getValue()));
+                            result.add(Integer.valueOf( minuteSpinner.getValue()));
+                            result.add(Integer.valueOf( secondSpinner.getValue()));
                         }
                         dialog.dispose();
                     }
