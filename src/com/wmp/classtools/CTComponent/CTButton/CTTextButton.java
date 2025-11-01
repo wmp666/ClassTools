@@ -2,6 +2,7 @@ package com.wmp.classTools.CTComponent.CTButton;
 
 import com.wmp.PublicTools.CTInfo;
 import com.wmp.PublicTools.UITools.CTColor;
+import com.wmp.PublicTools.UITools.IconControl;
 import com.wmp.classTools.CTComponent.CTBorderFactory;
 
 import javax.swing.*;
@@ -9,28 +10,28 @@ import java.awt.*;
 import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
 
-public class CTTextButton extends JButton {
+public class CTTextButton extends CTButton {
 
 
     public CTTextButton(String text) {
-        this(text, null);
+        this(text, null, IconControl.COLOR_DEFAULT, true);
     }
 
-    public CTTextButton(String text, Icon icon) {
-        this(text, icon, true);
+    public CTTextButton(String text, String name, int iconStyle) {
+        this(text, name, iconStyle, true);
     }
 
     public CTTextButton(String text, boolean showBorder) {
-        this(text, null, showBorder);
+        this(text, null, IconControl.COLOR_DEFAULT, showBorder);
     }
 
-    public CTTextButton(String text, Icon icon, boolean showBorder) {
+    public CTTextButton(String text,String name, int iconStyle, boolean showBorder) {
         this.setContentAreaFilled(false);
         this.setBorderPainted(showBorder);
         this.setBorder(CTBorderFactory.BASIC_LINE_BORDER);
 
-        if (icon != null) {
-            this.setIcon(icon);
+        if (name != null) {
+            this.setIcon(name, iconStyle, 35, 35);
         }
         this.setText(text);
         this.setBackground(new Color(255, 255, 255));

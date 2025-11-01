@@ -14,7 +14,7 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.io.IOException;
 
-public class ETPanel extends CTViewPanel implements MouseListener {
+public class ETPanel extends CTViewPanel{
 
     private final JLabel label;
 
@@ -28,7 +28,6 @@ public class ETPanel extends CTViewPanel implements MouseListener {
         label = new JLabel();
 
 
-        label.addMouseListener(this);
 
         //刷新
         new Thread(() -> {
@@ -91,43 +90,5 @@ public class ETPanel extends CTViewPanel implements MouseListener {
 
         this.revalidate();
         this.repaint();
-    }
-
-    @Override//鼠标点击
-    public void mouseClicked(MouseEvent e) {
-        int button = e.getButton();
-        if (button == MouseEvent.BUTTON3) {
-            CTPopupMenu ETPopupMenu = new CTPopupMenu();
-
-            CTTextButton edit = new CTTextButton("编辑");
-            edit.setIcon(GetIcon.getIcon(getClass().getResource("/image/edit.png"), 20, 20));
-            edit.addActionListener(event -> {
-                EasterEgg.errorAction();
-            });
-
-            ETPopupMenu.add(edit);
-
-            ETPopupMenu.show(label, e.getX(), e.getY());
-        }
-    }
-
-    @Override
-    public void mousePressed(MouseEvent e) {
-
-    }
-
-    @Override
-    public void mouseReleased(MouseEvent e) {
-
-    }
-
-    @Override
-    public void mouseEntered(MouseEvent e) {
-
-    }
-
-    @Override
-    public void mouseExited(MouseEvent e) {
-
     }
 }

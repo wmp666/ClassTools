@@ -1,10 +1,7 @@
 package com.wmp.classTools.extraPanel.duty.panel;
 
 import com.wmp.PublicTools.CTInfo;
-import com.wmp.PublicTools.UITools.CTColor;
-import com.wmp.PublicTools.UITools.CTFont;
-import com.wmp.PublicTools.UITools.CTFontSizeStyle;
-import com.wmp.PublicTools.UITools.PeoPanelProcess;
+import com.wmp.PublicTools.UITools.*;
 import com.wmp.PublicTools.io.IOForInfo;
 import com.wmp.PublicTools.io.InfProcess;
 import com.wmp.PublicTools.printLog.Log;
@@ -97,7 +94,7 @@ public class DPanel extends CTViewPanel {
         {
 
             CTIconButton last = new CTIconButton("上一天",
-                    "/image/%s/last_0.png", () -> {
+                    "上一天", IconControl.COLOR_COLORFUL, () -> {
                 int i = Log.info.showChooseDialog(this, "CTViewPanel-DutyPanel-日期切换", "确认切换至上一天");
                 if (i == 0) {
                     if (index > 0) index--;
@@ -118,7 +115,7 @@ public class DPanel extends CTViewPanel {
         {
 
             CTIconButton next = new CTIconButton("下一天",
-                    "/image/%s/next_0.png", () -> {
+                    "下一天", IconControl.COLOR_COLORFUL, () -> {
 
                 int i = Log.info.showChooseDialog(this, "CTViewPanel-DutyPanel-日期切换", "确认切换至下一天");
 

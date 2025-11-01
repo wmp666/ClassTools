@@ -6,6 +6,7 @@ import com.wmp.PublicTools.OpenInExp;
 import com.wmp.PublicTools.UITools.CTFont;
 import com.wmp.PublicTools.UITools.CTFontSizeStyle;
 import com.wmp.PublicTools.UITools.GetIcon;
+import com.wmp.PublicTools.UITools.IconControl;
 import com.wmp.PublicTools.io.IOForInfo;
 import com.wmp.PublicTools.io.ZipPack;
 import com.wmp.PublicTools.printLog.Log;
@@ -118,7 +119,7 @@ public class CookieSets {
             helloLabel.setFont(CTFont.getCTFont(-1, CTFontSizeStyle.BIG));
             helloPanel.add(helloLabel, BorderLayout.CENTER);
 
-            JLabel iconLabel = new JLabel(GetIcon.getIcon(Main.class.getResource("/image/icon.png"), 100, 100));
+            JLabel iconLabel = new JLabel(GetIcon.getIcon("关于", IconControl.COLOR_DEFAULT, 100, 100));
             helloPanel.add(iconLabel, BorderLayout.WEST);
 
             setsPanelList.add(helloPanel);
@@ -199,7 +200,8 @@ public class CookieSets {
                 label.setFont(CTFont.getCTFont(-1, CTFontSizeStyle.SMALL));
                 step2Panel.add(label, BorderLayout.NORTH);
 
-                CTTextButton openDirButton = new CTTextButton("打开启动单元目录", GetIcon.getIcon(Main.class.getResource("/image/openExp.png"), 30, 30));
+                CTTextButton openDirButton = new CTTextButton("打开启动单元目录");
+                openDirButton.setIcon("文件夹", IconControl.COLOR_DEFAULT, 30, 30);
                 openDirButton.addActionListener(e -> {
                     File cookiePath = cookie.getCookiePath();
                     if (cookiePath == null || !cookiePath.exists()) {

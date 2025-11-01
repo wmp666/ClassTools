@@ -1,6 +1,7 @@
 package com.wmp.classTools.frame;
 
 import com.wmp.PublicTools.UITools.CTColor;
+import com.wmp.PublicTools.UITools.IconControl;
 import com.wmp.PublicTools.printLog.Log;
 import com.wmp.classTools.CTComponent.CTButton.CTIconButton;
 import com.wmp.classTools.CTComponent.CTPanel.CTViewPanel;
@@ -13,7 +14,6 @@ import java.awt.*;
 import java.io.File;
 import java.io.IOException;
 import java.util.*;
-import java.util.List;
 
 public class ScreenProduct extends JDialog {
 
@@ -197,7 +197,7 @@ public class ScreenProduct extends JDialog {
 
         //添加退出按钮 - 左侧
         CTIconButton exitButton = new CTIconButton(
-                "/image/%s/exit_0.png", () -> {
+                "关闭", IconControl.COLOR_COLORFUL,  () -> {
             screenProduct.setVisible(false);
             Log.exit(0);
         });
@@ -212,7 +212,7 @@ public class ScreenProduct extends JDialog {
         int screenHeight = (int) screenSize.getHeight();
 
         this.setUndecorated(true);
-        this.setIconImage(new ImageIcon(getClass().getResource("/image/icon.png")).getImage());
+        this.setIconImage(new ImageIcon(getClass().getResource("/image/icon/icon.png")).getImage());
         this.setSize(screenWidth, screenHeight);
         this.setLocation(0, 0);
 

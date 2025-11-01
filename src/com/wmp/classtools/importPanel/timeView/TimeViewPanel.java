@@ -4,6 +4,7 @@ import com.wmp.PublicTools.CTInfo;
 import com.wmp.PublicTools.UITools.CTColor;
 import com.wmp.PublicTools.UITools.CTFont;
 import com.wmp.PublicTools.UITools.CTFontSizeStyle;
+import com.wmp.PublicTools.UITools.IconControl;
 import com.wmp.PublicTools.printLog.Log;
 import com.wmp.classTools.CTComponent.*;
 import com.wmp.classTools.CTComponent.CTButton.CTIconButton;
@@ -72,7 +73,7 @@ public class TimeViewPanel extends CTViewPanel {
         this.add(timeView, BorderLayout.CENTER);
 
         CTIconButton viewTimeButton = new CTIconButton("全屏显示时间",
-                "/image/%s/view_0.png", () -> {
+                "展示", IconControl.COLOR_COLORFUL, () -> {
             try {
                 int i = Log.info.showChooseDialog(null, "doge", "若当成了关闭按钮,\n请按\"是\",想要显示时间请按\"否\"");
                 if (i == JOptionPane.YES_OPTION) return;
@@ -103,7 +104,7 @@ public class TimeViewPanel extends CTViewPanel {
         int screenWidth = (int) screenSize.getWidth();
         int screenHeight = (int) screenSize.getHeight();
         JDialog window = new JDialog();
-        window.setIconImage(new ImageIcon(getClass().getResource("/image/icon.png")).getImage());
+        window.setIconImage(new ImageIcon(getClass().getResource("/image/icon/icon.png")).getImage());
         window.setSize(screenWidth, screenHeight);
         window.setLocation(0, 0);
         window.setAlwaysOnTop(true);
@@ -121,7 +122,7 @@ public class TimeViewPanel extends CTViewPanel {
 
 
         CTIconButton exitButton = new CTIconButton(
-                "/image/%s/exit_0.png", () -> {
+                "关闭", IconControl.COLOR_COLORFUL, () -> {
                 window.setVisible(false);
 
             timeView.setFont(CTFont.getCTFont(Font.BOLD, CTFontSizeStyle.BIG));

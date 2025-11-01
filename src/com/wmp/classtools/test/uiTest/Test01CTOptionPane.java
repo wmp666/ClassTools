@@ -21,7 +21,7 @@ public class Test01CTOptionPane {
 
         System.out.println("窗口1关闭");
 
-        int i = CTOptionPane.showConfirmDialog(null, "测试", "测试文本", GetIcon.getIcon(Main.class.getResource("/image/error/icon.png"), 50, 50), true);
+        int i = CTOptionPane.showConfirmDialog(null, "测试", "测试文本", GetIcon.getIcon("图标", 50, 50), true);
         if (i == CTOptionPane.YES_OPTION) {
             System.out.println("是");
         } else if (i == CTOptionPane.NO_OPTION) {

@@ -62,8 +62,7 @@ public class OtherTimeThingPanel extends CTViewPanel {
         this.removeAll();
 
         Calendar calendar = Calendar.getInstance();
-
-        other.setText(String.format("星期%s", calendar.get(Calendar.DAY_OF_WEEK)));
+        
         other.setFont(CTFont.getCTFont(Font.BOLD, size));
         other.setForeground(CTColor.mainColor);
         this.add(other, BorderLayout.SOUTH);

@@ -3,15 +3,13 @@ package com.wmp.classTools.frame;
 import com.wmp.Main;
 import com.wmp.PublicTools.CTInfo;
 import com.wmp.PublicTools.OpenInExp;
-import com.wmp.PublicTools.UITools.CTColor;
-import com.wmp.PublicTools.UITools.CTFont;
-import com.wmp.PublicTools.UITools.CTFontSizeStyle;
-import com.wmp.PublicTools.UITools.GetIcon;
+import com.wmp.PublicTools.UITools.*;
 import com.wmp.PublicTools.io.GetPath;
 import com.wmp.PublicTools.io.ZipPack;
 import com.wmp.PublicTools.printLog.Log;
 import com.wmp.classTools.CTComponent.CTButton.CTTextButton;
 import com.wmp.classTools.CTComponent.Menu.CTMenu;
+import com.wmp.classTools.CTComponent.Menu.CTMenuBar;
 import com.wmp.classTools.CTComponent.Menu.CTMenuItem;
 import com.wmp.classTools.frame.tools.cookie.*;
 import org.json.JSONException;
@@ -74,7 +72,8 @@ public class ShowCookieDialog extends JDialog{
         cookieSettingPanel.setOpaque(false);
         cookieSettingPanel.setLayout(new GridLayout(6, 1, 20, 5));
 
-        CTTextButton removeCookie = new CTTextButton("修改快速启动单元", GetIcon.getIcon(getClass().getResource("/image/light/settings_0.png"), 30, 30));
+        CTTextButton removeCookie = new CTTextButton("修改快速启动单元");
+        removeCookie.setIcon("设置", IconControl.COLOR_COLORFUL, 30, 30);
         removeCookie.addActionListener(e -> {
 
                     String cookiePin = s[0];
@@ -94,7 +93,8 @@ public class ShowCookieDialog extends JDialog{
         removeCookie.setEnabled(false);
         cookieSettingPanel.add(removeCookie);
 
-        CTTextButton deleteCookie = new CTTextButton("删除启动单元", GetIcon.getIcon(getClass().getResource("/image/light/delete_0.png"), 30, 30));
+        CTTextButton deleteCookie = new CTTextButton("删除启动单元");
+        deleteCookie.setIcon("删除", IconControl.COLOR_COLORFUL, 30, 30);
         deleteCookie.addActionListener(e -> {
             String cookiePin = s[0];
             CookieSets.deleteCookie(cookieMap.get(cookiePin));
@@ -164,7 +164,7 @@ public class ShowCookieDialog extends JDialog{
         //添加文件
         FileDragDropLabel addCookie = new FileDragDropLabel();
         addCookie.setOpaque(false);
-        addCookie.setIcon(GetIcon.getIcon(getClass().getResource("/image/light/new_0.png"),
+        addCookie.setIcon(GetIcon.getIcon("添加",
                 30, 30));
         addCookie.setHorizontalAlignment(JLabel.CENTER);
         //addCookie.setBorder(BorderFactory.createLineBorder(Color.BLACK, 1));//显示边框
@@ -224,7 +224,8 @@ public class ShowCookieDialog extends JDialog{
         controlPanel.setOpaque(false);
         controlPanel.setLayout(new FlowLayout(FlowLayout.LEFT, 5, 15));
 
-        CTTextButton openInExp = new CTTextButton("打开所在目录", GetIcon.getIcon(Main.class.getResource("/image/openExp.png"), 30, 30));
+        CTTextButton openInExp = new CTTextButton("打开所在目录");
+        openInExp.setIcon("文件夹", IconControl.COLOR_COLORFUL, 30, 30);
         openInExp.addActionListener(e -> {
             OpenInExp.open(cookieMap.get(s[0]).getPath());
         });
@@ -232,7 +233,8 @@ public class ShowCookieDialog extends JDialog{
         openInExp.setEnabled(false);
         controlPanel.add(openInExp);
 
-        CTTextButton outputBtn = new CTTextButton("导出", GetIcon.getIcon(Main.class.getResource("/image/light/update_0.png"), 30, 30));
+        CTTextButton outputBtn = new CTTextButton("导出");
+        outputBtn.setIcon("更新", IconControl.COLOR_COLORFUL, 30, 30);
         outputBtn.addActionListener(e -> {
             String path = GetPath.getDirectoryPath(this, "请选择导出目录");
             //将选中的快速启动单元文件夹打包为.zip
@@ -243,7 +245,8 @@ public class ShowCookieDialog extends JDialog{
         outputBtn.setEnabled(false);
         controlPanel.add(outputBtn);
 
-        CTTextButton runCookie = new CTTextButton("运行", GetIcon.getIcon(Main.class.getResource("/image/wish.png"), 30, 30));
+        CTTextButton runCookie = new CTTextButton("运行");
+        runCookie.setIcon("祈愿", IconControl.COLOR_COLORFUL, 30, 30);
         runCookie.addActionListener(e -> {
             StartCookie.showCookie(s[0]);
         });
@@ -265,14 +268,14 @@ public class ShowCookieDialog extends JDialog{
     private record initCookieSetsPanel(CTTextButton removeCookie, CTTextButton deleteCookie) {
     }
     private void initMenuBar() {
-        JMenuBar menuBar = new JMenuBar();
+        CTMenuBar menuBar = new CTMenuBar();
         this.setJMenuBar(menuBar);
 
         CTMenu fileMenu = new CTMenu("文件");
         fileMenu.setMnemonic('F');
 
         CTMenuItem inputCookie = new CTMenuItem("导入启动单元(.zip)");
-        inputCookie.setIcon( GetIcon.getIcon(getClass().getResource("/image/input.png"),16,16));
+        inputCookie.setIcon( GetIcon.getIcon("导入",16,16));
         inputCookie.addActionListener(e -> {
             String filePath = GetPath.getFilePath(this, "导入启动单元", ".zip", "ClassTools快速启动单元");
 
@@ -290,7 +293,7 @@ public class ShowCookieDialog extends JDialog{
         });
 
         CTMenuItem outputMenuItem = new CTMenuItem("导出启动单元(.zip)");
-        outputMenuItem.setIcon( GetIcon.getIcon(getClass().getResource("/image/light/update_0.png"),16,16));
+        outputMenuItem.setIcon( GetIcon.getIcon("更新",16,16));
         outputMenuItem.addActionListener(e -> {
             String path = GetPath.getDirectoryPath(this, "请选择导出目录");
             //将选中的快速启动单元文件夹打包为.zip
@@ -299,14 +302,14 @@ public class ShowCookieDialog extends JDialog{
         });
 
         CTMenuItem openInExp = new CTMenuItem("打开启动单元所在目录");
-        openInExp.setIcon( GetIcon.getIcon(getClass().getResource("/image/openExp.png"),16,16));
+        openInExp.setIcon( GetIcon.getIcon("文件夹",16,16));
         openInExp.addActionListener(e -> {
             OpenInExp.open(CTInfo.DATA_PATH + "\\Cookie\\");
         });
 
 
         CTMenuItem exit = new CTMenuItem("退出");
-        exit.setIcon( GetIcon.getIcon(getClass().getResource("/image/light/exit_0.png"),16,16));
+        exit.setIcon( GetIcon.getIcon("关闭",16,16));
         exit.addActionListener(e -> {
             this.setVisible(false);
         });
@@ -322,7 +325,7 @@ public class ShowCookieDialog extends JDialog{
         editMenu.setMnemonic('E');
 
         CTMenuItem cookieDownload = new CTMenuItem("下载启动单元");
-        cookieDownload.setIcon(GetIcon.getIcon(getClass().getResource("/image/input.png"), 16, 16));
+        cookieDownload.setIcon(GetIcon.getIcon("导入", 16, 16));
         cookieDownload.addActionListener(e -> {
             try {
                 new CookieDownload();
@@ -332,7 +335,7 @@ public class ShowCookieDialog extends JDialog{
         });
 
         CTMenuItem cookieSets = new CTMenuItem("修改启动单元");
-        cookieSets.setIcon( GetIcon.getIcon(getClass().getResource("/image/light/settings_0.png"),16,16));
+        cookieSets.setIcon( GetIcon.getIcon("设置",16,16));
         cookieSets.addActionListener(e -> {
             try {
                 CookieSets.CookieSetsDialog(cookieMap.get(s[0]));
@@ -345,7 +348,7 @@ public class ShowCookieDialog extends JDialog{
         });
 
         CTMenuItem deleteCookie = new CTMenuItem("删除启动单元");
-        deleteCookie.setIcon( GetIcon.getIcon(getClass().getResource("/image/light/delete_0.png"),16,16));
+        deleteCookie.setIcon( GetIcon.getIcon("删除",16,16));
         deleteCookie.addActionListener(e -> {
             CookieSets.deleteCookie(cookieMap.get(s[0]));
         });
@@ -360,7 +363,7 @@ public class ShowCookieDialog extends JDialog{
         helpMenu.setMnemonic('H');
 
         CTMenuItem helpDoc = new CTMenuItem("帮助文档");
-        helpDoc.setIcon( GetIcon.getIcon(getClass().getResource("/image/doc.png"),16,16));
+        helpDoc.setIcon( GetIcon.getIcon("文档", IconControl.COLOR_DEFAULT,16,16));
         helpDoc.addActionListener(e -> {
             try {
                 new ShowHelpDoc(ShowHelpDoc.CONFIG_PLUGIN);
@@ -377,7 +380,7 @@ public class ShowCookieDialog extends JDialog{
     private void initDialog() {
         this.setTitle("快速启动页");
         this.setSize((int) (500 * CTInfo.dpi), (int) (400 * CTInfo.dpi));
-        this.setIconImage(GetIcon.getImageIcon(getClass().getResource("/image/light/cookie_0.png"),
+        this.setIconImage(GetIcon.getImageIcon("快速启动", IconControl.COLOR_DEFAULT,
                         32, 32).getImage());
         this.setLocationRelativeTo(null);
         this.setModal(true);

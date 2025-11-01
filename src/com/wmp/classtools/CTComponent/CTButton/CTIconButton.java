@@ -1,10 +1,7 @@
 package com.wmp.classTools.CTComponent.CTButton;
 
 import com.wmp.PublicTools.CTInfo;
-import com.wmp.PublicTools.UITools.CTColor;
-import com.wmp.PublicTools.UITools.CTFont;
-import com.wmp.PublicTools.UITools.CTFontSizeStyle;
-import com.wmp.PublicTools.UITools.GetIcon;
+import com.wmp.PublicTools.UITools.*;
 
 import javax.swing.*;
 import java.awt.*;
@@ -16,52 +13,42 @@ import java.awt.geom.RoundRectangle2D;
 import java.net.MalformedURLException;
 import java.net.URL;
 
-public class CTIconButton extends JButton implements ActionListener {
+public class CTIconButton extends CTButton implements ActionListener {
 
     private Runnable callback;
-    private Icon defaultIcon;
-    private Image defaultIconImage;
-    private String defaultIconPath;
     private String text;
 
+
+
     public CTIconButton() {
+        this("null", "null", IconControl.COLOR_DEFAULT, null);
     }
 
     //图标 正方形
-    public CTIconButton(String defaultIconPath, Runnable callback){
+    public CTIconButton(String name, int iconStyle, Runnable callback){
 
-        this(null, defaultIconPath, callback);
+        this(null, name, iconStyle, callback);
 
     }
 
     //文字 图标 正方形
 
-    public CTIconButton(String text, String defaultIconPath, Runnable callback){
+    public CTIconButton(String text, String name, int iconStyle, Runnable callback){
         this.text = text;
         this.setToolTipText(text);
+
+        this.setIconName(name);
+        this.setIconStyle(iconStyle);
 
         setName(text);
 
         //super(text);
 
-        if (defaultIconPath != null) {
+        if (name != null) {
 
-            //将defaultIconPath中的%s替换为CTColor.mainColor
+            this.setIcon(GetIcon.getIcon(name, iconStyle, 35, 35));
 
-            String modifiedPath = defaultIconPath.replace("%s", CTColor.style);
-
-            this.defaultIconPath = defaultIconPath;
-
-            URL tempPath = getClass().getResource(modifiedPath);
-            if (tempPath != null) {
-                this.defaultIcon = GetIcon.getIcon(getClass().getResource(modifiedPath), 35, 35);
-                this.defaultIconImage = GetIcon.getImageIcon(getClass().getResource(modifiedPath), 35, 35).getImage();
-            }
-
-
-            this.setIcon(defaultIcon);
-
-            this.setSize(defaultIcon.getIconWidth(), defaultIcon.getIconHeight());
+            this.setSize(getIcon().getIconWidth(), getIcon().getIconHeight());
         }
 
 
@@ -108,17 +95,21 @@ public class CTIconButton extends JButton implements ActionListener {
     }
 
     public CTIconButton copy() throws MalformedURLException {
-        return new CTIconButton(this.text, this.defaultIconPath, this.callback);
+        CTIconButton ctIconButton = new CTIconButton();
+        ctIconButton.setIcon(this.getIcon());
+        ctIconButton.setToolTipText(this.text);
+        ctIconButton.setCallback(this.callback);
+        return ctIconButton;
     }
 
     public CTTextButton toTextButton(boolean showBorder) {
-        CTTextButton button = new CTTextButton(this.text, this.defaultIcon, showBorder);
+        CTTextButton button = new CTTextButton(this.text, this.getIconName(), this.getIconStyle(), showBorder);
         button.addActionListener(this);
         return button;
     }
 
     public CTRoundTextButton toRoundTextButton() {
-        CTRoundTextButton button = new CTRoundTextButton(this.text, this.defaultIcon);
+        CTRoundTextButton button = new CTRoundTextButton(this.text, this.getIconName(), this.getIconStyle());
         button.addActionListener(this);
         return button;
     }
@@ -138,17 +129,17 @@ public class CTIconButton extends JButton implements ActionListener {
 
         int width = getWidth();
         int height = getHeight();
-        int tempX = (width - this.defaultIcon.getIconWidth()) / 2;
-        int tempY = (height - this.defaultIcon.getIconHeight()) / 2;
+        int tempX = (width - this.getIcon().getIconWidth()) / 2;
+        int tempY = (height - this.getIcon().getIconHeight()) / 2;
 
         g2.setColor(getBackground());
-        g2.fill(new RoundRectangle2D.Float(tempX, tempY, this.defaultIcon.getIconWidth(), this.defaultIcon.getIconHeight(), CTInfo.arcw, CTInfo.arch));
+        g2.fill(new RoundRectangle2D.Float(tempX, tempY, this.getIcon().getIconWidth(), this.getIcon().getIconHeight(), CTInfo.arcw, CTInfo.arch));
 
         // 绘制图标（如果存在）
-        if (this.defaultIconImage != null) {
+        if (this.getIcon() != null) {
 
 
-            g2.drawImage(this.defaultIconImage, tempX, tempY, this.defaultIcon.getIconWidth(), this.defaultIcon.getIconHeight(), null);
+            g2.drawImage(((ImageIcon)this.getIcon()).getImage(), tempX, tempY, this.getIcon().getIconWidth(), this.getIcon().getIconHeight(), null);
         }
 
         // 绘制文本

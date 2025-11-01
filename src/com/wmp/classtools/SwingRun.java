@@ -10,6 +10,7 @@ import com.wmp.classTools.frame.LoadingWindow;
 import com.wmp.classTools.frame.MainWindow;
 
 import javax.swing.*;
+import java.awt.*;
 import java.io.IOException;
 import java.net.URISyntaxException;
 
@@ -23,6 +24,7 @@ public class SwingRun {
         try {
             //使用系统UI
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+            UIManager.put("PopupMenu.borderInsets", new Insets(5, 10, 5, 10));
 
         } catch (UnsupportedLookAndFeelException | ClassNotFoundException | InstantiationException |
                  IllegalAccessException e) {
@@ -32,8 +34,7 @@ public class SwingRun {
 
         LoadingWindow loadingWindow;
         if (b){
-            loadingWindow = new LoadingWindow(Main.class.getResource("/image/loading.gif"),
-                        200, 200, "useLoadingText", true, 2300);
+            loadingWindow = new LoadingWindow(200, 200, "EasterEgg", true, 2300);
 
         }else{
             loadingWindow = new LoadingWindow();

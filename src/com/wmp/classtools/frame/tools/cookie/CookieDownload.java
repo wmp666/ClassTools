@@ -1,9 +1,6 @@
 package com.wmp.classTools.frame.tools.cookie;
 
-import com.wmp.PublicTools.UITools.CTColor;
-import com.wmp.PublicTools.UITools.CTFont;
-import com.wmp.PublicTools.UITools.CTFontSizeStyle;
-import com.wmp.PublicTools.UITools.GetIcon;
+import com.wmp.PublicTools.UITools.*;
 import com.wmp.PublicTools.io.DownloadURLFile;
 import com.wmp.PublicTools.printLog.Log;
 import com.wmp.PublicTools.web.GetWebInf;
@@ -136,7 +133,7 @@ public class CookieDownload {
                 Log.err.print(getClass(), "请选择一个快速启动单元");
             } else {
                 JDialog infoDialog = new JDialog();
-                infoDialog.setIconImage(GetIcon.getImageIcon(getClass().getResource("/image/light/about_0.png"), 300, 300).getImage());
+                infoDialog.setIconImage(GetIcon.getImageIcon("关于", IconControl.COLOR_DEFAULT, 300, 300).getImage());
                 infoDialog.setSize(450, 300);
                 infoDialog.setLocationRelativeTo(null);
                 infoDialog.setModal(true);
@@ -175,7 +172,7 @@ public class CookieDownload {
     }
 
     private void initDialog(JDialog dialog) {
-        dialog.setIconImage(GetIcon.getImageIcon(getClass().getResource("/image/input.png"), 300, 300).getImage());
+        dialog.setIconImage(GetIcon.getImageIcon("导入", IconControl.COLOR_DEFAULT, 300, 300).getImage());
         dialog.setSize(400, 350);
         dialog.setLocationRelativeTo(null);
         //dialog.setResizable(false);

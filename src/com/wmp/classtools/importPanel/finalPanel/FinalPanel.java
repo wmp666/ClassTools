@@ -4,6 +4,7 @@ import com.wmp.Main;
 import com.wmp.PublicTools.CTInfo;
 import com.wmp.PublicTools.EasterEgg.EasterEgg;
 import com.wmp.PublicTools.UITools.CTColor;
+import com.wmp.PublicTools.UITools.IconControl;
 import com.wmp.PublicTools.printLog.Log;
 import com.wmp.PublicTools.update.GetNewerVersion;
 import com.wmp.classTools.CTComponent.CTButton.CTIconButton;
@@ -60,7 +61,7 @@ public class FinalPanel extends CTViewPanel {
 
 
         CTIconButton moreButton = new CTIconButton("更多功能",
-                "/image/%s/more.png", () -> {
+                "更多", IconControl.COLOR_COLORFUL, () -> {
             //moreDialog.setVisible(true);
         });
         moreButton.setCallback(() -> {
@@ -72,7 +73,7 @@ public class FinalPanel extends CTViewPanel {
         allButList.clear();
 
         CTIconButton settings = new CTIconButton("设置",
-                "/image/%s/settings_0.png", () -> {
+                "设置", IconControl.COLOR_COLORFUL, () -> {
 
             try {
                     new InfSetDialog();
@@ -84,7 +85,7 @@ public class FinalPanel extends CTViewPanel {
         allButList.add(settings);
 
         CTIconButton cookie = new CTIconButton("快速启动页",
-                "/image/%s/cookie_0.png", () -> {
+                "快速启动", IconControl.COLOR_COLORFUL, () -> {
             try {
                 new ShowCookieDialog();
             } catch (IOException e) {
@@ -95,7 +96,7 @@ public class FinalPanel extends CTViewPanel {
 
 
         CTIconButton about = new CTIconButton("软件信息",
-                "/image/%s/about_0.png", () -> {
+                "关于", IconControl.COLOR_COLORFUL, () -> {
             try {
                 new AboutDialog().setVisible(true);
             } catch (Exception e) {
@@ -105,29 +106,27 @@ public class FinalPanel extends CTViewPanel {
         allButList.add(about);
 
         CTIconButton CTTools = new CTIconButton("快捷工具",
-                "/image/wish.png", () -> {
+                "快捷工具", IconControl.COLOR_COLORFUL, () -> {
             com.wmp.classTools.frame.CTTools.showDialog();
         });
         allButList.add(CTTools);
 
         CTIconButton update = new CTIconButton("检查更新",
-                "/image/%s/update_0.png", () -> GetNewerVersion.checkForUpdate(null, null, true));
+                "更新", IconControl.COLOR_COLORFUL, () -> GetNewerVersion.checkForUpdate(null, null, true));
         allButList.add(update);
 
         // 自定义刷新方法
         CTIconButton refresh = new CTIconButton("刷新",
-                "/image/%s/refresh_0.png", MainWindow::refresh);
+                "刷新", IconControl.COLOR_COLORFUL, MainWindow::refresh);
         allButList.add(refresh);
 
         CTIconButton holidayBlessings = new CTIconButton("查看祝词",
-                "/image/wish.png", () -> EasterEgg.showHolidayBlessings(1));
+                "祈愿", IconControl.COLOR_COLORFUL, () -> EasterEgg.showHolidayBlessings(1));
         allButList.add(holidayBlessings);
 
         CTIconButton showLog = new CTIconButton("查看日志",
-                "/image/%s/showLog_0.png", Log::showLogDialog);
-        showLog.setPreferredSize(showLog.getSize());
-        showLog.setMaximumSize(showLog.getSize());
-        showLog.setMinimumSize(showLog.getSize());
+                "日志", IconControl.COLOR_COLORFUL, Log::showLogDialog);
+        allButList.add(showLog);
 
 
         this.add(Box.createHorizontalStrut(2));
@@ -157,11 +156,6 @@ public class FinalPanel extends CTViewPanel {
             }
         });
 
-
-        this.add(Box.createHorizontalStrut(2));
-        this.add(showLog);
-        this.add(Box.createHorizontalStrut(2)); // 按钮后添加间距
-
         if (length.get() == 0) {
             this.remove(moreButton);
         }
@@ -169,7 +163,7 @@ public class FinalPanel extends CTViewPanel {
         //设置关闭按钮
         if (!CTInfo.isError && CTInfo.canExit && !Main.allArgs.get("screenProduct:show").contains(Main.argsList)) {
             CTIconButton exit = new CTIconButton("关闭",
-                    "/image/%s/exit_0.png", () -> {
+                    "关闭", IconControl.COLOR_COLORFUL, () -> {
                 int i = Log.info.showChooseDialog(null, "CTViewPanel-按钮组", "确认退出?");
                 if (i == JOptionPane.YES_OPTION) {
                     Log.exit(0);

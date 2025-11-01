@@ -1,6 +1,7 @@
 package com.wmp.classTools.extraPanel.duty.settings;
 
 import com.wmp.PublicTools.UITools.GetIcon;
+import com.wmp.PublicTools.UITools.IconControl;
 import com.wmp.PublicTools.io.IOForInfo;
 import com.wmp.PublicTools.io.InfProcess;
 import com.wmp.PublicTools.printLog.Log;
@@ -63,7 +64,8 @@ public class DutyListSetsPanel extends CTSetsPanel {
         //新建
         {
 
-            CTTextButton newBtn = new CTTextButton("添加", GetIcon.getIcon(getClass().getResource("/image/light/new_0.png"), 30, 30));
+            CTTextButton newBtn = new CTTextButton("添加");
+            newBtn.setIcon("添加", IconControl.COLOR_COLORFUL, 30, 30);
             newBtn.addActionListener(e -> {
                 //检测内容是否为空
                 boolean b = true;
@@ -97,7 +99,8 @@ public class DutyListSetsPanel extends CTSetsPanel {
         // 删除
         {
 
-            CTTextButton deleteBtn = new CTTextButton("删除", GetIcon.getIcon(getClass().getResource("/image/light/delete_0.png"), 30, 30));
+            CTTextButton deleteBtn = new CTTextButton("删除");
+            deleteBtn.setIcon("删除", IconControl.COLOR_COLORFUL, 30, 30);
             deleteBtn.addActionListener(e -> {
                 int selectedRow = DutyTable.getSelectedRow();
                 if (selectedRow != -1) {

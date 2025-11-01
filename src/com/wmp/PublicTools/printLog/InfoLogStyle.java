@@ -3,6 +3,7 @@ package com.wmp.PublicTools.printLog;
 import com.wmp.Main;
 import com.wmp.PublicTools.CTInfo;
 import com.wmp.PublicTools.UITools.GetIcon;
+import com.wmp.PublicTools.UITools.IconControl;
 import com.wmp.classTools.CTComponent.CTOptionPane;
 import com.wmp.classTools.CTComponent.LoadingDialog;
 
@@ -36,7 +37,7 @@ public class InfoLogStyle extends PrintLogStyle {
     }
 
     private static Icon getIcon() {
-        if (CTInfo.isError) return GetIcon.getIcon(Main.class.getResource("/image/error/icon.png"), 100, 100);
+        if (CTInfo.isError) return GetIcon.getIcon("图标", IconControl.COLOR_DEFAULT, 100, 100);
         return null;
     }
 

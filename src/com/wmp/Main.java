@@ -63,7 +63,7 @@ public class Main{
             CTInfo.version = "999.999.999";//错误版本号(无法更新)
             CTInfo.appName = "班级病毒";
             CTInfo.author = "银狼";
-            CTInfo.iconPath = "/image/error/icon.png";
+            CTInfo.iconPath = "/image/err/icon.png";
             b = false;
             CTColor.setErrorColor();//修改颜色
         }

@@ -29,7 +29,7 @@ public class DianMingTool extends CTTool {
         dialog.setLayout(new BorderLayout());
         dialog.setTitle("点名器");
         dialog.setSize((int)(300 * CTInfo.dpi), (int)(400 * CTInfo.dpi));
-        dialog.setBackground(CTColor.backColor);
+        dialog.getContentPane().setBackground(CTColor.backColor);
 
         JLabel label = new JLabel("点名器");
         label.setForeground(CTColor.textColor);

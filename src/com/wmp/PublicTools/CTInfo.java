@@ -20,7 +20,7 @@ public class CTInfo {
     public static String appName = "班级工具";
     public static String author = "无名牌";
 
-    public static String iconPath = "/image/icon.png";
+    public static String iconPath = "/image/icon/icon.png";
 
     public static double dpi = 1;
     public static boolean isError = false;
@@ -37,7 +37,7 @@ public class CTInfo {
      * d:只修复的问题,问题较少
      * e:测试版本号
      */
-    public static String version = "1.40.3";
+    public static String version = "1.41.0";
     public static void init() {
 
         disButList.clear();
@@ -51,8 +51,8 @@ public class CTInfo {
 
         TEMP_PATH = path + "\\ClassToolsTemp\\";
 
-        if (version.split("\\.").length < 5) iconPath = "/image/icon.png";
-        else iconPath = "/image/icon_bate.png";
+        if (version.split("\\.").length < 5) iconPath = "/image/icon/icon.png";
+        else iconPath = "/image/icon/icon_bate.png";
 
 
         boolean exists = new File(CTInfo.DATA_PATH + "setUp.json").exists();

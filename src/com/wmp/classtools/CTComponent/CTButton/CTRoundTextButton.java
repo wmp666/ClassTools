@@ -1,9 +1,7 @@
 package com.wmp.classTools.CTComponent.CTButton;
 
 import com.wmp.PublicTools.CTInfo;
-import com.wmp.PublicTools.UITools.CTColor;
-import com.wmp.PublicTools.UITools.CTFont;
-import com.wmp.PublicTools.UITools.CTFontSizeStyle;
+import com.wmp.PublicTools.UITools.*;
 
 import javax.swing.*;
 import java.awt.*;
@@ -11,25 +9,30 @@ import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
 import java.awt.geom.RoundRectangle2D;
 
-public class CTRoundTextButton extends JButton {
+public class CTRoundTextButton extends CTButton {
 
 
     private Icon defaultIcon;
     private Image defaultIconImage;
 
     public CTRoundTextButton(String text) {
-        this(text, null);
+        this(text, null, IconControl.COLOR_DEFAULT);
     }
 
-    public CTRoundTextButton(String text, Icon icon) {
-        super(text, icon);
+    public CTRoundTextButton(String text, String name, int iconStyle) {
+        this(text, name, iconStyle, 35, 35);
+    }
 
+    public CTRoundTextButton(String text, String name, int iconStyle, int width, int height) {
+        super();
+
+        this.setText(text);
         setName(text);
 
 
-        if (icon != null) {
-            this.defaultIcon = icon;
-            this.defaultIconImage = ((ImageIcon) icon).getImage();
+        if (name != null) {
+            this.defaultIcon = GetIcon.getIcon(name, iconStyle, width, height);
+            this.defaultIconImage = ((ImageIcon)defaultIcon).getImage();
 
             this.setIcon(defaultIcon);
         }

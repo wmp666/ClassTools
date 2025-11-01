@@ -81,45 +81,6 @@ public class ATPanel extends CTViewPanel {
                 + "</html>");
         StuInfoLabel.setFont(CTFont.getCTFont(Font.BOLD, CTFontSizeStyle.BIG));
 
-        StuInfoLabel.addMouseListener(new MouseAdapter() {
-            @Override
-            public void mouseClicked(MouseEvent e) {
-
-                int button = e.getButton();
-                if (button != MouseEvent.BUTTON3) return;
-
-                CTPopupMenu popupMenu = new CTPopupMenu();
-
-                CTMenu editMenu = new CTMenu("编辑");
-                editMenu.setIcon(GetIcon.getIcon(getClass().getResource("/image/edit.png"), 20, 20));
-
-                CTTextButton allStuEdit = new CTTextButton("学生名单");
-                allStuEdit.setIcon(GetIcon.getIcon(getClass().getResource("/image/edit.png"), 20, 20));
-                allStuEdit.addActionListener(event -> {
-                    try {
-                        new InfSetDialog("学生名单");
-                    } catch (Exception ex) {
-                        Log.err.print(getClass(), "设置打开失败", ex);
-                    }
-                });
-                editMenu.add(allStuEdit);
-                CTTextButton LeaveStuEdit = new CTTextButton("迟到名单");
-                LeaveStuEdit.setIcon(GetIcon.getIcon(getClass().getResource("/image/edit.png"), 20, 20));
-                LeaveStuEdit.addActionListener(event -> {
-                    try {
-                        new InfSetDialog("迟到人员");
-                    } catch (Exception ex) {
-                        Log.err.print(getClass(), "设置打开失败", ex);
-                    }
-                });
-                editMenu.add(LeaveStuEdit);
-
-                popupMenu.add(editMenu);
-
-                popupMenu.show(StuInfoLabel, e.getX(), e.getY());
-            }
-        });
-
 
         GridBagConstraints gbc = new GridBagConstraints();
         gbc.gridx = 0;// 列

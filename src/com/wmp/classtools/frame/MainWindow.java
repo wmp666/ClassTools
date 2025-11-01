@@ -5,6 +5,7 @@ import com.wmp.PublicTools.UITools.CTColor;
 import com.wmp.PublicTools.printLog.Log;
 import com.wmp.classTools.CTComponent.CTBorderFactory;
 import com.wmp.classTools.CTComponent.CTPanel.CTViewPanel;
+import com.wmp.classTools.CTComponent.CTWindow;
 import com.wmp.classTools.extraPanel.attendance.panel.ATPanel;
 import com.wmp.classTools.extraPanel.classForm.panel.ClassFormPanel;
 import com.wmp.classTools.extraPanel.countdown.panel.CountDownPanel;
@@ -31,7 +32,7 @@ import java.util.TreeMap;
 import static com.wmp.Main.allArgs;
 import static com.wmp.Main.argsList;
 
-public class MainWindow extends JDialog {
+public class MainWindow extends CTWindow {
     //private final JPanel centerPane = new JPanel(); // 用于放置中间组件的面板
 
     public static final ArrayList<CTViewPanel> allPanelList = new ArrayList<>();
@@ -143,7 +144,6 @@ public class MainWindow extends JDialog {
 
                     //this.setLocation(0,0);
                     this.getContentPane().setBackground(CTColor.backColor);
-                    this.setShape(new RoundRectangle2D.Double(0, 0, this.getWidth(), this.getHeight(), 20, 20));
 
                     this.repaint();
                 });
@@ -293,8 +293,6 @@ public class MainWindow extends JDialog {
     private void initFrame() {
         this.setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
         this.setTitle(CTInfo.appName + "-V" + CTInfo.version);
-        //删除边框
-        this.setUndecorated(true);
 
         this.setLayout(new BorderLayout());
         //设置屏幕大小

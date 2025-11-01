@@ -5,6 +5,7 @@ import com.wmp.PublicTools.CTInfo;
 import com.wmp.PublicTools.DateTools;
 import com.wmp.PublicTools.UITools.CTColor;
 import com.wmp.PublicTools.UITools.GetIcon;
+import com.wmp.PublicTools.UITools.IconControl;
 import com.wmp.PublicTools.io.IOForInfo;
 import com.wmp.PublicTools.io.ResourceLocalizer;
 import com.wmp.PublicTools.printLog.Log;
@@ -310,7 +311,7 @@ public class EasterEgg {
     public static void errorAction() {
         Log.info.print("EasterEgg", "你没有权限!!!");
 
-        CTOptionPane.showMessageDialog(null, "警告", "你没有权限!!!", GetIcon.getIcon(EasterEgg.class.getResource("/image/error/error.png"), 100, 100), CTOptionPane.ERROR_MESSAGE, true);
+        CTOptionPane.showMessageDialog(null, "警告", "你没有权限!!!", GetIcon.getIcon("刻律德菈", IconControl.COLOR_DEFAULT, 100, 100), CTOptionPane.ERROR_MESSAGE, true);
     }
 
     public static void showHolidayBlessings(int style) {

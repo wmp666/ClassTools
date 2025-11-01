@@ -1,6 +1,7 @@
 package com.wmp.classTools.CTComponent.Menu;
 
 import com.wmp.PublicTools.CTInfo;
+import com.wmp.PublicTools.UITools.CTColor;
 
 import javax.swing.*;
 import java.awt.*;
@@ -13,10 +14,13 @@ public class CTPopupMenu extends JPopupMenu {
     public CTPopupMenu(String label) {
         super(label);
 
+        this.setBackground(CTColor.backColor);
+
         JPopupMenu.setDefaultLightWeightPopupEnabled(false);
         this.setBorderPainted(false);
 
         this.setLayout(new GridLayout(0, 1));
+
     }
 
     @Override

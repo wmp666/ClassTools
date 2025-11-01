@@ -4,10 +4,7 @@ import com.wmp.Main;
 import com.wmp.PublicTools.CTInfo;
 import com.wmp.PublicTools.EasterEgg.EasterEgg;
 import com.wmp.PublicTools.OpenInExp;
-import com.wmp.PublicTools.UITools.CTColor;
-import com.wmp.PublicTools.UITools.CTFont;
-import com.wmp.PublicTools.UITools.CTFontSizeStyle;
-import com.wmp.PublicTools.UITools.GetIcon;
+import com.wmp.PublicTools.UITools.*;
 import com.wmp.PublicTools.videoView.MediaPlayer;
 import com.wmp.classTools.CTComponent.CTOptionPane;
 import com.wmp.classTools.frame.MainWindow;
@@ -33,7 +30,7 @@ public class Log {
     private static int index = 0;
 
 
-    public static final TrayIcon trayIcon = new TrayIcon(GetIcon.getImageIcon(Main.class.getResource(CTInfo.iconPath), 16, 16).getImage(), "ClassTools");
+    public static final TrayIcon trayIcon = new TrayIcon(GetIcon.getImageIcon(Log.class.getResource("/image/icon/icon.png"), 16, 16).getImage(), "ClassTools");
 
     private static final JTextArea textArea = new JTextArea();
 
@@ -102,7 +99,7 @@ public class Log {
             moreDialog.setLocationRelativeTo(null);
             moreDialog.setModal(true);
             moreDialog.getContentPane().setBackground(CTColor.backColor);
-            moreDialog.setIconImage(GetIcon.getImageIcon(Log.class.getResource("/image/light/more.png"), 32, 32).getImage());
+            moreDialog.setIconImage(GetIcon.getImageIcon("更多", IconControl.COLOR_DEFAULT, 32, 32).getImage());
 
             FinalPanel.allButList.forEach(but -> {
                     moreDialog.add(but.toRoundTextButton());
@@ -270,7 +267,7 @@ public class Log {
                 if (CTInfo.isError) title = "骇客已入侵";
                 else title = "世界拒绝了我";
                 Icon icon = null;
-                if (CTInfo.isError) icon = GetIcon.getIcon(Log.class.getResource("/image/error/icon.png"), 100, 100);
+                if (CTInfo.isError) icon = GetIcon.getIcon("图标", IconControl.COLOR_DEFAULT, 100, 100);
                 CTOptionPane.showMessageDialog(c, title, logInfo.toString(), icon, CTOptionPane.ERROR_MESSAGE, true);
 
                 logInfList.add(info);

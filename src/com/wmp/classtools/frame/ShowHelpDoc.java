@@ -5,6 +5,7 @@ import com.wmp.PublicTools.OpenInExp;
 import com.wmp.PublicTools.UITools.CTFont;
 import com.wmp.PublicTools.UITools.CTFontSizeStyle;
 import com.wmp.PublicTools.UITools.GetIcon;
+import com.wmp.PublicTools.UITools.IconControl;
 import com.wmp.PublicTools.io.DownloadURLFile;
 import com.wmp.PublicTools.io.ResourceLocalizer;
 import com.wmp.PublicTools.printLog.Log;
@@ -216,6 +217,7 @@ public class ShowHelpDoc extends JFrame {
 
                 if (name.contains("help")) tempName = "帮助文档";
                 if (name.contains("WIErrCode")) tempName = "天气数据错误码";
+                if (name.contains("WIKeyCodeGetHelp")) tempName = "天气数据密钥获取方法";
 
                 CTRoundTextButton helpDocMenuItem = new CTRoundTextButton(tempName + "(" + name + ")");
                 helpDocMenuItem.addActionListener(e1 -> {
@@ -257,7 +259,7 @@ public class ShowHelpDoc extends JFrame {
         this.setTitle("帮助");
         this.getContentPane().setLayout(new BorderLayout());// 设置布局为边界布局
         this.setSize(800, 600);
-        this.setIconImage(GetIcon.getImageIcon(getClass().getResource("/image/doc.png"),
+        this.setIconImage(GetIcon.getImageIcon("文档", IconControl.COLOR_DEFAULT,
                 32, 32).getImage());
         //居中显示
         this.setLocationRelativeTo(null);

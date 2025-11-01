@@ -3,50 +3,46 @@ package com.wmp.classTools.frame;
 import com.wmp.PublicTools.CTInfo;
 import com.wmp.PublicTools.EasterEgg.EETextStyle;
 import com.wmp.PublicTools.EasterEgg.EasterEgg;
-import com.wmp.PublicTools.UITools.CTColor;
-import com.wmp.PublicTools.UITools.CTFont;
-import com.wmp.PublicTools.UITools.CTFontSizeStyle;
-import com.wmp.PublicTools.UITools.GetIcon;
+import com.wmp.PublicTools.UITools.*;
 import com.wmp.PublicTools.printLog.Log;
 import com.wmp.classTools.CTComponent.CTProgressBar;
+import com.wmp.classTools.CTComponent.CTWindow;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.geom.RoundRectangle2D;
 import java.net.URL;
-import java.util.Arrays;
 
-public class LoadingWindow extends JDialog {
+public class LoadingWindow extends CTWindow {
 
     public static final int STYLE_NORMAL = 0;
     public static final int STYLE_SCREEN = 1;
 
     public LoadingWindow() {
-        this(LoadingWindow.class.getResource(CTInfo.iconPath),
-                180, 180, "useLoadingText", false, 0, 0);
+        this(180, 180, "useLoadingText", false, 0, 0);
     }
 
     public LoadingWindow(String text) {
-        this(LoadingWindow.class.getResource("/image/icon.png"),
-                180, 180, text, false, 0, 0);
+        this(180, 180, text, false, 0, 0);
     }
 
-    public LoadingWindow(URL url, int width, int height, String text){
-        this(url, width, height, text, false, 0, 0);
+    public LoadingWindow(int width, int height, String text){
+        this(width, height, text, false, 0, 0);
     }
 
-    public LoadingWindow(URL url, int width, int height, String text, boolean mustWait, long time){
-        this(url, width, height, text, mustWait, time, 0);
+    public LoadingWindow(int width, int height, String text, boolean mustWait, long time){
+        this(width, height, text, mustWait, time, 0);
     }
 
-    public LoadingWindow(URL url, int width, int height, String text, boolean mustWait, long time, int windowStyle){
+    public LoadingWindow(int width, int height, String text, boolean mustWait, long time, int windowStyle){
+
+        super();
 
         Log.info.print("LoadingWindow-窗口", "开始初始化加载窗口");
 
         this.setLayout(new BorderLayout());
 
         String showText = text;
-        if (showText.equals("useLoadingText")){
+        if (showText.equals("useLoadingText") || showText.equals("EasterEgg")){
             showText = getLoadingText();
         }
 
@@ -55,7 +51,7 @@ public class LoadingWindow extends JDialog {
         // 计算新的窗口尺寸（基础尺寸 + 动态调整）
         time = Math.max(time, plainText.length() * 90L);
 
-        JLabel label = new JLabel(showText, GetIcon.getIcon(url, width, height), SwingConstants.CENTER);
+        JLabel label = new JLabel(showText, GetIcon.getIcon(showText.equals("EasterEgg")?"胡桃":"图标", IconControl.COLOR_DEFAULT, width, height), SwingConstants.CENTER);
         label.setForeground(CTColor.textColor);
         label.setFont(CTFont.getCTFont(Font.BOLD, CTFontSizeStyle.NORMAL));
 
@@ -68,13 +64,10 @@ public class LoadingWindow extends JDialog {
         this.add(progressBar, BorderLayout.SOUTH);
 
 
-
-        this.setUndecorated(true);
         this.setAlwaysOnTop(true);
-        this.pack();
 
+        this.setSize(this.getPreferredSize());
 
-        this.setShape(new RoundRectangle2D.Double(0, 0, this.getWidth(), this.getHeight(), 20, 20));
 
 
         this.setLocationRelativeTo(null);

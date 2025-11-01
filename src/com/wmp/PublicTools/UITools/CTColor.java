@@ -9,13 +9,34 @@ import java.io.IOException;
 public class CTColor {
     private static boolean canRemove = true;
 
+    /**
+     * 主色 白色
+     */
     public static final String MAIN_COLOR_WHITE = "white";
+    /**
+     * 主色 蓝色
+     */
     public static final String MAIN_COLOR_BLUE = "blue";
+    /**
+     * 主色 绿色
+     */
     public static final String MAIN_COLOR_GREEN = "green";
+    /**
+     * 主色 红色
+     */
     public static final String MAIN_COLOR_RED = "red";
+    /**
+     * 主色 黑色
+     */
     public static final String MAIN_COLOR_BLACK = "black";
 
+    /**
+     * 主题 灰色
+     */
     public static final String STYLE_DARK = "dark";
+    /**
+     * 主题 亮色
+     */
     public static final String STYLE_LIGHT = "light";
 
     public static String style = STYLE_LIGHT;
@@ -44,7 +65,7 @@ public class CTColor {
         mainColor = new Color(0x29A8E3);
         textColor = new Color(0x29A8E3);
         backColor = new Color(246, 250, 255);
-        style = "error";
+        style = "err";
     }
     public static void setAllColor(String mainColorStr, String tempStyle){
 
@@ -62,25 +83,8 @@ public class CTColor {
 
         if (!mustRemove && !canRemove) return;
 
-        switch (mainColorStr){
-            case MAIN_COLOR_WHITE->{
-                mainColor = Color.WHITE;
-            }
+        mainColor = getParticularColor(mainColorStr);
 
-            case MAIN_COLOR_BLUE->{
-                mainColor = new Color(0x29A8E3);
-
-            }
-            case MAIN_COLOR_GREEN->{
-                mainColor = new Color(0x00FF00);
-            }
-            case MAIN_COLOR_RED->{
-                mainColor = new Color(0xFF0000);
-            }
-            case MAIN_COLOR_BLACK->{
-                mainColor = Color.BLACK;
-            }
-        }
         Log.info.print("CTColor", "mainColor:" + String.format("#%06x", mainColor.getRGB()));
     }
 
@@ -104,6 +108,31 @@ public class CTColor {
             }
         }
         Log.info.print("CTColor", "style:" + tempStyle);
+    }
+
+    /**
+     * 获取指定颜色
+     * @param colorStyle 颜色样式
+     *
+     * @return 颜色
+     * @see CTColor
+     * @see #MAIN_COLOR_WHITE
+     * @see #MAIN_COLOR_BLUE
+     * @see #MAIN_COLOR_GREEN
+     * @see #MAIN_COLOR_RED
+     * @see #MAIN_COLOR_BLACK
+     *
+     */
+    public static Color getParticularColor(String colorStyle){
+        return switch (colorStyle) {
+            case MAIN_COLOR_WHITE->Color.WHITE;
+            case MAIN_COLOR_BLUE-> new Color(0x29A8E3);
+            case MAIN_COLOR_GREEN-> new Color(0x00FF00);
+            case MAIN_COLOR_RED-> new Color(0xFF0000);
+            case MAIN_COLOR_BLACK-> Color.BLACK;
+            default -> Color.DARK_GRAY;
+        };
+
     }
 
     @Override
