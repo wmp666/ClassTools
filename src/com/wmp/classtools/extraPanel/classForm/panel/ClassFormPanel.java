@@ -32,88 +32,8 @@ public class ClassFormPanel extends CTViewPanel {
         this.setOpaque(false);
         this.setCtSetsPanelList(java.util.List.of(new ClassFormSetsPanel(CTInfo.DATA_PATH)));
 
-        //刷新
-        new Thread(() -> {
-            while (true) {
-                this.removeAll();
-
-                /*if (CTInfo.disPanelList.contains(getID())) {
-                    continue;
-                }*/
-
-
-                //课程数据
-                String[] nowClasses = CFInfoControl.getNowClasses();
-                String nextClass = CFInfoControl.getNextClass();
-                try {
-
-                    if (nowClasses.length == 0) {
-                        nowClasses = new String[]{"无"};
-                    }
-                    if (nextClass == null || nextClass.isEmpty()) nextClass = "无";
-
-                    if (!oldNowClassNameList.equals(List.of(nowClasses)) ||
-                            !oldNextClassName.equals(nextClass)) showClassForm(nowClasses, nextClass);
-
-                    //数据更新
-                    this.oldNowClassNameList.clear();
-                    this.oldNowClassNameList.addAll(List.of(nowClasses));
-
-                    oldNextClassName = nextClass;
-
-
-                } catch (Exception e) {
-                    Log.err.print(getClass(), "获取课程表失败", e);
-                }
-
-
-                GridBagConstraints gbc = new GridBagConstraints();
-                gbc.fill = GridBagConstraints.HORIZONTAL;
-                gbc.gridx = 0;
-                gbc.gridy = 0;
-
-                JLabel titleLabel = new JLabel("<html>本节课:</html>");
-                titleLabel.setForeground(CTColor.textColor);
-                titleLabel.setFont(CTFont.getCTFont(Font.BOLD, CTFontSizeStyle.NORMAL));
-                this.add(titleLabel, gbc);
-
-                gbc.gridy++;
-                this.add(PeoPanelProcess.getShowPeoPanel(List.of(nowClasses)), gbc);
-
-                JLabel titleLabel2 = new JLabel("<html>下节课:</html>");
-                titleLabel2.setForeground(CTColor.textColor);
-                titleLabel2.setFont(CTFont.getCTFont(Font.BOLD, CTFontSizeStyle.NORMAL));
-                gbc.gridy++;
-                this.add(titleLabel2, gbc);
-
-                gbc.gridy++;
-                this.add(PeoPanelProcess.getShowPeoPanel(List.of(nextClass)), gbc);
-                /*try {
-                    String nextClass = CFInfoControl.getNextClass();
-                    if (nextClass == null || nextClass.isEmpty()) nextClass = "无";
-                    if (!oldNextClassName.equals(nextClass)) showNextClasses(nextClass);
-
-                    oldNextClassName = nextClass;
-
-
-                    gbc.gridy++;
-                    this.add(PeoPanelProcess.getShowPeoPanel(List.of(nextClass)), gbc);
-                } catch (Exception e) {
-                    Log.err.print(getClass(), "获取课程表失败: \n" + e.getMessage());
-                    throw new RuntimeException(e);
-                }*/
-
-                this.revalidate();
-                this.repaint();
-
-                try {
-                    Thread.sleep(3000);
-                } catch (InterruptedException e) {
-                    throw new RuntimeException(e);
-                }
-
-            }
-        }).start();
+        this.setIgnoreState(true);
+        this.setIndependentRefresh(true, 3 * 1000);
     }
 
     private void showClassForm(String[] nowClassesList, String nextClass) {
@@ -146,7 +66,59 @@ public class ClassFormPanel extends CTViewPanel {
     }
 
     @Override
-    public void refresh() throws IOException {
+    protected void Refresh() throws IOException {
+        this.removeAll();
 
+
+        //课程数据
+        String[] nowClasses = CFInfoControl.getNowClasses();
+        String nextClass = CFInfoControl.getNextClass();
+        try {
+
+            if (nowClasses.length == 0) {
+                nowClasses = new String[]{"无"};
+            }
+            if (nextClass == null || nextClass.isEmpty()) nextClass = "无";
+
+            if (!oldNowClassNameList.equals(List.of(nowClasses)) ||
+                    !oldNextClassName.equals(nextClass)) showClassForm(nowClasses, nextClass);
+
+            //数据更新
+            this.oldNowClassNameList.clear();
+            this.oldNowClassNameList.addAll(List.of(nowClasses));
+
+            oldNextClassName = nextClass;
+
+
+        } catch (Exception e) {
+            Log.err.print(getClass(), "获取课程表失败", e);
+        }
+
+
+        GridBagConstraints gbc = new GridBagConstraints();
+        gbc.fill = GridBagConstraints.HORIZONTAL;
+        gbc.gridx = 0;
+        gbc.gridy = 0;
+
+        JLabel titleLabel = new JLabel("<html>本节课:</html>");
+        titleLabel.setForeground(CTColor.textColor);
+        titleLabel.setFont(CTFont.getCTFont(Font.BOLD, CTFontSizeStyle.NORMAL));
+        this.add(titleLabel, gbc);
+
+        gbc.gridy++;
+        this.add(PeoPanelProcess.getShowPeoPanel(List.of(nowClasses)), gbc);
+
+        JLabel titleLabel2 = new JLabel("<html>下节课:</html>");
+        titleLabel2.setForeground(CTColor.textColor);
+        titleLabel2.setFont(CTFont.getCTFont(Font.BOLD, CTFontSizeStyle.NORMAL));
+        gbc.gridy++;
+        this.add(titleLabel2, gbc);
+
+        gbc.gridy++;
+        this.add(PeoPanelProcess.getShowPeoPanel(List.of(nextClass)), gbc);
+
+
+        this.revalidate();
+        this.repaint();
     }
 }

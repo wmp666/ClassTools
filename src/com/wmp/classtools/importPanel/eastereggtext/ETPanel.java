@@ -27,16 +27,14 @@ public class ETPanel extends CTViewPanel{
 
         label = new JLabel();
 
+        this.setIndependentRefresh(true, 10*1000);
 
 
         //刷新
-        new Thread(() -> {
+        /*new Thread(() -> {
             while (true) {
                 this.removeAll();
 
-                /*if (CTInfo.disPanelList.contains(getID())) {
-                    continue;
-                }*/
 
                 String text = EasterEgg.getText(EETextStyle.HTML);
                 label.setText(text);
@@ -80,15 +78,52 @@ public class ETPanel extends CTViewPanel{
                 }
 
             }
-        }).start();
+        }).start();*/
     }
 
 
+
     @Override
-    public void refresh() throws IOException {
+    protected void Refresh() throws Exception {
+        this.removeAll();
+
+
+        String text = EasterEgg.getText(EETextStyle.HTML);
+        label.setText(text);
         label.setForeground(CTColor.mainColor);
+        label.setBackground(CTColor.backColor);
+        label.setFont(CTFont.getCTFont(Font.BOLD, CTFontSizeStyle.NORMAL));
+
+        FontMetrics fm = label.getFontMetrics(label.getFont());
+
+        // 根据文字数量调整窗口大小
+        int lineCount = GetMaxSize.getLine(label.getText(), GetMaxSize.STYLE_HTML);// 行数
+
+
+        // 计算新的窗口尺寸（基础尺寸 + 动态调整）
+        int newWidth = GetMaxSize.getHTMLToTextMaxLength(label.getText(), fm); // 根据最大字符宽度计算总宽度
+        int newHeight = lineCount * label.getFont().getSize() + 5;  // 每多一行增加30像素高度
+
+        int maxShowHeight = (this.isScreenProductViewPanel()?6:4) * label.getFont().getSize(); // 最大显示高度
+
+        // 设置窗口大小
+        if (newHeight >= maxShowHeight) {
+            newHeight = maxShowHeight;
+        }
+
+        JScrollPane scrollPane = new JScrollPane(label);
+        scrollPane.getViewport().setOpaque(false);
+        scrollPane.setOpaque(false);
+        scrollPane.setBorder(BorderFactory.createEmptyBorder());
+
+        this.add(scrollPane, BorderLayout.CENTER);
+        scrollPane.setPreferredSize(new Dimension(this.isScreenProductViewPanel()?Toolkit.getDefaultToolkit().getScreenSize().width:newWidth, newHeight + 20));
+
 
         this.revalidate();
         this.repaint();
+
+        Thread.sleep(Math.max(1, (text.replaceAll("<html>|</html>|<br>", "").length() * 100L) - 10*1000L));
+
     }
 }

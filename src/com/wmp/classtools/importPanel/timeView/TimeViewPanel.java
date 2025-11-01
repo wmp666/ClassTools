@@ -24,7 +24,7 @@ public class TimeViewPanel extends CTViewPanel {
 
     private final JLabel timeView = new JLabel();
 
-    private final Thread timeThread = new Thread(() -> {
+    /*private final Thread timeThread = new Thread(() -> {
 
         while (true) {
             //获取时间
@@ -42,7 +42,7 @@ public class TimeViewPanel extends CTViewPanel {
             }
             repaint();
         }
-    });
+    });*/
 
     public TimeViewPanel() throws IOException {
 
@@ -52,12 +52,11 @@ public class TimeViewPanel extends CTViewPanel {
         this.setCtSetsPanelList(List.of(new ScreenProductSetsPanel(CTInfo.DATA_PATH)));
         initPanel();
 
-        //时间刷新
-        timeThread.setDaemon(true);
-        timeThread.start();
+        this.setIndependentRefresh(true, 34);
+
     }
 
-    private void initPanel() throws MalformedURLException {
+    private void initPanel(){
         this.removeAll();
 
         //获取时间
@@ -135,16 +134,20 @@ public class TimeViewPanel extends CTViewPanel {
     }
 
     @Override
-    public void refresh() {
-        try {
-            if (!isScreenProductViewPanel()) {
-                initPanel();
-            }else{
-                initSPPanel();
-            }
-        } catch (MalformedURLException e) {
-            throw new RuntimeException(e);
+    protected void Refresh() throws Exception {
+        if (!isScreenProductViewPanel()) {
+            initPanel();
+        }else{
+            initSPPanel();
         }
+
+        //获取时间
+        Date date02 = new Date();
+        //格式化 11.22 23:05
+        DateFormat dateFormat02 = new SimpleDateFormat("MM.dd HH:mm:ss");
+        //让时间在组件左侧显示
+        timeView.setHorizontalAlignment(JLabel.CENTER);
+        timeView.setText(dateFormat02.format(date02));
 
     }
 

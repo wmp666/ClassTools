@@ -182,7 +182,7 @@ public class FinalPanel extends CTViewPanel {
     }
 
     @Override
-    public void refresh() throws IOException {
+    protected void Refresh() throws IOException {
         this.removeAll();
 
         initPanel();

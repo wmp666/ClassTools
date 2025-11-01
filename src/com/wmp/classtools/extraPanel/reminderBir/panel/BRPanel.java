@@ -26,8 +26,6 @@ import java.util.List;
 
 public class BRPanel extends CTViewPanel {
 
-    private final JLabel label = new JLabel();
-
     private File birthdayPath;
 
     private ArrayList<String> oldBRNameList = new ArrayList<>();
@@ -44,91 +42,8 @@ public class BRPanel extends CTViewPanel {
         this.setOpaque(false);
         this.setCtSetsPanelList(List.of(new BRSetsPanel(CTInfo.DATA_PATH)));
 
-        //刷新
-        new Thread(() -> {
-            while (true) {
-                this.removeAll();
-
-                /*if (CTInfo.disPanelList.contains(getID())) {
-                    continue;
-                }*/
-
-                try {
-
-                        List<String> BRTempList = getBRList();
-                        List<String> WBTempList = getWBList();
-
-                        if (!oldBRNameList.equals(BRTempList) || !oldWBNameList.equals(WBTempList)) showBRAndWB();
-
-                        this.oldBRNameList.clear();
-                        this.oldBRNameList.addAll(BRTempList);
-
-                        this.oldWBNameList.clear();
-                        this.oldWBNameList.addAll(WBTempList);
-
-
-                } catch (Exception e) {
-                    Log.err.print(getClass(), "获取生日列表失败", e);
-                }
-
-                GridBagConstraints gbc = new GridBagConstraints();
-                gbc.fill = GridBagConstraints.HORIZONTAL;
-                gbc.gridx = 0;
-                gbc.gridy = 0;
-
-
-                JLabel titleLabel = new JLabel("<html>今日过生日:</html>");
-                titleLabel.setForeground(CTColor.textColor);
-                titleLabel.setFont(CTFont.getCTFont(Font.BOLD, CTFontSizeStyle.NORMAL));
-                titleLabel.addMouseListener(new MouseAdapter() {
-                    @Override
-                    public void mouseClicked(MouseEvent e) {
-                        try {
-                            showBRAndWB();
-                        } catch (Exception ex) {
-                            Log.err.print(getClass(), "显示生日列表失败", ex);
-                        }
-                    }
-                });
-                this.add(titleLabel, gbc);
-
-                gbc.gridy++;
-                this.add(PeoPanelProcess.getShowPeoPanel(oldBRNameList), gbc);
-
-                //EasterEgg.getText(EETextStyle.HTML)
-
-
-                JLabel titleLabel2 = new JLabel("<html>即将过生日:</html>");
-                titleLabel2.setForeground(CTColor.textColor);
-                titleLabel2.setFont(CTFont.getCTFont(Font.BOLD, CTFontSizeStyle.NORMAL));
-                titleLabel2.addMouseListener(new MouseAdapter() {
-                    @Override
-                    public void mouseClicked(MouseEvent e) {
-                        try {
-                            showBRAndWB();
-                        } catch (Exception ex) {
-                            Log.err.print(getClass(), "显示生日列表失败", ex);
-                        }
-                    }
-                });
-                gbc.gridy++;
-                this.add(titleLabel2, gbc);
-
-                gbc.gridy++;
-                this.add(PeoPanelProcess.getShowPeoPanel(oldWBNameList), gbc);
-
-
-                this.revalidate();
-                this.repaint();
-
-                try {
-                    Thread.sleep(2*60*1000);//2min
-                } catch (Exception e) {
-                    Log.err.print(getClass(), "错误", e);
-                }
-
-            }
-        }).start();
+        this.setIgnoreState(true);
+        this.setIndependentRefresh(true, 2*60*1000);
     }
 
     private void showBRAndWB() throws IOException {
@@ -215,8 +130,75 @@ public class BRPanel extends CTViewPanel {
     }
 
     @Override
-    public void refresh() throws IOException {
-        label.setForeground(CTColor.mainColor);
+    protected void Refresh() throws IOException {
+
+        this.removeAll();
+
+
+        try {
+
+            List<String> BRTempList = getBRList();
+            List<String> WBTempList = getWBList();
+
+            if (!oldBRNameList.equals(BRTempList) || !oldWBNameList.equals(WBTempList)) showBRAndWB();
+
+            this.oldBRNameList.clear();
+            this.oldBRNameList.addAll(BRTempList);
+
+            this.oldWBNameList.clear();
+            this.oldWBNameList.addAll(WBTempList);
+
+
+        } catch (Exception e) {
+            Log.err.print(getClass(), "获取生日列表失败", e);
+        }
+
+        GridBagConstraints gbc = new GridBagConstraints();
+        gbc.fill = GridBagConstraints.HORIZONTAL;
+        gbc.gridx = 0;
+        gbc.gridy = 0;
+
+
+        JLabel titleLabel = new JLabel("<html>今日过生日:</html>");
+        titleLabel.setForeground(CTColor.textColor);
+        titleLabel.setFont(CTFont.getCTFont(Font.BOLD, CTFontSizeStyle.NORMAL));
+        titleLabel.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                try {
+                    showBRAndWB();
+                } catch (Exception ex) {
+                    Log.err.print(getClass(), "显示生日列表失败", ex);
+                }
+            }
+        });
+        this.add(titleLabel, gbc);
+
+        gbc.gridy++;
+        this.add(PeoPanelProcess.getShowPeoPanel(oldBRNameList), gbc);
+
+        //EasterEgg.getText(EETextStyle.HTML)
+
+
+        JLabel titleLabel2 = new JLabel("<html>即将过生日:</html>");
+        titleLabel2.setForeground(CTColor.textColor);
+        titleLabel2.setFont(CTFont.getCTFont(Font.BOLD, CTFontSizeStyle.NORMAL));
+        titleLabel2.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                try {
+                    showBRAndWB();
+                } catch (Exception ex) {
+                    Log.err.print(getClass(), "显示生日列表失败", ex);
+                }
+            }
+        });
+        gbc.gridy++;
+        this.add(titleLabel2, gbc);
+
+        gbc.gridy++;
+        this.add(PeoPanelProcess.getShowPeoPanel(oldWBNameList), gbc);
+
 
         this.revalidate();
         this.repaint();

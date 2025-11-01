@@ -173,9 +173,14 @@ public class MainWindow extends CTWindow {
             CTBorderFactory.FOCUS_GAINTED_BORDER = BorderFactory.createLineBorder(new Color(112, 112, 112), (int) (2 * CTInfo.dpi));
 
             panelMap.clear();
-            panelMap.put("上方", new CTViewPanel[]{new CTViewPanel() {
+            /*panelMap.put("上方", new CTViewPanel[]{new CTViewPanel() {
                 @Override
                 public void refresh() throws IOException {
+
+                }
+
+                @Override
+                protected void Refresh() throws IOException {
 
                 }
             }});
@@ -190,28 +195,31 @@ public class MainWindow extends CTWindow {
                 public void refresh() throws IOException {
 
                 }
-            }});
+            }});*/
 
+            //初始化组件位置
             allPanelList.forEach(panel -> {
 
                 if (!CTInfo.disPanelList.contains(panel.getID())) {
+                    panel.setVisible(true);
                     //showPanelList.add(panel);
 
                     if (Arrays.asList(panelLocationMap.get("上方")).contains(panel.getID())) {
-                        java.util.List<CTViewPanel> temp = new java.util.ArrayList<>(Arrays.asList(panelMap.get("上方")));
+                        java.util.List<CTViewPanel> temp = new java.util.ArrayList<>(Arrays.asList(panelMap.getOrDefault("上方", new CTViewPanel[0])));
                         temp.add(panel);
                         panelMap.put("上方", temp.toArray(new CTViewPanel[0]));
                     } else if (Arrays.asList(panelLocationMap.get("下方")).contains(panel.getID())) {
-                        java.util.List<CTViewPanel> temp = new java.util.ArrayList<>(Arrays.asList(panelMap.get("下方")));
+                        java.util.List<CTViewPanel> temp = new java.util.ArrayList<>(Arrays.asList(panelMap.getOrDefault("下方", new CTViewPanel[0])));
                         temp.add(panel);
                         panelMap.put("下方", temp.toArray(new CTViewPanel[0]));
                     } else {
                         // 使用 new ArrayList 包装，创建可变列表
-                        java.util.List<CTViewPanel> temp = new java.util.ArrayList<>(Arrays.asList(panelMap.get("中间")));
+                        java.util.List<CTViewPanel> temp = new java.util.ArrayList<>(Arrays.asList(panelMap.getOrDefault("中间", new CTViewPanel[0])));
                         temp.add(panel);
                         panelMap.put("中间", temp.toArray(new CTViewPanel[0]));
                     }
                 }
+                else panel.setVisible(false);
             });
 
             if (!allArgs.get("screenProduct:show").contains(argsList)) {//showPanelList.clear();
