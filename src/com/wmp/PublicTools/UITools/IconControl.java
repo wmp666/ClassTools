@@ -36,7 +36,6 @@ public class IconControl {
 
     static {
         init();
-
     }
 
     public static void init() {

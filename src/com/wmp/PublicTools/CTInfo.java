@@ -8,6 +8,7 @@ import com.wmp.PublicTools.printLog.Log;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import javax.swing.*;
 import java.io.File;
 import java.util.ArrayList;
 
@@ -39,8 +40,10 @@ public class CTInfo {
      * d:只修复的问题,问题较少
      * e:测试版本号
      */
-    public static String version = "1.41.3";
+    public static String version = "1.41.3.1";
     public static void init() {
+
+        Log.info.loading.showDialog("init", "正在刷新...");
 
         disButList.clear();
         disPanelList.clear();
@@ -116,5 +119,6 @@ public class CTInfo {
                 dpi = jsonObject.getDouble("DPI");
             }
         }
+        Log.info.loading.closeDialog("init");
     }
 }

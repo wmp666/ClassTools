@@ -34,7 +34,15 @@ public class LoadingDialog extends JDialog {
         this.repaint();
         this.pack();
         this.setLocationRelativeTo(null);
-        new Thread(()-> this.setVisible(!PanelList.isEmpty())).start();
+        new SwingWorker<Void, Void>(){
+            @Override
+            protected Void doInBackground() throws Exception {
+                SwingUtilities.invokeLater(() -> {
+                    LoadingDialog.this.setVisible(!PanelList.isEmpty());
+                });
+                return null;
+            }
+        }.execute();
 
     }
 

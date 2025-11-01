@@ -181,7 +181,7 @@ public class IOForInfo {
                 protected Void doInBackground() throws Exception {
                     try {
                         if (file == null || !file.exists()) {
-                            Log.err.print(CookieSets.class, "目标不存在");
+                            Log.err.print(IOForInfo.class, "目标不存在");
                             return null;
                         }
 
