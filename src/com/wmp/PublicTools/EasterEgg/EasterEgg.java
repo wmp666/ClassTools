@@ -83,35 +83,7 @@ public class EasterEgg {
     }
 
     public static void getPin() {
-        /*String[] ss = Log.info.showInputDialog(null, "祈愿", "请输入■■", "视频", "音乐");
 
-        String s = ss[1];
-
-        int style;
-        String s1 = ss[0];
-        if (s1.equals("视频")) {
-            style = STYLE_EE_VIDEO;
-        } else if (s1.equals("音乐")) {
-            style = STYLE_EE_MUSIC;
-        } else {
-            return;
-        }
-
-        if (s != null) {
-                String[] split = s.split(":");
-                if (split.length == 2) {
-                    String s2 = split[0];
-                    if (s2.equalsIgnoreCase("EasterEgg")) {
-                        showEasterEgg(style, split[1]);
-                    } else{
-                        Log.err.print(null, "祈愿", "请输入正确的格式");
-                    }
-                } else if (split.length == 1) {
-                    showEasterEgg(style, s);
-                }else{
-                    Log.err.print(null, "祈愿", "请输入正确的格式");
-                }
-        }*/
 
         String style = Log.info.showChooseDialog(null, "祈愿", "请输入选择彩蛋格式\n注:\"其他\"指不是常规格式(MP3, MP4)的文件", "视频", "音乐", "其他");
 
@@ -341,7 +313,7 @@ public class EasterEgg {
                         String text = jsonObject1.getString("text");
                         String title = jsonObject1.getString("title");
 
-                        CTOptionPane.showFullScreenMessageDialog(title, text, 0);
+                        CTOptionPane.showFullScreenMessageDialog(title, text, 0, 5);
 
                     }
 

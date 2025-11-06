@@ -43,8 +43,6 @@ public class CTInfo {
     public static String version = "1.41.4";
     public static void init() {
 
-        Log.info.loading.showDialog("init", "正在刷新...");
-
         disButList.clear();
         disPanelList.clear();
 
@@ -121,6 +119,5 @@ public class CTInfo {
                 dpi = jsonObject.getDouble("DPI");
             }
         }
-        Log.info.loading.closeDialog("init");
     }
 }

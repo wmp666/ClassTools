@@ -51,7 +51,9 @@ public class LoadingWindow extends CTWindow {
         // 计算新的窗口尺寸（基础尺寸 + 动态调整）
         time = Math.max(time, plainText.length() * 90L);
 
-        JLabel label = new JLabel(showText, GetIcon.getIcon(text.equals("EasterEgg")?"胡桃":"图标", IconControl.COLOR_DEFAULT, width, height), SwingConstants.CENTER);
+        ImageIcon easterEgg = GetIcon.getImageIcon(text.equals("EasterEgg") ? "胡桃" : "图标", IconControl.COLOR_DEFAULT, width, height);
+
+        JLabel label = new JLabel(showText, easterEgg, SwingConstants.CENTER);
         label.setForeground(CTColor.textColor);
         label.setFont(CTFont.getCTFont(Font.BOLD, CTFontSizeStyle.NORMAL));
 
@@ -72,7 +74,8 @@ public class LoadingWindow extends CTWindow {
 
         this.setLocationRelativeTo(null);
 
-        this.setVisible(true);
+
+            this.setVisible(true);
         try {
             if (mustWait){
                 Thread.sleep(time);
