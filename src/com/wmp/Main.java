@@ -27,6 +27,7 @@ public class Main{
 
     public static void main(String[] args) throws IOException {
 
+
         CTInfo.init();
 
         Log.info.systemPrint("Main", "正在初始化...");
@@ -58,14 +59,14 @@ public class Main{
         //Log.info.print("[Main]", "是否被骇客入侵:" + isError);
         if (CTInfo.isError) {
 
-            Log.info.message(null, "Main", "这次能让我玩得开心点吗？");
-
             CTInfo.version = "999.999.999";//错误版本号(无法更新)
             CTInfo.appName = "班级病毒";
             CTInfo.author = "银狼";
             CTInfo.iconPath = "/image/err/icon.png";
             b = false;
             CTColor.setErrorColor();//修改颜色
+
+            Log.info.message(null, "Main", "这次能让我玩得开心点吗？");
         }
 
 

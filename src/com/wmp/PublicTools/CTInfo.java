@@ -40,7 +40,7 @@ public class CTInfo {
      * d:只修复的问题,问题较少
      * e:测试版本号
      */
-    public static String version = "1.41.3.1";
+    public static String version = "1.41.4";
     public static void init() {
 
         Log.info.loading.showDialog("init", "正在刷新...");
@@ -55,8 +55,10 @@ public class CTInfo {
         DATA_PATH = path + "\\ClassTools\\";
         TEMP_PATH = path + "\\ClassToolsTemp\\";
 
-        if (version.split("\\.").length < 5) iconPath = "/image/icon/icon.png";
-        else iconPath = "/image/icon/icon_bate.png";
+        if (!isError) {
+            if (version.split("\\.").length < 5) iconPath = "/image/icon/icon.png";
+            else iconPath = "/image/icon/icon_bate.png";
+        } else iconPath = "/image/err/icon.png";
 
         IconControl.init();
 

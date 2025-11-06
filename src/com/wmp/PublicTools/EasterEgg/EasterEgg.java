@@ -45,7 +45,6 @@ public class EasterEgg {
                     return b;
                 }
 
-                ;
                 if (DateTools.dayIsNow("09-18") ||
                         DateTools.dayIsNow("10-01") ||
                         DateTools.dayIsNow("05-01")) {

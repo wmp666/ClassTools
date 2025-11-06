@@ -51,6 +51,8 @@ public class GetIcon {
         // 保留对非GIF图像的缩放处理，GIF应由组件尺寸控制显示大小
         if (!IconControl.getIconStyle(name).startsWith("gif")) {
             icon.setImage(IconControl.getIcon(name, colorStyle).getImage().getScaledInstance(width, height, Image.SCALE_SMOOTH));
+        }else{
+            icon = IconControl.getIcon(name, colorStyle);
         }
         return icon;
     }

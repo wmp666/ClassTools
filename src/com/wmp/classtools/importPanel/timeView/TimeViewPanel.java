@@ -52,7 +52,7 @@ public class TimeViewPanel extends CTViewPanel {
         this.setCtSetsPanelList(List.of(new ScreenProductSetsPanel(CTInfo.DATA_PATH)));
         initPanel();
 
-        this.setIndependentRefresh(true, 34);
+        this.setIndependentRefresh(true, 300);
 
     }
 

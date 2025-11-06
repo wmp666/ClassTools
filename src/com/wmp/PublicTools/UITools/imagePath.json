@@ -47,8 +47,8 @@
     "name": "刻律德菈",
     "path": "/image/err/error.png"
   },{
-    "style": "gif",
+    "style": "png",
     "name": "胡桃",
-    "path": "/image/loading.gif"
+    "path": "/image/loading.png"
   }
 ]

@@ -10,6 +10,7 @@ import com.wmp.PublicTools.update.GetNewerVersion;
 import com.wmp.PublicTools.web.GetWebInf;
 import com.wmp.classTools.CTComponent.CTOptionPane;
 import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import javax.swing.*;
@@ -34,68 +35,89 @@ public class IconControl {
 
     private static final Map<String, String> ICON_STYLE_MAP = new HashMap<>();
 
-    static {
-        init();
-    }
-
     public static void init() {
-        DEFAULT_IMAGE_MAP.clear();
-        COLORFUL_IMAGE_MAP.clear();
+        try {
+            DEFAULT_IMAGE_MAP.clear();
+            COLORFUL_IMAGE_MAP.clear();
 
-        DEFAULT_IMAGE_MAP.put("图标", new ImageIcon(IconControl.class.getResource(CTInfo.iconPath)));
+            DEFAULT_IMAGE_MAP.put("图标", new ImageIcon(IconControl.class.getResource(CTInfo.iconPath)));
 
-        //获取基础图标
-        String resourceInfos = IOForInfo.getInfos(IconControl.class.getResource("imagePath.json"));
-        JSONArray resourceJsonArray = new JSONArray(resourceInfos);
-        resourceJsonArray.forEach(object -> {
+            //获取基础图标
+            String resourceInfos = IOForInfo.getInfos(IconControl.class.getResource("imagePath.json"));
+            JSONArray resourceJsonArray = new JSONArray(resourceInfos);
+            resourceJsonArray.forEach(object -> {
 
-            JSONObject jsonObject = (JSONObject) object;
-            Log.info.print("IconControl", String.format("名称:%s|位置:%s", jsonObject.getString("name"), jsonObject.getString("path")));
-            String pathStr = jsonObject.getString("path");
-            URL path = IconControl.class.getResource(pathStr);
-            if (path == null) {
-                Log.warn.print("IconControl", String.format("图标文件%s不存在", jsonObject.getString("path")));
-                DEFAULT_IMAGE_MAP.put(jsonObject.getString("name"),
-                        new ImageIcon(IconControl.class.getResource("/image/default.png")));
-            } else {
-                DEFAULT_IMAGE_MAP.put(jsonObject.getString("name"),
-                        new ImageIcon(path));
-            }
-            ICON_STYLE_MAP.put(jsonObject.getString("name"), jsonObject.getString("style"));
-        });
-        COLORFUL_IMAGE_MAP.put("light", DEFAULT_IMAGE_MAP);
-        COLORFUL_IMAGE_MAP.put("dark",
-                getColorfulImageMap(DEFAULT_IMAGE_MAP, CTColor.getParticularColor("white")));
-        COLORFUL_IMAGE_MAP.put("err",
-                getColorfulImageMap(DEFAULT_IMAGE_MAP, CTColor.getParticularColor("blue")));
-
-        //判断磁盘中是否有图片
-        getNewImage();
-
-
-        //获取磁盘中的图标
-        String iconInfos = IOForInfo.getInfos(CTInfo.APP_INFO_PATH + "image\\imagePath.json");
-
-        JSONArray iconJsonArray = new JSONArray(iconInfos);
-        iconJsonArray.forEach(object -> {
-            JSONObject jsonObject = (JSONObject) object;
-            Log.info.print("IconControl", String.format("名称:%s|位置:%s", jsonObject.getString("name"), jsonObject.getString("path")));
-            String pathStr = new File(CTInfo.APP_INFO_PATH, jsonObject.getString("path")).getPath();
-            URL path = null;
-            try {
-                path = new File(pathStr).toURI().toURL();
-                DEFAULT_IMAGE_MAP.put(jsonObject.getString("name"),
-                        new ImageIcon(path));
-            } catch (MalformedURLException e) {
-                Log.warn.print("IconControl", String.format("图标文件%s不存在", jsonObject.getString("path")));
-                if (DEFAULT_IMAGE_MAP.get(jsonObject.getString("name")) != null)
+                JSONObject jsonObject = (JSONObject) object;
+                Log.info.print("IconControl", String.format("名称:%s|位置:%s", jsonObject.getString("name"), jsonObject.getString("path")));
+                String pathStr = jsonObject.getString("path");
+                URL path = IconControl.class.getResource(pathStr);
+                if (path == null) {
+                    Log.warn.print("IconControl", String.format("图标文件%s不存在", jsonObject.getString("path")));
                     DEFAULT_IMAGE_MAP.put(jsonObject.getString("name"),
                             new ImageIcon(IconControl.class.getResource("/image/default.png")));
-            }
+                } else {
+                    DEFAULT_IMAGE_MAP.put(jsonObject.getString("name"),
+                            new ImageIcon(path));
+                }
+                ICON_STYLE_MAP.put(jsonObject.getString("name"), jsonObject.getString("style"));
+            });
+            COLORFUL_IMAGE_MAP.put("light", DEFAULT_IMAGE_MAP);
+            COLORFUL_IMAGE_MAP.put("dark",
+                    getColorfulImageMap(DEFAULT_IMAGE_MAP, CTColor.getParticularColor("white")));
+            COLORFUL_IMAGE_MAP.put("err",
+                    getColorfulImageMap(DEFAULT_IMAGE_MAP, CTColor.getParticularColor("blue")));
 
-            ICON_STYLE_MAP.put(jsonObject.getString("name"), jsonObject.getString("style"));
+        } catch (Exception e) {
+            Log.err.print(IconControl.class, "图片加载失败", e);
+        }
+        try{
+            //判断磁盘中是否有图片
+            getNewImage();
 
-        });
+        } catch (Exception e) {
+            Log.err.print(IconControl.class, "图片数据判断失败", e);
+        }
+
+        try{
+            //获取磁盘中的图标
+            String iconInfos = IOForInfo.getInfos(CTInfo.APP_INFO_PATH + "image\\imagePath.json");
+
+            JSONArray iconJsonArray = new JSONArray(iconInfos);
+            iconJsonArray.forEach(object -> {
+                JSONObject jsonObject = (JSONObject) object;
+                Log.info.print("IconControl", String.format("名称:%s|位置:%s", jsonObject.getString("name"), jsonObject.getString("path")));
+                String pathStr = new File(CTInfo.APP_INFO_PATH, jsonObject.getString("path")).getPath();
+                URL path = null;
+                try {
+                    File file = new File(pathStr);
+                    if (!file.exists()){
+                        Log.warn.print("IconControl", String.format("图标文件%s不存在", jsonObject.getString("path")));
+                        if (DEFAULT_IMAGE_MAP.get(jsonObject.getString("name")) == null) {
+                            DEFAULT_IMAGE_MAP.put(jsonObject.getString("name"),
+                                    new ImageIcon(IconControl.class.getResource("/image/default.png")));
+                            ICON_STYLE_MAP.put(jsonObject.getString("name"), jsonObject.getString("style"));
+                        }
+                    }else{
+                        path = file.toURI().toURL();
+                        DEFAULT_IMAGE_MAP.put(jsonObject.getString("name"),
+                                new ImageIcon(path));
+                    }
+
+                } catch (MalformedURLException e) {
+                    Log.warn.print("IconControl", String.format("图标文件%s不存在", jsonObject.getString("path")));
+                    if (DEFAULT_IMAGE_MAP.get(jsonObject.getString("name")) == null)
+                        DEFAULT_IMAGE_MAP.put(jsonObject.getString("name"),
+                                new ImageIcon(IconControl.class.getResource("/image/default.png")));
+                }
+
+
+
+            });
+
+
+        } catch (Exception e) {
+            Log.err.print(IconControl.class, "本地图片加载失败", e);
+        }
 
         COLORFUL_IMAGE_MAP.put("light", DEFAULT_IMAGE_MAP);
         COLORFUL_IMAGE_MAP.put("dark",
@@ -150,7 +172,7 @@ public class IconControl {
 
                 } else if (choose.equals("导入压缩包")) {
                     zipPath = GetPath.getFilePath(null, "导入图片", ".zip", "图片压缩包");
-                }
+                } else return;
                 //解压文件
                 Thread thread = ZipPack.unzip(zipPath, CTInfo.APP_INFO_PATH);
 
