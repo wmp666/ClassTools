@@ -21,7 +21,7 @@ public class Test01CTOptionPane {
 
         System.out.println("窗口1关闭");
 
-        int i = CTOptionPane.showConfirmDialog(null, "测试", "测试文本", GetIcon.getIcon("图标", 50, 50), true);
+        int i = CTOptionPane.showConfirmDialog(null, "测试", "测试文本", GetIcon.getIcon("图标", 50, 50), 1, true);
         if (i == CTOptionPane.YES_OPTION) {
             System.out.println("是");
         } else if (i == CTOptionPane.NO_OPTION) {
@@ -39,7 +39,7 @@ public class Test01CTOptionPane {
         System.out.println("输入信息->" + Arrays.toString(ss));
         System.out.println("窗口4关闭");
 
-        String s1 = CTOptionPane.showConfirmDialog(null, "测试", "测试文本", null, true, "1", "2", "3");
+        String s1 = CTOptionPane.showConfirmDialog(null, "测试", "测试文本", null,1,  true, "1", "2", "3");
         System.out.println("输入信息->" + s1);
         System.out.println("窗口5关闭");
     }

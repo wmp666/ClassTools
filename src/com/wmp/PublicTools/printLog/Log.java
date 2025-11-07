@@ -60,7 +60,7 @@ public class Log {
     });
 
     public static InfoLogStyle info = new InfoLogStyle(LogStyle.INFO);
-    public static PrintLogStyle warn = new PrintLogStyle(LogStyle.WARN);
+    public static WarnLogStyle warn = new WarnLogStyle(LogStyle.WARN);
     public static ErrorLogStyle err = new ErrorLogStyle(LogStyle.ERROR);
 
     static {

@@ -37,6 +37,12 @@ public class GetIcon {
     public static ImageIcon getImageIcon(URL path, int width, int height) {
         return (ImageIcon) getIcon(path, width, height, true);
     }
+
+
+
+
+
+
     public static Icon getIcon(String name, int colorStyle, int width, int height, boolean useDPI) {
         if (name == null) {
             return null;
@@ -52,7 +58,7 @@ public class GetIcon {
         if (!IconControl.getIconStyle(name).startsWith("gif")) {
             icon.setImage(IconControl.getIcon(name, colorStyle).getImage().getScaledInstance(width, height, Image.SCALE_SMOOTH));
         }else{
-            icon = IconControl.getIcon(name, colorStyle);
+            icon.setImage(IconControl.getIcon(name, colorStyle).getImage());
         }
         return icon;
     }

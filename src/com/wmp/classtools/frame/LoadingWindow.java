@@ -54,24 +54,23 @@ public class LoadingWindow extends CTWindow {
         ImageIcon easterEgg = GetIcon.getImageIcon(text.equals("EasterEgg") ? "胡桃" : "图标", IconControl.COLOR_DEFAULT, width, height);
 
         JLabel label = new JLabel(showText, easterEgg, SwingConstants.CENTER);
+        easterEgg.setImageObserver(label);
         label.setForeground(CTColor.textColor);
         label.setFont(CTFont.getCTFont(Font.BOLD, CTFontSizeStyle.NORMAL));
-
-        this.getContentPane().setBackground(CTColor.backColor);
         this.add(label, BorderLayout.CENTER);
 
         CTProgressBar progressBar = new CTProgressBar();
         progressBar.setIndeterminate(true);
-
         this.add(progressBar, BorderLayout.SOUTH);
 
+        JLabel loadingText = new JLabel(CTInfo.appName + "正在加载...");
+        loadingText.setForeground(CTColor.textColor);
+        loadingText.setFont(CTFont.getCTFont(Font.BOLD, CTFontSizeStyle.NORMAL));
+        this.add(loadingText, BorderLayout.NORTH);
 
+        this.getContentPane().setBackground(CTColor.backColor);
         this.setAlwaysOnTop(true);
-
         this.setSize(this.getPreferredSize());
-
-
-
         this.setLocationRelativeTo(null);
 
 

@@ -68,8 +68,8 @@ public class CTOptionPane {
      * @param isAlwaysOnTop 是否始终置顶
      * @return 用户选择的选项 YES_OPTION, NO_OPTION, 按取消返回-1
      */
-    public static int showConfirmDialog(Container owner, String title, String message, Icon icon, boolean isAlwaysOnTop) {
-        Object o = showDefaultDialog(owner, title, message, icon, INFORMATION_MESSAGE, YES_NO_BUTTONS, MESSAGE_TEXT, isAlwaysOnTop);
+    public static int showConfirmDialog(Container owner, String title, String message, Icon icon, int iconType, boolean isAlwaysOnTop) {
+        Object o = showDefaultDialog(owner, title, message, icon, iconType, YES_NO_BUTTONS, MESSAGE_TEXT, isAlwaysOnTop);
         if (o != null) {
             return (int) o;
         }
@@ -87,8 +87,8 @@ public class CTOptionPane {
      * @param choices       显示的选项
      * @return 用户选择的选项 , 按取消返回"NULL"
      */
-    public static String showConfirmDialog(Container owner, String title, String message, Icon icon, boolean isAlwaysOnTop, String... choices) {
-        Object[] o = showDefaultDialog(owner, title, message, icon, INFORMATION_MESSAGE, YES_NO_BUTTONS, MESSAGE_TEXT, isAlwaysOnTop, choices);
+    public static String showConfirmDialog(Container owner, String title, String message, Icon icon, int iconType, boolean isAlwaysOnTop, String... choices) {
+        Object[] o = showDefaultDialog(owner, title, message, icon, iconType, YES_NO_BUTTONS, MESSAGE_TEXT, isAlwaysOnTop, choices);
         if (o != null && o.length > 0 && o[0] != null) {
             return o[0].toString();
         }
@@ -249,10 +249,8 @@ public class CTOptionPane {
                 messageArea.setForeground(CTColor.textColor);
                 messageArea.setAutoscrolls(false);
                 messageArea.setFont(new Font("Microsoft YaHei UI", Font.PLAIN, (int) (15 * CTInfo.dpi)));
-                messagePanel = new JScrollPane(messageArea);
-                messagePanel.setOpaque(false);
-                messagePanel.getViewport().setOpaque(false);
-                messagePanel.setBorder(null);
+
+
 
 
                 messageArea.addFocusListener(new FocusAdapter() {
@@ -293,7 +291,11 @@ public class CTOptionPane {
                     }
                 });
 
-
+                messagePanel = new JScrollPane(messageArea);
+                messagePanel.setOpaque(false);
+                messagePanel.getViewport().setOpaque(false);
+                messagePanel.setBorder(null);
+                messagePanel.getViewport().setViewPosition(new Point(0, 0));
                 panel.add(messagePanel, BorderLayout.CENTER);
             }
             //选择框

@@ -64,20 +64,9 @@ public class ScreenProduct extends JDialog {
 
 
         //刷新组件内容
-        /*Timer repaint = new Timer(34, e ->
-                MainWindow.allPanelList.forEach(ctViewPanel ->{
-                    ctViewPanel.toScreenProductViewPanel();
-                    try {
-                        ctViewPanel.repaint();
-                    } catch (Exception ex) {
-                        Log.err.print(ScreenProduct.class, "刷新失败", ex);
-                    }
-                }));
-        repaint.setRepeats(true);
-        repaint.start();*/
 
         //强刷新
-        Timer strongRepaint = new Timer(60*1000, e -> {
+        Timer strongRepaint = new Timer(60*60*1000, e -> {
 
             refreshScreenProductPanel();
         });

@@ -13,6 +13,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.io.IOException;
 import java.net.URISyntaxException;
+import java.util.concurrent.atomic.AtomicReference;
 
 public class SwingRun {
 
@@ -31,14 +32,19 @@ public class SwingRun {
             throw new RuntimeException(e);
         }
 
+        //LoadingWindow loadingWindow;
+        AtomicReference<LoadingWindow> loadingWindowRef = new AtomicReference<>();
+        SwingUtilities.invokeLater(() -> {
 
-        LoadingWindow loadingWindow;
-        if (b){
-            loadingWindow = new LoadingWindow(200, 200, "EasterEgg", true, 2300);
+            if (b) {
+                loadingWindowRef.set(new LoadingWindow(200, 200, "EasterEgg", true, 2300));
+                //loadingWindow = new LoadingWindow(200, 200, "EasterEgg", true, 2300);
 
-        }else{
-            loadingWindow = new LoadingWindow();
-        }
+            } else {
+                loadingWindowRef.set(new LoadingWindow());
+                //loadingWindow = new LoadingWindow();
+            }
+        });
         //System.out.println(sb);
 
 
@@ -46,7 +52,7 @@ public class SwingRun {
         new CTTools();
 
         new MainWindow(CTInfo.DATA_PATH);
-        loadingWindow.setVisible(false);
+        loadingWindowRef.get().setVisible(false);
 
         if (!(Main.allArgs.get("screenProduct:show").contains(Main.argsList) ||
                 Main.allArgs.get("screenProduct:view").contains(Main.argsList))) {
@@ -60,7 +66,7 @@ public class SwingRun {
                         Main.allArgs.get("screenProduct:view").contains(Main.argsList))) {
             Log.info.print("Main", "开始启动自动检查更新");
             GetNewerVersion.checkForUpdate(
-                    loadingWindow, null, true, false);
+                    loadingWindowRef.get(), null, true, false);
 
         }
     }

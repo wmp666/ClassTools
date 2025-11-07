@@ -54,7 +54,7 @@ public class IconControl {
                 if (path == null) {
                     Log.warn.print("IconControl", String.format("图标文件%s不存在", jsonObject.getString("path")));
                     DEFAULT_IMAGE_MAP.put(jsonObject.getString("name"),
-                            new ImageIcon(IconControl.class.getResource("/image/default.png")));
+                            new ImageIcon(IconControl.class.getResource("/image/optionDialogIcon/warn.png")));
                 } else {
                     DEFAULT_IMAGE_MAP.put(jsonObject.getString("name"),
                             new ImageIcon(path));
@@ -94,7 +94,7 @@ public class IconControl {
                         Log.warn.print("IconControl", String.format("图标文件%s不存在", jsonObject.getString("path")));
                         if (DEFAULT_IMAGE_MAP.get(jsonObject.getString("name")) == null) {
                             DEFAULT_IMAGE_MAP.put(jsonObject.getString("name"),
-                                    new ImageIcon(IconControl.class.getResource("/image/default.png")));
+                                    new ImageIcon(IconControl.class.getResource("/image/optionDialogIcon/warn.png")));
                             ICON_STYLE_MAP.put(jsonObject.getString("name"), jsonObject.getString("style"));
                         }
                     }else{
@@ -145,12 +145,18 @@ public class IconControl {
             });
 
             if (!oldVersion.equals("err")) {
-
-
-                int newerVersion = GetNewerVersion.isNewerVersion(version.get(), oldVersion);
+                String[] split = oldVersion.split(":");
+                int newerVersion = GetNewerVersion.isNewerVersion(version.get(), split[split.length - 1]);
                 if (newerVersion != 0) {
-                    Log.info.print("IconControl", "有新图片");
-                    needDownload = true;
+                    if (!split[0].equals("zip")) {
+                        Log.info.print("IconControl", "有新图片");
+                        needDownload = true;
+                    }else{
+                        int i = Log.warn.showChooseDialog(null, "IconControl", "我们已经更新了官方图片库,而您的图片似乎是使用压缩包导入的(可能为第三方),我们无法确认是否要更新,如果你已经有了相关的最新版本/想要使用官方图片库,请按\"是\",否则按\"否\"");
+                        if (i == CTOptionPane.YES_OPTION) {
+                            needDownload = true;
+                        }
+                    }
                 }
 
 
@@ -171,8 +177,13 @@ public class IconControl {
                     zipPath = CTInfo.TEMP_PATH + "appInfo\\image.zip";
 
                 } else if (choose.equals("导入压缩包")) {
+                    Log.warn.message(null, "IconControl", "若导入的图片库为第三方,可能需要自行更新");
+                    version.set("zip:"+version.get());
                     zipPath = GetPath.getFilePath(null, "导入图片", ".zip", "图片压缩包");
-                } else return;
+                } else {
+                    Log.warn.message(null, "IconControl", "若不下载/导入图片,可能造成程序异常");
+                    return;
+                }
                 //解压文件
                 Thread thread = ZipPack.unzip(zipPath, CTInfo.APP_INFO_PATH);
 
