@@ -7,6 +7,7 @@ import com.wmp.classTools.CTComponent.CTButton.CTTextButton;
 
 import javax.swing.*;
 import java.awt.*;
+import java.util.Arrays;
 import java.util.List;
 
 public class CTList extends JPanel {
@@ -87,6 +88,11 @@ public class CTList extends JPanel {
         return direct;
     }
 
+    /**
+     * 设置列表方向
+     *
+     * @param direct   列表方向 0-垂直 1-水平
+     */
     public void setDirect(int direct) {
         this.direct = direct;
 
@@ -103,6 +109,22 @@ public class CTList extends JPanel {
         initUI();
         this.revalidate();
         this.repaint();
+    }
+
+    public void clearChoice() {
+        choices = new String[]{};
+    }
+    public void addChoice(String... choices) {
+        if (choices == null) {
+            throw new NullPointerException("选项为空");
+        }
+        // 复制原数组并扩展长度
+        String[] newChoices = Arrays.copyOf(this.choices, this.choices.length + 1);
+        // 添加新元素
+        for (String choice : choices){
+            newChoices[this.choices.length] = choice;
+        }
+        this.choices = newChoices;
     }
 }
 

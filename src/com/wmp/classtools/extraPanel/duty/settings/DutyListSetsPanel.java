@@ -1,11 +1,10 @@
 package com.wmp.classTools.extraPanel.duty.settings;
 
-import com.wmp.PublicTools.UITools.GetIcon;
 import com.wmp.PublicTools.UITools.IconControl;
 import com.wmp.PublicTools.io.IOForInfo;
 import com.wmp.PublicTools.io.InfProcess;
 import com.wmp.PublicTools.printLog.Log;
-import com.wmp.classTools.CTComponent.CTPanel.CTSetsPanel;
+import com.wmp.classTools.CTComponent.CTPanel.setsPanel.CTSetsPanel;
 import com.wmp.classTools.CTComponent.CTTable;
 import com.wmp.classTools.CTComponent.CTButton.CTTextButton;
 

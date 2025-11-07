@@ -34,7 +34,7 @@ public class SwingRun {
 
         //LoadingWindow loadingWindow;
         AtomicReference<LoadingWindow> loadingWindowRef = new AtomicReference<>();
-        SwingUtilities.invokeLater(() -> {
+        //SwingUtilities.invokeLater(() -> {
 
             if (b) {
                 loadingWindowRef.set(new LoadingWindow(200, 200, "EasterEgg", true, 2300));
@@ -44,7 +44,7 @@ public class SwingRun {
                 loadingWindowRef.set(new LoadingWindow());
                 //loadingWindow = new LoadingWindow();
             }
-        });
+        //});
         //System.out.println(sb);
 
 

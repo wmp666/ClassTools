@@ -34,15 +34,7 @@ public class LoadingDialog extends JDialog {
         this.repaint();
         this.pack();
         this.setLocationRelativeTo(null);
-        new SwingWorker<Void, Void>(){
-            @Override
-            protected Void doInBackground() throws Exception {
-                SwingUtilities.invokeLater(() -> {
-                    LoadingDialog.this.setVisible(!PanelList.isEmpty());
-                });
-                return null;
-            }
-        }.execute();
+        LoadingDialog.this.setVisible(!PanelList.isEmpty());
 
     }
 
@@ -57,7 +49,6 @@ public class LoadingDialog extends JDialog {
     public void showDialog(String id, String text, int value, boolean isIndeterminate) {
         Log.info.print("LoadingDialog", "显示进度条" + id);
 
-        SwingUtilities.invokeLater(() -> {
             JLabel textLabel = new JLabel(text);
             textLabel.setFont(CTFont.getCTFont(Font.BOLD, CTFontSizeStyle.SMALL));
             textLabel.setForeground(CTColor.textColor);
@@ -83,13 +74,11 @@ public class LoadingDialog extends JDialog {
             this.add(panel);
 
             resetDialog();
-        });
 
 
     }
 
     public void updateDialog(String id, int value) {
-        SwingUtilities.invokeLater(() -> {
             if (!PanelList.containsKey(id)) {
                 Log.warn.print("LoadingDialog", "未找到id为" + id + "的进度条");
                 return;
@@ -104,10 +93,8 @@ public class LoadingDialog extends JDialog {
             progressBar.setValue(value);
 
             resetDialog();
-        });
     }
     public void updateDialog(String id, String text) {
-        SwingUtilities.invokeLater(() -> {
             if (!PanelList.containsKey(id)) {
                 Log.warn.print("LoadingDialog", "未找到id为" + id + "的进度条");
                 return;
@@ -118,13 +105,11 @@ public class LoadingDialog extends JDialog {
             textLabel.repaint();
 
             resetDialog();
-        });
     }
 
     public void updateDialog(String id, String text, int value) {
         Log.info.print("LoadingDialog", "更新进度条" + id);
 
-        SwingUtilities.invokeLater(() -> {
             if (!PanelList.containsKey(id)) {
                 Log.warn.print("LoadingDialog", "未找到id为" + id + "的进度条");
                 return;
@@ -143,13 +128,11 @@ public class LoadingDialog extends JDialog {
             progressBar.setValue(value);
 
             resetDialog();
-        });
     }
 
     public void closeDialog(String id) {
         Log.info.print("LoadingDialog", "关闭进度条" + id);
 
-        SwingUtilities.invokeLater(() -> {
             if (!PanelList.containsKey(id)) {
                 Log.warn.print("LoadingDialog", "未找到id为" + id + "的进度条");
                 return;
@@ -162,6 +145,5 @@ public class LoadingDialog extends JDialog {
             progressBarPanelList.remove(id);
 
             resetDialog();
-        });
     }
 }

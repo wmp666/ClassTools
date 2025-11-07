@@ -7,7 +7,7 @@ import com.wmp.PublicTools.io.InfProcess;
 import com.wmp.PublicTools.printLog.Log;
 import com.wmp.classTools.CTComponent.CTButton.CTIconButton;
 import com.wmp.classTools.CTComponent.CTPanel.CTViewPanel;
-import com.wmp.classTools.CTComponent.CTPanel.CTSetsPanel;
+import com.wmp.classTools.CTComponent.CTPanel.setsPanel.CTSetsPanel;
 import com.wmp.classTools.extraPanel.duty.settings.DutyListSetsPanel;
 import com.wmp.classTools.extraPanel.duty.type.DutyDay;
 

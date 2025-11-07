@@ -10,7 +10,8 @@ import com.wmp.PublicTools.io.GetPath;
 import com.wmp.PublicTools.io.ZipPack;
 import com.wmp.PublicTools.printLog.Log;
 import com.wmp.classTools.CTComponent.CTList;
-import com.wmp.classTools.CTComponent.CTPanel.CTSetsPanel;
+import com.wmp.classTools.CTComponent.CTPanel.setsPanel.CTListSetsPanel;
+import com.wmp.classTools.CTComponent.CTPanel.setsPanel.CTSetsPanel;
 import com.wmp.classTools.CTComponent.CTButton.CTTextButton;
 import com.wmp.classTools.CTComponent.Menu.CTMenu;
 import com.wmp.classTools.CTComponent.Menu.CTMenuBar;
@@ -250,6 +251,7 @@ public class InfSetDialog extends JDialog {
         c.removeAll();
 
         this.openedPanel = panel.getName();
+
 
         JScrollPane mainPanelScroll = new JScrollPane(this.switchPanel);
         mainPanelScroll.setBorder(BorderFactory.createEmptyBorder());

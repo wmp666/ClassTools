@@ -1,13 +1,14 @@
 package com.wmp.classTools.extraPanel.classForm.settings;
 
 import com.wmp.PublicTools.DateTools;
-import com.wmp.PublicTools.UITools.GetIcon;
 import com.wmp.PublicTools.UITools.IconControl;
 import com.wmp.PublicTools.io.IOForInfo;
 import com.wmp.PublicTools.printLog.Log;
 import com.wmp.classTools.CTComponent.*;
 import com.wmp.classTools.CTComponent.CTButton.CTTextButton;
-import com.wmp.classTools.CTComponent.CTPanel.CTSetsPanel;
+import com.wmp.classTools.CTComponent.CTPanel.setsPanel.CTBasicSetsPanel;
+import com.wmp.classTools.CTComponent.CTPanel.setsPanel.CTListSetsPanel;
+import com.wmp.classTools.CTComponent.CTPanel.setsPanel.CTSetsPanel;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
@@ -18,7 +19,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 
-public class ClassFormSetsPanel extends CTSetsPanel {
+public class ClassFormSetsPanel extends CTListSetsPanel {
 
 
     private final String path;
@@ -39,7 +40,11 @@ public class ClassFormSetsPanel extends CTSetsPanel {
 
     private void initChooseButtons() {
         Log.info.print("CFSetsPanel", "初始化页面切换");
-        CTList chooseButtons = new CTList(new String[]{"周一", "周二", "周三", "周四", "周五", "周六", "周日"},
+        this.clearCTList();
+        for (int i = 0; i < 7; i++) {
+            this.add(resetSetsPanel(i + 1));
+        }
+        /*CTList chooseButtons = new CTList(new String[]{"周一", "周二", "周三", "周四", "周五", "周六", "周日"},
                 1, (e, choice) -> {
             int week = 0;
             switch (choice) {
@@ -65,7 +70,13 @@ public class ClassFormSetsPanel extends CTSetsPanel {
         mainPanelScroll.getViewport().setBackground(Color.WHITE);
         mainPanelScroll.getVerticalScrollBar().setUnitIncrement(16);
 
-        this.add(chooseButtons, BorderLayout.NORTH);
+        this.add(chooseButtons, BorderLayout.NORTH);*/
+
+
+
+        // 强制重新布局和重绘
+        this.revalidate();
+        this.repaint();
     }
 
     private void initSetsPanel() {
@@ -80,77 +91,176 @@ public class ClassFormSetsPanel extends CTSetsPanel {
         }
     }
 
-    private void resetSetsPanel(int week) {
-        Log.info.print("CFSetsPanel", "重置课程表设置面板");
+    private CTBasicSetsPanel resetSetsPanel(int week) {
+        Log.info.print("CFSetsPanel", "重置课程表设置面板:" + week);
 
-        JPanel mainPanel = new JPanel();
+        CTBasicSetsPanel mainPanel = new CTBasicSetsPanel(getBasicDataPath()){
+
+            @Override
+            public void refresh() throws Exception {
+
+                this.removeAll();
+
+                CTTable ctTable = CFTableList.get(week - 1);
+                DefaultTableModel model = (DefaultTableModel) ctTable.getModel();
+                JScrollPane scrollPane = new JScrollPane(ctTable);
+                scrollPane.setOpaque(false);
+                scrollPane.getViewport().setOpaque(false);
+                this.add(scrollPane, BorderLayout.CENTER);
+
+                JPanel buttonPanel = new JPanel();
+                buttonPanel.setOpaque(false);
+                buttonPanel.setLayout(new FlowLayout(FlowLayout.LEFT, 5, 5));
+
+                //新建
+                {
+
+                    CTTextButton newBtn = new CTTextButton("添加");
+                    newBtn.setIcon("添加", IconControl.COLOR_COLORFUL, 30, 30);
+                    newBtn.addActionListener(e -> {
+                        //检测内容是否为空
+                        boolean b = true;
+                        String s1 = "null";
+                        String s2 = "01-01";
+                        while (b) {
+                            s1 = Log.info.showInputDialog(this, "CFSetsPanel-新建", "请输入课程");
+
+                            if (s1 != null && !s1.trim().isEmpty()) {
+                                b = false;
+                            } else if (s1 == null) {
+                                return;
+                            }
+                        }
+
+                        int[] beginTime = Log.info.showTimeChooseDialog(this, "CFSetsPanel-新建", "请选择开始时间", CTOptionPane.HOURS_MINUTES);
+                        int[] afterTime = Log.info.showTimeChooseDialog(this, "CFSetsPanel-新建", "请选择结束时间", CTOptionPane.HOURS_MINUTES);
+                        if (beginTime.length == 1 || afterTime.length == 1) return;
+                        s2 = DateTools.getTimeStr(beginTime, CTOptionPane.HOURS_MINUTES, ':') + "-" + DateTools.getTimeStr(afterTime, CTOptionPane.HOURS_MINUTES, ':');
+
+
+                        model.addRow(new Object[]{s2, s1});
+
+                    });
+                    buttonPanel.add(newBtn);
+                }
+
+                // 删除
+                {
+
+                    CTTextButton deleteBtn = new CTTextButton("删除");
+                    deleteBtn.setIcon("删除", IconControl.COLOR_COLORFUL, 30, 30);
+                    deleteBtn.addActionListener(e -> {
+
+                        int selectedRow = ctTable.getSelectedRow();
+                        if (selectedRow != -1) {
+                            model.removeRow(selectedRow);
+                        }
+                    });
+                    //deleteBtn.setToolTipText("删除选中的值日生记录");
+                    //deleteBtn.setLocation(255, 380);
+                    buttonPanel.add(deleteBtn);
+                }
+
+                this.add(buttonPanel, BorderLayout.SOUTH);
+                /*this.removeAll();
+
+                CTTable ctTable = CFTableList.get(week - 1);
+                DefaultTableModel model = (DefaultTableModel) ctTable.getModel();
+                JScrollPane scrollPane = new JScrollPane(ctTable);
+                scrollPane.setOpaque(false);
+                scrollPane.getViewport().setOpaque(false);
+                this.add(scrollPane, BorderLayout.CENTER);
+
+                JPanel buttonPanel = new JPanel();
+                buttonPanel.setOpaque(false);
+                buttonPanel.setLayout(new FlowLayout(FlowLayout.LEFT, 5, 5));
+
+                //新建
+                {
+
+                    CTTextButton newBtn = new CTTextButton("添加");
+                    newBtn.setIcon("添加", IconControl.COLOR_COLORFUL, 30, 30);
+                    newBtn.addActionListener(e -> {
+                        //检测内容是否为空
+                        boolean b = true;
+                        String s1 = "null";
+                        String s2 = "01-01";
+                        while (b) {
+                            s1 = Log.info.showInputDialog(this, "CFSetsPanel-新建", "请输入课程");
+
+                            if (s1 != null && !s1.trim().isEmpty()) {
+                                b = false;
+                            } else if (s1 == null) {
+                                return;
+                            }
+                        }
+
+                        int[] beginTime = Log.info.showTimeChooseDialog(this, "CFSetsPanel-新建", "请选择开始时间", CTOptionPane.HOURS_MINUTES);
+                        int[] afterTime = Log.info.showTimeChooseDialog(this, "CFSetsPanel-新建", "请选择结束时间", CTOptionPane.HOURS_MINUTES);
+                        if (beginTime.length == 1 || afterTime.length == 1) return;
+                        s2 = DateTools.getTimeStr(beginTime, CTOptionPane.HOURS_MINUTES, ':') + "-" + DateTools.getTimeStr(afterTime, CTOptionPane.HOURS_MINUTES, ':');
+
+
+                        model.addRow(new Object[]{s2, s1});
+
+                    });
+                    buttonPanel.add(newBtn);
+                }
+
+                // 删除
+                {
+
+                    CTTextButton deleteBtn = new CTTextButton("删除");
+                    deleteBtn.setIcon("删除", IconControl.COLOR_COLORFUL, 30, 30);
+                    deleteBtn.addActionListener(e -> {
+
+                        int selectedRow = ctTable.getSelectedRow();
+                        if (selectedRow != -1) {
+                            model.removeRow(selectedRow);
+                        }
+                    });
+                    //deleteBtn.setToolTipText("删除选中的值日生记录");
+                    //deleteBtn.setLocation(255, 380);
+                    buttonPanel.add(deleteBtn);
+                }
+
+                this.add(buttonPanel, BorderLayout.SOUTH);
+
+                this.revalidate();
+                this.repaint();*/
+            }
+
+            @Override
+            public void save() throws Exception {
+                Log.info.print("CFSetsPanel", "保存课程表设置" + "周" + week);
+                CTTable table = CFTableList.get(week);
+                JSONArray jsonArray = new JSONArray();
+                for (int j = 0; j < table.getRowCount(); j++) {
+                    jsonArray.put(new JSONObject()
+                            .put("class", table.getValueAt(j, 1))
+                            .put("time", table.getValueAt(j, 0)));
+                }
+                new IOForInfo(new File(ClassFormSetsPanel.this.path + week + ".json")).setInfo(jsonArray.toString(4));
+            }
+        };
+        String name = switch (week) {
+            case 1 -> "周一";
+            case 2 -> "周二";
+            case 3 -> "周三";
+            case 4 -> "周四";
+            case 5 -> "周五";
+            case 6 -> "周六";
+            case 7 -> "周日";
+            default -> "未知";
+        };
+        mainPanel.setName(name);
         mainPanel.setOpaque(false);
 
         mainPanel.setLayout(new BorderLayout());
 
-        CTTable ctTable = CFTableList.get(week - 1);
-        DefaultTableModel model = (DefaultTableModel) ctTable.getModel();
-        JScrollPane scrollPane = new JScrollPane(ctTable);
-        scrollPane.setOpaque(false);
-        scrollPane.getViewport().setOpaque(false);
-        mainPanel.add(scrollPane, BorderLayout.CENTER);
-
-        JPanel buttonPanel = new JPanel();
-        buttonPanel.setOpaque(false);
-        buttonPanel.setLayout(new FlowLayout(FlowLayout.LEFT, 5, 5));
-
-        //新建
-        {
-
-            CTTextButton newBtn = new CTTextButton("添加");
-            newBtn.setIcon("添加", IconControl.COLOR_COLORFUL, 30, 30);
-            newBtn.addActionListener(e -> {
-                //检测内容是否为空
-                boolean b = true;
-                String s1 = "null";
-                String s2 = "01-01";
-                while (b) {
-                    s1 = Log.info.showInputDialog(this, "CFSetsPanel-新建", "请输入课程");
-
-                    if (s1 != null && !s1.trim().isEmpty()) {
-                        b = false;
-                    } else if (s1 == null) {
-                        return;
-                    }
-                }
-
-                    int[] beginTime = Log.info.showTimeChooseDialog(this, "CFSetsPanel-新建", "请选择开始时间", CTOptionPane.HOURS_MINUTES);
-                    int[] afterTime = Log.info.showTimeChooseDialog(this, "CFSetsPanel-新建", "请选择结束时间", CTOptionPane.HOURS_MINUTES);
-                    if (beginTime.length == 1 || afterTime.length == 1) return;
-                    s2 = DateTools.getTimeStr(beginTime, CTOptionPane.HOURS_MINUTES, ':') + "-" + DateTools.getTimeStr(afterTime, CTOptionPane.HOURS_MINUTES, ':');
 
 
-                model.addRow(new Object[]{s2, s1});
-
-            });
-            buttonPanel.add(newBtn);
-        }
-
-        // 删除
-        {
-
-            CTTextButton deleteBtn = new CTTextButton("删除");
-            deleteBtn.setIcon("删除", IconControl.COLOR_COLORFUL, 30, 30);
-            deleteBtn.addActionListener(e -> {
-
-                int selectedRow = ctTable.getSelectedRow();
-                if (selectedRow != -1) {
-                    model.removeRow(selectedRow);
-                }
-            });
-            //deleteBtn.setToolTipText("删除选中的值日生记录");
-            //deleteBtn.setLocation(255, 380);
-            buttonPanel.add(deleteBtn);
-        }
-
-        mainPanel.add(buttonPanel, BorderLayout.SOUTH);
-
-        this.add(mainPanel, BorderLayout.CENTER);
+        return mainPanel;
     }
 
     private String[][] getClassFormData(int week) {
@@ -182,21 +292,6 @@ public class ClassFormSetsPanel extends CTSetsPanel {
             Log.err.print(getClass(), "获取数据失败", e);
         }
         return null;
-    }
-
-    @Override
-    public void save() throws Exception {
-        Log.info.print("CFSetsPanel", "保存课程表设置");
-        for (int i = 0; i < CFTableList.size(); i++) {
-            CTTable table = CFTableList.get(i);
-            JSONArray jsonArray = new JSONArray();
-            for (int j = 0; j < table.getRowCount(); j++) {
-                jsonArray.put(new JSONObject()
-                        .put("class", table.getValueAt(j, 1))
-                        .put("time", table.getValueAt(j, 0)));
-            }
-            new IOForInfo(new File(this.path + (i + 1) + ".json")).setInfo(jsonArray.toString(4));
-        }
     }
 
     @Override

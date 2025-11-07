@@ -1,8 +1,10 @@
-package com.wmp.classTools.CTComponent.CTPanel;
+package com.wmp.classTools.CTComponent.CTPanel.setsPanel;
+
+import com.wmp.classTools.CTComponent.CTPanel.CTPanel;
 
 public abstract class CTSetsPanel extends CTPanel {
 
-    private String name;
+    private String name = "CTSetsPanel";
     //基础数据路径
     private String basicDataPath;
 
