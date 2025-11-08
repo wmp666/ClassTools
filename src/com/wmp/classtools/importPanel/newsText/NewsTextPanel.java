@@ -112,7 +112,7 @@ public class NewsTextPanel extends CTViewPanel{
                     String s = itemObject.getString("title");
                     StringBuilder sb = new StringBuilder();
                     for (char c : s.toCharArray()) {
-                        String s1 = "？！。 ?!;；";
+                        String s1 = "？！。 ?!;；:：";
                         sb.append(c);
                         if (s.indexOf(c) != s.length() - 1){
                             sb.append((s1.contains(String.valueOf(c))) ? "\n" : "");
@@ -184,7 +184,7 @@ public class NewsTextPanel extends CTViewPanel{
             // 根据文字数量调整窗口大小
             int lineCount = GetMaxSize.getLine(textArea.getText(), GetMaxSize.STYLE_HTML);// 行数
             // 计算新的窗口尺寸（基础尺寸 + 动态调整）
-            int newWidth = GetMaxSize.getHTMLToTextMaxLength(textArea.getText(), fm); // 根据最大字符宽度计算总宽度
+            int newWidth = GetMaxSize.getHTMLToTextMaxLength(textArea.getText(), fm) + 10; // 根据最大字符宽度计算总宽度
             int newHeight = lineCount * (textArea.getFont().getSize() + 5);  // 每多一行增加30像素高度
 
             int maxShowHeight = (this.isScreenProductViewPanel()?6:4) * textArea.getFont().getSize(); // 最大显示高度
@@ -199,12 +199,14 @@ public class NewsTextPanel extends CTViewPanel{
             scrollPane.setOpaque(false);
             scrollPane.setBorder(BorderFactory.createEmptyBorder());
 
-            // 添加以下两行代码使滚动条回到顶部
-            scrollPane.getVerticalScrollBar().setValue(0);
-            scrollPane.getHorizontalScrollBar().setValue(0);
+
 
             this.add(scrollPane, BorderLayout.CENTER);
             scrollPane.setPreferredSize(new Dimension(this.isScreenProductViewPanel()?Toolkit.getDefaultToolkit().getScreenSize().width:newWidth, newHeight + 20));
+
+            // 添加以下两行代码使滚动条回到顶部
+            scrollPane.getVerticalScrollBar().setValue(0);
+            scrollPane.getHorizontalScrollBar().setValue(0);
         } catch (Exception e) {
             Log.warn.print(getClass().getName(), "获取新闻失败");
             throw e;

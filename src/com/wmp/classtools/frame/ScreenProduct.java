@@ -241,6 +241,20 @@ public class ScreenProduct extends JDialog {
             }
         });
 
+        CTRoundTextButton restartButton = new CTRoundTextButton("重启电脑");
+        restartButton.setIcon("关机", IconControl.COLOR_COLORFUL, 90, 90);
+        restartButton.setFont(CTFont.getCTFont(Font.BOLD, CTFontSizeStyle.BIG_BIG));
+        restartButton.addActionListener(e -> {
+            int i = CTOptionPane.showConfirmDialog(dialog, "关闭选择", "是否重启电脑(仅限Windows)？", null, CTOptionPane.YES_OPTION, true);
+            if (i == CTOptionPane.NO_OPTION) return;
+            screenProduct.setVisible(false);
+            try {
+                Runtime.getRuntime().exec("shutdown -r -t 10");
+            } catch (IOException ex) {
+                throw new RuntimeException(ex);
+            }
+        });
+        
         GridBagConstraints gbc = new GridBagConstraints();
         gbc.gridx = 0;
         gbc.gridy = 0;
@@ -250,6 +264,8 @@ public class ScreenProduct extends JDialog {
 
 
         dialog.add(shutdownButton, gbc);
+        gbc.gridy++;
+        dialog.add(restartButton, gbc);
         gbc.gridy++;
         dialog.add(exitButton, gbc);
         gbc.gridy++;

@@ -96,7 +96,7 @@ public class Log {
             moreDialog.setTitle("更多");
             moreDialog.setLayout(new FlowLayout(FlowLayout.CENTER));
             moreDialog.setSize((int) (250 * CTInfo.dpi), (int) (300 * CTInfo.dpi));
-            moreDialog.setLocationRelativeTo(null);
+
             moreDialog.setModal(true);
             moreDialog.getContentPane().setBackground(CTColor.backColor);
             moreDialog.setIconImage(GetIcon.getImageIcon("更多", IconControl.COLOR_DEFAULT, 32, 32).getImage());
@@ -105,6 +105,8 @@ public class Log {
                     moreDialog.add(but.toRoundTextButton());
             });
 
+            moreDialog.pack();
+            moreDialog.setLocationRelativeTo(null);
             moreDialog.setVisible(true);
         });
 
