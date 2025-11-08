@@ -6,11 +6,14 @@ import com.wmp.PublicTools.CTTool.dianMing.DianMingTool;
 import com.wmp.PublicTools.UITools.CTColor;
 import com.wmp.PublicTools.UITools.CTFont;
 import com.wmp.PublicTools.UITools.CTFontSizeStyle;
+import com.wmp.PublicTools.UITools.IconControl;
+import com.wmp.PublicTools.printLog.Log;
 import com.wmp.classTools.CTComponent.CTButton.CTRoundTextButton;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.geom.RoundRectangle2D;
+import java.io.IOException;
 import java.util.ArrayList;
 
 public class CTTools extends JDialog {
@@ -59,6 +62,7 @@ public class CTTools extends JDialog {
         JDialog dialog = new JDialog();
         dialog.setTitle("快捷工具");
         dialog.setModal(true);
+        dialog.getContentPane().setBackground(CTColor.backColor);
         dialog.setLayout(new GridLayout(0,1, (int) (5 * CTInfo.dpi), (int) (5 * CTInfo.dpi)));
 
         tools.forEach(tool -> {
@@ -69,6 +73,18 @@ public class CTTools extends JDialog {
             });
             dialog.getContentPane().add(button);
         });
+
+        CTRoundTextButton button = new CTRoundTextButton("打开更多工具(快捷工具)");
+        button.setIcon("快捷工具", IconControl.COLOR_COLORFUL, 24, 24);
+        button.setFont(CTFont.getCTFont(Font.BOLD, CTFontSizeStyle.BIG));
+        button.addActionListener(ex -> {
+            try {
+                new ShowCookieDialog();
+            } catch (IOException e) {
+                Log.err.print(ShowCookieDialog.class, "CookieDialog打开失败", e);
+            }
+        });
+        dialog.getContentPane().add(button);
 
         dialog.pack();
         dialog.setLocationRelativeTo(null);
