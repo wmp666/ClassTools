@@ -14,7 +14,7 @@ public class SetsScrInfo {
     private JSONObject jsonObject;
 
 
-    public SetsScrInfo() throws IOException {
+    public SetsScrInfo(){
         File BGPath = new File(CTInfo.DATA_PATH + "\\ScreenProduct\\background.json");
         if (!BGPath.exists()) {
             try {
@@ -26,7 +26,12 @@ public class SetsScrInfo {
                 throw new RuntimeException(e);
             }
         }
-        jsonObject = new JSONObject(new IOForInfo(BGPath).getInfos());
+        try {
+            jsonObject = new JSONObject(new IOForInfo(BGPath).getInfos());
+        } catch (IOException e) {
+            Log.err.print(SetsScrInfo.class, "初始化失败", e);
+            throw new RuntimeException(e);
+        }
 
         Log.info.print("屏保数据", "初始化完成:" + jsonObject);
     }

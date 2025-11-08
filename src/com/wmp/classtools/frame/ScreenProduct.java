@@ -22,12 +22,15 @@ public class ScreenProduct extends JDialog {
     /*private final JLabel timeView = new JLabel();
     private final JLabel otherLabel = new JLabel();*/
     private static ScreenProduct screenProduct;
+    //获取屏保设置
+    private static SetsScrInfo setsScrInfo = new SetsScrInfo();
 
     private final JLabel imageViewLabel = new JLabel();
 
     private final Container c = this.getContentPane();
 
     private int index = 0;
+    private static Timer updateBG = new Timer(1000, e -> {});
 
     private static final HashMap<String, String[]> panelLocationMap = new HashMap<>();
     public ScreenProduct() throws IOException {
@@ -42,8 +45,7 @@ public class ScreenProduct extends JDialog {
 
         this.getLayeredPane().add(imageViewLabel, Integer.valueOf(Integer.MIN_VALUE));
 
-        //获取屏保设置
-        SetsScrInfo setsScrInfo = new SetsScrInfo();
+        setsScrInfo = new SetsScrInfo();
 
         if (setsScrInfo.getBGImagesLength() > 1)
             initBackground(new Random().nextInt(setsScrInfo.getBGImagesLength() - 1));
@@ -51,7 +53,7 @@ public class ScreenProduct extends JDialog {
 
 
         //背景更新
-        Timer updateBG = new Timer(setsScrInfo.getRepaintTimer() * 1000, e -> {
+        updateBG = new Timer(setsScrInfo.getRepaintTimer() * 1000, e -> {
 
             try {
                 initBackground(index);
@@ -86,28 +88,30 @@ public class ScreenProduct extends JDialog {
         //刷新要显示的组件
         MainWindow.refreshPanel();
 
-        TreeMap<String, CTViewPanel[]> panelMap = new TreeMap<>();
+        //刷新组件
+        {
+            TreeMap<String, CTViewPanel[]> panelMap = new TreeMap<>();
 
-        MainWindow.panelMap.forEach((key, value) -> {
-            for (CTViewPanel ctViewPanel : value) {
+            MainWindow.panelMap.forEach((key, value) -> {
+                for (CTViewPanel ctViewPanel : value) {
 
-                if (Arrays.asList(panelLocationMap.get("北方")).contains(ctViewPanel.getID())){
-                    java.util.List<CTViewPanel> temp = new java.util.ArrayList<>(Arrays.asList(panelMap.getOrDefault("北方", new CTViewPanel[0])));
-                    temp.add(ctViewPanel);
-                    panelMap.put("北方", temp.toArray(new CTViewPanel[0]));
-                } else if ( Arrays.asList(panelLocationMap.get("南方")).contains(ctViewPanel.getID())) {
-                    java.util.List<CTViewPanel> temp = new java.util.ArrayList<>(Arrays.asList(panelMap.getOrDefault("南方", new CTViewPanel[0])));
-                    temp.add(ctViewPanel);
-                    panelMap.put("南方", temp.toArray(new CTViewPanel[0]));
-                } else if (Arrays.asList(panelLocationMap.get("中间")).contains(ctViewPanel.getID())) {
-                    java.util.List<CTViewPanel> temp = new java.util.ArrayList<>(Arrays.asList(panelMap.getOrDefault("中间", new CTViewPanel[0])));
-                    temp.add(ctViewPanel);
-                    panelMap.put("中间", temp.toArray(new CTViewPanel[0]));
-                } else {
-                    java.util.List<CTViewPanel> temp = new java.util.ArrayList<>(Arrays.asList(panelMap.getOrDefault("东方", new CTViewPanel[0])));
-                    temp.add(ctViewPanel);
-                    panelMap.put("东方", temp.toArray(new CTViewPanel[0]));
-                }
+                    if (Arrays.asList(panelLocationMap.get("北方")).contains(ctViewPanel.getID())) {
+                        java.util.List<CTViewPanel> temp = new java.util.ArrayList<>(Arrays.asList(panelMap.getOrDefault("北方", new CTViewPanel[0])));
+                        temp.add(ctViewPanel);
+                        panelMap.put("北方", temp.toArray(new CTViewPanel[0]));
+                    } else if (Arrays.asList(panelLocationMap.get("南方")).contains(ctViewPanel.getID())) {
+                        java.util.List<CTViewPanel> temp = new java.util.ArrayList<>(Arrays.asList(panelMap.getOrDefault("南方", new CTViewPanel[0])));
+                        temp.add(ctViewPanel);
+                        panelMap.put("南方", temp.toArray(new CTViewPanel[0]));
+                    } else if (Arrays.asList(panelLocationMap.get("中间")).contains(ctViewPanel.getID())) {
+                        java.util.List<CTViewPanel> temp = new java.util.ArrayList<>(Arrays.asList(panelMap.getOrDefault("中间", new CTViewPanel[0])));
+                        temp.add(ctViewPanel);
+                        panelMap.put("中间", temp.toArray(new CTViewPanel[0]));
+                    } else {
+                        java.util.List<CTViewPanel> temp = new java.util.ArrayList<>(Arrays.asList(panelMap.getOrDefault("东方", new CTViewPanel[0])));
+                        temp.add(ctViewPanel);
+                        panelMap.put("东方", temp.toArray(new CTViewPanel[0]));
+                    }
 /*
                 switch (ctViewPanel.getID()) {
                     case "TimeViewPanel" -> panelMap.put("中间", List.of(ctViewPanel).toArray(new CTViewPanel[0]));
@@ -123,75 +127,81 @@ public class ScreenProduct extends JDialog {
                         } else panelMap.put("东方", List.of(ctViewPanel).toArray(new CTViewPanel[0]));
                     }
                 }*/
-            }
-        });
+                }
+            });
 
-        JPanel northPanel = new JPanel();
-        JPanel southPanel = new JPanel();
-        JPanel centerPanel = new JPanel();
-        JPanel eastPanel = new JPanel();
-        JPanel otherPanel = new JPanel();
+            JPanel northPanel = new JPanel();
+            JPanel southPanel = new JPanel();
+            JPanel centerPanel = new JPanel();
+            JPanel eastPanel = new JPanel();
+            JPanel otherPanel = new JPanel();
 
-        northPanel.setLayout(new GridBagLayout());
-        southPanel.setLayout(new GridBagLayout());
-        centerPanel.setLayout(new BorderLayout());
-        otherPanel.setLayout(new GridBagLayout());
-        eastPanel.setLayout(new BorderLayout());
+            northPanel.setLayout(new GridBagLayout());
+            southPanel.setLayout(new GridBagLayout());
+            centerPanel.setLayout(new BorderLayout());
+            otherPanel.setLayout(new GridBagLayout());
+            eastPanel.setLayout(new BorderLayout());
 
-        northPanel.setOpaque(false);
-        southPanel.setOpaque(false);
-        centerPanel.setOpaque(false);
-        otherPanel.setOpaque(false);
-        eastPanel.setOpaque(false);
+            northPanel.setOpaque(false);
+            southPanel.setOpaque(false);
+            centerPanel.setOpaque(false);
+            otherPanel.setOpaque(false);
+            eastPanel.setOpaque(false);
 
-        GridBagConstraints gbc = new GridBagConstraints();
-        gbc.anchor = GridBagConstraints.WEST;
-        gbc.gridx = 0;
-        gbc.gridy = 0;
-        gbc.weightx = 1; // 添加水平权重
-        //gbc.fill = GridBagConstraints.HORIZONTAL; // 水平填充
-        gbc.insets = new Insets(0, 0, 0, 0); // 确保没有额外的边距
+            GridBagConstraints gbc = new GridBagConstraints();
+            gbc.anchor = GridBagConstraints.WEST;
+            gbc.gridx = 0;
+            gbc.gridy = 0;
+            gbc.weightx = 1; // 添加水平权重
+            //gbc.fill = GridBagConstraints.HORIZONTAL; // 水平填充
+            gbc.insets = new Insets(0, 0, 0, 0); // 确保没有额外的边距
 
-        TreeMap<String, Integer> countMap = new TreeMap<>();
+            TreeMap<String, Integer> countMap = new TreeMap<>();
 
-        //将要显示的组件添加到显示列表
-        panelMap.forEach((key, value) -> {
-            for (CTViewPanel panel : value) {
-                countMap.put(key, countMap.getOrDefault(key, 0) + 1);
-                gbc.gridy = countMap.get(key);
-                switch (key) {
-                    case "北方" -> northPanel.add(panel, gbc);
-                    case "南方" -> southPanel.add(panel, gbc);
-                    case "中间" -> centerPanel.add(panel, BorderLayout.CENTER);
-                    default -> {
-                        if (panel.getID().equals("FinalPanel"))
-                            eastPanel.add(panel, BorderLayout.SOUTH);
-                        else otherPanel.add(panel, gbc);
+            //将要显示的组件添加到显示列表
+            panelMap.forEach((key, value) -> {
+                for (CTViewPanel panel : value) {
+                    countMap.put(key, countMap.getOrDefault(key, 0) + 1);
+                    gbc.gridy = countMap.get(key);
+                    switch (key) {
+                        case "北方" -> northPanel.add(panel, gbc);
+                        case "南方" -> southPanel.add(panel, gbc);
+                        case "中间" -> centerPanel.add(panel, BorderLayout.CENTER);
+                        default -> {
+                            if (panel.getID().equals("FinalPanel"))
+                                eastPanel.add(panel, BorderLayout.SOUTH);
+                            else otherPanel.add(panel, gbc);
+                        }
                     }
                 }
-            }
-        });
+            });
 
-        JScrollPane scrollPane = new JScrollPane(otherPanel);
-        scrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
-        scrollPane.getViewport().setOpaque(false);
-        scrollPane.setOpaque(false);
-        scrollPane.setBorder(BorderFactory.createEmptyBorder());
+            JScrollPane scrollPane = new JScrollPane(otherPanel);
+            scrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
+            scrollPane.getViewport().setOpaque(false);
+            scrollPane.setOpaque(false);
+            scrollPane.setBorder(BorderFactory.createEmptyBorder());
 
-        eastPanel.add(scrollPane, BorderLayout.CENTER);
+            eastPanel.add(scrollPane, BorderLayout.CENTER);
 
-        // 在添加新组件前移除所有现有组件
-        screenProduct.getContentPane().removeAll();
-        screenProduct.getContentPane().add(northPanel, BorderLayout.NORTH);
-        screenProduct.getContentPane().add(southPanel, BorderLayout.SOUTH);
-        screenProduct.getContentPane().add(centerPanel, BorderLayout.CENTER);
-        screenProduct.getContentPane().add(eastPanel, BorderLayout.EAST);
+            // 在添加新组件前移除所有现有组件
+            screenProduct.getContentPane().removeAll();
+            screenProduct.getContentPane().add(northPanel, BorderLayout.NORTH);
+            screenProduct.getContentPane().add(southPanel, BorderLayout.SOUTH);
+            screenProduct.getContentPane().add(centerPanel, BorderLayout.CENTER);
+            screenProduct.getContentPane().add(eastPanel, BorderLayout.EAST);
 
-        //添加退出按钮 - 左侧
-        CTIconButton exitButton = new CTIconButton(
-                "关闭", IconControl.COLOR_COLORFUL, ScreenProduct::exit);
-        exitButton.setBackground(Color.BLACK);
-        screenProduct.getContentPane().add(exitButton, BorderLayout.WEST);
+            //添加退出按钮 - 左侧
+            CTIconButton exitButton = new CTIconButton(
+                    "关闭", IconControl.COLOR_COLORFUL, ScreenProduct::exit);
+            exitButton.setBackground(Color.BLACK);
+            screenProduct.getContentPane().add(exitButton, BorderLayout.WEST);
+        }
+
+        //刷新背景
+        setsScrInfo = new SetsScrInfo();
+        updateBG.setDelay(setsScrInfo.getRepaintTimer() * 1000);
+        updateBG.restart();
     }
 
     private static void exit(){
@@ -287,8 +297,6 @@ public class ScreenProduct extends JDialog {
 
     private void initBackground(int index) throws IOException {
         JPanel panel = (JPanel) this.getContentPane();
-
-        SetsScrInfo setsScrInfo = new SetsScrInfo();
 
         Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
 

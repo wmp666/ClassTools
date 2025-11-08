@@ -74,7 +74,12 @@ public class ScreenProductSetsPanel extends CTSetsPanel {
                         viewLabel.setText("包含多张图片,不支持预览");
                     }
                 } else if (path.startsWith("BingBG")) {
-                    viewLabel.setIcon(new ImageIcon(new URL(new SetsScrInfo().getBGImagePath(0))));
+                    ImageIcon icon = new ImageIcon(new URL(new SetsScrInfo().getBGImagePath(0)));
+                    do {
+                        icon.setImage(icon.getImage().getScaledInstance(icon.getIconWidth() / 2, icon.getIconHeight() / 2, Image.SCALE_SMOOTH));
+                    } while (icon.getIconWidth() >= 400);
+
+                    viewLabel.setIcon(icon);
                 }else {
                     viewLabel.setIcon(null);
                     viewLabel.setText("请选择图片");
@@ -402,12 +407,7 @@ public class ScreenProductSetsPanel extends CTSetsPanel {
     @Override
     public void save() {
 
-        JSONObject jsonObject;
-        try {
-            jsonObject = new SetsScrInfo().getJsonObject();
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
+        JSONObject jsonObject = new SetsScrInfo().getJsonObject();
 
         //设置主题色
         String tempMainColor = switch (Objects.requireNonNull(mainColorComboBox.getSelectedItem()).toString()) {
