@@ -5,6 +5,7 @@ import com.wmp.PublicTools.EasterEgg.EasterEgg;
 import com.wmp.PublicTools.StartupParameters;
 import com.wmp.PublicTools.UITools.CTColor;
 import com.wmp.PublicTools.printLog.Log;
+import com.wmp.classTools.CTComponent.CTOptionPane;
 import com.wmp.classTools.SwingRun;
 
 import java.io.IOException;

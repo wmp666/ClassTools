@@ -1,4 +1,4 @@
-package com.wmp.classTools.infSet.panel;
+package com.wmp.classTools.infSet.panel.personalizationSets;
 
 import com.wmp.PublicTools.CTInfo;
 import com.wmp.PublicTools.UITools.CTColor;
@@ -8,7 +8,7 @@ import com.wmp.PublicTools.io.IOForInfo;
 import com.wmp.PublicTools.printLog.Log;
 import com.wmp.classTools.CTComponent.CTBorderFactory;
 import com.wmp.classTools.CTComponent.CTComboBox;
-import com.wmp.classTools.CTComponent.CTPanel.setsPanel.CTSetsPanel;
+import com.wmp.classTools.CTComponent.CTPanel.setsPanel.CTBasicSetsPanel;
 import com.wmp.classTools.CTComponent.CTTextField;
 import com.wmp.classTools.frame.MainWindow;
 import com.wmp.classTools.importPanel.finalPanel.FinalPanel;
@@ -24,8 +24,7 @@ import java.util.ArrayList;
 import java.util.Objects;
 import java.util.TreeMap;
 
-public class PersonalizationPanel extends CTSetsPanel {
-
+public class PBasicSetsPanel extends CTBasicSetsPanel {
     //颜色 数据
     private final CTComboBox mainColorComboBox = new CTComboBox();
     private final CTComboBox mainThemeComboBox = new CTComboBox();
@@ -43,11 +42,10 @@ public class PersonalizationPanel extends CTSetsPanel {
     //兼容数据
     private final CTTextField dpi = new CTTextField();
 
-
-    public PersonalizationPanel(String basicDataPath) {
+    public PBasicSetsPanel(String basicDataPath) {
         super(basicDataPath);
 
-        setName("个性化");
+        setName("基础设置");
 
         initUI();
     }

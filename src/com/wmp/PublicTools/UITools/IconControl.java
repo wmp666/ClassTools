@@ -164,42 +164,48 @@ public class IconControl {
                 needDownload = true;
             }
             if (needDownload) {
-                String choose = Log.info.showChooseDialog(null, "IconControl", "图片文件不存在/存在新版,选择获取方式", "下载", "导入压缩包");
-                String zipPath = "";
-
-                //清空文件
-                Thread thread1 = IOForInfo.deleteDirectoryRecursively(Path.of(CTInfo.APP_INFO_PATH + "image"));
-                thread1.join();
-
-                if (choose.equals("下载")) {
-                    //下载文件
-                    DownloadURLFile.downloadWebFile(null, null, downloadURL.get(), CTInfo.TEMP_PATH + "appInfo");
-                    zipPath = CTInfo.TEMP_PATH + "appInfo\\image.zip";
-
-                } else if (choose.equals("导入压缩包")) {
-                    Log.warn.message(null, "IconControl", "若导入的图片库为第三方,可能需要自行更新");
-                    version.set("zip:"+version.get());
-                    zipPath = GetPath.getFilePath(null, "导入图片", ".zip", "图片压缩包");
-                } else {
-                    Log.warn.message(null, "IconControl", "若不下载/导入图片,可能造成程序异常");
-                    return;
-                }
-                //解压文件
-                Thread thread = ZipPack.unzip(zipPath, CTInfo.APP_INFO_PATH);
-
-                if (thread != null) {
-                    thread.join();
-                }
-                //生成版本文件
-                try {
-                    new IOForInfo(CTInfo.APP_INFO_PATH + "image\\version.txt").setInfo(version.get());
-                } catch (IOException e) {
-                    throw new RuntimeException(e);
-                }
+                if (downloadFile(downloadURL, version)) return;
             }
         } catch (Exception e) {
             Log.err.print(IconControl.class, "获取图标版本失败", e);
         }
+    }
+
+    public static boolean downloadFile(AtomicReference<String> downloadURL, AtomicReference<String> version) throws InterruptedException {
+        String choose = Log.info.showChooseDialog(null, "IconControl", "图片文件不存在/存在新版,选择获取方式", "下载", "导入压缩包");
+        String zipPath = "";
+
+        //清空文件
+        Thread thread1 = IOForInfo.deleteDirectoryRecursively(Path.of(CTInfo.APP_INFO_PATH + "image"));
+        thread1.join();
+
+        if (choose.equals("下载")) {
+            //下载文件
+            boolean b = DownloadURLFile.downloadWebFile(null, null, downloadURL.get(), CTInfo.TEMP_PATH + "appInfo");
+            if (!b) return true;
+            zipPath = CTInfo.TEMP_PATH + "appInfo\\image.zip";
+
+        } else if (choose.equals("导入压缩包")) {
+            Log.warn.message(null, "IconControl", "若导入的图片库为第三方,可能需要自行更新");
+            version.set("zip:"+ version.get());
+            zipPath = GetPath.getFilePath(null, "导入图片", ".zip", "图片压缩包");
+        } else {
+            Log.warn.message(null, "IconControl", "若不下载/导入图片,可能造成程序异常");
+            return true;
+        }
+        //解压文件
+        Thread thread = ZipPack.unzip(zipPath, CTInfo.APP_INFO_PATH);
+
+        if (thread != null) {
+            thread.join();
+        }
+        //生成版本文件
+        try {
+            new IOForInfo(CTInfo.APP_INFO_PATH + "image\\version.txt").setInfo(version.get());
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+        return false;
     }
 
     private static Map<String, ImageIcon> getColorfulImageMap(Map<String, ImageIcon> map, Color color) {

@@ -647,6 +647,9 @@ public class CTOptionPane {
     public static void showFullScreenMessageDialog(String title, String message, int maxShowTime) {
         showFullScreenMessageDialog(title, message, maxShowTime, 10);
     }
+
+    private static Thread oldThread = null;
+
     /**
      * 全屏弹窗
      *
@@ -655,102 +658,103 @@ public class CTOptionPane {
      * @param maxShowTime 最大显示时间
      * @param waitTime 等待时间
      */
-    public static void showFullScreenMessageDialog(String title, String message, int maxShowTime, int waitTime) {
-        JDialog messageDialog = new JDialog();
-        messageDialog.setAlwaysOnTop(true);
-        //设置屏幕大小
-        Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
-        messageDialog.setSize((int) screenSize.getWidth(), (int) screenSize.getHeight());
-        messageDialog.setLocationRelativeTo(null);
-        messageDialog.setUndecorated(true);
-        messageDialog.getContentPane().setBackground(Color.BLACK);
-        messageDialog.setLayout(new BorderLayout());
-        messageDialog.setModal(true);
+    public static void showFullScreenMessageDialog(String title, String message, int maxShowTime, int waitTime){
+        if (oldThread != null) {
+            try {
+                oldThread.join();
+            } catch (InterruptedException e) {
+                Log.err.print(CTOptionPane.class, "等待线程异常", e);
+            }
+        }
 
-        JLabel titleLabel = new JLabel(title);
-        titleLabel.setHorizontalAlignment(JLabel.CENTER);
-        titleLabel.setForeground(Color.WHITE);
-        titleLabel.setOpaque(false);
+        oldThread = new Thread(()->{
+            JDialog messageDialog = new JDialog();
+            messageDialog.setAlwaysOnTop(true);
+            //设置屏幕大小
+            Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+            messageDialog.setSize((int) screenSize.getWidth(), (int) screenSize.getHeight());
+            messageDialog.setLocationRelativeTo(null);
+            messageDialog.setUndecorated(true);
+            messageDialog.getContentPane().setBackground(Color.BLACK);
+            messageDialog.setLayout(new BorderLayout());
+            messageDialog.setModal(true);
 
-        titleLabel.setFont(CTFont.getCTFont(Font.PLAIN, CTFontSizeStyle.BIG_BIG));
-        messageDialog.add(titleLabel, BorderLayout.NORTH);
+            JLabel titleLabel = new JLabel(title);
+            titleLabel.setHorizontalAlignment(JLabel.CENTER);
+            titleLabel.setForeground(Color.WHITE);
+            titleLabel.setOpaque(false);
+
+            titleLabel.setFont(CTFont.getCTFont(Font.PLAIN, CTFontSizeStyle.BIG_BIG));
+            messageDialog.add(titleLabel, BorderLayout.NORTH);
 
 
-        JTextArea textArea = new JTextArea(message);
-        textArea.setBackground(Color.BLACK);
-        textArea.setForeground(Color.WHITE);
-        textArea.setEditable(false);
-        textArea.setLineWrap(true);// 激活自动换行功能
-        textArea.setFont(CTFont.getCTFont(Font.PLAIN, CTFontSizeStyle.MORE_BIG));
+            JTextArea textArea = new JTextArea(message);
+            textArea.setBackground(Color.BLACK);
+            textArea.setForeground(Color.WHITE);
+            textArea.setEditable(false);
+            textArea.setLineWrap(true);// 激活自动换行功能
+            textArea.setFont(CTFont.getCTFont(Font.PLAIN, CTFontSizeStyle.MORE_BIG));
 
-        JScrollPane scrollPane = new JScrollPane(textArea);
-        scrollPane.setBorder(null);
-        messageDialog.add(scrollPane, BorderLayout.CENTER);
+            JScrollPane scrollPane = new JScrollPane(textArea);
+            scrollPane.setBorder(null);
+            messageDialog.add(scrollPane, BorderLayout.CENTER);
 
-        JPanel southPanel = new JPanel(new BorderLayout());
-        southPanel.setOpaque(false);
+            JPanel southPanel = new JPanel(new BorderLayout());
+            southPanel.setOpaque(false);
 
-        CTProgressBar progressBar = new CTProgressBar(0, waitTime * 100);
-        southPanel.add(progressBar, BorderLayout.NORTH);
+            CTProgressBar progressBar = new CTProgressBar(0, waitTime * 100);
+            southPanel.add(progressBar, BorderLayout.NORTH);
 
-        CTTextButton exitButton = new CTTextButton("关闭("+waitTime+"s)", false);
-        exitButton.setIcon("关闭" , IconControl.COLOR_DEFAULT, 100, 100);
-        exitButton.setFont(CTFont.getCTFont(Font.PLAIN, CTFontSizeStyle.MORE_BIG));
-        exitButton.setEnabled(false);
-        southPanel.add(exitButton, BorderLayout.CENTER);
+            CTTextButton exitButton = new CTTextButton("关闭(" + waitTime + "s)", false);
+            exitButton.setIcon("关闭", IconControl.COLOR_DEFAULT, 100, 100);
+            exitButton.setFont(CTFont.getCTFont(Font.PLAIN, CTFontSizeStyle.MORE_BIG));
+            exitButton.setEnabled(false);
+            southPanel.add(exitButton, BorderLayout.CENTER);
 
-        messageDialog.add(southPanel, BorderLayout.SOUTH);
+            messageDialog.add(southPanel, BorderLayout.SOUTH);
 
-        messageDialog.addWindowListener(new WindowAdapter() {
-            @Override
-            public void windowOpened(WindowEvent e) {
+            messageDialog.addWindowListener(new WindowAdapter() {
+                @Override
+                public void windowOpened(WindowEvent e) {
 
-                new Thread(() -> {
-                    try {
-                        for (int i = 0; i < waitTime * 100; i++) {
-                            progressBar.setValue(waitTime * 100 - i);
-                            exitButton.setText("关闭(" + (int)(waitTime - i*0.01 + 1) + "s)");
-                            Thread.sleep(10);
+                    new Thread(() -> {
+                        try {
+                            for (int i = 0; i < waitTime * 100; i++) {
+                                progressBar.setValue(waitTime * 100 - i);
+                                exitButton.setText("关闭(" + (int) (waitTime - i * 0.01 + 1) + "s)");
+                                Thread.sleep(10);
+                            }
+                        } catch (InterruptedException ex) {
+                            Log.err.print(CTOptionPane.class, "发生异常", ex);
                         }
-                    } catch (InterruptedException ex) {
-                        Log.err.print(CTOptionPane.class, "发生异常", ex);
-                    }
 
-                    exitButton.setText("关闭");
-                    exitButton.setEnabled(true);
-                    exitButton.addActionListener(ev -> {
-                        messageDialog.dispose();
-
-                    });
-                }).start();
-
-
-
-
-            }
-        });
-
-        new SwingWorker<Void, Void>() {
-            @Override
-            protected Void doInBackground() throws Exception {
-                if (maxShowTime > 0) {
-                    Timer t = new Timer(maxShowTime * 1000, e -> {
-
-                        if (messageDialog.isVisible())
+                        exitButton.setText("关闭");
+                        exitButton.setEnabled(true);
+                        exitButton.addActionListener(ev -> {
                             messageDialog.dispose();
-                    });
-                    t.setRepeats(false);
-                    t.start();
+
+                        });
+                    }).start();
+
+
                 }
+            });
+            if (maxShowTime > 0) {
+                Timer t = new Timer(maxShowTime * 1000, e -> {
 
-                Log.info.print("showFullScreenMessageDialog", "显示全屏弹窗：" + title + ":" + message);
-
-                messageDialog.setVisible(true);
-
-
-                return null;
+                    if (messageDialog.isVisible())
+                        messageDialog.dispose();
+                });
+                t.setRepeats(false);
+                t.start();
             }
-        }.execute();
+            Log.info.print("showFullScreenMessageDialog", "显示全屏弹窗：" + title + ":" + message);
+
+            messageDialog.setVisible(true);
+
+        });
+        oldThread.start();
+
 
     }
 }

@@ -25,7 +25,7 @@ import java.util.ArrayList;
 
 public class WeatherInfoPanel extends CTViewPanel {
 
-    private String format = "<html>%S 天气: %s, %s℃<br>%s %s℃-%s℃</html>";
+    private String format = "<html>%s %s, %s℃<br>%s %s℃-%s℃</html>";
     private String cityCode = WeatherInfoControl.getWeatherInfo();
     private final JLabel weather = new JLabel();
 
@@ -35,7 +35,8 @@ public class WeatherInfoPanel extends CTViewPanel {
             cityCode = WeatherInfoControl.getWeatherInfo();
 
             JSONObject nowWeather = GetWeatherInfo.getNowWeather(cityCode);
-            JSONObject todayOtherWeather = GetWeatherInfo.getTodayOtherWeather(cityCode);
+            JSONArray weatherForecasts = GetWeatherInfo.getWeatherForecasts(cityCode);
+            JSONObject todayOtherWeather = weatherForecasts.getJSONObject(0);
             if (nowWeather == null || todayOtherWeather == null) {
                 weather.setText(String.format("<html>获取天气数据失败<br>%s<br>点击查看详情</html>", GetWeatherInfo.errCode));
                 return;
@@ -49,8 +50,38 @@ public class WeatherInfoPanel extends CTViewPanel {
                     todayOtherWeather.getString("nighttemp"),
                     todayOtherWeather.getString("daytemp")
                     ));
+            weather.setCursor(new Cursor(Cursor.HAND_CURSOR));
+            StringBuilder sb = new StringBuilder();
+            sb.append("今日天气: \n")
+                    .append(nowWeather.getString("weather")).append(" ")
+                    .append(nowWeather.getString("temperature")).append("℃")
+                    .append("\n预报天气: ");
+
+            for (Object weatherForecast : weatherForecasts) {
+                if (weatherForecast instanceof JSONObject weatherForecastObject) {
+                    WeatherInfoControl.ForecastsWeatherInfo info = new WeatherInfoControl.ForecastsWeatherInfo(
+                            weatherForecastObject.getString("date"),
+                            weatherForecastObject.getString("dayweather"),
+                            weatherForecastObject.getString("daywind"),
+                            weatherForecastObject.getString("daytemp"),
+                            weatherForecastObject.getString("daypower"),
+                            weatherForecastObject.getString("nightweather"),
+                            weatherForecastObject.getString("nightwind"),
+                            weatherForecastObject.getString("nighttemp"),
+                            weatherForecastObject.getString("nightpower")
+                    );
+                    sb.append(info.date()).append(" ")
+                            .append("白天: ").append(info.dayweather())
+                            .append("晚上: ").append(info.nightweather())
+                            .append("温差: ").append(info.nighttemp() + "-"
+                                    + info.daytemp() + "℃");
+
+                }
+            }
+            Log.info.adaptedMessage(nowWeather.getString("city") + " 天气数据", sb.toString(), 60, 5);
         } catch (Exception ex) {
             Log.warn.print(getClass().toString(), "天气数据获取出错"+ex);
+            throw new RuntimeException(ex);
         }
         weather.repaint();
     }

@@ -22,11 +22,19 @@ public class DownloadURLFile {
      * @param downloadUrl 下载链接
      * @param dataPath 保存路径
      */
-    public static void downloadWebFile(Window parent, JPanel panel, String downloadUrl, String dataPath) {
-        downloadWebFile(parent, panel, downloadUrl, dataPath, null);
+    public static boolean downloadWebFile(Window parent, JPanel panel, String downloadUrl, String dataPath) {
+        return downloadWebFile(parent, panel, downloadUrl, dataPath, null);
     }
-    
-    public static void downloadWebFile(Window parent, JPanel panel, String downloadUrl, String dataPath, String expectedSHA256) {
+    /**
+     * 下载文件
+     * @param parent
+     * @param panel
+     * @param downloadUrl 下载链接
+     * @param dataPath 保存路径
+     * @param expectedSHA256 预期SHA256
+     * @return 是否下载成功
+     */
+    public static boolean downloadWebFile(Window parent, JPanel panel, String downloadUrl, String dataPath, String expectedSHA256) {
         int id = new Random().nextInt();
 
         Log.info.print("DownloadURLFile-下载", "开始下载");
@@ -186,7 +194,7 @@ public class DownloadURLFile {
                         if (!sha256Verified) {
                             Log.err.print(parent, "DownloadURLFile-下载", "文件完整性校验失败，请重新下载！");
                             sourceFile.delete(); // 删除损坏的文件
-                            return;
+                            return false;
                         } else {
                             Log.info.print("DownloadURLFile-下载", "文件完整性校验通过");
                         }
@@ -225,7 +233,7 @@ public class DownloadURLFile {
 
 
 
-                    
+
 
 
                 } catch (IOException e) {
@@ -235,18 +243,21 @@ public class DownloadURLFile {
                         Log.info.message(parent, "DownloadURLFile-下载", "下载失败，请以管理员身份运行");
 
                     }
+                    return false;
                 }
                 Log.info.message(parent, "DownloadURLFile-下载", "下载完成！");
 
             }
         } catch (Exception ex) {
             Log.err.print(DownloadURLFile.class, "下载失败", ex);
+            return false;
         }
         if (panel != null) {
             panel.removeAll();
         } else {
             Log.info.loading.closeDialog("文件下载" + id);
         }
+        return true;
         //}).start();
     }
 

@@ -13,6 +13,9 @@ import java.util.List;
 public class CTList extends JPanel {
 
     private SelectListener listener;
+    /**
+     * 列表方向 0-垂直 1-水平
+     */
     private int direct = 0;
     private String[] choices;
 
@@ -51,7 +54,11 @@ public class CTList extends JPanel {
         List.of(this.choices).forEach(choice -> {
             CTTextButton button = new CTTextButton(choice, false);
 
-            button.setHorizontalAlignment(SwingConstants.LEFT);
+            if (this.direct == 0) {
+                button.setHorizontalAlignment(SwingConstants.LEFT);
+            }else{
+                button.setHorizontalAlignment(SwingConstants.CENTER);
+            }
             button.setFont(CTFont.getCTFont(Font.PLAIN, CTFontSizeStyle.NORMAL));
             button.addActionListener(e -> {
                 if (this.listener == null) return;

@@ -58,10 +58,7 @@ public class ClassFormPanel extends CTViewPanel {
                 .append("下节课:")
                 .append(nextClass);
 
-        if (Main.allArgs.get("screenProduct:show").contains(Main.argsList))
-            CTOptionPane.showFullScreenMessageDialog("课程提醒", infoSB.toString(), 60, 5);
-        else
-            Log.info.systemPrint("课程提醒", infoSB.toString());
+        Log.info.adaptedMessage("课程提醒", infoSB.toString(), 60, 5);
 
     }
 

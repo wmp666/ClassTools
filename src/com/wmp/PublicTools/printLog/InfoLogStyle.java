@@ -29,6 +29,20 @@ public class InfoLogStyle extends PrintLogStyle {
         CTOptionPane.showMessageDialog(c, title, logInfo, getIcon(), CTOptionPane.INFORMATION_MESSAGE, true);
     }
 
+    /**
+     * 自适应样式窗口 (屏保时全屏弹窗,否则为系统通知)
+     * @param owner 标题
+     * @param logInfo 显示的消息
+     * @param maxShowTime 显示时间
+     * @param waitTime 等待时间
+     */
+    public void adaptedMessage(String owner, String logInfo, int maxShowTime, int waitTime){
+        if (Main.allArgs.get("screenProduct:show").contains(Main.argsList))
+            CTOptionPane.showFullScreenMessageDialog(owner, logInfo, maxShowTime, waitTime);
+        else
+            systemPrint(owner, logInfo);
+    }
+
     private static String getTitle(String owner) {
         String title;
         if (CTInfo.isError) title = "骇客已入侵";

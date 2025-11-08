@@ -10,7 +10,6 @@ import com.wmp.PublicTools.io.GetPath;
 import com.wmp.PublicTools.io.ZipPack;
 import com.wmp.PublicTools.printLog.Log;
 import com.wmp.classTools.CTComponent.CTList;
-import com.wmp.classTools.CTComponent.CTPanel.setsPanel.CTListSetsPanel;
 import com.wmp.classTools.CTComponent.CTPanel.setsPanel.CTSetsPanel;
 import com.wmp.classTools.CTComponent.CTButton.CTTextButton;
 import com.wmp.classTools.CTComponent.Menu.CTMenu;
@@ -18,7 +17,7 @@ import com.wmp.classTools.CTComponent.Menu.CTMenuBar;
 import com.wmp.classTools.CTComponent.Menu.CTMenuItem;
 import com.wmp.classTools.frame.MainWindow;
 import com.wmp.classTools.infSet.panel.ClearTempPanel;
-import com.wmp.classTools.infSet.panel.PersonalizationPanel;
+import com.wmp.classTools.infSet.panel.personalizationSets.PersonalizationPanel;
 
 import javax.swing.*;
 import java.awt.*;
