@@ -16,8 +16,6 @@ public class CTButton extends JButton {
     public void setIcon(String name, int colorStyle, int width, int height){
         ImageIcon icon = GetIcon.getImageIcon(name, colorStyle, width, height);
         this.setIcon(icon);
-        icon.setImageObserver(this);
-
     }
 
     public String getIconName() {

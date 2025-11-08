@@ -11,30 +11,23 @@ import java.awt.geom.RoundRectangle2D;
 
 public class CTRoundTextButton extends CTButton {
 
-
-    private Icon defaultIcon;
-    private Image defaultIconImage;
-
     public CTRoundTextButton(String text) {
         this(text, null, IconControl.COLOR_DEFAULT);
     }
 
-    public CTRoundTextButton(String text, String name, int iconStyle) {
-        this(text, name, iconStyle, 35, 35);
+    public CTRoundTextButton(String text, String iconKey, int iconStyle) {
+        this(text, iconKey, iconStyle, 35, 35);
     }
 
-    public CTRoundTextButton(String text, String name, int iconStyle, int width, int height) {
+    public CTRoundTextButton(String text, String iconKey, int iconStyle, int width, int height) {
         super();
 
         this.setText(text);
         setName(text);
 
 
-        if (name != null) {
-            this.defaultIcon = GetIcon.getIcon(name, iconStyle, width, height);
-            this.defaultIconImage = ((ImageIcon)defaultIcon).getImage();
-
-            this.setIcon(defaultIcon);
+        if (iconKey != null) {
+            this.setIcon( GetIcon.getIcon(iconKey, iconStyle, width, height));
         }
 
 
@@ -94,20 +87,20 @@ public class CTRoundTextButton extends CTButton {
         int horizontalSpacing = 5; // 图标与文字之间的间距
 
         // 水平左右对齐布局
-        if (defaultIconImage != null && getText() != null && !getText().isEmpty()) {
+        if (this.getIcon() != null && getText() != null && !getText().isEmpty()) {
             // 同时有图标和文字时，水平排列
-            int totalWidth = defaultIcon.getIconWidth() + horizontalSpacing + getTextWidth(g2, getText());
+            int totalWidth = this.getIcon().getIconWidth() + horizontalSpacing + getTextWidth(g2, getText());
             int startX = (width - totalWidth) / 2; // 整体居中
 
             iconX = startX;
-            iconY = (height - defaultIcon.getIconHeight()) / 2;
+            iconY = (height - this.getIcon().getIconHeight()) / 2;
 
-            textX = startX + defaultIcon.getIconWidth() + horizontalSpacing;
+            textX = startX + this.getIcon().getIconWidth() + horizontalSpacing;
             textY = (height + g2.getFontMetrics().getAscent() - g2.getFontMetrics().getDescent()) / 2;
-        } else if (defaultIconImage != null) {
+        } else if (this.getIcon() != null) {
             // 只有图标时居中
-            iconX = (width - defaultIcon.getIconWidth()) / 2;
-            iconY = (height - defaultIcon.getIconHeight()) / 2;
+            iconX = (width - this.getIcon().getIconWidth()) / 2;
+            iconY = (height - this.getIcon().getIconHeight()) / 2;
         } else if (getText() != null && !getText().isEmpty()) {
             // 只有文字时居中
             FontMetrics fm = g2.getFontMetrics();
@@ -116,8 +109,8 @@ public class CTRoundTextButton extends CTButton {
         }
 
         // 绘制图标
-        if (defaultIconImage != null) {
-            g2.drawImage(defaultIconImage, iconX, iconY, defaultIcon.getIconWidth(), defaultIcon.getIconHeight(), null);
+        if (this.getIcon() != null) {
+            g2.drawImage(((ImageIcon)this.getIcon()).getImage(), iconX, iconY, this.getIcon().getIconWidth(), this.getIcon().getIconHeight(), null);
         }
 
         // 绘制文本

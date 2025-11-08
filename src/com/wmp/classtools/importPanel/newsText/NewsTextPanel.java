@@ -64,6 +64,16 @@ public class NewsTextPanel extends CTViewPanel{
         });
         indexRefreshTimer.start();
 
+        Timer controlTimer = new Timer(60*1000, e -> {
+            if (!this.isVisible()) {
+                refreshTimer.stop();
+                indexRefreshTimer.stop();
+            }else{
+                refreshTimer.start();
+                indexRefreshTimer.start();
+            }
+        });
+        controlTimer.start();
 
     }
 

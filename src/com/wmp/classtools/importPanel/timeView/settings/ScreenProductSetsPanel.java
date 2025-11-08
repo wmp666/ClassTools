@@ -18,6 +18,7 @@ import java.awt.*;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.net.URL;
 import java.nio.file.*;
 import java.nio.file.attribute.BasicFileAttributes;
 import java.util.Objects;
@@ -52,6 +53,8 @@ public class ScreenProductSetsPanel extends CTSetsPanel {
 
     private static void initViewPanel(JSONObject jsonObject, JLabel viewLabel) {
 
+        viewLabel.setFont(CTFont.getCTFont(Font.PLAIN, CTFontSizeStyle.NORMAL));
+        viewLabel.setForeground(CTColor.textColor);
         viewLabel.setText("");
 
         try {
@@ -70,7 +73,9 @@ public class ScreenProductSetsPanel extends CTSetsPanel {
                         viewLabel.setIcon(null);
                         viewLabel.setText("包含多张图片,不支持预览");
                     }
-                } else {
+                } else if (path.startsWith("BingBG")) {
+                    viewLabel.setIcon(new ImageIcon(new URL(new SetsScrInfo().getBGImagePath(0))));
+                }else {
                     viewLabel.setIcon(null);
                     viewLabel.setText("请选择图片");
                 }
@@ -135,7 +140,7 @@ public class ScreenProductSetsPanel extends CTSetsPanel {
         CTTextButton pathChoiceButton = new CTTextButton("选择图片");
         pathChoiceButton.addActionListener(e -> {
 
-            String choose = Log.info.showChooseDialog(this, "设置背景", "请选择背景样式(位置)", "图片", "文件夹");
+            String choose = Log.info.showChooseDialog(this, "设置背景", "请选择背景样式(位置)", "图片", "文件夹", "Bing壁纸", "Bing壁纸(随机)");
             if (choose == null) {
                 return;
             }
@@ -198,7 +203,7 @@ public class ScreenProductSetsPanel extends CTSetsPanel {
                 }
 
             } else if (choose.equals("图片")) {
-                String path = GetPath.getFilePath(this, "请选择图片", ".png|.jpg|jpeg", "PNG|JPG");
+                String path = GetPath.getFilePath(this, "请选择图片", ".png|.jpg|.jpeg", "PNG|JPG");
 
                 if (path != null && !path.isEmpty()) {
                     String[] split = path.split("\\.");
@@ -213,6 +218,10 @@ public class ScreenProductSetsPanel extends CTSetsPanel {
                 }
 
 
+            } else if (choose.equals("Bing壁纸")) {
+                jsonObject.put("path", "BingBG");
+            }else if (choose.equals("Bing壁纸(随机)")) {
+                jsonObject.put("path", "BingBGRandom");
             }
             IOForInfo ioForInfo = new IOForInfo(BGPath);
             try {
