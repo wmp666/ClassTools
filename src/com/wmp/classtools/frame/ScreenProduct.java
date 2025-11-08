@@ -36,6 +36,8 @@ public class ScreenProduct extends JDialog {
 
         initWindow();
 
+        refreshScreenProductPanel();
+
         this.getLayeredPane().add(imageViewLabel, Integer.valueOf(Integer.MIN_VALUE));
 
         //获取屏保设置
@@ -73,7 +75,7 @@ public class ScreenProduct extends JDialog {
         strongRepaint.setRepeats(true);
         strongRepaint.start();
 
-        refreshScreenProductPanel();
+
         this.setVisible(true);
     }
 

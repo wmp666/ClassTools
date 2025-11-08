@@ -49,7 +49,7 @@ public class SwingRun {
 
 
         //loadingWindow.setVisible(true);
-        new CTTools();
+
 
         new MainWindow(CTInfo.DATA_PATH);
         loadingWindowRef.get().setVisible(false);

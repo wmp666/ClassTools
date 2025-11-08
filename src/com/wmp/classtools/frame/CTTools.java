@@ -14,13 +14,18 @@ import java.awt.geom.RoundRectangle2D;
 import java.util.ArrayList;
 
 public class CTTools extends JDialog {
+    private static final ArrayList<CTTools> oldClass = new ArrayList<>();
     private static final ArrayList<CTTool> tools = new ArrayList<>();
     public CTTools() {
+        oldClass.forEach(CTTools::dispose);
+        oldClass.clear();
         new CTTools(0);
         new CTTools(1);
     }
 
     private CTTools(int style){
+
+        oldClass.add(this);
 
         initFrame();
 
@@ -78,6 +83,6 @@ public class CTTools extends JDialog {
         this.setSize(500, 500);
         this.setLayout(new BorderLayout());
 
-        this.setBackground(new Color(172, 172, 172));
+        this.getContentPane().setBackground(CTColor.backColor);
     }
 }

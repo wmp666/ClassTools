@@ -52,11 +52,10 @@ public class WeatherInfoPanel extends CTViewPanel {
                     ));
             weather.setCursor(new Cursor(Cursor.HAND_CURSOR));
             StringBuilder sb = new StringBuilder();
-            sb.append("今日天气: \n")
+            sb.append("今日天气: ")
                     .append(nowWeather.getString("weather")).append(" ")
                     .append(nowWeather.getString("temperature")).append("℃")
-                    .append("\n预报天气: ");
-
+                    .append("\n");
             for (Object weatherForecast : weatherForecasts) {
                 if (weatherForecast instanceof JSONObject weatherForecastObject) {
                     WeatherInfoControl.ForecastsWeatherInfo info = new WeatherInfoControl.ForecastsWeatherInfo(
@@ -70,11 +69,11 @@ public class WeatherInfoPanel extends CTViewPanel {
                             weatherForecastObject.getString("nighttemp"),
                             weatherForecastObject.getString("nightpower")
                     );
-                    sb.append(info.date()).append(" ")
-                            .append("白天: ").append(info.dayweather())
-                            .append("晚上: ").append(info.nightweather())
-                            .append("温差: ").append(info.nighttemp() + "-"
-                                    + info.daytemp() + "℃");
+                    sb.append(info.date().substring(5)).append(" ")
+                            .append(" ").append(info.dayweather())
+                            .append("->").append(info.nightweather())
+                            .append(" ").append(info.nighttemp() + "-"
+                                    + info.daytemp() + "℃").append("\n");
 
                 }
             }
@@ -110,9 +109,6 @@ public class WeatherInfoPanel extends CTViewPanel {
 
         initPanel();
         resetPanel(CTFontSizeStyle.BIG);
-
-        initWeather();
-
 
     }
 

@@ -50,26 +50,17 @@ public class TimeViewPanel extends CTViewPanel {
         this.setID("TimeViewPanel");
         this.setLayout(new BorderLayout());
         this.setCtSetsPanelList(List.of(new ScreenProductSetsPanel(CTInfo.DATA_PATH)));
+
+
+
         initPanel();
 
-        this.setIndependentRefresh(true, 300);
+        this.setIndependentRefresh(true, 34);
 
     }
 
     private void initPanel(){
-        this.removeAll();
 
-        //获取时间
-        Date date = new Date();
-        //格式化 11.22 23:05
-        DateFormat dateFormat = new SimpleDateFormat("MM.dd HH:mm:ss");
-
-
-        timeView.setText(dateFormat.format(date));
-        timeView.setFont(CTFont.getCTFont(Font.BOLD, CTFontSizeStyle.BIG));
-        //timeView.setBackground(new Color(0x0ECECED, true));
-        timeView.setForeground(CTColor.mainColor);
-        this.add(timeView, BorderLayout.CENTER);
 
         CTIconButton viewTimeButton = new CTIconButton("全屏显示时间",
                 "展示", IconControl.COLOR_COLORFUL, () -> {
@@ -135,23 +126,6 @@ public class TimeViewPanel extends CTViewPanel {
 
     @Override
     protected void Refresh() throws Exception {
-        if (!isScreenProductViewPanel()) {
-            initPanel();
-        }else{
-            initSPPanel();
-        }
-
-        //获取时间
-        Date date02 = new Date();
-        //格式化 11.22 23:05
-        DateFormat dateFormat02 = new SimpleDateFormat("MM.dd HH:mm:ss");
-        //让时间在组件左侧显示
-        timeView.setHorizontalAlignment(JLabel.CENTER);
-        timeView.setText(dateFormat02.format(date02));
-
-    }
-
-    private void initSPPanel() {
         this.removeAll();
 
         //获取时间
@@ -160,11 +134,20 @@ public class TimeViewPanel extends CTViewPanel {
         DateFormat dateFormat = new SimpleDateFormat("MM.dd HH:mm:ss");
 
 
+        timeView.setHorizontalAlignment(JLabel.CENTER);
         timeView.setText(dateFormat.format(date));
-        timeView.setFont(CTFont.getCTFont(Font.BOLD, CTFontSizeStyle.BIG_BIG));
+        timeView.setFont(CTFont.getCTFont(Font.BOLD, isScreenProductViewPanel()?CTFontSizeStyle.BIG_BIG:CTFontSizeStyle.BIG));
         //timeView.setBackground(new Color(0x0ECECED, true));
         timeView.setForeground(CTColor.mainColor);
         this.add(timeView, BorderLayout.CENTER);
+
+        if (!isScreenProductViewPanel()) {
+            initPanel();
+        }
+
+        this.revalidate();
+        this.repaint();
+
     }
 
 }

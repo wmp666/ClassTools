@@ -121,7 +121,7 @@ public class CTListSetsPanel extends CTSetsPanel{
     public void save() throws Exception {
         ctSetsPanelList.forEach(ctSetsPanel -> {
             try {
-                ctSetsPanel.refresh();
+                ctSetsPanel.save();
             } catch (Exception e) {
                 Log.err.print(this, getClass(), "保存失败", e);
             }
