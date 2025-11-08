@@ -233,7 +233,7 @@ public class ClassFormSetsPanel extends CTListSetsPanel {
             @Override
             public void save() throws Exception {
                 Log.info.print("CFSetsPanel", "保存课程表设置" + "周" + week);
-                CTTable table = CFTableList.get(week);
+                CTTable table = CFTableList.get(week - 1);
                 JSONArray jsonArray = new JSONArray();
                 for (int j = 0; j < table.getRowCount(); j++) {
                     jsonArray.put(new JSONObject()
