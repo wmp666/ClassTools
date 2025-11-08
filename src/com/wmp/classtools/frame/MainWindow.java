@@ -11,7 +11,7 @@ import com.wmp.classTools.extraPanel.classForm.panel.ClassFormPanel;
 import com.wmp.classTools.extraPanel.countdown.panel.CountDownPanel;
 import com.wmp.classTools.extraPanel.duty.panel.DPanel;
 import com.wmp.classTools.extraPanel.reminderBir.panel.BRPanel;
-import com.wmp.classTools.importPanel.eastereggtext.ETPanel;
+import com.wmp.classTools.importPanel.newsText.NewsTextPanel;
 import com.wmp.classTools.importPanel.finalPanel.FinalPanel;
 import com.wmp.classTools.importPanel.timeView.OtherTimeThingPanel;
 import com.wmp.classTools.importPanel.timeView.TimeViewPanel;
@@ -21,7 +21,6 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
-import java.awt.geom.RoundRectangle2D;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -48,7 +47,7 @@ public class MainWindow extends CTWindow {
         mainWindow = this;
 
         panelLocationMap.put("上方", new String[]{"TimeViewPanel", "OtherTimeThingPanel", "WeatherInfoPanel"});
-        panelLocationMap.put("下方", new String[]{"ETPanel", "FinalPanel"});
+        panelLocationMap.put("下方", new String[]{"NewsTextPanel", "FinalPanel"});
 
 
         File DutyListPath = new File(path + "Duty\\DutyList.txt");
@@ -61,7 +60,7 @@ public class MainWindow extends CTWindow {
         TimeViewPanel timeViewPanel = new TimeViewPanel();
         OtherTimeThingPanel otherTimeThingPanel = new OtherTimeThingPanel();
         WeatherInfoPanel weatherInfoPanel = new WeatherInfoPanel();
-        ETPanel eEPanel = new ETPanel();
+        NewsTextPanel eEPanel = new NewsTextPanel();
         FinalPanel finalPanel = new FinalPanel();
 
         DPanel dPanel = new DPanel(DutyListPath, indexPath);
@@ -113,7 +112,7 @@ public class MainWindow extends CTWindow {
                         ctPanel.toScreenProductViewPanel();
                         ctPanel.refresh();
                     } catch (Exception e) {
-                        throw new RuntimeException(e);
+                        Log.err.print(ctPanel.getClass(), "刷新失败", e);
                     }
                 });
 

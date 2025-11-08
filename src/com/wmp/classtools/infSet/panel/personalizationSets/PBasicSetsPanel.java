@@ -215,7 +215,7 @@ public class PBasicSetsPanel extends CTBasicSetsPanel {
             MainWindow.allPanelList.forEach(panel -> {
 
                 if (panel.getID().equals("TimeViewPanel") ||
-                        //panel.getID().equals("ETPanel") ||
+                        //panel.getID().equals("NewsTextPanel") ||
                         panel.getID().equals("FinalPanel")) {
                     return;
                 }

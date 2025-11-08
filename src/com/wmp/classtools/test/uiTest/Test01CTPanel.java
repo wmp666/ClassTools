@@ -4,7 +4,7 @@ import com.wmp.PublicTools.CTInfo;
 import com.wmp.classTools.extraPanel.attendance.panel.ATPanel;
 import com.wmp.classTools.extraPanel.duty.panel.DPanel;
 import com.wmp.classTools.frame.MainWindow;
-import com.wmp.classTools.importPanel.eastereggtext.ETPanel;
+import com.wmp.classTools.importPanel.newsText.NewsTextPanel;
 import com.wmp.classTools.importPanel.finalPanel.FinalPanel;
 import com.wmp.classTools.importPanel.timeView.TimeViewPanel;
 
@@ -98,15 +98,15 @@ public class Test01CTPanel {
 
     static class ETPanelTest extends JFrame {
         public ETPanelTest() throws HeadlessException {
-            ETPanel etPanel = new ETPanel();
+            NewsTextPanel newsTextPanel = new NewsTextPanel();
 
-            this.add(etPanel);
+            this.add(newsTextPanel);
             this.pack();
             this.setVisible(true);
 
             new Thread(() -> {
                 while (true) {
-                    etPanel.repaint();
+                    newsTextPanel.repaint();
                     this.pack();
 
                     try {

@@ -296,6 +296,11 @@ public class CTOptionPane {
                 messagePanel.getViewport().setOpaque(false);
                 messagePanel.setBorder(null);
                 messagePanel.getViewport().setViewPosition(new Point(0, 0));
+
+                // 添加以下两行代码使滚动条回到顶部
+                messagePanel.getVerticalScrollBar().setValue(0);
+                messagePanel.getHorizontalScrollBar().setValue(0);
+
                 panel.add(messagePanel, BorderLayout.CENTER);
             }
             //选择框

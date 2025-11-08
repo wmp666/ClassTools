@@ -31,7 +31,7 @@ public class ScreenProduct extends JDialog {
     public ScreenProduct() throws IOException {
         screenProduct = this;
         panelLocationMap.put("北方", new String[]{"OtherTimeThingPanel", "WeatherInfoPanel"});
-        panelLocationMap.put("南方", new String[]{"ETPanel"});
+        panelLocationMap.put("南方", new String[]{"NewsTextPanel"});
         panelLocationMap.put("中间", new String[]{"TimeViewPanel"});
 
         initWindow();
@@ -108,7 +108,7 @@ public class ScreenProduct extends JDialog {
 /*
                 switch (ctViewPanel.getID()) {
                     case "TimeViewPanel" -> panelMap.put("中间", List.of(ctViewPanel).toArray(new CTViewPanel[0]));
-                    case "ETPanel" -> panelMap.put("南方", List.of(ctViewPanel).toArray(new CTViewPanel[0]));
+                    case "NewsTextPanel" -> panelMap.put("南方", List.of(ctViewPanel).toArray(new CTViewPanel[0]));
                     case "OtherTimeThingPanel" ->
                             panelMap.put("北方", List.of(ctViewPanel).toArray(new CTViewPanel[0]));
                     default -> {
