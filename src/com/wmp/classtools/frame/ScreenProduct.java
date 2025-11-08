@@ -242,7 +242,7 @@ public class ScreenProduct extends JDialog {
         });
 
         CTRoundTextButton restartButton = new CTRoundTextButton("重启电脑");
-        restartButton.setIcon("关机", IconControl.COLOR_COLORFUL, 90, 90);
+        restartButton.setIcon("刷新", IconControl.COLOR_COLORFUL, 90, 90);
         restartButton.setFont(CTFont.getCTFont(Font.BOLD, CTFontSizeStyle.BIG_BIG));
         restartButton.addActionListener(e -> {
             int i = CTOptionPane.showConfirmDialog(dialog, "关闭选择", "是否重启电脑(仅限Windows)？", null, CTOptionPane.YES_OPTION, true);
@@ -258,7 +258,7 @@ public class ScreenProduct extends JDialog {
         GridBagConstraints gbc = new GridBagConstraints();
         gbc.gridx = 0;
         gbc.gridy = 0;
-        gbc.insets = new Insets(50, 10, 50, 10);
+        gbc.insets = new Insets(20, 10, 20, 10);
         gbc.weightx = 1;
         gbc.weighty = 1;
 
