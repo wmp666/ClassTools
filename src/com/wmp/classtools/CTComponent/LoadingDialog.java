@@ -7,6 +7,7 @@ import com.wmp.PublicTools.printLog.Log;
 
 import javax.swing.*;
 import java.awt.*;
+import java.lang.reflect.InvocationTargetException;
 import java.util.TreeMap;
 
 public class LoadingDialog extends JDialog {
@@ -35,6 +36,7 @@ public class LoadingDialog extends JDialog {
         this.pack();
         this.setLocationRelativeTo(null);
         LoadingDialog.this.setVisible(!PanelList.isEmpty());
+
 
     }
 
@@ -74,8 +76,6 @@ public class LoadingDialog extends JDialog {
             this.add(panel);
 
             resetDialog();
-
-
     }
 
     public void updateDialog(String id, int value) {

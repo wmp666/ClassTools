@@ -193,7 +193,7 @@ public class Log {
 
                 viewLabel.setBounds(0, 0, screenSize.width, screenSize.height);
 
-                viewLabel.setIcon(GetIcon.getIcon(exitStr, IconControl.COLOR_DEFAULT, screenSize.width, screenSize.height));
+                viewLabel.setIcon(GetIcon.getIcon(exitStr, IconControl.COLOR_DEFAULT, screenSize.width, screenSize.height, false));
 
 
             }

@@ -40,36 +40,38 @@ public class CTInfo {
      * d:只修复的问题,问题较少
      * e:测试版本号
      */
-    public static String version = "1.42.2";
+    public static String version = "1.42.3";
     public static void init() {
 
-        disButList.clear();
-        disPanelList.clear();
+            Log.info.loading.showDialog("init", "正在刷新...");
 
-        //加载基础目录
-        String path = System.getenv("LOCALAPPDATA");
+            disButList.clear();
+            disPanelList.clear();
 
-        APP_INFO_PATH = path + "\\ClassToolsAppFile\\";
-        DATA_PATH = path + "\\ClassTools\\";
-        TEMP_PATH = path + "\\ClassToolsTemp\\";
+            //加载基础目录
+            String path = System.getenv("LOCALAPPDATA");
 
-        if (!isError) {
-            if (version.split("\\.").length < 5) iconPath = "/image/icon/icon.png";
-            else iconPath = "/image/icon/icon_bate.png";
-        } else iconPath = "/image/err/icon.png";
+            APP_INFO_PATH = path + "\\ClassToolsAppFile\\";
+            DATA_PATH = path + "\\ClassTools\\";
+            TEMP_PATH = path + "\\ClassToolsTemp\\";
 
-        IconControl.init();
+            if (!isError) {
+                if (version.split("\\.").length < 5) iconPath = "/image/icon/icon.png";
+                else iconPath = "/image/icon/icon_bate.png";
+            } else iconPath = "/image/err/icon.png";
 
-        boolean exists = new File(CTInfo.DATA_PATH + "setUp.json").exists();
-        if (exists) {
-            IOForInfo sets = new IOForInfo(new File(CTInfo.DATA_PATH + "setUp.json"));
+            IconControl.init();
 
-            try {
-                jsonObject = new JSONObject(sets.getInfos());
-            } catch (Exception e) {
-                jsonObject = new JSONObject();
-                Log.err.print(CTFont.class, "数据获取发生错误", e);
-            }
+            boolean exists = new File(CTInfo.DATA_PATH + "setUp.json").exists();
+            if (exists) {
+                IOForInfo sets = new IOForInfo(new File(CTInfo.DATA_PATH + "setUp.json"));
+
+                try {
+                    jsonObject = new JSONObject(sets.getInfos());
+                } catch (Exception e) {
+                    jsonObject = new JSONObject();
+                    Log.err.print(CTFont.class, "数据获取发生错误", e);
+                }
 
             //设置颜色
             if (jsonObject.has("mainColor")) {
@@ -119,5 +121,6 @@ public class CTInfo {
                 dpi = jsonObject.getDouble("DPI");
             }
         }
+            Log.info.loading.closeDialog("init");
     }
 }

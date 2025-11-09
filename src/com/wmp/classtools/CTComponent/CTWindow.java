@@ -9,7 +9,7 @@ import java.awt.geom.RoundRectangle2D;
 public class CTWindow extends JDialog {
     public CTWindow() throws HeadlessException {
         this.setUndecorated(true);
-        this.setShape(new RoundRectangle2D.Double(0, 0, this.getWidth(), this.getHeight(), 20, 20));
+        this.setShape(new RoundRectangle2D.Double(0, 0, this.getWidth(), this.getHeight(), CTInfo.arcw, CTInfo.arch));
 
     }
 
@@ -17,7 +17,7 @@ public class CTWindow extends JDialog {
     public void setSize(Dimension d) {
         super.setSize(d);
 
-        this.setShape(new RoundRectangle2D.Double(0, 0, this.getWidth(), this.getHeight(), 20, 20));
+        this.setShape(new RoundRectangle2D.Double(0, 0, this.getWidth(), this.getHeight(), CTInfo.arcw, CTInfo.arch));
 
     }
 
