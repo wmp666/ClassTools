@@ -45,11 +45,11 @@ public class GetMaxSize {
 
     public static int getHTMLToTextMaxLength(String s, FontMetrics fm) {
         String[] strings = s.replaceAll("<html>|</html>", "").replaceAll("<br>", "\n").split("\n");// 去除HTML标签
-        int maxLength = 12 * fm.getFont().getSize();
+        int length = 0;
         for (String string : strings) {
-            maxLength = Math.min(fm.stringWidth(string), maxLength);
+            length = Math.max(fm.stringWidth(string), length);
         }
-        return maxLength;
+        return Math.min(length, 12 * fm.getFont().getSize());
 
     }
 }
