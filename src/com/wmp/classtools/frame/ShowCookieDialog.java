@@ -3,6 +3,7 @@ package com.wmp.classTools.frame;
 import com.wmp.PublicTools.CTInfo;
 import com.wmp.PublicTools.OpenInExp;
 import com.wmp.PublicTools.UITools.*;
+import com.wmp.PublicTools.appFileControl.IconControl;
 import com.wmp.PublicTools.io.GetPath;
 import com.wmp.PublicTools.io.ZipPack;
 import com.wmp.PublicTools.printLog.Log;

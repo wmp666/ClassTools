@@ -6,6 +6,7 @@ import com.wmp.PublicTools.UITools.CTFont;
 import com.wmp.PublicTools.UITools.CTFontSizeStyle;
 import com.wmp.PublicTools.UITools.PeoPanelProcess;
 import com.wmp.PublicTools.printLog.Log;
+import com.wmp.PublicTools.videoView.MediaPlayer;
 import com.wmp.classTools.CTComponent.CTPanel.CTViewPanel;
 import com.wmp.classTools.extraPanel.classForm.CFInfoControl;
 import com.wmp.classTools.extraPanel.classForm.settings.ClassFormSetsPanel;
@@ -19,7 +20,6 @@ import java.util.List;
 public class ClassFormPanel extends CTViewPanel {
 
     private final ArrayList<String> oldNowClassNameList = new ArrayList<>();
-
     private String oldNextClassName = "无";
 
 
@@ -30,15 +30,25 @@ public class ClassFormPanel extends CTViewPanel {
         this.setOpaque(false);
         this.setCtSetsPanelList(java.util.List.of(new ClassFormSetsPanel(CTInfo.DATA_PATH)));
 
+        oldNowClassNameList.addAll(List.of(CFInfoControl.getNowClasses()));
+        oldNextClassName = CFInfoControl.getNextClass().className();
+
         this.setIgnoreState(true);
         this.setIndependentRefresh(true, 3 * 1000);
     }
 
     private void showClassForm(String[] nowClassesList, String nextClass) {
 
+        if(!List.of(nowClassesList).contains("无")){
+            MediaPlayer.playMusic("课程表", "上课");
+        } else{
+            MediaPlayer.playMusic("课程表", "下课");
+        }
+
         if (List.of(nowClassesList).contains("无") && nextClass.equals("无")) {
             return;
         }
+
 
         StringBuilder sb = new StringBuilder();
 

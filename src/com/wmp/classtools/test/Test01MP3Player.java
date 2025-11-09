@@ -19,9 +19,9 @@ public class Test01MP3Player {
         Random r = new Random();
         boolean b = r.nextBoolean();
         if (b) {
-            inputStream = Log.class.getResourceAsStream("/music/error-kong.mp3");
+            inputStream = Log.class.getResourceAsStream("/music/err/kong.mp3");
         } else {
-            inputStream = Log.class.getResourceAsStream("/music/error-yin.mp3");
+            inputStream = Log.class.getResourceAsStream("/music/err/yin.mp3");
         }
         System.out.println("播放:" + (b ? "空" : "荧"));
 

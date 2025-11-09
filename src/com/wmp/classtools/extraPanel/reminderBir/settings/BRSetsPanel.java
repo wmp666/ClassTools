@@ -1,6 +1,6 @@
 package com.wmp.classTools.extraPanel.reminderBir.settings;
 
-import com.wmp.PublicTools.UITools.IconControl;
+import com.wmp.PublicTools.appFileControl.IconControl;
 import com.wmp.PublicTools.io.IOForInfo;
 import com.wmp.PublicTools.printLog.Log;
 import com.wmp.classTools.CTComponent.CTButton.CTTextButton;

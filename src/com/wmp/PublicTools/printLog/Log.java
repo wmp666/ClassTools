@@ -5,6 +5,7 @@ import com.wmp.PublicTools.CTInfo;
 import com.wmp.PublicTools.EasterEgg.EasterEgg;
 import com.wmp.PublicTools.OpenInExp;
 import com.wmp.PublicTools.UITools.*;
+import com.wmp.PublicTools.appFileControl.IconControl;
 import com.wmp.PublicTools.videoView.MediaPlayer;
 import com.wmp.classTools.CTComponent.CTOptionPane;
 import com.wmp.classTools.frame.MainWindow;
@@ -244,7 +245,31 @@ public class Log {
                 trayIcon.displayMessage(owner, logInfo.toString(), TrayIcon.MessageType.ERROR);
                 System.err.println(info);
 
-                MediaPlayer.playMusic(MediaPlayer.MUSIC_STYLE_ERROR, true);
+                {
+                    boolean isPlayer = true;
+                    // 1/10概率播放
+                    {
+                        Random r = new Random();
+                        if (r.nextInt(10) == 0) isPlayer = true;
+                    }
+
+                    Random r = new Random();
+
+                    if (isPlayer) {
+                        if (CTInfo.isError) {
+                            MediaPlayer.playMusic("程序", "错误", "银狼");
+                        } else {
+                            int i = r.nextInt(3);
+                            switch (i) {
+                                case 0 -> MediaPlayer.playMusic("程序", "错误", "空");
+                                case 1 -> MediaPlayer.playMusic("程序", "错误", "荧");
+                                case 2 -> MediaPlayer.playMusic("程序", "错误", "欧洛伦");
+
+                            }
+                        }
+                    }
+                }
+
 
 
                 String title;

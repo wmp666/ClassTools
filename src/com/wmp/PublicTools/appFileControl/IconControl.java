@@ -1,6 +1,8 @@
-package com.wmp.PublicTools.UITools;
+package com.wmp.PublicTools.appFileControl;
 
 import com.wmp.PublicTools.CTInfo;
+import com.wmp.PublicTools.UITools.CTColor;
+import com.wmp.PublicTools.UITools.ColorConverter;
 import com.wmp.PublicTools.io.DownloadURLFile;
 import com.wmp.PublicTools.io.GetPath;
 import com.wmp.PublicTools.io.IOForInfo;
@@ -174,9 +176,7 @@ public class IconControl {
         String choose = Log.info.showChooseDialog(null, "IconControl", "图片文件不存在/存在新版,选择获取方式", "下载", "导入压缩包");
         String zipPath = "";
 
-        //清空文件
-        Thread thread1 = IOForInfo.deleteDirectoryRecursively(Path.of(CTInfo.APP_INFO_PATH + "image"));
-        thread1.join();
+
 
         if (choose.equals("下载")) {
             //下载文件
@@ -192,6 +192,9 @@ public class IconControl {
             Log.warn.message(null, "IconControl", "若不下载/导入图片,可能造成程序异常");
             return true;
         }
+        //清空文件
+        Thread thread1 = IOForInfo.deleteDirectoryRecursively(Path.of(CTInfo.APP_INFO_PATH + "image"));
+        thread1.join();
         //解压文件
         Thread thread = ZipPack.unzip(zipPath, CTInfo.APP_INFO_PATH);
 

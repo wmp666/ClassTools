@@ -2,7 +2,8 @@ package com.wmp.PublicTools;
 
 import com.wmp.PublicTools.UITools.CTColor;
 import com.wmp.PublicTools.UITools.CTFont;
-import com.wmp.PublicTools.UITools.IconControl;
+import com.wmp.PublicTools.appFileControl.IconControl;
+import com.wmp.PublicTools.appFileControl.MusicControl;
 import com.wmp.PublicTools.io.IOForInfo;
 import com.wmp.PublicTools.printLog.Log;
 import org.json.JSONArray;
@@ -34,7 +35,7 @@ public class CTInfo {
      * d:只修复的问题,问题较少
      * e:测试版本号
      */
-    public static String version = "1.42.3";
+    public static String version = "1.42.4";
     private static JSONObject jsonObject;
 
     public static void init() {
@@ -43,6 +44,8 @@ public class CTInfo {
 
         disButList.clear();
         disPanelList.clear();
+
+        Log.info.loading.updateDialog("init", "正在更新路径...");
 
         //加载基础目录
         String path = System.getenv("LOCALAPPDATA");
@@ -56,8 +59,12 @@ public class CTInfo {
             else iconPath = "/image/icon/icon_bate.png";
         } else iconPath = "/image/err/icon.png";
 
+        Log.info.loading.updateDialog("init", "正在刷新图标...");
         IconControl.init();
+        Log.info.loading.updateDialog("init", "正在刷新音频...");
+        MusicControl.init();
 
+        Log.info.loading.updateDialog("init", "正在更新个性化数据...");
         boolean exists = new File(CTInfo.DATA_PATH + "setUp.json").exists();
         if (exists) {
             IOForInfo sets = new IOForInfo(new File(CTInfo.DATA_PATH + "setUp.json"));
@@ -117,6 +124,8 @@ public class CTInfo {
                 dpi = jsonObject.getDouble("DPI");
             }
         }
+
+
         Log.info.loading.closeDialog("init");
     }
 }

@@ -5,7 +5,7 @@ import com.wmp.PublicTools.CTInfo;
 import com.wmp.PublicTools.DateTools;
 import com.wmp.PublicTools.UITools.CTColor;
 import com.wmp.PublicTools.UITools.GetIcon;
-import com.wmp.PublicTools.UITools.IconControl;
+import com.wmp.PublicTools.appFileControl.IconControl;
 import com.wmp.PublicTools.io.IOForInfo;
 import com.wmp.PublicTools.io.ResourceLocalizer;
 import com.wmp.PublicTools.printLog.Log;
@@ -229,7 +229,7 @@ public class EasterEgg {
                     try {
                         if (style == STYLE_EE_MUSIC) {
                             String path = CTInfo.TEMP_PATH + "EasterEgg\\music\\" + name;
-                            MediaPlayer.playMusic(path);
+                            MediaPlayer.playLocalMusic(path);
                         } else if (style == STYLE_EE_VIDEO) {
                             String path = CTInfo.TEMP_PATH + "EasterEgg\\video\\" + name;
                             MediaPlayer.playVideo(path);

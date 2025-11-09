@@ -4,6 +4,7 @@ import com.wmp.PublicTools.CTInfo;
 import com.wmp.PublicTools.EasterEgg.EasterEgg;
 import com.wmp.PublicTools.OpenInExp;
 import com.wmp.PublicTools.UITools.*;
+import com.wmp.PublicTools.appFileControl.IconControl;
 import com.wmp.PublicTools.io.GetPath;
 import com.wmp.PublicTools.printLog.Log;
 import com.wmp.PublicTools.update.GetNewerVersion;

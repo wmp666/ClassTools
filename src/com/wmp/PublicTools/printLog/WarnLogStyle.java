@@ -2,7 +2,7 @@ package com.wmp.PublicTools.printLog;
 
 import com.wmp.PublicTools.CTInfo;
 import com.wmp.PublicTools.UITools.GetIcon;
-import com.wmp.PublicTools.UITools.IconControl;
+import com.wmp.PublicTools.appFileControl.IconControl;
 import com.wmp.classTools.CTComponent.CTOptionPane;
 import com.wmp.classTools.CTComponent.LoadingDialog;
 

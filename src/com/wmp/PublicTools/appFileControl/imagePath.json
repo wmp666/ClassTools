@@ -6,26 +6,6 @@
   },
   {
     "style": "png",
-    "name": "哔哩哔哩",
-    "path": "/image/about/bilibili.png"
-  },
-  {
-    "style": "png",
-    "name": "Github",
-    "path": "/image/about/github.png"
-  },
-  {
-    "style": "png",
-    "name": "QQ",
-    "path": "/image/about/qq.png"
-  },
-  {
-    "style": "png",
-    "name": "微信",
-    "path": "/image/about/wechat.png"
-  },
-  {
-    "style": "png",
     "name": "提示",
     "path": "/image/optionDialogIcon/information.png"
   },

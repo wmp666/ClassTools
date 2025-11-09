@@ -1,6 +1,7 @@
 package com.wmp.classTools.frame.tools.cookie;
 
 import com.wmp.PublicTools.UITools.*;
+import com.wmp.PublicTools.appFileControl.IconControl;
 import com.wmp.PublicTools.io.DownloadURLFile;
 import com.wmp.PublicTools.printLog.Log;
 import com.wmp.PublicTools.web.GetWebInf;

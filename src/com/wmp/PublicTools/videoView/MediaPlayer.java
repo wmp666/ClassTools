@@ -1,6 +1,7 @@
 package com.wmp.PublicTools.videoView;
 
 import com.wmp.PublicTools.CTInfo;
+import com.wmp.PublicTools.appFileControl.MusicControl;
 import com.wmp.PublicTools.printLog.Log;
 import javazoom.jl.decoder.JavaLayerException;
 import javazoom.jl.player.Player;
@@ -10,11 +11,10 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Random;
+import java.util.Timer;
+import java.util.TimerTask;
 
 public class MediaPlayer {
-
-    public static final int MUSIC_STYLE_ERROR = 0;
-
 
     public static void playVideo(String filePath) throws IOException {
         File videoFile = new File(filePath);
@@ -29,7 +29,7 @@ public class MediaPlayer {
         }
     }
 
-    public static void playMusic(String filePath) throws IOException {
+    public static void playLocalMusic(String filePath) throws IOException {
         File musicFile = new File(filePath);
 
 
@@ -55,61 +55,35 @@ public class MediaPlayer {
         }
     }
 
-    public static void playMusic(int style, boolean inThread) {
-        InputStream inputStream = null;
-
-        switch (style) {
-            case MUSIC_STYLE_ERROR -> {
-
-                // 1/10概率播放
-                {
-                    Random r = new Random();
-                    if (!(r.nextInt(10) == 0)) return;
-                }
-
-                Random r = new Random();
-
-                if (CTInfo.isError) {
-                    inputStream = Log.class.getResourceAsStream("/music/error-yl.mp3");
-                } else {
-                    int i = r.nextInt(3);
-                    switch (i) {
-                        case 0 -> inputStream = Log.class.getResourceAsStream("/music/error-kong.mp3");
-                        case 1 -> inputStream = Log.class.getResourceAsStream("/music/error-yin.mp3");
-                        case 2 -> inputStream = Log.class.getResourceAsStream("/music/error-oll.mp3");
-
-                    }
-                }
-
+    public static void playMusic(String... keys) {
+        //key = keys[0].key[1].key[2] ... key[n]
+        StringBuilder sb = new StringBuilder();
+        for (int i = 0; i < keys.length; i++) {
+            sb.append(keys[i]);
+            if (i != keys.length - 1) {
+                sb.append(".");
             }
-
-            default -> inputStream = Log.class.getResourceAsStream("/music/error-kong.mp3");
         }
+        String key = sb.toString();
 
-
-        if (inputStream != null) {
-            if (inThread) {
-                InputStream finalInputStream = inputStream;
-                new Thread(() -> {
-
-
+        Log.info.print(MediaPlayer.class.getName(), "播放音频:" + key);
+        Timer timer = new Timer();
+        timer.schedule(new TimerTask() {
+            @Override
+            public void run() {
+                Player player = MusicControl.getPlayer(key);
+                if (player != null) {
                     try {
-                        Player player = new Player(finalInputStream);
                         player.play();
-                    } catch (JavaLayerException e) {
-                        throw new RuntimeException(e);
+                    } catch (Exception e) {
+                        Log.err.print(MediaPlayer.class, "播放音频失败", e);
                     }
-
-                }, "PlayerErrorMp3").start();
-            } else {
-                try {
-                    Player player = new Player(inputStream);
-                    player.play();
-                } catch (JavaLayerException e) {
-                    throw new RuntimeException(e);
+                }else{
+                    Log.warn.print(MediaPlayer.class.getName(), "音频不存在:" + key);
                 }
+                timer.cancel();
             }
-        }
+        }, 0);
     }
 
 }

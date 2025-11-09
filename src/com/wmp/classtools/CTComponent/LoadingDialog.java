@@ -30,14 +30,13 @@ public class LoadingDialog extends JDialog {
     }
 
     private void resetDialog() {
-        this.getContentPane().setBackground(CTColor.backColor);
-        this.revalidate();
-        this.repaint();
-        this.pack();
-        this.setLocationRelativeTo(null);
-        LoadingDialog.this.setVisible(!PanelList.isEmpty());
 
-
+            this.getContentPane().setBackground(CTColor.backColor);
+            this.revalidate();
+            this.repaint();
+            this.pack();
+            this.setLocationRelativeTo(null);
+            this.setVisible(!PanelList.isEmpty());
     }
 
     public void showDialog(String id, String text) {
@@ -45,7 +44,7 @@ public class LoadingDialog extends JDialog {
     }
 
     public void showDialog(String id, String text, int value) {
-        showDialog(id, text, 0, false);
+        showDialog(id, text, value, false);
     }
 
     public void showDialog(String id, String text, int value, boolean isIndeterminate) {
@@ -79,35 +78,20 @@ public class LoadingDialog extends JDialog {
     }
 
     public void updateDialog(String id, int value) {
-        if (!PanelList.containsKey(id)) {
-            Log.warn.print("LoadingDialog", "未找到id为" + id + "的进度条");
-            return;
-        }
-
-        CTProgressBar progressBar = progressBarPanelList.get(id);
-        if (value < 0) {
-            progressBar.setIndeterminate(true);
-            return;
-        }
-        progressBar.setIndeterminate(false);
-        progressBar.setValue(value);
-
-        resetDialog();
+        updateDialog(id, null, value);
     }
 
     public void updateDialog(String id, String text) {
-        if (!PanelList.containsKey(id)) {
-            Log.warn.print("LoadingDialog", "未找到id为" + id + "的进度条");
-            return;
-        }
-
-        JLabel textLabel = textPanelList.get(id);
-        textLabel.setText(text);
-        textLabel.repaint();
-
-        resetDialog();
+        updateDialog(id, text, -2);
     }
 
+    /**
+     * 更新进度条
+     *
+     * @param id      进度条id
+     * @param text    进度条文本
+     * @param value   进度条值(为-1时,更改为不确定模式)
+     */
     public void updateDialog(String id, String text, int value) {
         Log.info.print("LoadingDialog", "更新进度条" + id);
 
@@ -116,17 +100,20 @@ public class LoadingDialog extends JDialog {
             return;
         }
 
-        JLabel textLabel = textPanelList.get(id);
-        textLabel.setText(text);
-        textLabel.repaint();
+        if (text != null) {
+            JLabel textLabel = textPanelList.get(id);
+            textLabel.setText(text);
+            textLabel.repaint();
+        }
 
         CTProgressBar progressBar = progressBarPanelList.get(id);
-        if (value < 0) {
+        if (value >= 0) {
+            progressBar.setIndeterminate(false);
+            progressBar.setValue(value);
+        }else if(value == -1){
             progressBar.setIndeterminate(true);
-            return;
         }
-        progressBar.setIndeterminate(false);
-        progressBar.setValue(value);
+
 
         resetDialog();
     }

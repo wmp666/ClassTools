@@ -4,7 +4,7 @@ import com.wmp.Main;
 import com.wmp.PublicTools.CTInfo;
 import com.wmp.PublicTools.EasterEgg.EasterEgg;
 import com.wmp.PublicTools.UITools.CTColor;
-import com.wmp.PublicTools.UITools.IconControl;
+import com.wmp.PublicTools.appFileControl.IconControl;
 import com.wmp.PublicTools.printLog.Log;
 import com.wmp.PublicTools.update.GetNewerVersion;
 import com.wmp.classTools.CTComponent.CTButton.CTIconButton;
