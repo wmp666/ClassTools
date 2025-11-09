@@ -178,7 +178,6 @@ public class PBasicSetsPanel extends CTBasicSetsPanel {
             });
 
 
-
             reSetFontPanel.add(setFontName);
 
             reSetFontPanel.add(button);

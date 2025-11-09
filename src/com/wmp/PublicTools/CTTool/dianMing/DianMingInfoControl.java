@@ -8,6 +8,7 @@ import java.nio.file.Path;
 
 public class DianMingInfoControl {
     private static final String path = CTInfo.DATA_PATH + "CTTools\\DianMingInfo.txt";
+
     public static String[] getDianMingInfo() throws IOException {
         IOForInfo io = new IOForInfo(path);
         return io.getInfo();
@@ -17,6 +18,7 @@ public class DianMingInfoControl {
         IOForInfo io = new IOForInfo(path);
         io.setInfo(info);
     }
+
     public static void setDianMingInfo(String path) throws IOException {
         IOForInfo.copyFile(Path.of(path), Path.of(DianMingInfoControl.path));
     }

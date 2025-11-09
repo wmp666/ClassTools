@@ -19,6 +19,18 @@ public class InfoLogStyle extends PrintLogStyle {
         super(style);
     }
 
+    private static String getTitle(String owner) {
+        String title;
+        if (CTInfo.isError) title = "骇客已入侵";
+        else title = owner;
+        return title;
+    }
+
+    private static Icon getIcon() {
+        if (CTInfo.isError) return GetIcon.getIcon("图标", IconControl.COLOR_DEFAULT, 100, 100);
+        return null;
+    }
+
     public void systemPrint(String owner, String logInfo) {
         Log.systemPrint(LogStyle.INFO, owner, logInfo);
     }
@@ -31,28 +43,17 @@ public class InfoLogStyle extends PrintLogStyle {
 
     /**
      * 自适应样式窗口 (屏保时全屏弹窗,否则为系统通知)
-     * @param owner 标题
-     * @param logInfo 显示的消息
+     *
+     * @param owner       标题
+     * @param logInfo     显示的消息
      * @param maxShowTime 显示时间
-     * @param waitTime 等待时间
+     * @param waitTime    等待时间
      */
-    public void adaptedMessage(String owner, String logInfo, int maxShowTime, int waitTime){
+    public void adaptedMessage(String owner, String logInfo, int maxShowTime, int waitTime) {
         if (Main.allArgs.get("screenProduct:show").contains(Main.argsList))
             CTOptionPane.showFullScreenMessageDialog(owner, logInfo, maxShowTime, waitTime);
         else
             systemPrint(owner, logInfo);
-    }
-
-    private static String getTitle(String owner) {
-        String title;
-        if (CTInfo.isError) title = "骇客已入侵";
-        else title = owner;
-        return title;
-    }
-
-    private static Icon getIcon() {
-        if (CTInfo.isError) return GetIcon.getIcon("图标", IconControl.COLOR_DEFAULT, 100, 100);
-        return null;
     }
 
     public String showInputDialog(Container c, String owner, String logInfo) {
@@ -86,12 +87,12 @@ public class InfoLogStyle extends PrintLogStyle {
         Log.print(getStyle(), owner, "弹窗信息->" + logInfo, c);
         String title = getTitle(owner);
         int i = CTOptionPane.showConfirmDialog(c, title, logInfo, getIcon(), CTOptionPane.INFORMATION_MESSAGE, true);
-        String s ;
+        String s;
         if (i == CTOptionPane.YES_OPTION) {
             s = "是";
         } else if (i == CTOptionPane.NO_OPTION) {
             s = "否";
-        }else {
+        } else {
             s = "取消";
         }
 
@@ -109,7 +110,7 @@ public class InfoLogStyle extends PrintLogStyle {
     }
 
     public int[] showTimeChooseDialog(Container c, String owner, String logInfo, int style) {
-        Log.print(getStyle(), owner, "弹窗信息->" + logInfo , c);
+        Log.print(getStyle(), owner, "弹窗信息->" + logInfo, c);
         return CTOptionPane.showTimeChooseDialog(c, logInfo, getIcon(), CTOptionPane.INFORMATION_MESSAGE, style, true);
     }
 }

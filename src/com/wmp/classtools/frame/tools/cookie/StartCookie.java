@@ -13,14 +13,15 @@ import java.util.TreeMap;
 
 public class StartCookie {
 
-    public static void showCookie(String... pins){
+    public static void showCookie(String... pins) {
         for (String pin : pins) {
             showCookie(pin);
         }
 
     }
-    public static void showCookie(String pin){
-        if (pin == null){
+
+    public static void showCookie(String pin) {
+        if (pin == null) {
             Log.err.print(StartCookie.class, "pin为空");
             return;
         }
@@ -38,12 +39,12 @@ public class StartCookie {
                 }
                 String style = cookieMap.get(pin).getStyle();
                 try {
-                    switch (style){
-                        case "image", "music", "other" ->{
+                    switch (style) {
+                        case "image", "music", "other" -> {
 
                             Desktop.getDesktop().open(RunFile);
                         }
-                        case "video"->{
+                        case "video" -> {
                             MediaPlayer.playVideo(RunFile.getPath());
                         }
                         case "exe" -> {
@@ -58,13 +59,14 @@ public class StartCookie {
                             ArrayList<String> temp = new ArrayList<>();
                             temp.add(RunFile.getPath());
 
-                            if (!parameters.isEmpty()){
+                            if (!parameters.isEmpty()) {
                                 temp.addAll(parameters);
                             }
                             String[] cmdArray = temp.toArray(new String[0]);
                             Runtime runtime = Runtime.getRuntime();
                             runtime.exec(cmdArray, null, RunFile.getParentFile());
-                        }case "directory", "file" -> {
+                        }
+                        case "directory", "file" -> {
                             OpenInExp.open(RunFile.getPath());
                         }
                         case "url" -> {
@@ -83,7 +85,7 @@ public class StartCookie {
                 }).start();
 
                 //Runtime.getRuntime().exec(cookieFile.getRunPath());
-            }else {
+            } else {
                 Log.err.print(StartCookie.class, "错误的pin");
             }
         } catch (IOException e) {

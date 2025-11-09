@@ -10,7 +10,6 @@ import com.wmp.PublicTools.update.GetNewerVersion;
 import com.wmp.PublicTools.web.GetWebInf;
 import com.wmp.classTools.CTComponent.CTOptionPane;
 import org.json.JSONArray;
-import org.json.JSONException;
 import org.json.JSONObject;
 
 import javax.swing.*;
@@ -70,7 +69,7 @@ public class IconControl {
         } catch (Exception e) {
             Log.err.print(IconControl.class, "图片加载失败", e);
         }
-        try{
+        try {
             //判断磁盘中是否有图片
             getNewImage();
 
@@ -78,7 +77,7 @@ public class IconControl {
             Log.err.print(IconControl.class, "图片数据判断失败", e);
         }
 
-        try{
+        try {
             //获取磁盘中的图标
             String iconInfos = IOForInfo.getInfos(CTInfo.APP_INFO_PATH + "image\\imagePath.json");
 
@@ -90,14 +89,14 @@ public class IconControl {
                 URL path = null;
                 try {
                     File file = new File(pathStr);
-                    if (!file.exists()){
+                    if (!file.exists()) {
                         Log.warn.print("IconControl", String.format("图标文件%s不存在", jsonObject.getString("path")));
                         if (DEFAULT_IMAGE_MAP.get(jsonObject.getString("name")) == null) {
                             DEFAULT_IMAGE_MAP.put(jsonObject.getString("name"),
                                     new ImageIcon(IconControl.class.getResource("/image/optionDialogIcon/warn.png")));
                             ICON_STYLE_MAP.put(jsonObject.getString("name"), jsonObject.getString("style"));
                         }
-                    }else{
+                    } else {
                         path = file.toURI().toURL();
                         DEFAULT_IMAGE_MAP.put(jsonObject.getString("name"),
                                 new ImageIcon(path));
@@ -109,7 +108,6 @@ public class IconControl {
                         DEFAULT_IMAGE_MAP.put(jsonObject.getString("name"),
                                 new ImageIcon(IconControl.class.getResource("/image/default.png")));
                 }
-
 
 
             });
@@ -131,7 +129,7 @@ public class IconControl {
         try {
             boolean needDownload = false;
             JSONObject jsonObject = new JSONObject(
-                    GetWebInf.getWebInf("https://api.github.com/repos/wmp666/ClassTools_Image/releases/latest" , false));
+                    GetWebInf.getWebInf("https://api.github.com/repos/wmp666/ClassTools_Image/releases/latest", false));
             AtomicReference<String> downloadURL = new AtomicReference<>("");
             AtomicReference<String> version = new AtomicReference<>("");
             String oldVersion = IOForInfo.getInfo(CTInfo.APP_INFO_PATH + "image\\version.txt")[0];
@@ -151,7 +149,7 @@ public class IconControl {
                     if (!split[0].equals("zip")) {
                         Log.info.print("IconControl", "有新图片");
                         needDownload = true;
-                    }else{
+                    } else {
                         int i = Log.warn.showChooseDialog(null, "IconControl", "我们已经更新了官方图片库,而您的图片似乎是使用压缩包导入的(可能为第三方),我们无法确认是否要更新,如果你已经有了相关的最新版本/想要使用官方图片库,请按\"是\",否则按\"否\"");
                         if (i == CTOptionPane.YES_OPTION) {
                             needDownload = true;
@@ -164,7 +162,8 @@ public class IconControl {
                 needDownload = true;
             }
             if (needDownload) {
-                if (downloadFile(downloadURL, version)) return;
+                if (downloadFile(downloadURL, version)) {
+                }
             }
         } catch (Exception e) {
             Log.err.print(IconControl.class, "获取图标版本失败", e);
@@ -187,7 +186,7 @@ public class IconControl {
 
         } else if (choose.equals("导入压缩包")) {
             Log.warn.message(null, "IconControl", "若导入的图片库为第三方,可能需要自行更新");
-            version.set("zip:"+ version.get());
+            version.set("zip:" + version.get());
             zipPath = GetPath.getFilePath(null, "导入图片", ".zip", "图片压缩包");
         } else {
             Log.warn.message(null, "IconControl", "若不下载/导入图片,可能造成程序异常");

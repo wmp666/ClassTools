@@ -1,6 +1,5 @@
 package com.wmp.classTools.frame;
 
-import com.wmp.Main;
 import com.wmp.PublicTools.CTInfo;
 import com.wmp.PublicTools.OpenInExp;
 import com.wmp.PublicTools.UITools.*;
@@ -26,15 +25,13 @@ import java.util.Comparator;
 import java.util.TreeMap;
 import java.util.TreeSet;
 
-public class ShowCookieDialog extends JDialog{
-
-    private String[] s = {"null", "null"};
+public class ShowCookieDialog extends JDialog {
 
     private final TreeSet<JButton> cookiePanelList = new TreeSet<>(Comparator.comparing(JButton::getText));
     private final TreeMap<String, File> cookieMap = new TreeMap<>();
-
-    private long lastModifyTime = 0;
-    private File cookieDir = new File(CTInfo.DATA_PATH + "\\Cookie\\");
+    private final String[] s = {"null", "null"};
+    private final long lastModifyTime = 0;
+    private final File cookieDir = new File(CTInfo.DATA_PATH + "\\Cookie\\");
 
 
     public ShowCookieDialog() throws IOException {
@@ -123,12 +120,12 @@ public class ShowCookieDialog extends JDialog{
 
         getCookie.getCookieMap().forEach((key, value) -> {
             CTTextButton cookieButton = new CTTextButton(getCookie.getName(key));
-            if (getCookie.getCookieMap().get(key).getIcon() != null){
+            if (getCookie.getCookieMap().get(key).getIcon() != null) {
                 cookieButton.setIcon(getCookie.getCookieMap().get(key).getIcon());
             }
             cookieButton.setFont(CTFont.getCTFont(Font.BOLD, CTFontSizeStyle.NORMAL));
             cookieButton.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));// 设置鼠标样式 - 箭头
-            cookieButton.addActionListener(e->{
+            cookieButton.addActionListener(e -> {
 
                 Log.info.print("快速启动单元管理页", "点击了" + cookieButton.getText());
                 s[0] = key;
@@ -156,7 +153,6 @@ public class ShowCookieDialog extends JDialog{
             cookiePanelList.add(cookieButton);
             cookieMap.put(key, value.getCookiePath());
             cookiesPanel.add(cookieButton);
-
 
 
         });
@@ -262,11 +258,6 @@ public class ShowCookieDialog extends JDialog{
         return new initControlPanel(openInExp, outputBtn, runCookie);
     }
 
-    private record initControlPanel(CTTextButton openInExp, CTTextButton outputBtn, CTTextButton runCookie) {
-    }
-
-    private record initCookieSetsPanel(CTTextButton removeCookie, CTTextButton deleteCookie) {
-    }
     private void initMenuBar() {
         CTMenuBar menuBar = new CTMenuBar();
         this.setJMenuBar(menuBar);
@@ -275,7 +266,7 @@ public class ShowCookieDialog extends JDialog{
         fileMenu.setMnemonic('F');
 
         CTMenuItem inputCookie = new CTMenuItem("导入启动单元(.zip)");
-        inputCookie.setIcon( GetIcon.getIcon("导入",16,16));
+        inputCookie.setIcon(GetIcon.getIcon("导入", 16, 16));
         inputCookie.addActionListener(e -> {
             String filePath = GetPath.getFilePath(this, "导入启动单元", ".zip", "ClassTools快速启动单元");
 
@@ -293,7 +284,7 @@ public class ShowCookieDialog extends JDialog{
         });
 
         CTMenuItem outputMenuItem = new CTMenuItem("导出启动单元(.zip)");
-        outputMenuItem.setIcon( GetIcon.getIcon("更新",16,16));
+        outputMenuItem.setIcon(GetIcon.getIcon("更新", 16, 16));
         outputMenuItem.addActionListener(e -> {
             String path = GetPath.getDirectoryPath(this, "请选择导出目录");
             //将选中的快速启动单元文件夹打包为.zip
@@ -302,14 +293,14 @@ public class ShowCookieDialog extends JDialog{
         });
 
         CTMenuItem openInExp = new CTMenuItem("打开启动单元所在目录");
-        openInExp.setIcon( GetIcon.getIcon("文件夹",16,16));
+        openInExp.setIcon(GetIcon.getIcon("文件夹", 16, 16));
         openInExp.addActionListener(e -> {
             OpenInExp.open(CTInfo.DATA_PATH + "\\Cookie\\");
         });
 
 
         CTMenuItem exit = new CTMenuItem("退出");
-        exit.setIcon( GetIcon.getIcon("关闭",16,16));
+        exit.setIcon(GetIcon.getIcon("关闭", 16, 16));
         exit.addActionListener(e -> {
             this.setVisible(false);
         });
@@ -335,20 +326,20 @@ public class ShowCookieDialog extends JDialog{
         });
 
         CTMenuItem cookieSets = new CTMenuItem("修改启动单元");
-        cookieSets.setIcon( GetIcon.getIcon("设置",16,16));
+        cookieSets.setIcon(GetIcon.getIcon("设置", 16, 16));
         cookieSets.addActionListener(e -> {
             try {
                 CookieSets.CookieSetsDialog(cookieMap.get(s[0]));
             } catch (IOException ex) {
                 throw new RuntimeException(ex);
-            } catch (JSONException ex){
+            } catch (JSONException ex) {
                 Log.err.print(this, getClass(), "快速启动单元设置文件格式错误", ex);
                 throw new RuntimeException(ex);
             }
         });
 
         CTMenuItem deleteCookie = new CTMenuItem("删除启动单元");
-        deleteCookie.setIcon( GetIcon.getIcon("删除",16,16));
+        deleteCookie.setIcon(GetIcon.getIcon("删除", 16, 16));
         deleteCookie.addActionListener(e -> {
             CookieSets.deleteCookie(cookieMap.get(s[0]));
         });
@@ -363,7 +354,7 @@ public class ShowCookieDialog extends JDialog{
         helpMenu.setMnemonic('H');
 
         CTMenuItem helpDoc = new CTMenuItem("帮助文档");
-        helpDoc.setIcon( GetIcon.getIcon("文档", IconControl.COLOR_DEFAULT,16,16));
+        helpDoc.setIcon(GetIcon.getIcon("文档", IconControl.COLOR_DEFAULT, 16, 16));
         helpDoc.addActionListener(e -> {
             try {
                 new ShowHelpDoc(ShowHelpDoc.CONFIG_PLUGIN);
@@ -381,7 +372,7 @@ public class ShowCookieDialog extends JDialog{
         this.setTitle("快速启动页");
         this.setSize((int) (500 * CTInfo.dpi), (int) (400 * CTInfo.dpi));
         this.setIconImage(GetIcon.getImageIcon("快速启动", IconControl.COLOR_DEFAULT,
-                        32, 32).getImage());
+                32, 32).getImage());
         this.setLocationRelativeTo(null);
         this.setModal(true);
 
@@ -398,5 +389,11 @@ public class ShowCookieDialog extends JDialog{
         initMenuBar();
         c.revalidate();
         c.repaint();
+    }
+
+    private record initControlPanel(CTTextButton openInExp, CTTextButton outputBtn, CTTextButton runCookie) {
+    }
+
+    private record initCookieSetsPanel(CTTextButton removeCookie, CTTextButton deleteCookie) {
     }
 }

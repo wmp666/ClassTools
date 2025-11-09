@@ -4,8 +4,8 @@ import com.wmp.PublicTools.CTInfo;
 import com.wmp.classTools.extraPanel.attendance.panel.ATPanel;
 import com.wmp.classTools.extraPanel.duty.panel.DPanel;
 import com.wmp.classTools.frame.MainWindow;
-import com.wmp.classTools.importPanel.newsText.NewsTextPanel;
 import com.wmp.classTools.importPanel.finalPanel.FinalPanel;
+import com.wmp.classTools.importPanel.newsText.NewsTextPanel;
 import com.wmp.classTools.importPanel.timeView.TimeViewPanel;
 
 import javax.swing.*;

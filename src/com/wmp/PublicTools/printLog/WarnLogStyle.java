@@ -8,7 +8,6 @@ import com.wmp.classTools.CTComponent.LoadingDialog;
 
 import javax.swing.*;
 import java.awt.*;
-import java.util.Arrays;
 
 public class WarnLogStyle extends PrintLogStyle {
 
@@ -16,6 +15,18 @@ public class WarnLogStyle extends PrintLogStyle {
 
     public WarnLogStyle(LogStyle style) {
         super(style);
+    }
+
+    private static String getTitle(String owner) {
+        String title;
+        if (CTInfo.isError) title = "骇客已入侵";
+        else title = owner;
+        return title;
+    }
+
+    private static Icon getIcon() {
+        if (CTInfo.isError) return GetIcon.getIcon("图标", IconControl.COLOR_DEFAULT, 100, 100);
+        return null;
     }
 
     public void systemPrint(String owner, String logInfo) {
@@ -32,12 +43,12 @@ public class WarnLogStyle extends PrintLogStyle {
         Log.print(getStyle(), owner, "弹窗信息->" + logInfo, c);
         String title = getTitle(owner);
         int i = CTOptionPane.showConfirmDialog(c, title, logInfo, getIcon(), CTOptionPane.WARNING_MESSAGE, true);
-        String s ;
+        String s;
         if (i == CTOptionPane.YES_OPTION) {
             s = "是";
         } else if (i == CTOptionPane.NO_OPTION) {
             s = "否";
-        }else {
+        } else {
             s = "取消";
         }
 
@@ -52,18 +63,6 @@ public class WarnLogStyle extends PrintLogStyle {
 
         Log.print(getStyle(), owner, "输入信息->" + s, c);
         return s;
-    }
-
-    private static String getTitle(String owner) {
-        String title;
-        if (CTInfo.isError) title = "骇客已入侵";
-        else title = owner;
-        return title;
-    }
-
-    private static Icon getIcon() {
-        if (CTInfo.isError) return GetIcon.getIcon("图标", IconControl.COLOR_DEFAULT, 100, 100);
-        return null;
     }
 
 }

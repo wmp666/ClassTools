@@ -10,7 +10,6 @@ import com.wmp.classTools.CTComponent.CTWindow;
 
 import javax.swing.*;
 import java.awt.*;
-import java.net.URL;
 
 public class LoadingWindow extends CTWindow {
 
@@ -25,15 +24,15 @@ public class LoadingWindow extends CTWindow {
         this(180, 180, text, false, 0, 0);
     }
 
-    public LoadingWindow(int width, int height, String text){
+    public LoadingWindow(int width, int height, String text) {
         this(width, height, text, false, 0, 0);
     }
 
-    public LoadingWindow(int width, int height, String text, boolean mustWait, long time){
+    public LoadingWindow(int width, int height, String text, boolean mustWait, long time) {
         this(width, height, text, mustWait, time, 0);
     }
 
-    public LoadingWindow(int width, int height, String text, boolean mustWait, long time, int windowStyle){
+    public LoadingWindow(int width, int height, String text, boolean mustWait, long time, int windowStyle) {
 
         super();
 
@@ -42,7 +41,7 @@ public class LoadingWindow extends CTWindow {
         this.setLayout(new BorderLayout());
 
         String showText = text;
-        if (showText.equals("useLoadingText") || showText.equals("EasterEgg")){
+        if (showText.equals("useLoadingText") || showText.equals("EasterEgg")) {
             showText = getLoadingText();
         }
 
@@ -74,16 +73,16 @@ public class LoadingWindow extends CTWindow {
         this.setLocationRelativeTo(null);
 
 
-            this.setVisible(true);
+        this.setVisible(true);
         try {
-            if (mustWait){
+            if (mustWait) {
                 Thread.sleep(time);
             } else if (text.equals("useLoadingText")) {
                 Thread.sleep(time);
             }
         } catch (InterruptedException e) {
-        throw new RuntimeException(e);
-    }
+            throw new RuntimeException(e);
+        }
 
         Log.info.print("LoadingWindow-窗口", "加载窗口初始化完毕");
 

@@ -1,7 +1,10 @@
 package com.wmp.classTools.extraPanel.attendance.panel;
 
 import com.wmp.PublicTools.CTInfo;
-import com.wmp.PublicTools.UITools.*;
+import com.wmp.PublicTools.UITools.CTColor;
+import com.wmp.PublicTools.UITools.CTFont;
+import com.wmp.PublicTools.UITools.CTFontSizeStyle;
+import com.wmp.PublicTools.UITools.PeoPanelProcess;
 import com.wmp.PublicTools.io.IOForInfo;
 import com.wmp.PublicTools.printLog.Log;
 import com.wmp.classTools.CTComponent.CTPanel.CTViewPanel;
@@ -27,10 +30,10 @@ public class ATPanel extends CTViewPanel {
 
     private final File AllStudentPath;
     private final File LeaveListPath;
-    private int studentLength;// 应到人数
-    private int studentLateLength; // 请假人数
     private final ArrayList<String> studentList = new ArrayList<>();
     private final ArrayList<String> leaveList = new ArrayList<>();//迟到人员
+    private int studentLength;// 应到人数
+    private int studentLateLength; // 请假人数
 
     public ATPanel(File AllStudentPath, File LeaveListPath) throws IOException {
         super();
@@ -46,7 +49,7 @@ public class ATPanel extends CTViewPanel {
         this.setID("ATPanel");
         this.setLayout(new GridBagLayout());
 
-        initStuList(AllStudentPath,LeaveListPath);
+        initStuList(AllStudentPath, LeaveListPath);
 
 
         //System.out.println(studentList);
@@ -99,7 +102,6 @@ public class ATPanel extends CTViewPanel {
 
 
     }
-
 
 
     @Override
@@ -164,7 +166,7 @@ public class ATPanel extends CTViewPanel {
             if (inf[0].equals("err")) {
                 ioForInfo.setInfo("");
                 studentLateLength = 0;
-            }else{
+            } else {
                 //leaveList.clear();
                 leaveList.addAll(List.of(inf));
                 studentLateLength = leaveList.size();

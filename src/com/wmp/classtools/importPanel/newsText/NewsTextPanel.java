@@ -1,7 +1,10 @@
 package com.wmp.classTools.importPanel.newsText;
 
 import com.wmp.PublicTools.CTInfo;
-import com.wmp.PublicTools.UITools.*;
+import com.wmp.PublicTools.UITools.CTColor;
+import com.wmp.PublicTools.UITools.CTFont;
+import com.wmp.PublicTools.UITools.CTFontSizeStyle;
+import com.wmp.PublicTools.UITools.GetMaxSize;
 import com.wmp.PublicTools.printLog.Log;
 import com.wmp.PublicTools.web.GetWebInf;
 import com.wmp.classTools.CTComponent.CTButton.CTRoundTextButton;
@@ -18,15 +21,14 @@ import java.net.URI;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
 
-public class NewsTextPanel extends CTViewPanel{
+public class NewsTextPanel extends CTViewPanel {
 
     private static final String url = "https://whyta.cn/api/tx/guonei?key=%s&num=50";
 
     //private final JPanel showPanel;
     private final JTextArea textArea = new JTextArea();
-    private int index = 0;
     private final AtomicInteger i = new AtomicInteger(-1);
-
+    private int index = 0;
     private String webInf = "";
 
 
@@ -38,19 +40,19 @@ public class NewsTextPanel extends CTViewPanel{
 
         this.setCtSetsPanelList(List.of(new NTSetsPanel(CTInfo.DATA_PATH)));
 
-        this.setIndependentRefresh(true, 20*60*1000);
+        this.setIndependentRefresh(true, 20 * 60 * 1000);
 
         try {
-            webInf = GetWebInf.getWebInf(String.format(url,  NewsTextControl.getKey()),
+            webInf = GetWebInf.getWebInf(String.format(url, NewsTextControl.getKey()),
                     false);
         } catch (Exception e) {
             Log.warn.print(getClass().getName(), "获取新闻失败");
             throw new RuntimeException(e);
         }
 
-        Timer refreshTimer = new Timer(2*60*60*1000, e -> {
+        Timer refreshTimer = new Timer(2 * 60 * 60 * 1000, e -> {
             try {
-                webInf = GetWebInf.getWebInf(String.format(url,  NewsTextControl.getKey()),
+                webInf = GetWebInf.getWebInf(String.format(url, NewsTextControl.getKey()),
                         false);
             } catch (Exception ex) {
                 Log.warn.print(getClass().getName(), "获取新闻失败");
@@ -59,16 +61,16 @@ public class NewsTextPanel extends CTViewPanel{
         });
         refreshTimer.start();
 
-        Timer indexRefreshTimer = new Timer(2*60*60*1000, e -> {
+        Timer indexRefreshTimer = new Timer(2 * 60 * 60 * 1000, e -> {
             index++;
         });
         indexRefreshTimer.start();
 
-        Timer controlTimer = new Timer(60*1000, e -> {
+        Timer controlTimer = new Timer(60 * 1000, e -> {
             if (!this.isVisible()) {
                 refreshTimer.stop();
                 indexRefreshTimer.stop();
-            }else{
+            } else {
                 refreshTimer.start();
                 indexRefreshTimer.start();
             }
@@ -76,7 +78,6 @@ public class NewsTextPanel extends CTViewPanel{
         controlTimer.start();
 
     }
-
 
 
     @Override
@@ -94,7 +95,6 @@ public class NewsTextPanel extends CTViewPanel{
             jsonObject.getJSONObject("result").getJSONArray("newslist").forEach(item -> {
 
 
-
                 if (index >= jsonObject.getJSONObject("result").getInt("allnum")) {
                     i.set(-1);
                 }
@@ -104,7 +104,7 @@ public class NewsTextPanel extends CTViewPanel{
 
                 i.getAndIncrement();
 
-                if (i.get() !=  index) {
+                if (i.get() != index) {
                     return;
                 }
 
@@ -114,7 +114,7 @@ public class NewsTextPanel extends CTViewPanel{
                     for (char c : s.toCharArray()) {
                         String s1 = "？！。 ?!;；:：";
                         sb.append(c);
-                        if (s.indexOf(c) != s.length() - 1){
+                        if (s.indexOf(c) != s.length() - 1) {
                             sb.append((s1.contains(String.valueOf(c))) ? "\n" : "");
                         }
 
@@ -133,7 +133,7 @@ public class NewsTextPanel extends CTViewPanel{
                                 try {
                                     Desktop.getDesktop().browse(URI.create(itemObject.getString("url")));
                                 } catch (Exception ex) {
-                                    Log.err.print(getClass(), "无法打开网页",  ex);
+                                    Log.err.print(getClass(), "无法打开网页", ex);
                                 }
                             } else if (e.getButton() == MouseEvent.BUTTON3) {
                                 CTPopupMenu popupMenu = new CTPopupMenu();
@@ -142,7 +142,7 @@ public class NewsTextPanel extends CTViewPanel{
                                     try {
                                         Desktop.getDesktop().browse(URI.create(itemObject.getString("url")));
                                     } catch (Exception ex) {
-                                        Log.err.print(getClass(), "无法打开网页",  ex);
+                                        Log.err.print(getClass(), "无法打开网页", ex);
                                     }
                                 });
                                 popupMenu.add(openURL);
@@ -161,7 +161,7 @@ public class NewsTextPanel extends CTViewPanel{
                                 CTRoundTextButton refresh = new CTRoundTextButton("刷新");
                                 refresh.addActionListener(e1 -> {
                                     try {
-                                        webInf = GetWebInf.getWebInf(String.format("https://whyta.cn/api/tx/guonei?key=%s&num=50",  NewsTextControl.getKey()),
+                                        webInf = GetWebInf.getWebInf(String.format("https://whyta.cn/api/tx/guonei?key=%s&num=50", NewsTextControl.getKey()),
                                                 false);
                                         index = 0;
                                         Refresh();
@@ -178,7 +178,6 @@ public class NewsTextPanel extends CTViewPanel{
                 }
 
 
-
             });
             FontMetrics fm = textArea.getFontMetrics(textArea.getFont());
             // 根据文字数量调整窗口大小
@@ -187,7 +186,7 @@ public class NewsTextPanel extends CTViewPanel{
             int newWidth = GetMaxSize.getHTMLToTextMaxLength(textArea.getText(), fm) + 10; // 根据最大字符宽度计算总宽度
             int newHeight = lineCount * (textArea.getFont().getSize() + 5);  // 每多一行增加30像素高度
 
-            int maxShowHeight = (this.isScreenProductViewPanel()?6:4) * textArea.getFont().getSize(); // 最大显示高度
+            int maxShowHeight = (this.isScreenProductViewPanel() ? 6 : 4) * textArea.getFont().getSize(); // 最大显示高度
 
             // 设置窗口大小
             if (newHeight >= maxShowHeight) {
@@ -200,9 +199,8 @@ public class NewsTextPanel extends CTViewPanel{
             scrollPane.setBorder(BorderFactory.createEmptyBorder());
 
 
-
             this.add(scrollPane, BorderLayout.CENTER);
-            scrollPane.setPreferredSize(new Dimension(this.isScreenProductViewPanel()?Toolkit.getDefaultToolkit().getScreenSize().width:newWidth, newHeight + 20));
+            scrollPane.setPreferredSize(new Dimension(this.isScreenProductViewPanel() ? Toolkit.getDefaultToolkit().getScreenSize().width : newWidth, newHeight + 20));
 
             // 添加以下两行代码使滚动条回到顶部
             scrollPane.getVerticalScrollBar().setValue(0);

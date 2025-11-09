@@ -5,19 +5,17 @@ import com.wmp.PublicTools.EasterEgg.EasterEgg;
 import com.wmp.PublicTools.StartupParameters;
 import com.wmp.PublicTools.UITools.CTColor;
 import com.wmp.PublicTools.printLog.Log;
-import com.wmp.classTools.CTComponent.CTOptionPane;
 import com.wmp.classTools.SwingRun;
 
-import javax.swing.*;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.TreeMap;
 
-public class Main{
+public class Main {
 
-    public static ArrayList<String> argsList = new ArrayList<>();
     public static final TreeMap<String, StartupParameters> allArgs = new TreeMap<>();
+    public static ArrayList<String> argsList = new ArrayList<>();
 
     static {
         //加载基础目录
@@ -72,18 +70,15 @@ public class Main{
         }
 
 
+        boolean finalStartUpdate = startUpdate;
+        boolean finalB = b;
 
-            boolean finalStartUpdate = startUpdate;
-            boolean finalB = b;
-            SwingUtilities.invokeLater(() -> {
-                try {
-                    SwingRun.show(finalB, finalStartUpdate);
-                } catch (Exception e) {
-                    Log.err.print(Main.class, "窗口初始化失败", e);
-                    Log.showLogDialog(true);
-                }
-            });
-
+        try {
+            SwingRun.show(finalB, finalStartUpdate);
+        } catch (Exception e) {
+            Log.err.print(Main.class, "窗口初始化失败", e);
+            Log.showLogDialog(true);
+        }
 
 
         Log.info.print("Main", "初始化完毕");

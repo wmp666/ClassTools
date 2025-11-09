@@ -86,12 +86,12 @@ public class CTGradientRoundProgressBarUI extends BasicProgressBarUI {
         //绘制进度条
         if (phase < 0.5f) {
             double progressLength = (phase * width);
-            Shape foreground = new RoundRectangle2D.Double(progressLength/2, 0, progressLength, height, arc, arc);
+            Shape foreground = new RoundRectangle2D.Double(progressLength / 2, 0, progressLength, height, arc, arc);
             g2d.setColor(CTColor.mainColor);
             g2d.fill(foreground);
         } else {
             double progressLength = ((1 - phase) * width);
-            Shape foreground = new RoundRectangle2D.Double( width*((phase- 0.5f)*3/2 + 0.25f), 0,  progressLength, height, arc, arc);
+            Shape foreground = new RoundRectangle2D.Double(width * ((phase - 0.5f) * 3 / 2 + 0.25f), 0, progressLength, height, arc, arc);
             g2d.setColor(CTColor.mainColor);
             g2d.fill(foreground);
         }

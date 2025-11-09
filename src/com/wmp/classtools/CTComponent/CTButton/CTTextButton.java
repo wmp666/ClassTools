@@ -1,6 +1,5 @@
 package com.wmp.classTools.CTComponent.CTButton;
 
-import com.wmp.PublicTools.CTInfo;
 import com.wmp.PublicTools.UITools.CTColor;
 import com.wmp.PublicTools.UITools.CTFont;
 import com.wmp.PublicTools.UITools.CTFontSizeStyle;
@@ -27,7 +26,7 @@ public class CTTextButton extends CTButton {
         this(text, null, IconControl.COLOR_DEFAULT, showBorder);
     }
 
-    public CTTextButton(String text,String name, int iconStyle, boolean showBorder) {
+    public CTTextButton(String text, String name, int iconStyle, boolean showBorder) {
         this.setContentAreaFilled(false);
         this.setBorderPainted(showBorder);
         this.setBorder(CTBorderFactory.BASIC_LINE_BORDER);

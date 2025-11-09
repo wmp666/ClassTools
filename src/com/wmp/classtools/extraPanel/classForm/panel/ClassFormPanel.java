@@ -1,13 +1,11 @@
 package com.wmp.classTools.extraPanel.classForm.panel;
 
-import com.wmp.Main;
 import com.wmp.PublicTools.CTInfo;
 import com.wmp.PublicTools.UITools.CTColor;
 import com.wmp.PublicTools.UITools.CTFont;
 import com.wmp.PublicTools.UITools.CTFontSizeStyle;
 import com.wmp.PublicTools.UITools.PeoPanelProcess;
 import com.wmp.PublicTools.printLog.Log;
-import com.wmp.classTools.CTComponent.CTOptionPane;
 import com.wmp.classTools.CTComponent.CTPanel.CTViewPanel;
 import com.wmp.classTools.extraPanel.classForm.CFInfoControl;
 import com.wmp.classTools.extraPanel.classForm.settings.ClassFormSetsPanel;
@@ -20,7 +18,7 @@ import java.util.List;
 
 public class ClassFormPanel extends CTViewPanel {
 
-    private ArrayList<String> oldNowClassNameList = new ArrayList<>();
+    private final ArrayList<String> oldNowClassNameList = new ArrayList<>();
 
     private String oldNextClassName = "无";
 
@@ -51,14 +49,13 @@ public class ClassFormPanel extends CTViewPanel {
 
         }
 
-        StringBuilder infoSB = new StringBuilder();
-        infoSB.append("现在的课程:")
-                .append(sb)
-                .append("\n")
-                .append("下节课:")
-                .append(nextClass);
+        String infoSB = "现在的课程:" +
+                sb +
+                "\n" +
+                "下节课:" +
+                nextClass;
 
-        Log.info.adaptedMessage("课程提醒", infoSB.toString(), 60, 5);
+        Log.info.adaptedMessage("课程提醒", infoSB, 60, 5);
 
     }
 
@@ -79,7 +76,8 @@ public class ClassFormPanel extends CTViewPanel {
             if (nextClass == null || nextClass.isEmpty()) nextClass = "无";
 
             if (!oldNowClassNameList.equals(List.of(nowClasses)) ||
-                    !oldNextClassName.equals(nextClass)) showClassForm(nowClasses, nextClass.equals("无")?"无":String.format("%s(%s分钟)", nextClass, nextClassInfo.time()));
+                    !oldNextClassName.equals(nextClass))
+                showClassForm(nowClasses, nextClass.equals("无") ? "无" : String.format("%s(%s分钟)", nextClass, nextClassInfo.time()));
 
             //数据更新
             this.oldNowClassNameList.clear();
@@ -113,7 +111,7 @@ public class ClassFormPanel extends CTViewPanel {
         this.add(titleLabel2, gbc);
 
         gbc.gridy++;
-        this.add(PeoPanelProcess.getShowPeoPanel(List.of(nextClass.equals("无")?"无":String.format("%s(%s分钟)", nextClass, nextClassInfo.time()))), gbc);
+        this.add(PeoPanelProcess.getShowPeoPanel(List.of(nextClass.equals("无") ? "无" : String.format("%s(%s分钟)", nextClass, nextClassInfo.time()))), gbc);
 
 
         this.revalidate();

@@ -11,13 +11,11 @@ import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
 import java.awt.geom.RoundRectangle2D;
 import java.net.MalformedURLException;
-import java.net.URL;
 
 public class CTIconButton extends CTButton implements ActionListener {
 
     private Runnable callback;
-    private String text;
-
+    private final String text;
 
 
     public CTIconButton() {
@@ -25,7 +23,7 @@ public class CTIconButton extends CTButton implements ActionListener {
     }
 
     //图标 正方形
-    public CTIconButton(String name, int iconStyle, Runnable callback){
+    public CTIconButton(String name, int iconStyle, Runnable callback) {
 
         this(null, name, iconStyle, callback);
 
@@ -33,7 +31,7 @@ public class CTIconButton extends CTButton implements ActionListener {
 
     //文字 图标 正方形
 
-    public CTIconButton(String text, String name, int iconStyle, Runnable callback){
+    public CTIconButton(String text, String name, int iconStyle, Runnable callback) {
         this.text = text;
         this.setToolTipText(text);
 
@@ -139,7 +137,7 @@ public class CTIconButton extends CTButton implements ActionListener {
         if (this.getIcon() != null) {
 
 
-            g2.drawImage(((ImageIcon)this.getIcon()).getImage(), tempX, tempY, this.getIcon().getIconWidth(), this.getIcon().getIconHeight(), null);
+            g2.drawImage(((ImageIcon) this.getIcon()).getImage(), tempX, tempY, this.getIcon().getIconWidth(), this.getIcon().getIconHeight(), null);
         }
 
         // 绘制文本

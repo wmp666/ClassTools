@@ -59,15 +59,16 @@ public class WeatherInfoControl {
 
     /**
      * 天气信息
-     * @param date 日期(yyyy-MM-dd)(2025-10-26)
-     * @param daypower 白天-天气
-     * @param daywind 白天-风向
-     * @param daytemp 白天-温度
-     * @param daypower 白天-风力
+     *
+     * @param date         日期(yyyy-MM-dd)(2025-10-26)
+     * @param daypower     白天-天气
+     * @param daywind      白天-风向
+     * @param daytemp      白天-温度
+     * @param daypower     白天-风力
      * @param nightweather 夜间-天气
-     * @param nightwind 夜间-风向
-     * @param nighttemp 夜间-温度
-     * @param nightpower 夜间-风力
+     * @param nightwind    夜间-风向
+     * @param nighttemp    夜间-温度
+     * @param nightpower   夜间-风力
      */
     public record ForecastsWeatherInfo(String date, String dayweather, String daywind, String daytemp, String daypower,
                                        String nightweather, String nightwind, String nighttemp, String nightpower) {

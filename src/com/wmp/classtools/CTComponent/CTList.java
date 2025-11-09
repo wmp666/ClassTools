@@ -56,7 +56,7 @@ public class CTList extends JPanel {
 
             if (this.direct == 0) {
                 button.setHorizontalAlignment(SwingConstants.LEFT);
-            }else{
+            } else {
                 button.setHorizontalAlignment(SwingConstants.CENTER);
             }
             button.setFont(CTFont.getCTFont(Font.PLAIN, CTFontSizeStyle.NORMAL));
@@ -98,7 +98,7 @@ public class CTList extends JPanel {
     /**
      * 设置列表方向
      *
-     * @param direct   列表方向 0-垂直 1-水平
+     * @param direct 列表方向 0-垂直 1-水平
      */
     public void setDirect(int direct) {
         this.direct = direct;
@@ -121,6 +121,7 @@ public class CTList extends JPanel {
     public void clearChoice() {
         choices = new String[]{};
     }
+
     public void addChoice(String... choices) {
         if (choices == null) {
             throw new NullPointerException("选项为空");
@@ -128,7 +129,7 @@ public class CTList extends JPanel {
         // 复制原数组并扩展长度
         String[] newChoices = Arrays.copyOf(this.choices, this.choices.length + 1);
         // 添加新元素
-        for (String choice : choices){
+        for (String choice : choices) {
             newChoices[this.choices.length] = choice;
         }
         this.choices = newChoices;

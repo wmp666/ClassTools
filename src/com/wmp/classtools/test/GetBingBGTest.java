@@ -1,11 +1,8 @@
 package com.wmp.classTools.test;
 
 import com.wmp.PublicTools.io.DownloadURLFile;
-import com.wmp.PublicTools.web.GetWebInf;
-import com.wmp.classTools.frame.ScreenProduct;
 
 import java.io.File;
-import java.io.IOException;
 
 public class GetBingBGTest {
     public static void main(String[] args) throws Exception {

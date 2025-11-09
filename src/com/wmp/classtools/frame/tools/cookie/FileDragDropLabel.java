@@ -16,14 +16,14 @@ public class FileDragDropLabel extends JLabel {
 
     private final ArrayList<File> fileList = new ArrayList<>();
     //private final JLabel statusLabel;
-	//private final JPanel this;
+    //private final JPanel this;
 
     public FileDragDropLabel() {
 
         //this.setLayout(new BorderLayout());
         this.setBackground(new Color(240, 240, 240));
         this.setBorder(BorderFactory.createLineBorder(Color.GRAY, 2));
-        
+
         this.setText("添加");
         this.setFont(CTFont.getCTFont(Font.BOLD, CTFontSizeStyle.SMALL));
 
@@ -46,7 +46,7 @@ public class FileDragDropLabel extends JLabel {
                 try {
                     // 接受拖拽操作
                     event.acceptDrop(DnDConstants.ACTION_COPY);
-                    
+
                     // 获取拖拽文件列表
                     // 修改后代码片段（添加类型检查与安全标注）
                     @SuppressWarnings("unchecked")
@@ -56,16 +56,16 @@ public class FileDragDropLabel extends JLabel {
                     fileList.clear();
                     transferredList.forEach(file -> {
                         String fileName = file.getName();
-                        if (fileName.endsWith(".zip")){
+                        if (fileName.endsWith(".zip")) {
                             fileList.add(file);
-                        }else{
+                        } else {
                             Log.err.print(getClass(), "文件不是zip文件");
                         }
                     });
 
                     // 处理文件上传
                     handleFileUpload(fileList);
-                    
+
                     event.dropComplete(true);
                 } catch (Exception ex) {
                     event.dropComplete(false);
@@ -87,7 +87,7 @@ public class FileDragDropLabel extends JLabel {
                     Thread.sleep(1000); // 替换为实际上传逻辑
                     SwingUtilities.invokeLater(() -> {
                         //updateStatus("已上传", new Color(0, 150, 0)));
-                        new Thread(()->{
+                        new Thread(() -> {
                             Log.info.print("插件管理页-添加文件", "文件位置:" + file.getPath());
                             CookieSets.addCookie(file);
                         }).start();

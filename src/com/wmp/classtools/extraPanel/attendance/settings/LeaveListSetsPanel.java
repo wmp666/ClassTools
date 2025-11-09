@@ -138,7 +138,7 @@ public class LeaveListSetsPanel extends CTSetsPanel {
     }
 
     @Override
-    public void refresh() throws IOException{
+    public void refresh() throws IOException {
         ArrayList<String> leaveList = getLeaveList();
         ArrayList<String> studentList = getStudentList();
         initATSet(studentList, leaveList);

@@ -17,8 +17,8 @@ import java.util.zip.ZipOutputStream;
 
 public class ZipPack {
 
-    private static JDialog dialog = new JDialog();
-    private static CTProgressBar progressBar = new CTProgressBar(0, 100);
+    private static final JDialog dialog = new JDialog();
+    private static final CTProgressBar progressBar = new CTProgressBar(0, 100);
 
     public static Thread unzip(String zipFilePath, String destDir) {
         //new File(destDir).delete();
@@ -30,7 +30,7 @@ public class ZipPack {
                 Log.err.print(ZipPack.class, "找不到压缩包!");
                 return null;
             }
-        }catch (Exception e) {
+        } catch (Exception e) {
             Log.err.print(ZipPack.class, "找不到压缩包!", e);
 
             return null;
@@ -56,7 +56,6 @@ public class ZipPack {
         thread.start();
 
 
-
         return thread;
     }
 
@@ -72,7 +71,7 @@ public class ZipPack {
                     break;
                 }
             } catch (IllegalArgumentException e) {
-                Log.warn.print(ZipPack.class.toString(), "文件名解码错误:\n"+e);
+                Log.warn.print(ZipPack.class.toString(), "文件名解码错误:\n" + e);
                 // 跳过这个损坏的条目
                 continue;
             }
@@ -101,14 +100,14 @@ public class ZipPack {
         }
     }
 
-    public static void createZip(String outputPath, String dataPath, String zipName, String... ZipFiles){
+    public static void createZip(String outputPath, String dataPath, String zipName, String... ZipFiles) {
 
         Log.info.print("ZipPack-压缩", "开始压缩...");
         Log.info.print("ZipPack-压缩", "压缩:" + dataPath + "->" + outputPath);
-        if (ZipFiles.length != 0){
+        if (ZipFiles.length != 0) {
             Log.info.print("ZipPack-压缩", "要打包的文件:" + Arrays.toString(ZipFiles));
 
-        }else Log.info.print("ZipPack-压缩", "要打包的文件:全部");
+        } else Log.info.print("ZipPack-压缩", "要打包的文件:全部");
 
         int id = new Random().nextInt();
 
@@ -139,9 +138,9 @@ public class ZipPack {
     private static void addFolderToZip(File folder, String parentPath, ZipOutputStream zos, int id, String... ZipFiles) throws IOException {
         for (File file : Objects.requireNonNull(folder.listFiles())) {
 
-            if (ZipFiles.length != 0){
+            if (ZipFiles.length != 0) {
                 boolean b = Arrays.asList(ZipFiles).contains(file.getName());
-                if (!b){
+                if (!b) {
                     // 跳过不压缩的文件
                     continue;
                 }

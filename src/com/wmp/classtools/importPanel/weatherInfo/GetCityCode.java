@@ -5,13 +5,11 @@ import com.wmp.PublicTools.web.GetWebInf;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
-import java.util.Arrays;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 public class GetCityCode {
-    public static String getCityCode(){
+    public static String getCityCode() {
         try {
             Map<String, String> map = getCityCodes("100000");
             Map<String, String> oldMap = new HashMap<>();
@@ -19,8 +17,6 @@ public class GetCityCode {
             String s = Log.info.showChooseDialog(null, "请选择城市", "请选择城市", map.keySet().toArray(new String[0]));
             if (s.equals("NULL")) return null;
             while (true) {
-
-
 
 
                 String oldCity = s;
@@ -39,7 +35,7 @@ public class GetCityCode {
             }
 
         } catch (Exception e) {
-            Log.err.print(GetCityCode.class, "获取城市编码失败",  e);
+            Log.err.print(GetCityCode.class, "获取城市编码失败", e);
             throw new RuntimeException(e);
         }
     }

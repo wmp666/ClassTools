@@ -1,6 +1,5 @@
 package com.wmp.classTools.test.uiTest;
 
-import com.wmp.Main;
 import com.wmp.PublicTools.UITools.GetIcon;
 import com.wmp.classTools.CTComponent.CTOptionPane;
 
@@ -39,7 +38,7 @@ public class Test01CTOptionPane {
         System.out.println("输入信息->" + Arrays.toString(ss));
         System.out.println("窗口4关闭");
 
-        String s1 = CTOptionPane.showConfirmDialog(null, "测试", "测试文本", null,1,  true, "1", "2", "3");
+        String s1 = CTOptionPane.showConfirmDialog(null, "测试", "测试文本", null, 1, true, "1", "2", "3");
         System.out.println("输入信息->" + s1);
         System.out.println("窗口5关闭");
     }

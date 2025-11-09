@@ -19,7 +19,6 @@ public class GetCookie {
     private final TreeMap<String, Cookie> initCookieMap = new TreeMap<>();
 
 
-
     public GetCookie() throws IOException {
         File basic = new File(CookiePath);
         if (!basic.exists()) {
@@ -60,16 +59,16 @@ public class GetCookie {
                             Cookie cookie = new Cookie("null", "other", null, exec, cookieSetsFile);
 
 
-                            if (JSONCookieSets.has("style")){
+                            if (JSONCookieSets.has("style")) {
                                 cookie.setStyle(JSONCookieSets.getString("style"));
                             }
                             if (JSONCookieSets.has("parameters")) {
                                 cookie.setParameters(JSONCookieSets.getJSONArray("parameters").toList());
                             }
-                            if (JSONCookieSets.has("name")){
+                            if (JSONCookieSets.has("name")) {
                                 cookie.setName(JSONCookieSets.getString("name"));
                             }
-                            if (JSONCookieSets.has("icon")){
+                            if (JSONCookieSets.has("icon")) {
 
 
                                 cookie.setIcon(JSONCookieSets.getString("icon"));

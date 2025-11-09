@@ -10,11 +10,11 @@ import java.util.Scanner;
 public class Test04 {
     public static void main(String[] args) throws InterruptedException {
 
-        while(true){
+        while (true) {
             Scanner scanner = new Scanner(System.in);
             System.out.print("请输入等待时间(ms):");
             int num = scanner.nextInt();
-            if (num == 0){
+            if (num == 0) {
                 System.exit(0);
             }
 

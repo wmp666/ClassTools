@@ -3,9 +3,10 @@ package com.wmp.classTools.extraPanel.countdown.settings;
 import com.wmp.PublicTools.DateTools;
 import com.wmp.PublicTools.UITools.IconControl;
 import com.wmp.PublicTools.printLog.Log;
-import com.wmp.classTools.CTComponent.*;
 import com.wmp.classTools.CTComponent.CTButton.CTTextButton;
+import com.wmp.classTools.CTComponent.CTOptionPane;
 import com.wmp.classTools.CTComponent.CTPanel.setsPanel.CTSetsPanel;
+import com.wmp.classTools.CTComponent.CTTable;
 import com.wmp.classTools.extraPanel.countdown.CDInfoControl;
 
 import javax.swing.*;
@@ -42,7 +43,6 @@ public class CountDownSetsPanel extends CTSetsPanel {
 
         return data;
     }
-
 
 
     private void initTable() {
@@ -85,12 +85,12 @@ public class CountDownSetsPanel extends CTSetsPanel {
                 while (b) {
                     int[] date = Log.info.showTimeChooseDialog(this, "CDSetsPanel-新建", "请选择日期", CTOptionPane.YEAR_MONTH_DAY);
                     int[] time = Log.info.showTimeChooseDialog(this, "CDSetsPanel-新建", "请选择时间", CTOptionPane.HOURS_MINUTES_SECOND);
-                    
+
                     // 检查用户是否取消了操作
                     if (date.length == 0 || time.length == 0) {
                         return;
                     }
-                    
+
                     // 将数组中的数据转换为字符串, 格式化为yyyy.MM.dd HH:mm:ss
                     s2 = DateTools.getDateStr(date, CTOptionPane.YEAR_MONTH_DAY, '.') + " " + DateTools.getTimeStr(time, CTOptionPane.HOURS_MINUTES_SECOND, ':');
 

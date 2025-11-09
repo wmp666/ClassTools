@@ -1,23 +1,19 @@
 package com.wmp.classTools.infSet.panel.personalizationSets;
 
-import com.wmp.PublicTools.CTInfo;
 import com.wmp.PublicTools.UITools.CTColor;
 import com.wmp.PublicTools.UITools.CTFont;
 import com.wmp.PublicTools.UITools.CTFontSizeStyle;
 import com.wmp.PublicTools.UITools.IconControl;
-import com.wmp.PublicTools.io.IOForInfo;
 import com.wmp.PublicTools.printLog.Log;
 import com.wmp.PublicTools.web.GetWebInf;
 import com.wmp.classTools.CTComponent.CTBorderFactory;
 import com.wmp.classTools.CTComponent.CTButton.CTTextButton;
 import com.wmp.classTools.CTComponent.CTPanel.setsPanel.CTBasicSetsPanel;
 import com.wmp.classTools.frame.ShowHelpDoc;
-import com.wmp.classTools.infSet.panel.tools.DataControlUnit;
 import org.json.JSONObject;
 
 import javax.swing.*;
 import java.awt.*;
-import java.net.MalformedURLException;
 import java.util.concurrent.atomic.AtomicReference;
 
 public class PAppFileSetsPanel extends CTBasicSetsPanel {
@@ -28,7 +24,7 @@ public class PAppFileSetsPanel extends CTBasicSetsPanel {
         initUI();
     }
 
-    private void initUI(){
+    private void initUI() {
         this.setBackground(CTColor.backColor);
         this.setLayout(new GridLayout(0, 1, 5, 5));
 
@@ -39,10 +35,10 @@ public class PAppFileSetsPanel extends CTBasicSetsPanel {
 
         CTTextButton downloadButton = new CTTextButton("下载图片", "导入", IconControl.COLOR_COLORFUL);
         downloadButton.setFont(CTFont.getCTFont(Font.BOLD, CTFontSizeStyle.BIG));
-        downloadButton.addActionListener(e->{
+        downloadButton.addActionListener(e -> {
             try {
                 JSONObject jsonObject = new JSONObject(
-                        GetWebInf.getWebInf("https://api.github.com/repos/wmp666/ClassTools_Image/releases/latest" , false));
+                        GetWebInf.getWebInf("https://api.github.com/repos/wmp666/ClassTools_Image/releases/latest", false));
                 AtomicReference<String> downloadURL = new AtomicReference<>("");
                 AtomicReference<String> version = new AtomicReference<>("");
                 //判断是否存在
@@ -63,7 +59,7 @@ public class PAppFileSetsPanel extends CTBasicSetsPanel {
 
         CTTextButton helpButton = new CTTextButton("使用帮助");
         helpButton.setFont(CTFont.getCTFont(Font.BOLD, CTFontSizeStyle.BIG));
-        helpButton.addActionListener(e->{
+        helpButton.addActionListener(e -> {
             ShowHelpDoc.openWebHelpDoc("imageCreativeHelp");
         });
         imageSetsPanel.add(helpButton);

@@ -7,13 +7,11 @@ import java.util.Objects;
 public class StartupParameters {
     private ArrayList<String> parameterList = new ArrayList<>();
 
-    public StartupParameters(String... parameters)
-    {
+    public StartupParameters(String... parameters) {
         this.parameterList.addAll(List.of(parameters));
     }
 
-    public static StartupParameters creative(String... parameters)
-    {
+    public static StartupParameters creative(String... parameters) {
         return new StartupParameters(parameters);
     }
 
@@ -25,13 +23,11 @@ public class StartupParameters {
         this.parameterList = parameterList;
     }
 
-    public boolean contains(String parameter)
-    {
+    public boolean contains(String parameter) {
         return parameterList.contains(parameter);
     }
 
-    public boolean contains(ArrayList<String> parameters)
-    {
+    public boolean contains(ArrayList<String> parameters) {
         for (String parameter : parameters) {
             if (parameterList.contains(parameter)) return true;
         }

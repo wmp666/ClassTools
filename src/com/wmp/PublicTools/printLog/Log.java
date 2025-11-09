@@ -26,14 +26,13 @@ import java.util.Objects;
 import java.util.Random;
 
 public class Log {
-    private static final ArrayList<String> logInfList = new ArrayList<>();
-    private static int index = 0;
-
-
     public static final TrayIcon trayIcon = new TrayIcon(GetIcon.getImageIcon(Log.class.getResource("/image/icon/icon.png"), 16, 16).getImage(), "ClassTools");
-
+    private static final ArrayList<String> logInfList = new ArrayList<>();
     private static final JTextArea textArea = new JTextArea();
-
+    public static InfoLogStyle info = new InfoLogStyle(LogStyle.INFO);
+    public static WarnLogStyle warn = new WarnLogStyle(LogStyle.WARN);
+    public static ErrorLogStyle err = new ErrorLogStyle(LogStyle.ERROR);
+    private static int index = 0;
     private static final Thread thread = new Thread(() -> {
         while (true) {
             synchronized (logInfList) { // 恢复同步块
@@ -58,10 +57,6 @@ public class Log {
             }
         }
     });
-
-    public static InfoLogStyle info = new InfoLogStyle(LogStyle.INFO);
-    public static WarnLogStyle warn = new WarnLogStyle(LogStyle.WARN);
-    public static ErrorLogStyle err = new ErrorLogStyle(LogStyle.ERROR);
 
     static {
         SystemTray systemTray = SystemTray.getSystemTray();
@@ -102,7 +97,7 @@ public class Log {
             moreDialog.setIconImage(GetIcon.getImageIcon("更多", IconControl.COLOR_DEFAULT, 32, 32).getImage());
 
             FinalPanel.allButList.forEach(but -> {
-                    moreDialog.add(but.toRoundTextButton());
+                moreDialog.add(but.toRoundTextButton());
             });
 
             moreDialog.pack();
@@ -114,6 +109,7 @@ public class Log {
 
         trayIcon.setPopupMenu(popupMenu);
     }
+
     public static void exit(int status) {
 
         if (!Main.allArgs.get("screenProduct:show").contains(Main.argsList) && (status == -1 || !CTInfo.canExit)) {
@@ -150,8 +146,6 @@ public class Log {
     private static void initBG(Container c, JFrame window, Dimension screenSize) {
         //c.setBackground(Color.BLACK);
         ((JPanel) c).setOpaque(false);
-
-
 
 
         String[] exitStrList = {
@@ -212,6 +206,7 @@ public class Log {
         }
         Log.print(style, owner, logInfo, null);
     }
+
     public static void print(LogStyle style, String owner, Object logInfo, Container c) {
         Date date = new Date();
         DateFormat dateFormat = new SimpleDateFormat("MM.dd HH:mm:ss");
@@ -317,7 +312,7 @@ public class Log {
         JButton clearButton = new JButton("清空");
         clearButton.addActionListener(e -> {
             int i = Log.info.showChooseDialog(dialog, "日志-清空", "是否清空并保存?");
-            if (i == JOptionPane.YES_OPTION){
+            if (i == JOptionPane.YES_OPTION) {
                 saveLog();
             }
             textArea.setText("");
@@ -349,8 +344,6 @@ public class Log {
         buttonPanel.add(saveButton);
 
 
-
-
         dialog.add(buttonPanel, BorderLayout.SOUTH);
 
         dialog.setVisible(true);
@@ -361,7 +354,7 @@ public class Log {
         saveLog(true);
     }
 
-    private static void saveLog(boolean showMessageDialog){
+    private static void saveLog(boolean showMessageDialog) {
         DateFormat dateFormat = new SimpleDateFormat("yyyy_MM_dd_HH_mm_ss");
         //将logInfList中的内容转化为byte数组
         StringBuilder sb = new StringBuilder();

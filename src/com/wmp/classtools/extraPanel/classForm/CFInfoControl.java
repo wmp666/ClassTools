@@ -114,5 +114,6 @@ public class CFInfoControl {
         return new nextClassInfo(tempData[2], tempData[1]);
     }
 
-    public record nextClassInfo(String time, String className){}
+    public record nextClassInfo(String time, String className) {
+    }
 }

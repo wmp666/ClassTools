@@ -6,9 +6,11 @@ import com.wmp.PublicTools.UITools.CTFontSizeStyle;
 import com.wmp.PublicTools.io.GetPath;
 import com.wmp.PublicTools.io.IOForInfo;
 import com.wmp.PublicTools.printLog.Log;
-import com.wmp.classTools.CTComponent.*;
+import com.wmp.classTools.CTComponent.CTBorderFactory;
 import com.wmp.classTools.CTComponent.CTButton.CTTextButton;
+import com.wmp.classTools.CTComponent.CTComboBox;
 import com.wmp.classTools.CTComponent.CTPanel.setsPanel.CTSetsPanel;
+import com.wmp.classTools.CTComponent.CTTextField;
 import com.wmp.classTools.frame.tools.screenProduct.SetsScrInfo;
 import org.json.JSONObject;
 
@@ -25,12 +27,10 @@ import java.util.Objects;
 
 public class ScreenProductSetsPanel extends CTSetsPanel {
 
-    private final File dataPath;
-
-
     private static final CTComboBox mainColorComboBox = new CTComboBox();
     private static final CTComboBox mainThemeComboBox = new CTComboBox();
     private static final CTTextField repaintTimerTextField = new CTTextField();
+    private final File dataPath;
 
     public ScreenProductSetsPanel(String basicDataPath) throws IOException {
         super(basicDataPath);
@@ -80,7 +80,7 @@ public class ScreenProductSetsPanel extends CTSetsPanel {
                     } while (icon.getIconWidth() >= 400);
 
                     viewLabel.setIcon(icon);
-                }else {
+                } else {
                     viewLabel.setIcon(null);
                     viewLabel.setText("请选择图片");
                 }
@@ -225,7 +225,7 @@ public class ScreenProductSetsPanel extends CTSetsPanel {
 
             } else if (choose.equals("Bing壁纸")) {
                 jsonObject.put("path", "BingBG");
-            }else if (choose.equals("Bing壁纸(随机)")) {
+            } else if (choose.equals("Bing壁纸(随机)")) {
                 jsonObject.put("path", "BingBGRandom");
             }
             IOForInfo ioForInfo = new IOForInfo(BGPath);
@@ -236,11 +236,9 @@ public class ScreenProductSetsPanel extends CTSetsPanel {
             }
 
 
-
             Log.info.message(this, "InfSetDialog", "已保存数据: " + jsonObject);
 
             initViewPanel(jsonObject, viewLabel);
-
 
 
         });

@@ -1,7 +1,5 @@
 package com.wmp.classTools.CTComponent;
 
-import com.wmp.PublicTools.UITools.CTFont;
-import com.wmp.PublicTools.UITools.CTFontSizeStyle;
 import com.wmp.classTools.CTComponent.CTButton.CTTextButton;
 
 import javax.swing.*;
@@ -42,7 +40,7 @@ public class CTSpinner extends JPanel {
             public void keyPressed(KeyEvent e) {
                 int keyCode = e.getKeyCode();
                 if (keyCode == KeyEvent.VK_DOWN || keyCode == KeyEvent.VK_RIGHT
-                    || keyCode == KeyEvent.VK_KP_DOWN || keyCode == KeyEvent.VK_KP_RIGHT) {
+                        || keyCode == KeyEvent.VK_KP_DOWN || keyCode == KeyEvent.VK_KP_RIGHT) {
                     //下移数字
                     setNext(model);
                 } else if (keyCode == KeyEvent.VK_UP || keyCode == KeyEvent.VK_LEFT

@@ -28,7 +28,7 @@ public class DianMingTool extends CTTool {
         JDialog dialog = new JDialog();
         dialog.setLayout(new BorderLayout());
         dialog.setTitle("点名器");
-        dialog.setSize((int)(300 * CTInfo.dpi), (int)(400 * CTInfo.dpi));
+        dialog.setSize((int) (300 * CTInfo.dpi), (int) (400 * CTInfo.dpi));
         dialog.getContentPane().setBackground(CTColor.backColor);
 
         JLabel label = new JLabel("点名器");
@@ -43,7 +43,7 @@ public class DianMingTool extends CTTool {
 
         JPanel buttonPanel = new JPanel();
         buttonPanel.setOpaque(false);
-        buttonPanel.setLayout(new GridLayout(1,0));
+        buttonPanel.setLayout(new GridLayout(1, 0));
         CTTextButton setsButton = new CTTextButton("设置");
         setsButton.setFont(CTFont.getCTFont(Font.BOLD, CTFontSizeStyle.BIG));
         setsButton.addActionListener(e -> {
@@ -84,7 +84,7 @@ public class DianMingTool extends CTTool {
                 String resultName = dianMingInfo[new Random().nextInt(dianMingInfo.length)];
 
                 String[] finalDianMingInfo = dianMingInfo;
-                new Thread(()->{
+                new Thread(() -> {
                     //匀速循环
                     {
                         int waitTime = 50;

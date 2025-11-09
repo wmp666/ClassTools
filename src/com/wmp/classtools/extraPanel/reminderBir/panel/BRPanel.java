@@ -26,11 +26,11 @@ import java.util.List;
 
 public class BRPanel extends CTViewPanel {
 
-    private File birthdayPath;
+    private final File birthdayPath;
 
-    private ArrayList<String> oldBRNameList = new ArrayList<>();
+    private final ArrayList<String> oldBRNameList = new ArrayList<>();
 
-    private ArrayList<String> oldWBNameList = new ArrayList<>();
+    private final ArrayList<String> oldWBNameList = new ArrayList<>();
 
     public BRPanel(File birthdayPath) throws IOException {
 
@@ -43,7 +43,7 @@ public class BRPanel extends CTViewPanel {
         this.setCtSetsPanelList(List.of(new BRSetsPanel(CTInfo.DATA_PATH)));
 
         this.setIgnoreState(true);
-        this.setIndependentRefresh(true, 2*60*1000);
+        this.setIndependentRefresh(true, 2 * 60 * 1000);
     }
 
     private void showBRAndWB() throws IOException {

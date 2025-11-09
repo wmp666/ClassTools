@@ -27,7 +27,7 @@ public class CTRoundTextButton extends CTButton {
 
 
         if (iconKey != null) {
-            this.setIcon( GetIcon.getIcon(iconKey, iconStyle, width, height));
+            this.setIcon(GetIcon.getIcon(iconKey, iconStyle, width, height));
         }
 
 
@@ -110,7 +110,7 @@ public class CTRoundTextButton extends CTButton {
 
         // 绘制图标
         if (this.getIcon() != null) {
-            g2.drawImage(((ImageIcon)this.getIcon()).getImage(), iconX, iconY, this.getIcon().getIconWidth(), this.getIcon().getIconHeight(), null);
+            g2.drawImage(((ImageIcon) this.getIcon()).getImage(), iconX, iconY, this.getIcon().getIconWidth(), this.getIcon().getIconHeight(), null);
         }
 
         // 绘制文本

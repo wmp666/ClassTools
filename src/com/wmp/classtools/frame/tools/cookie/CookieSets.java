@@ -1,6 +1,5 @@
 package com.wmp.classTools.frame.tools.cookie;
 
-import com.wmp.Main;
 import com.wmp.PublicTools.CTInfo;
 import com.wmp.PublicTools.OpenInExp;
 import com.wmp.PublicTools.UITools.CTFont;
@@ -11,8 +10,8 @@ import com.wmp.PublicTools.io.IOForInfo;
 import com.wmp.PublicTools.io.ZipPack;
 import com.wmp.PublicTools.printLog.Log;
 import com.wmp.classTools.CTComponent.CTBorderFactory;
-import com.wmp.classTools.CTComponent.CTComboBox;
 import com.wmp.classTools.CTComponent.CTButton.CTTextButton;
+import com.wmp.classTools.CTComponent.CTComboBox;
 import com.wmp.classTools.CTComponent.CTTextField;
 import com.wmp.classTools.frame.ShowCookieDialog;
 import org.json.JSONException;
@@ -93,7 +92,7 @@ public class CookieSets {
         final int[] index = {0};
 
         CTTextField nameTextField = new CTTextField();
-        if (cookie.getName() != null){
+        if (cookie.getName() != null) {
             nameTextField.setText(cookie.getName());
         }
 
@@ -179,11 +178,7 @@ public class CookieSets {
                 }
                 styleComboBox.addItemListener(s -> {
                     if (s.getStateChange() == ItemEvent.SELECTED) {// 选中
-                        if (Objects.requireNonNull(styleComboBox.getSelectedItem()).toString().equals("exe")) {
-                            parametersPanel.setVisible(true);
-                        } else {
-                            parametersPanel.setVisible(false);
-                        }
+                        parametersPanel.setVisible(Objects.requireNonNull(styleComboBox.getSelectedItem()).toString().equals("exe"));
                         step1Panel.revalidate();
                         step1Panel.repaint();
                     }
@@ -283,24 +278,24 @@ public class CookieSets {
                     result.put("icon", iconTextField.getText());
 
                     result.put("run", runTextField.getText());
-                    if (styleComboBox.getSelectedItem().toString().equals("exe")){
+                    if (styleComboBox.getSelectedItem().toString().equals("exe")) {
                         String[] split = parametersTextField.getText().split(";");
                         ArrayList<String> parametersList = new ArrayList<>(Arrays.asList(split));
                         result.put("parameters", parametersList);
                     }
 
                     String cookiePath;
-                    if (cookie.getCookiePath() == null || !cookie.getCookiePath().exists()){
+                    if (cookie.getCookiePath() == null || !cookie.getCookiePath().exists()) {
                         cookiePath = CTInfo.DATA_PATH + "Cookie\\" + pinTextField.getText() + "\\";
                         new File(cookiePath).mkdirs();
-                    }else{
+                    } else {
                         cookiePath = cookie.getCookiePath().getPath();
                     }
 
                     try {
                         // 显式指定UTF-8编码，添加路径规范化处理
                         Log.info.print("启动单元设置窗口", "setUp.json设置中...");
-                        Log.info.print("启动单元设置窗口", "setUp.json数据:" + result.toString());
+                        Log.info.print("启动单元设置窗口", "setUp.json数据:" + result);
                         Files.writeString(
                                 Paths.get(cookiePath).normalize().resolve("setUp.json"),
                                 result.toString(),

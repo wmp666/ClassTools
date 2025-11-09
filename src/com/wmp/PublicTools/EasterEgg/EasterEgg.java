@@ -19,7 +19,9 @@ import javax.swing.*;
 import java.io.IOException;
 import java.time.LocalDate;
 import java.time.ZoneId;
-import java.util.*;
+import java.util.HashMap;
+import java.util.Objects;
+import java.util.Random;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicReference;
 
@@ -31,6 +33,7 @@ public class EasterEgg {
     public static final int STYLE_EE_VIDEO = 0;
     public static final int STYLE_EE_MUSIC = 1;
     public static final int STYLE_EE_OTHER = 2;
+
     public static boolean getEasterEggItem(int style) {
 
         if (Main.allArgs.get("screenProduct:show").contains(Main.argsList)) return false;
@@ -240,7 +243,6 @@ public class EasterEgg {
                     }
 
 
-
                 } catch (Exception e) {
                     Log.err.print(null, EasterEgg.class, "下载失败", e);
                 }
@@ -248,27 +250,26 @@ public class EasterEgg {
         }.execute();
 
 
-
     }
 
 
-    public static String getText(EETextStyle style){
+    public static String getText(EETextStyle style) {
         String[] easterEggList = getAllText();
         String s = easterEggList[new Random().nextInt(easterEggList.length)];
-        switch (style){
+        switch (style) {
             case DEFAULT -> {
                 return s;
             }
             case HTML -> {
                 String s1 = "<html>" + s.replace("\\n", "<br>") + "</html>";
                 Log.info.print("获取彩蛋文字", s1);
-                return s1 ;
+                return s1;
             }
         }
         return "err";
     }
 
-    public static String[] getAllText(){
+    public static String[] getAllText() {
         if (CTInfo.isError) return new String[]{
                 "骇客已入侵:\\n游戏就只是为了游戏\\n仅此而已！",
                 "骇客已入侵:\\n重要的不是数值\\n是体验，是操作！",

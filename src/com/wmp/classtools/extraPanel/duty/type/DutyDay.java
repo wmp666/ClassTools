@@ -17,6 +17,9 @@ public class DutyDay {
         ClBlackBroadList = clBlackBroadList;
     }
 
+    public static ArrayList<String> setDutyPersonList(String... people) {
+        return new ArrayList<>(Arrays.asList(people));
+    }
 
     public ArrayList<String> getClFloorList() {
         return ClFloorList;
@@ -42,10 +45,6 @@ public class DutyDay {
 
     public void setClBlackBroad(String... people) {
         ClBlackBroadList = setDutyPersonList(people);
-    }
-
-    public static ArrayList<String> setDutyPersonList(String... people){
-        return new ArrayList<>(Arrays.asList(people));
     }
 
     @Override

@@ -3,7 +3,6 @@ package com.wmp.PublicTools.web;
 import com.wmp.PublicTools.printLog.Log;
 import org.jsoup.Jsoup;
 
-import javax.swing.*;
 import java.util.Random;
 
 public class GetWebInf {
@@ -11,6 +10,7 @@ public class GetWebInf {
     public static String getWebInf(String apiUrl) throws Exception {
         return getWebInf(apiUrl, true);
     }
+
     public static String getWebInf(String apiUrl, boolean showDialog) throws Exception {
         int id = new Random().nextInt();
         SslUtils.ignoreSsl();

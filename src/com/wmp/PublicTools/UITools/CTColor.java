@@ -7,8 +7,6 @@ import java.awt.*;
 import java.io.IOException;
 
 public class CTColor {
-    private static boolean canRemove = true;
-
     /**
      * 主色 白色
      */
@@ -29,7 +27,6 @@ public class CTColor {
      * 主色 黑色
      */
     public static final String MAIN_COLOR_BLACK = "black";
-
     /**
      * 主题 灰色
      */
@@ -38,12 +35,11 @@ public class CTColor {
      * 主题 亮色
      */
     public static final String STYLE_LIGHT = "light";
-
     public static String style = STYLE_LIGHT;
     public static Color mainColor = new Color(0x29A8E3);
     public static Color textColor = Color.BLACK;
     public static Color backColor = Color.WHITE;
-
+    private static boolean canRemove = true;
 
     public static void setScreenProductColor() throws IOException {
         setAllColor(CTColor.MAIN_COLOR_WHITE, CTColor.STYLE_DARK);
@@ -59,6 +55,7 @@ public class CTColor {
         canRemove = false;
 
     }
+
     public static void setErrorColor() {
         canRemove = false;
 
@@ -67,7 +64,8 @@ public class CTColor {
         backColor = new Color(246, 250, 255);
         style = "err";
     }
-    public static void setAllColor(String mainColorStr, String tempStyle){
+
+    public static void setAllColor(String mainColorStr, String tempStyle) {
 
         setMainColor(mainColorStr);
         setMainTheme(tempStyle);
@@ -88,7 +86,7 @@ public class CTColor {
         Log.info.print("CTColor", "mainColor:" + String.format("#%06x", mainColor.getRGB()));
     }
 
-    public static void setMainTheme(String tempStyle){
+    public static void setMainTheme(String tempStyle) {
         setMainTheme(tempStyle, false);
     }
 
@@ -97,12 +95,12 @@ public class CTColor {
         if (!mustRemove && !canRemove) return;
 
         style = tempStyle;
-        switch (tempStyle){
-            case STYLE_DARK->{
+        switch (tempStyle) {
+            case STYLE_DARK -> {
                 textColor = Color.WHITE;
                 backColor = Color.BLACK;
             }
-            case STYLE_LIGHT->{
+            case STYLE_LIGHT -> {
                 textColor = Color.BLACK;
                 backColor = new Color(0xFFFFFF);
             }
@@ -112,8 +110,8 @@ public class CTColor {
 
     /**
      * 获取指定颜色
-     * @param colorStyle 颜色样式
      *
+     * @param colorStyle 颜色样式
      * @return 颜色
      * @see CTColor
      * @see #MAIN_COLOR_WHITE
@@ -123,13 +121,13 @@ public class CTColor {
      * @see #MAIN_COLOR_BLACK
      *
      */
-    public static Color getParticularColor(String colorStyle){
+    public static Color getParticularColor(String colorStyle) {
         return switch (colorStyle) {
-            case MAIN_COLOR_WHITE->Color.WHITE;
-            case MAIN_COLOR_BLUE-> new Color(0x29A8E3);
-            case MAIN_COLOR_GREEN-> new Color(0x00FF00);
-            case MAIN_COLOR_RED-> new Color(0xFF0000);
-            case MAIN_COLOR_BLACK-> Color.BLACK;
+            case MAIN_COLOR_WHITE -> Color.WHITE;
+            case MAIN_COLOR_BLUE -> new Color(0x29A8E3);
+            case MAIN_COLOR_GREEN -> new Color(0x00FF00);
+            case MAIN_COLOR_RED -> new Color(0xFF0000);
+            case MAIN_COLOR_BLACK -> Color.BLACK;
             default -> Color.DARK_GRAY;
         };
 

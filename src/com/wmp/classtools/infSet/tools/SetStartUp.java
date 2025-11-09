@@ -14,6 +14,7 @@ public class SetStartUp {
 
     /**
      * 添加程序到开机自启动
+     *
      * @param programPath 程序的完整路径（需用双引号包裹路径）
      */
     public static void enableAutoStart(String programPath) {

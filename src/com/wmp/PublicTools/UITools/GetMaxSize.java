@@ -1,7 +1,5 @@
 package com.wmp.PublicTools.UITools;
 
-import com.wmp.PublicTools.CTInfo;
-
 import java.awt.*;
 import java.util.Arrays;
 
@@ -47,7 +45,7 @@ public class GetMaxSize {
 
     public static int getHTMLToTextMaxLength(String s, FontMetrics fm) {
         String[] strings = s.replaceAll("<html>|</html>", "").replaceAll("<br>", "\n").split("\n");// 去除HTML标签
-        int maxLength = 12 *  fm.getFont().getSize();
+        int maxLength = 12 * fm.getFont().getSize();
         for (String string : strings) {
             maxLength = Math.min(fm.stringWidth(string), maxLength);
         }

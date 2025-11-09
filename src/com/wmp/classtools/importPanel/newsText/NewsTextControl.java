@@ -7,15 +7,6 @@ import com.wmp.PublicTools.printLog.Log;
 import java.io.IOException;
 
 public class NewsTextControl {
-    public static void setKey(String key) {
-        IOForInfo io = new IOForInfo(CTInfo.DATA_PATH + "NewsText\\key.txt");
-        try {
-            io.setInfo(key);
-        } catch (IOException e) {
-            Log.err.print(NewsTextControl.class, "新闻获取密钥保存失败", e);
-        }
-    }
-
     public static String getKey() {
         IOForInfo io = new IOForInfo(CTInfo.DATA_PATH + "NewsText\\key.txt");
         try {
@@ -28,5 +19,14 @@ public class NewsTextControl {
             Log.err.print(NewsTextControl.class, "新闻文本获取密钥获取失败", e);
         }
         return null;
+    }
+
+    public static void setKey(String key) {
+        IOForInfo io = new IOForInfo(CTInfo.DATA_PATH + "NewsText\\key.txt");
+        try {
+            io.setInfo(key);
+        } catch (IOException e) {
+            Log.err.print(NewsTextControl.class, "新闻获取密钥保存失败", e);
+        }
     }
 }

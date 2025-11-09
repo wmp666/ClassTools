@@ -4,11 +4,11 @@ import com.wmp.PublicTools.DateTools;
 import com.wmp.PublicTools.UITools.IconControl;
 import com.wmp.PublicTools.io.IOForInfo;
 import com.wmp.PublicTools.printLog.Log;
-import com.wmp.classTools.CTComponent.*;
 import com.wmp.classTools.CTComponent.CTButton.CTTextButton;
+import com.wmp.classTools.CTComponent.CTOptionPane;
 import com.wmp.classTools.CTComponent.CTPanel.setsPanel.CTBasicSetsPanel;
 import com.wmp.classTools.CTComponent.CTPanel.setsPanel.CTListSetsPanel;
-import com.wmp.classTools.CTComponent.CTPanel.setsPanel.CTSetsPanel;
+import com.wmp.classTools.CTComponent.CTTable;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
@@ -73,7 +73,6 @@ public class ClassFormSetsPanel extends CTListSetsPanel {
         this.add(chooseButtons, BorderLayout.NORTH);*/
 
 
-
         // 强制重新布局和重绘
         this.revalidate();
         this.repaint();
@@ -94,7 +93,7 @@ public class ClassFormSetsPanel extends CTListSetsPanel {
     private CTBasicSetsPanel resetSetsPanel(int week) {
         Log.info.print("CFSetsPanel", "重置课程表设置面板:" + week);
 
-        CTBasicSetsPanel mainPanel = new CTBasicSetsPanel(getBasicDataPath()){
+        CTBasicSetsPanel mainPanel = new CTBasicSetsPanel(getBasicDataPath()) {
 
             @Override
             public void refresh() throws Exception {
@@ -257,7 +256,6 @@ public class ClassFormSetsPanel extends CTListSetsPanel {
         mainPanel.setOpaque(false);
 
         mainPanel.setLayout(new BorderLayout());
-
 
 
         return mainPanel;

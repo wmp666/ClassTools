@@ -20,7 +20,7 @@ public class NTSetsPanel extends CTBasicSetsPanel {
         super(basicDataPath);
 
         this.setName("新闻数据获取设置");
-        this.setLayout(new GridLayout(0,1));
+        this.setLayout(new GridLayout(0, 1));
 
         initUI();
 

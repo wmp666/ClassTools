@@ -1,6 +1,9 @@
 package com.wmp.classTools.frame;
 
-import com.wmp.PublicTools.UITools.*;
+import com.wmp.PublicTools.UITools.CTColor;
+import com.wmp.PublicTools.UITools.CTFont;
+import com.wmp.PublicTools.UITools.CTFontSizeStyle;
+import com.wmp.PublicTools.UITools.IconControl;
 import com.wmp.PublicTools.printLog.Log;
 import com.wmp.classTools.CTComponent.CTButton.CTIconButton;
 import com.wmp.classTools.CTComponent.CTButton.CTRoundTextButton;
@@ -10,29 +13,29 @@ import com.wmp.classTools.frame.tools.screenProduct.SetsScrInfo;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
-import javax.swing.Timer;
 import java.awt.*;
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
-import java.util.*;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Random;
+import java.util.TreeMap;
 
 public class ScreenProduct extends JDialog {
 
+    private static final HashMap<String, String[]> panelLocationMap = new HashMap<>();
     /*private final JLabel timeView = new JLabel();
     private final JLabel otherLabel = new JLabel();*/
     private static ScreenProduct screenProduct;
     //获取屏保设置
     private static SetsScrInfo setsScrInfo = new SetsScrInfo();
-
+    private static Timer updateBG = new Timer(1000, e -> {
+    });
     private final JLabel imageViewLabel = new JLabel();
-
     private final Container c = this.getContentPane();
-
     private int index = 0;
-    private static Timer updateBG = new Timer(1000, e -> {});
 
-    private static final HashMap<String, String[]> panelLocationMap = new HashMap<>();
     public ScreenProduct() throws IOException {
         screenProduct = this;
         panelLocationMap.put("北方", new String[]{"OtherTimeThingPanel", "WeatherInfoPanel"});
@@ -61,7 +64,7 @@ public class ScreenProduct extends JDialog {
                 if (index < setsScrInfo.getBGImagesLength() - 1) index++;
                 else index = 0;
             } catch (Exception ex) {
-                Log.err.print( getClass(), "背景刷新失败", ex);
+                Log.err.print(getClass(), "背景刷新失败", ex);
                 throw new RuntimeException(ex);
             }
         });
@@ -69,11 +72,10 @@ public class ScreenProduct extends JDialog {
         updateBG.start();
 
 
-
         //刷新组件内容
 
         //强刷新
-        Timer strongRepaint = new Timer(60*60*1000, e -> {
+        Timer strongRepaint = new Timer(60 * 60 * 1000, e -> {
 
             refreshScreenProductPanel();
         });
@@ -204,7 +206,7 @@ public class ScreenProduct extends JDialog {
         updateBG.restart();
     }
 
-    private static void exit(){
+    private static void exit() {
         JDialog dialog = new JDialog();
         dialog.setTitle("关闭选择");
         dialog.setLayout(new GridBagLayout());
@@ -254,7 +256,7 @@ public class ScreenProduct extends JDialog {
                 throw new RuntimeException(ex);
             }
         });
-        
+
         GridBagConstraints gbc = new GridBagConstraints();
         gbc.gridx = 0;
         gbc.gridy = 0;
@@ -276,22 +278,8 @@ public class ScreenProduct extends JDialog {
         int screenWidth = (int) screenSize.getWidth();
         int screenHeight = (int) screenSize.getHeight();
 
-        dialog.setBounds(0,0,screenWidth, screenHeight);
+        dialog.setBounds(0, 0, screenWidth, screenHeight);
         dialog.setVisible(true);
-    }
-
-    private void initWindow() {
-        //设置屏幕大小
-        Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
-        int screenWidth = (int) screenSize.getWidth();
-        int screenHeight = (int) screenSize.getHeight();
-
-        this.setUndecorated(true);
-        this.setIconImage(new ImageIcon(getClass().getResource("/image/icon/icon.png")).getImage());
-        this.setSize(screenWidth, screenHeight);
-        this.setLocation(0, 0);
-
-        c.setLayout(new BorderLayout());
     }
 
     private static Image resizeImage(ImageIcon icon, Dimension screenSize) {
@@ -309,6 +297,20 @@ public class ScreenProduct extends JDialog {
         Log.info.print("ScreenProduct", String.format("缩放比例：%s|宽:%s|高:%s\n原图大小:%s|%s\n", scale, scaledWidth, scaledHeight, imageWidth, imageHeight));
 
         return icon.getImage().getScaledInstance(scaledWidth, scaledHeight, Image.SCALE_SMOOTH);
+    }
+
+    private void initWindow() {
+        //设置屏幕大小
+        Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+        int screenWidth = (int) screenSize.getWidth();
+        int screenHeight = (int) screenSize.getHeight();
+
+        this.setUndecorated(true);
+        this.setIconImage(new ImageIcon(getClass().getResource("/image/icon/icon.png")).getImage());
+        this.setSize(screenWidth, screenHeight);
+        this.setLocation(0, 0);
+
+        c.setLayout(new BorderLayout());
     }
 
     private void initBackground(int index) throws IOException {
@@ -329,7 +331,7 @@ public class ScreenProduct extends JDialog {
                 Image image;
                 if (bgImagePath.startsWith("url:")) {
                     image = ImageIO.read(new URL(bgImagePath));
-                }else{
+                } else {
                     // 使用ImageIO避免缓存并支持更多格式
                     File imageFile = new File(bgImagePath);
                     if (!imageFile.exists()) {

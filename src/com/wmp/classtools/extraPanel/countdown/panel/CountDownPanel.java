@@ -1,13 +1,11 @@
 package com.wmp.classTools.extraPanel.countdown.panel;
 
-import com.wmp.Main;
 import com.wmp.PublicTools.CTInfo;
 import com.wmp.PublicTools.DateTools;
 import com.wmp.PublicTools.UITools.CTColor;
 import com.wmp.PublicTools.UITools.CTFont;
 import com.wmp.PublicTools.UITools.CTFontSizeStyle;
 import com.wmp.PublicTools.printLog.Log;
-import com.wmp.classTools.CTComponent.CTOptionPane;
 import com.wmp.classTools.CTComponent.CTPanel.CTViewPanel;
 import com.wmp.classTools.extraPanel.countdown.CDInfoControl;
 import com.wmp.classTools.extraPanel.countdown.settings.CountDownSetsPanel;
@@ -24,7 +22,7 @@ public class CountDownPanel extends CTViewPanel {
     private final JLabel titleLabel = new JLabel();
     private final JLabel timeLabel = new JLabel();
 
-    private AtomicBoolean b = new AtomicBoolean(false);
+    private final AtomicBoolean b = new AtomicBoolean(false);
 
     public CountDownPanel() {
         this.setID("CountDownPanel");
@@ -43,6 +41,10 @@ public class CountDownPanel extends CTViewPanel {
 
     }
 
+    private static void initInfo() {
+        info = CDInfoControl.getCDInfo();
+    }
+
     private void initUI() {
 
 
@@ -52,10 +54,6 @@ public class CountDownPanel extends CTViewPanel {
 
         timeLabel.setForeground(CTColor.mainColor);
         timeLabel.setFont(CTFont.getCTFont(Font.BOLD, CTFontSizeStyle.BIG));
-    }
-
-    private static void initInfo() {
-        info = CDInfoControl.getCDInfo();
     }
 
     @Override
@@ -72,7 +70,7 @@ public class CountDownPanel extends CTViewPanel {
             Log.err.print(getClass(), "时间数据化异常", ex);
         }
         //Log.info.print("时间显示","时间差:" + time);
-        if (time < -60*1000) {
+        if (time < -60 * 1000) {
             CDInfoControl.CDInfo old = info;
             initInfo();
             if (!old.title().equals(info.title()) && info.title().equals("数据出错")) {

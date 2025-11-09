@@ -29,6 +29,6 @@ public class LunarTest {
 
 
         //农历 八月廿七 乙巳 [蛇] 年 大雪
-        System.out.println( sb);
+        System.out.println(sb);
     }
 }

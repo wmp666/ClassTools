@@ -1,6 +1,5 @@
 package com.wmp.classTools.frame;
 
-import com.wmp.Main;
 import com.wmp.PublicTools.CTInfo;
 import com.wmp.PublicTools.EasterEgg.EasterEgg;
 import com.wmp.PublicTools.OpenInExp;
@@ -9,11 +8,11 @@ import com.wmp.PublicTools.io.GetPath;
 import com.wmp.PublicTools.printLog.Log;
 import com.wmp.PublicTools.update.GetNewerVersion;
 import com.wmp.classTools.CTComponent.CTButton.CTIconButton;
+import com.wmp.classTools.CTComponent.CTButton.CTTextButton;
 import com.wmp.classTools.CTComponent.Menu.CTMenu;
 import com.wmp.classTools.CTComponent.Menu.CTMenuBar;
 import com.wmp.classTools.CTComponent.Menu.CTMenuItem;
 import com.wmp.classTools.CTComponent.Menu.CTPopupMenu;
-import com.wmp.classTools.CTComponent.CTButton.CTTextButton;
 
 import javax.swing.*;
 import java.awt.*;
@@ -84,7 +83,7 @@ public class AboutDialog extends JDialog {
         infos.add(info, BorderLayout.CENTER);
 
         CTIconButton getNew = new CTIconButton("检查更新",
-                "更新", IconControl.COLOR_COLORFUL ,
+                "更新", IconControl.COLOR_COLORFUL,
                 () -> GetNewerVersion.checkForUpdate(this, view, true));
         getNew.setBackground(CTColor.backColor);
 
@@ -223,7 +222,7 @@ public class AboutDialog extends JDialog {
         CTMenuItem easterEgg = new CTMenuItem("■■");
         easterEgg.setIcon(GetIcon.getIcon("祈愿", 20, 20));
         easterEgg.addActionListener(e ->
-            EasterEgg.getPin());
+                EasterEgg.getPin());
 
         helpMenu.add(helpDoc);
         helpMenu.add(easterEgg);

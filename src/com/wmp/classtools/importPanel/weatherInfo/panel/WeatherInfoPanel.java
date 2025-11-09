@@ -6,18 +6,16 @@ import com.wmp.PublicTools.UITools.CTFont;
 import com.wmp.PublicTools.UITools.CTFontSizeStyle;
 import com.wmp.PublicTools.printLog.Log;
 import com.wmp.classTools.CTComponent.CTBorderFactory;
-import com.wmp.classTools.CTComponent.CTOptionPane;
+import com.wmp.classTools.CTComponent.CTPanel.CTViewPanel;
 import com.wmp.classTools.CTComponent.CTTable;
 import com.wmp.classTools.frame.ShowHelpDoc;
 import com.wmp.classTools.importPanel.weatherInfo.GetWeatherInfo;
-import com.wmp.classTools.CTComponent.CTPanel.CTViewPanel;
 import com.wmp.classTools.importPanel.weatherInfo.WeatherInfoControl;
 import com.wmp.classTools.importPanel.weatherInfo.settings.WeatherInfoSetsPanel;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
 import javax.swing.*;
-import javax.swing.table.DefaultTableCellRenderer;
 import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
@@ -25,9 +23,21 @@ import java.util.ArrayList;
 
 public class WeatherInfoPanel extends CTViewPanel {
 
+    private final JLabel weather = new JLabel();
     private String format = "<html>%s %s, %s℃<br>%s %s℃-%s℃</html>";
     private String cityCode = WeatherInfoControl.getWeatherInfo();
-    private final JLabel weather = new JLabel();
+
+    public WeatherInfoPanel() {
+        super();
+        this.setID("WeatherInfoPanel");
+        this.setName("天气详情");
+        this.setLayout(new BorderLayout());
+        this.setCtSetsPanelList(java.util.List.of(new WeatherInfoSetsPanel(CTInfo.DATA_PATH)));
+
+        initPanel();
+        resetPanel(CTFontSizeStyle.BIG);
+
+    }
 
     private void initWeather() {
         try {
@@ -46,10 +56,10 @@ public class WeatherInfoPanel extends CTViewPanel {
                     nowWeather.getString("weather"),
                     nowWeather.getString("temperature"),
                     (todayOtherWeather.getString("dayweather").contains("雨") ||
-                            todayOtherWeather.getString("nightweather").contains("雨"))?"有雨" : "无雨",
+                            todayOtherWeather.getString("nightweather").contains("雨")) ? "有雨" : "无雨",
                     todayOtherWeather.getString("nighttemp"),
                     todayOtherWeather.getString("daytemp")
-                    ));
+            ));
             weather.setCursor(new Cursor(Cursor.HAND_CURSOR));
             StringBuilder sb = new StringBuilder();
             sb.append("今日天气: ")
@@ -79,36 +89,24 @@ public class WeatherInfoPanel extends CTViewPanel {
             }
             Log.info.adaptedMessage(nowWeather.getString("city") + " 天气数据", sb.toString(), 60, 5);
         } catch (Exception ex) {
-            Log.warn.print(getClass().toString(), "天气数据获取出错"+ex);
+            Log.warn.print(getClass().toString(), "天气数据获取出错" + ex);
             throw new RuntimeException(ex);
         }
         weather.repaint();
     }
 
-    private void resetPanel(CTFontSizeStyle size){
+    private void resetPanel(CTFontSizeStyle size) {
         this.removeAll();
 
         if (this.isScreenProductViewPanel()) {
             format = "<html>%S 天气: %s, %s℃ %s %s℃-%s℃</html>";
-        }else {
+        } else {
             format = "<html>%S 天气: %s, %s℃<br>%s %s℃-%s℃</html>";
         }
 
         weather.setFont(CTFont.getCTFont(Font.BOLD, size));
         weather.setForeground(CTColor.mainColor);
         this.add(weather, BorderLayout.SOUTH);
-
-    }
-
-    public WeatherInfoPanel(){
-        super();
-        this.setID("WeatherInfoPanel");
-        this.setName("天气详情");
-        this.setLayout(new BorderLayout());
-        this.setCtSetsPanelList(java.util.List.of(new WeatherInfoSetsPanel(CTInfo.DATA_PATH)));
-
-        initPanel();
-        resetPanel(CTFontSizeStyle.BIG);
 
     }
 
@@ -172,7 +170,7 @@ public class WeatherInfoPanel extends CTViewPanel {
 
                     }
 
-                    CTTable dayTable = new CTTable(dayWeatherTable, new String[]{"日期", "天气", "风向", "风力"}){
+                    CTTable dayTable = new CTTable(dayWeatherTable, new String[]{"日期", "天气", "风向", "风力"}) {
                         @Override
                         public boolean isCellEditable(int row, int column) {
                             return false;
@@ -187,7 +185,7 @@ public class WeatherInfoPanel extends CTViewPanel {
                     dayScrollPane.getViewport().setOpaque(false);
                     dayScrollPane.setBorder(CTBorderFactory.createTitledBorder("白天"));
 
-                    CTTable nightTable = new CTTable(nightWeatherTable, new String[]{"日期", "天气", "风向", "风力", "温差"}){
+                    CTTable nightTable = new CTTable(nightWeatherTable, new String[]{"日期", "天气", "风向", "风力", "温差"}) {
                         @Override
                         public boolean isCellEditable(int row, int column) {
                             return false;
@@ -204,13 +202,13 @@ public class WeatherInfoPanel extends CTViewPanel {
 
                     JPanel panel = new JPanel();
                     panel.setOpaque(false);
-                    panel.setLayout(new GridLayout(0,1));
+                    panel.setLayout(new GridLayout(0, 1));
                     panel.add(dayScrollPane);
                     panel.add(nightScrollPane);
 
                     dialog.add(panel, BorderLayout.CENTER);
 
-                    dialog.setSize(dialog.getPreferredSize().width, (int) (500*CTInfo.dpi));
+                    dialog.setSize(dialog.getPreferredSize().width, (int) (500 * CTInfo.dpi));
                     dialog.setLocationRelativeTo(null);
                     dialog.setVisible(true);
                 } catch (Exception ex) {
@@ -225,7 +223,7 @@ public class WeatherInfoPanel extends CTViewPanel {
     protected void Refresh() throws Exception {
         if (!this.isScreenProductViewPanel()) {
             resetPanel(CTFontSizeStyle.BIG);
-        }else{
+        } else {
             resetPanel(CTFontSizeStyle.MORE_BIG);
         }
         initWeather();

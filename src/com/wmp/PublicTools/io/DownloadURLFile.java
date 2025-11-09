@@ -17,20 +17,23 @@ import java.util.Random;
 public class DownloadURLFile {
     /**
      * 下载文件
+     *
      * @param parent
      * @param panel
      * @param downloadUrl 下载链接
-     * @param dataPath 保存路径
+     * @param dataPath    保存路径
      */
     public static boolean downloadWebFile(Window parent, JPanel panel, String downloadUrl, String dataPath) {
         return downloadWebFile(parent, panel, downloadUrl, dataPath, null);
     }
+
     /**
      * 下载文件
+     *
      * @param parent
      * @param panel
-     * @param downloadUrl 下载链接
-     * @param dataPath 保存路径
+     * @param downloadUrl    下载链接
+     * @param dataPath       保存路径
      * @param expectedSHA256 预期SHA256
      * @return 是否下载成功
      */
@@ -46,14 +49,12 @@ public class DownloadURLFile {
 
         if (panel == null) {
             Log.info.loading.showDialog("文件下载" + id, "正在下载...");
-        }else{
+        } else {
             // 设置进度对话框
             progressBar.setForeground(CTColor.mainColor);
             // 进度条自适应 作用: 进度条自动滚动
             progressBar.setAutoscrolls(true);
         }
-
-
 
 
         if (panel != null) {
@@ -84,7 +85,7 @@ public class DownloadURLFile {
             if (panel != null) {
                 label.setText("正在初始化数据，请稍候...");
                 panel.repaint();
-            }else{
+            } else {
                 Log.info.loading.updateDialog("文件下载" + id, "正在初始化数据，请稍候...");
             }
 
@@ -158,9 +159,9 @@ public class DownloadURLFile {
                     Log.info.print("DownloadURLFile-下载", "下载文件 " + v);
                     label.setText("下载文件 " + v);
                     if (panel == null) {
-                        Log.info.loading.updateDialog("文件下载" + id, v,  progress);
+                        Log.info.loading.updateDialog("文件下载" + id, v, progress);
 
-                    }else{
+                    } else {
                         SwingUtilities.invokeLater(() -> progressBar.setValue(progress));
                     }
                 }
@@ -169,7 +170,7 @@ public class DownloadURLFile {
 
                 if (panel == null) {
                     Log.info.loading.updateDialog("文件下载" + id, "正在拷贝...");
-                }else{
+                } else {
                     label.setText("正在拷贝，请稍候...");
                     progressBar.setValue(0);
                     panel.repaint();
@@ -222,18 +223,11 @@ public class DownloadURLFile {
                         int finalTotal = (int) (total2 * 100 / fileSize);
                         if (panel == null) {
 
-                            Log.info.loading.updateDialog("文件下载" + id,  finalTotal);
-                        }else{
+                            Log.info.loading.updateDialog("文件下载" + id, finalTotal);
+                        } else {
                             SwingUtilities.invokeLater(() -> progressBar.setValue(finalTotal));
                         }
                     }
-
-
-
-
-
-
-
 
 
                 } catch (IOException e) {

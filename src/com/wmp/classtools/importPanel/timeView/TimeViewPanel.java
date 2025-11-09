@@ -6,8 +6,8 @@ import com.wmp.PublicTools.UITools.CTFont;
 import com.wmp.PublicTools.UITools.CTFontSizeStyle;
 import com.wmp.PublicTools.UITools.IconControl;
 import com.wmp.PublicTools.printLog.Log;
-import com.wmp.classTools.CTComponent.*;
 import com.wmp.classTools.CTComponent.CTButton.CTIconButton;
+import com.wmp.classTools.CTComponent.CTOptionPane;
 import com.wmp.classTools.CTComponent.CTPanel.CTViewPanel;
 import com.wmp.classTools.importPanel.timeView.settings.ScreenProductSetsPanel;
 
@@ -52,14 +52,13 @@ public class TimeViewPanel extends CTViewPanel {
         this.setCtSetsPanelList(List.of(new ScreenProductSetsPanel(CTInfo.DATA_PATH)));
 
 
-
         initPanel();
 
         this.setIndependentRefresh(true, 34);
 
     }
 
-    private void initPanel(){
+    private void initPanel() {
 
 
         CTIconButton viewTimeButton = new CTIconButton("全屏显示时间",
@@ -113,7 +112,7 @@ public class TimeViewPanel extends CTViewPanel {
 
         CTIconButton exitButton = new CTIconButton(
                 "关闭", IconControl.COLOR_COLORFUL, () -> {
-                window.setVisible(false);
+            window.setVisible(false);
 
             timeView.setFont(CTFont.getCTFont(Font.BOLD, CTFontSizeStyle.BIG));
             this.add(timeView, BorderLayout.CENTER);
@@ -136,7 +135,7 @@ public class TimeViewPanel extends CTViewPanel {
 
         timeView.setHorizontalAlignment(JLabel.CENTER);
         timeView.setText(dateFormat.format(date));
-        timeView.setFont(CTFont.getCTFont(Font.BOLD, isScreenProductViewPanel()?CTFontSizeStyle.BIG_BIG:CTFontSizeStyle.BIG));
+        timeView.setFont(CTFont.getCTFont(Font.BOLD, isScreenProductViewPanel() ? CTFontSizeStyle.BIG_BIG : CTFontSizeStyle.BIG));
         //timeView.setBackground(new Color(0x0ECECED, true));
         timeView.setForeground(CTColor.mainColor);
         this.add(timeView, BorderLayout.CENTER);

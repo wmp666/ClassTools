@@ -9,9 +9,9 @@ import com.wmp.PublicTools.UITools.IconControl;
 import com.wmp.PublicTools.io.GetPath;
 import com.wmp.PublicTools.io.ZipPack;
 import com.wmp.PublicTools.printLog.Log;
+import com.wmp.classTools.CTComponent.CTButton.CTTextButton;
 import com.wmp.classTools.CTComponent.CTList;
 import com.wmp.classTools.CTComponent.CTPanel.setsPanel.CTSetsPanel;
-import com.wmp.classTools.CTComponent.CTButton.CTTextButton;
 import com.wmp.classTools.CTComponent.Menu.CTMenu;
 import com.wmp.classTools.CTComponent.Menu.CTMenuBar;
 import com.wmp.classTools.CTComponent.Menu.CTMenuItem;
@@ -36,7 +36,7 @@ public class InfSetDialog extends JDialog {
     private CTList switchPanel;
 
     public InfSetDialog() throws Exception {
-        this(Main.allArgs.get("screenProduct:show").contains(Main.argsList)?"屏保设置":"个性化");
+        this(Main.allArgs.get("screenProduct:show").contains(Main.argsList) ? "屏保设置" : "个性化");
     }
 
 
@@ -234,7 +234,7 @@ public class InfSetDialog extends JDialog {
 
     }
 
-    private void initSaveButton(){
+    private void initSaveButton() {
 
         CTTextButton saveButton = new CTTextButton("保存数据", false);
         saveButton.setIcon("保存", IconControl.COLOR_COLORFUL, 35, 35);

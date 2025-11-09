@@ -14,7 +14,7 @@ public class SetsScrInfo {
     private JSONObject jsonObject;
 
 
-    public SetsScrInfo(){
+    public SetsScrInfo() {
         File BGPath = new File(CTInfo.DATA_PATH + "\\ScreenProduct\\background.json");
         if (!BGPath.exists()) {
             try {
@@ -59,9 +59,9 @@ public class SetsScrInfo {
     public String getBGImagePath(int index) {
         if (jsonObject.has("path")) {
 
-            if (jsonObject.getString("path").equals("BingBG")){
+            if (jsonObject.getString("path").equals("BingBG")) {
                 return "url:https://bing.img.run/1920x1080.php";
-            }else if (jsonObject.getString("path").equals("BingBGRandom")){
+            } else if (jsonObject.getString("path").equals("BingBGRandom")) {
                 return "url:https://bing.img.run/rand.php";
             }
 

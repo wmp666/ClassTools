@@ -5,7 +5,6 @@ import com.wmp.PublicTools.CTInfo;
 import com.wmp.PublicTools.EasterEgg.EasterEgg;
 import com.wmp.PublicTools.printLog.Log;
 import com.wmp.PublicTools.update.GetNewerVersion;
-import com.wmp.classTools.frame.CTTools;
 import com.wmp.classTools.frame.LoadingWindow;
 import com.wmp.classTools.frame.MainWindow;
 
@@ -36,14 +35,14 @@ public class SwingRun {
         AtomicReference<LoadingWindow> loadingWindowRef = new AtomicReference<>();
         //SwingUtilities.invokeLater(() -> {
 
-            if (b) {
-                loadingWindowRef.set(new LoadingWindow(200, 200, "EasterEgg", true, 2300));
-                //loadingWindow = new LoadingWindow(200, 200, "EasterEgg", true, 2300);
+        if (b) {
+            loadingWindowRef.set(new LoadingWindow(200, 200, "EasterEgg", true, 2300));
+            //loadingWindow = new LoadingWindow(200, 200, "EasterEgg", true, 2300);
 
-            } else {
-                loadingWindowRef.set(new LoadingWindow());
-                //loadingWindow = new LoadingWindow();
-            }
+        } else {
+            loadingWindowRef.set(new LoadingWindow());
+            //loadingWindow = new LoadingWindow();
+        }
         //});
         //System.out.println(sb);
 

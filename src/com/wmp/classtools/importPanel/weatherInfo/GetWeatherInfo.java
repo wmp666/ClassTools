@@ -5,8 +5,6 @@ import com.wmp.PublicTools.web.GetWebInf;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
-import java.util.Objects;
-
 public class GetWeatherInfo {
 
     public static String errCode = "";
@@ -23,15 +21,15 @@ public class GetWeatherInfo {
         // 构造请求URL (使用一个公开的免费天气接口示例)
         String nowCloud = String.format("https://restapi.amap.com/v3/weather/weatherInfo?key=%s&city=%s", WeatherInfoControl.getKey(), cityCode);
 
-            // 解析JSON响应
-            JSONObject jsonResponse = new JSONObject(GetWebInf.getWebInf(nowCloud, false));
-            Log.info.print("GetWeatherInfo", "获取天气成功: " + jsonResponse);
-            if (jsonResponse.getInt("status") == 1) { // 假设1000为成功状态码
-                JSONArray lives = jsonResponse.getJSONArray("lives");
-                if (!lives.isEmpty()) return lives.getJSONObject(0);
-            } else {
-                errCode = jsonResponse.getString("info");
-            }
+        // 解析JSON响应
+        JSONObject jsonResponse = new JSONObject(GetWebInf.getWebInf(nowCloud, false));
+        Log.info.print("GetWeatherInfo", "获取天气成功: " + jsonResponse);
+        if (jsonResponse.getInt("status") == 1) { // 假设1000为成功状态码
+            JSONArray lives = jsonResponse.getJSONArray("lives");
+            if (!lives.isEmpty()) return lives.getJSONObject(0);
+        } else {
+            errCode = jsonResponse.getString("info");
+        }
         return null;
     }
 

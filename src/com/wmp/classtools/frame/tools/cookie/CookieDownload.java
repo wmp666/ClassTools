@@ -17,16 +17,14 @@ import java.util.concurrent.atomic.AtomicReference;
 
 public class CookieDownload {
 
+    private static final String downloadUrl = "https://github.com/wmp666/ClassTools/releases/tag/0.0.2";
+    private static final String apiUrl = "https://api.github.com/repos/wmp666/ClassTools/releases/tags/0.0.2";
     /**
      * Cookie信息<br>
      * String key<br>
      * CookieInfo 快速启动单元信息
      */
     private final TreeMap<String, CookieInfo> cookieInfoMap = new TreeMap<>();
-
-    private static final String downloadUrl = "https://github.com/wmp666/ClassTools/releases/tag/0.0.2";
-
-    private static final String apiUrl = "https://api.github.com/repos/wmp666/ClassTools/releases/tags/0.0.2";
 
     /**
      * 下载官方快速启动单元
@@ -50,9 +48,9 @@ public class CookieDownload {
 
     private void initUI(JDialog dialog) {
         var ref = new Object() {
+            final ArrayList<JButton> cookieButtonList = new ArrayList<>();
             String openedButtonKey = "";
             String openedButtonName = "";
-            final ArrayList<JButton> cookieButtonList = new ArrayList<>();
         };
 
         JPanel panel = new JPanel();

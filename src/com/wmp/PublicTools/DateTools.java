@@ -12,8 +12,8 @@ import java.util.Date;
 
 public class DateTools {
     public static final String[] days = new String[]{"初一", "初二", "初三", "初四", "初五", "初六", "初七", "初八", "初九", "初十",
-     "十一", "十二", "十三", "十四", "十五", "十六", "十七", "十八", "十九", "二十",
-     "廿一", "廿二", "廿三", "廿四", "廿五", "廿六", "廿七", "廿八", "廿九", "三十"};
+            "十一", "十二", "十三", "十四", "十五", "十六", "十七", "十八", "十九", "二十",
+            "廿一", "廿二", "廿三", "廿四", "廿五", "廿六", "廿七", "廿八", "廿九", "三十"};
     public static final String[] months = new String[]{"正月", "二月", "三月", "四月", "五月", "六月", "七月", "八月", "九月", "十月", "十一月", "十二月"};
 
     /**
@@ -134,7 +134,7 @@ public class DateTools {
             DateFormat dateFormat = new SimpleDateFormat(format);
             Calendar calendar = Calendar.getInstance();
             calendar.setTime(dateFormat.parse(targetTime));
-            
+
             // 设置lenient为false，使解析更严格
             dateFormat.setLenient(false);
 
@@ -166,9 +166,10 @@ public class DateTools {
      * @param type 时间类型
      * @return 时间字符串
      */
-    public static String getTimeStr(int[]  time, int  type, char separator){
+    public static String getTimeStr(int[] time, int type, char separator) {
         if (type == CTOptionPane.HOURS_MINUTES) return String.format("%02d" + separator + "%02d", time[0], time[1]);
-        else if (type == CTOptionPane.HOURS_MINUTES_SECOND)return String.format("%02d" + separator + "%02d" + separator + "%02d", time[0], time[1], time[2]);
+        else if (type == CTOptionPane.HOURS_MINUTES_SECOND)
+            return String.format("%02d" + separator + "%02d" + separator + "%02d", time[0], time[1], time[2]);
         else return "";
     }
 
@@ -179,8 +180,9 @@ public class DateTools {
      * @param type 日期类型
      * @return 日期字符串
      */
-    public static String getDateStr(int[] date, int type, char separator){
-        if (type == CTOptionPane.YEAR_MONTH_DAY) return String.format("%04d" + separator + "%02d" + separator + "%02d", date[0], date[1], date[2]);
+    public static String getDateStr(int[] date, int type, char separator) {
+        if (type == CTOptionPane.YEAR_MONTH_DAY)
+            return String.format("%04d" + separator + "%02d" + separator + "%02d", date[0], date[1], date[2]);
         else if (type == CTOptionPane.MONTH_DAY) return String.format("%02d" + separator + "%02d", date[0], date[1]);
         else return "";
     }

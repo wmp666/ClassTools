@@ -11,8 +11,8 @@ import com.wmp.PublicTools.io.ResourceLocalizer;
 import com.wmp.PublicTools.printLog.Log;
 import com.wmp.PublicTools.videoView.MediaPlayer;
 import com.wmp.PublicTools.web.GetWebInf;
-import com.wmp.classTools.CTComponent.CTList;
 import com.wmp.classTools.CTComponent.CTButton.CTRoundTextButton;
+import com.wmp.classTools.CTComponent.CTList;
 import org.commonmark.parser.Parser;
 import org.commonmark.renderer.html.HtmlRenderer;
 import org.json.JSONArray;
@@ -47,8 +47,8 @@ public class ShowHelpDoc extends JFrame {
 
     }
 
-    private Container c;
-    private JScrollPane helpDocPane = new JScrollPane();
+    private final Container c;
+    private final JScrollPane helpDocPane = new JScrollPane();
 
     public ShowHelpDoc() throws URISyntaxException, IOException {
         this(null);
@@ -135,7 +135,7 @@ public class ShowHelpDoc extends JFrame {
     }
 
     private static JEditorPane getHelpDocPane(String html) {
-        String styledHtml =  html;
+        String styledHtml = html;
 
         JEditorPane editorPane = new JEditorPane("text/html;charset=UTF-8", styledHtml);
         editorPane.setFont(CTFont.getCTFont(-1, CTFontSizeStyle.SMALL));
@@ -143,8 +143,7 @@ public class ShowHelpDoc extends JFrame {
         editorPane.setEditable(false);
 
         // 确保使用 HTMLEditorKit
-        if (editorPane.getEditorKit() instanceof HTMLEditorKit) {
-            HTMLEditorKit kit = (HTMLEditorKit) editorPane.getEditorKit();
+        if (editorPane.getEditorKit() instanceof HTMLEditorKit kit) {
             // 可以进一步配置 HTML 渲染属性
         }
 
@@ -153,45 +152,6 @@ public class ShowHelpDoc extends JFrame {
 
     public static String getHelpDocStr(int index) {
         return helpDocs.get(index);
-    }
-
-    private void showHelpDoc(String s) throws IOException, URISyntaxException {
-        if (s == null) return;
-
-        this.helpDocPane.setViewportView(getHelpDocPane(initHelpDoc(s + ".md")));
-        this.helpDocPane.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
-        this.helpDocPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
-        this.helpDocPane.getViewport().putClientProperty("EnableWindowBlit", Boolean.TRUE);
-
-        this.helpDocPane.repaint();
-
-    }
-
-    private void showHelpDoc(int index) throws IOException, URISyntaxException {
-        showHelpDoc(getHelpDocStr(index));
-    }
-
-    private JPanel getButtonPanel() {
-        JButton exitButton = new JButton("退出");
-        exitButton.addActionListener(e -> this.dispose());
-
-        JButton downloadDocButton = new JButton("下载详细文档");
-        downloadDocButton.addActionListener(e -> {
-            showDownloadDialog();
-
-        });
-        JButton openInExpButton = new JButton("打开所在位置");
-        openInExpButton.addActionListener(e -> {
-            OpenInExp.open(CTInfo.TEMP_PATH + "help\\");
-        });
-
-        JPanel buttonPanel = new JPanel();
-        buttonPanel.setLayout(new FlowLayout(FlowLayout.RIGHT));
-        buttonPanel.add(exitButton);
-        buttonPanel.add(openInExpButton);
-        buttonPanel.add(downloadDocButton);
-
-        return buttonPanel;
     }
 
     private static void showDownloadDialog() {
@@ -207,7 +167,7 @@ public class ShowHelpDoc extends JFrame {
             });
 
             JDialog helpDocDialog = new JDialog(dialog, "下载详细文档", true);
-            helpDocDialog.setLayout(new GridLayout(0,1));
+            helpDocDialog.setLayout(new GridLayout(0, 1));
             helpDocDialog.setAlwaysOnTop(true);
             //CTPopupMenu popupMenu = new CTPopupMenu();
 
@@ -254,6 +214,52 @@ public class ShowHelpDoc extends JFrame {
         }
     }
 
+    public static void openWebHelpDoc(String name) {
+        int i = Log.info.showChooseDialog(null, "帮助文档", String.format("是否下载(%s)帮助文档", name));
+        if (i == JOptionPane.YES_OPTION) {
+            showDownloadDialog();
+        }
+    }
+
+    private void showHelpDoc(String s) throws IOException, URISyntaxException {
+        if (s == null) return;
+
+        this.helpDocPane.setViewportView(getHelpDocPane(initHelpDoc(s + ".md")));
+        this.helpDocPane.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
+        this.helpDocPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
+        this.helpDocPane.getViewport().putClientProperty("EnableWindowBlit", Boolean.TRUE);
+
+        this.helpDocPane.repaint();
+
+    }
+
+    private void showHelpDoc(int index) throws IOException, URISyntaxException {
+        showHelpDoc(getHelpDocStr(index));
+    }
+
+    private JPanel getButtonPanel() {
+        JButton exitButton = new JButton("退出");
+        exitButton.addActionListener(e -> this.dispose());
+
+        JButton downloadDocButton = new JButton("下载详细文档");
+        downloadDocButton.addActionListener(e -> {
+            showDownloadDialog();
+
+        });
+        JButton openInExpButton = new JButton("打开所在位置");
+        openInExpButton.addActionListener(e -> {
+            OpenInExp.open(CTInfo.TEMP_PATH + "help\\");
+        });
+
+        JPanel buttonPanel = new JPanel();
+        buttonPanel.setLayout(new FlowLayout(FlowLayout.RIGHT));
+        buttonPanel.add(exitButton);
+        buttonPanel.add(openInExpButton);
+        buttonPanel.add(downloadDocButton);
+
+        return buttonPanel;
+    }
+
     private void initDialog() {
 
         this.setTitle("帮助");
@@ -292,13 +298,6 @@ public class ShowHelpDoc extends JFrame {
         mainPanelScroll.getVerticalScrollBar().setUnitIncrement(16);
 
         return mainPanelScroll;
-    }
-
-    public static void openWebHelpDoc(String name){
-        int i = Log.info.showChooseDialog(null, "帮助文档", String.format("是否下载(%s)帮助文档", name));
-        if (i == JOptionPane.YES_OPTION) {
-            showDownloadDialog();
-        }
     }
 
 }

@@ -11,8 +11,8 @@ import com.wmp.classTools.extraPanel.classForm.panel.ClassFormPanel;
 import com.wmp.classTools.extraPanel.countdown.panel.CountDownPanel;
 import com.wmp.classTools.extraPanel.duty.panel.DPanel;
 import com.wmp.classTools.extraPanel.reminderBir.panel.BRPanel;
-import com.wmp.classTools.importPanel.newsText.NewsTextPanel;
 import com.wmp.classTools.importPanel.finalPanel.FinalPanel;
+import com.wmp.classTools.importPanel.newsText.NewsTextPanel;
 import com.wmp.classTools.importPanel.timeView.OtherTimeThingPanel;
 import com.wmp.classTools.importPanel.timeView.TimeViewPanel;
 import com.wmp.classTools.importPanel.weatherInfo.panel.WeatherInfoPanel;
@@ -36,10 +36,8 @@ public class MainWindow extends CTWindow {
 
     public static final ArrayList<CTViewPanel> allPanelList = new ArrayList<>();
     //public static final ArrayList<CTViewPanel> showPanelList = new ArrayList<>();
-
-    private static final TreeMap<String, String[]> panelLocationMap = new TreeMap<>();
     public static final TreeMap<String, CTViewPanel[]> panelMap = new TreeMap<>();
-
+    private static final TreeMap<String, String[]> panelLocationMap = new TreeMap<>();
     private static JDialog mainWindow = new JDialog();
 
     public MainWindow(String path) throws IOException {
@@ -136,9 +134,9 @@ public class MainWindow extends CTWindow {
 
                     Dimension size = this.getPreferredSize();
 
-                    if (size.height >= Toolkit.getDefaultToolkit().getScreenSize().getHeight() *9/10)
-                        this.setSize(new Dimension( size.width, (int) (Toolkit.getDefaultToolkit().getScreenSize().getHeight() * 9/10)));
-                    else this.setSize(new Dimension( size.width, size.height));
+                    if (size.height >= Toolkit.getDefaultToolkit().getScreenSize().getHeight() * 9 / 10)
+                        this.setSize(new Dimension(size.width, (int) (Toolkit.getDefaultToolkit().getScreenSize().getHeight() * 9 / 10)));
+                    else this.setSize(new Dimension(size.width, size.height));
                     this.setLocation(Toolkit.getDefaultToolkit().getScreenSize().width - size.width - 5, 5);
 
                     //this.setLocation(0,0);
@@ -157,7 +155,7 @@ public class MainWindow extends CTWindow {
         }
     }
 
-    public static void refresh(){
+    public static void refresh() {
         if (allArgs.get("screenProduct:show").contains(argsList))
             ScreenProduct.refreshScreenProductPanel();
         else refreshPanel();
@@ -197,8 +195,7 @@ public class MainWindow extends CTWindow {
                         temp.add(panel);
                         panelMap.put("中间", temp.toArray(new CTViewPanel[0]));
                     }
-                }
-                else panel.setVisible(false);
+                } else panel.setVisible(false);
             });
 
             if (!allArgs.get("screenProduct:show").contains(argsList)) {//showPanelList.clear();
@@ -291,7 +288,7 @@ public class MainWindow extends CTWindow {
         } catch (Exception e) {
             Log.err.print(MainWindow.class, "图标加载失败", e);
         }
-        
+
         // 确保窗口有最大尺寸
         //this.setMaximumSize(new Dimension(screenSize.width, screenSize.height * 4/5));
         this.pack();

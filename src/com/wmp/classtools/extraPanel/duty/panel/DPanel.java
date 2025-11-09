@@ -21,9 +21,9 @@ public class DPanel extends CTViewPanel {
 
 
     private final ArrayList<DutyDay> DutyList = new ArrayList<>();
-    private int index; //当前日期索引
     private final File DutyListPath;
     private final File indexPath;
+    private int index; //当前日期索引
 
     public DPanel(File DutyListPath, File indexPath) throws IOException {
 
@@ -43,7 +43,6 @@ public class DPanel extends CTViewPanel {
         initIndex(indexPath);
 
         initContainer();
-
 
 
     }
@@ -166,7 +165,7 @@ public class DPanel extends CTViewPanel {
             //将数据改为默认-空,需要用户自行输入数据
             index = 0;
             ioForInfo.setInfo("0");
-        }else{
+        } else {
             index = Integer.parseInt(inf[0]);
         }
         Log.info.print("DPanel-initIndex", "值日索引:" + index);
@@ -201,14 +200,14 @@ public class DPanel extends CTViewPanel {
             ArrayList<String[]> strings = InfProcess.RDExtractNames(s);
 
             try {
-                if(DutyDay.setDutyPersonList(strings.get(0)).contains("吴鹤轩") ||
+                if (DutyDay.setDutyPersonList(strings.get(0)).contains("吴鹤轩") ||
                         DutyDay.setDutyPersonList(strings.get(0)).contains("熊天晴") ||
                         DutyDay.setDutyPersonList(strings.get(1)).contains("吴鹤轩") ||
                         DutyDay.setDutyPersonList(strings.get(1)).contains("熊天晴")) continue;
                 DutyList.add(new DutyDay(DutyDay.setDutyPersonList(strings.get(0)),
                         DutyDay.setDutyPersonList(strings.get(1))));
             } catch (Exception e) {
-                if (strings.size() <= 2){
+                if (strings.size() <= 2) {
                     Log.err.print(this, getClass(), "请检查数据格式是否正确", e);
                 }
             }
@@ -230,7 +229,6 @@ public class DPanel extends CTViewPanel {
 
         revalidate();
         repaint();
-
 
 
     }

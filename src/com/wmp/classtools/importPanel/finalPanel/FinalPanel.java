@@ -11,7 +11,6 @@ import com.wmp.classTools.CTComponent.CTButton.CTIconButton;
 import com.wmp.classTools.CTComponent.CTPanel.CTViewPanel;
 import com.wmp.classTools.CTComponent.Menu.CTPopupMenu;
 import com.wmp.classTools.frame.AboutDialog;
-import com.wmp.classTools.frame.CTTools;
 import com.wmp.classTools.frame.MainWindow;
 import com.wmp.classTools.frame.ShowCookieDialog;
 import com.wmp.classTools.infSet.InfSetDialog;
@@ -76,7 +75,7 @@ public class FinalPanel extends CTViewPanel {
                 "设置", IconControl.COLOR_COLORFUL, () -> {
 
             try {
-                    new InfSetDialog();
+                new InfSetDialog();
             } catch (Exception e) {
                 Log.err.print(getClass(), "设置打开失败", e);
             }

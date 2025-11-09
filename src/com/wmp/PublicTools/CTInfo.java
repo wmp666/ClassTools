@@ -8,30 +8,24 @@ import com.wmp.PublicTools.printLog.Log;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
-import javax.swing.*;
 import java.io.File;
 import java.util.ArrayList;
 
 public class CTInfo {
     public static final ArrayList<String> disPanelList = new ArrayList<>();
     public static final ArrayList<String> disButList = new ArrayList<>();
-
+    public static final int arch = 15;
+    public static final int arcw = 15;
     public static String DATA_PATH;
     public static String TEMP_PATH;
     public static String APP_INFO_PATH;
-
     public static String appName = "班级工具";
     public static String author = "无名牌";
-
     public static String iconPath = "/image/icon/icon.png";
-
     public static double dpi = 1;
     public static boolean isError = false;
     public static boolean canExit = true;
     public static boolean StartUpdate = true;
-    private static JSONObject jsonObject;
-    public static final int arch = 15;
-    public static final int arcw = 15;
     /**
      * a.b.c.d.e
      * a:主版本号
@@ -41,37 +35,39 @@ public class CTInfo {
      * e:测试版本号
      */
     public static String version = "1.42.3";
+    private static JSONObject jsonObject;
+
     public static void init() {
 
-            Log.info.loading.showDialog("init", "正在刷新...");
+        Log.info.loading.showDialog("init", "正在刷新...");
 
-            disButList.clear();
-            disPanelList.clear();
+        disButList.clear();
+        disPanelList.clear();
 
-            //加载基础目录
-            String path = System.getenv("LOCALAPPDATA");
+        //加载基础目录
+        String path = System.getenv("LOCALAPPDATA");
 
-            APP_INFO_PATH = path + "\\ClassToolsAppFile\\";
-            DATA_PATH = path + "\\ClassTools\\";
-            TEMP_PATH = path + "\\ClassToolsTemp\\";
+        APP_INFO_PATH = path + "\\ClassToolsAppFile\\";
+        DATA_PATH = path + "\\ClassTools\\";
+        TEMP_PATH = path + "\\ClassToolsTemp\\";
 
-            if (!isError) {
-                if (version.split("\\.").length < 5) iconPath = "/image/icon/icon.png";
-                else iconPath = "/image/icon/icon_bate.png";
-            } else iconPath = "/image/err/icon.png";
+        if (!isError) {
+            if (version.split("\\.").length < 5) iconPath = "/image/icon/icon.png";
+            else iconPath = "/image/icon/icon_bate.png";
+        } else iconPath = "/image/err/icon.png";
 
-            IconControl.init();
+        IconControl.init();
 
-            boolean exists = new File(CTInfo.DATA_PATH + "setUp.json").exists();
-            if (exists) {
-                IOForInfo sets = new IOForInfo(new File(CTInfo.DATA_PATH + "setUp.json"));
+        boolean exists = new File(CTInfo.DATA_PATH + "setUp.json").exists();
+        if (exists) {
+            IOForInfo sets = new IOForInfo(new File(CTInfo.DATA_PATH + "setUp.json"));
 
-                try {
-                    jsonObject = new JSONObject(sets.getInfos());
-                } catch (Exception e) {
-                    jsonObject = new JSONObject();
-                    Log.err.print(CTFont.class, "数据获取发生错误", e);
-                }
+            try {
+                jsonObject = new JSONObject(sets.getInfos());
+            } catch (Exception e) {
+                jsonObject = new JSONObject();
+                Log.err.print(CTFont.class, "数据获取发生错误", e);
+            }
 
             //设置颜色
             if (jsonObject.has("mainColor")) {
@@ -121,6 +117,6 @@ public class CTInfo {
                 dpi = jsonObject.getDouble("DPI");
             }
         }
-            Log.info.loading.closeDialog("init");
+        Log.info.loading.closeDialog("init");
     }
 }

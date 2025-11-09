@@ -17,7 +17,7 @@ import java.awt.*;
 public class WeatherInfoSetsPanel extends CTSetsPanel {
 
     private String cityCode = "360000";
-    private CTTextField keyTextField = new CTTextField();
+    private final CTTextField keyTextField = new CTTextField();
 
     public WeatherInfoSetsPanel(String basicDataPath) {
         super(basicDataPath);
@@ -39,7 +39,7 @@ public class WeatherInfoSetsPanel extends CTSetsPanel {
         title.setHorizontalAlignment(SwingConstants.CENTER);
         this.add(title, BorderLayout.NORTH);
 
-        JPanel centerSetsPanel = new JPanel(new GridLayout(0,1,10,10));
+        JPanel centerSetsPanel = new JPanel(new GridLayout(0, 1, 10, 10));
         centerSetsPanel.setOpaque(false);
 
         {
