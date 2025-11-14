@@ -1,11 +1,13 @@
 package com.wmp.PublicTools.CTTool;
 
 import com.wmp.PublicTools.printLog.Log;
+import com.wmp.classTools.CTComponent.CTPanel.setsPanel.CTSetsPanel;
 
 import javax.swing.*;
 import java.util.Random;
 
 public abstract class CTTool {
+    private CTSetsPanel[] ctSetsPanelList = null;
     private String name = "CTTool";
 
     public CTTool() {
@@ -28,6 +30,17 @@ public abstract class CTTool {
         Log.info.loading.closeDialog("工具" + name + id);
         dialog.setVisible(true);
     }
+
+
+
+    public CTSetsPanel[] getCtSetsPanelList() {
+        return ctSetsPanelList;
+    }
+
+    public void setCtSetsPanelList(CTSetsPanel... ctSetsPanelList) {
+        this.ctSetsPanelList = ctSetsPanelList;
+    }
+
 
     public abstract JDialog getDialog();
 

@@ -15,6 +15,7 @@ import com.wmp.classTools.CTComponent.CTPanel.setsPanel.CTSetsPanel;
 import com.wmp.classTools.CTComponent.Menu.CTMenu;
 import com.wmp.classTools.CTComponent.Menu.CTMenuBar;
 import com.wmp.classTools.CTComponent.Menu.CTMenuItem;
+import com.wmp.classTools.frame.CTTools;
 import com.wmp.classTools.frame.MainWindow;
 import com.wmp.classTools.infSet.panel.ClearTempPanel;
 import com.wmp.classTools.infSet.panel.personalizationSets.PersonalizationPanel;
@@ -22,9 +23,10 @@ import com.wmp.classTools.infSet.panel.personalizationSets.PersonalizationPanel;
 import javax.swing.*;
 import java.awt.*;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.TreeMap;
 
-public class InfSetDialog extends JDialog {
+public class InfSetDialog extends JFrame {
 
     private final Container c;
 
@@ -54,7 +56,6 @@ public class InfSetDialog extends JDialog {
         this.setTitle("设置");
         this.setSize(400, 550);
         this.setLocationRelativeTo(null);
-        this.setModal(true);
         this.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 
         Log.info.systemPrint("设置", "正在获取设置页面...");
@@ -67,6 +68,8 @@ public class InfSetDialog extends JDialog {
                 ctSetsPanelList.addAll(tempCTSetsPanelList);
             }
         });
+
+        ctSetsPanelList.add(CTTools.CTToolsSetsPanel);
 
         ctSetsPanelList.add(new ClearTempPanel(CTInfo.DATA_PATH));
 

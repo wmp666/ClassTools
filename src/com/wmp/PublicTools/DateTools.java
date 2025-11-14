@@ -154,7 +154,7 @@ public class DateTools {
             }
             time = calendar.getTime().getTime() - new Date().getTime();
         } catch (Exception e) {
-            Log.err.print(DateTools.class, "获取目标时间失败", e);
+            Log.err.systemPrint(DateTools.class, "获取目标时间失败", e);
         }
         return time;
     }

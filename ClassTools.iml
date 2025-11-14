@@ -14,5 +14,14 @@
     <orderEntry type="library" exported="" name="atlassian.commonmark" level="project" />
     <orderEntry type="library" name="googlecode.soundlibs.jlayer" level="project" />
     <orderEntry type="library" name="cn.6tail.lunar" level="project" />
+    <orderEntry type="module-library">
+      <library>
+        <CLASSES>
+          <root url="jar://$MAVEN_REPOSITORY$/org/jetbrains/annotations/26.0.2/annotations-26.0.2.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
   </component>
 </module>

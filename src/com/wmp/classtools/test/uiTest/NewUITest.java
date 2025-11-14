@@ -1,7 +1,11 @@
 package com.wmp.classTools.test.uiTest;
 
+import com.wmp.PublicTools.UITools.CTFont;
+import com.wmp.PublicTools.UITools.CTFontSizeStyle;
+import com.wmp.classTools.CTComponent.CTCheckBox;
 import com.wmp.classTools.CTComponent.CTProgressBar;
 
+import javax.imageio.spi.ImageInputStreamSpi;
 import javax.swing.*;
 import java.awt.*;
 
@@ -31,6 +35,12 @@ public class NewUITest {
 
         frame.add(progressBar);
         frame.add(progressBar2);
+
+        CTCheckBox checkBox = new CTCheckBox();
+        checkBox.addActionListener(e -> checkBox.setText(String.valueOf(checkBox.isSelected())));
+        checkBox.setFont(CTFont.getCTFont(Font.PLAIN, CTFontSizeStyle.BIG));
+        checkBox.setText("Check me");
+        frame.add(checkBox);
 
 
         frame.setVisible(true);

@@ -236,10 +236,12 @@ public class ScreenProduct extends JDialog {
             int i = CTOptionPane.showConfirmDialog(dialog, "关闭选择", "是否关闭电脑(仅限Windows)？", null, CTOptionPane.YES_OPTION, true);
             if (i == CTOptionPane.NO_OPTION) return;
             screenProduct.setVisible(false);
-            try {
-                Runtime.getRuntime().exec("shutdown -s -t 10");
-            } catch (IOException ex) {
-                throw new RuntimeException(ex);
+            synchronized (Log.getLogInfList()) {
+                try {
+                    Runtime.getRuntime().exec("shutdown -s -t 0");
+                } catch (IOException ex) {
+                    throw new RuntimeException(ex);
+                }
             }
         });
 
@@ -250,10 +252,12 @@ public class ScreenProduct extends JDialog {
             int i = CTOptionPane.showConfirmDialog(dialog, "关闭选择", "是否重启电脑(仅限Windows)？", null, CTOptionPane.YES_OPTION, true);
             if (i == CTOptionPane.NO_OPTION) return;
             screenProduct.setVisible(false);
-            try {
-                Runtime.getRuntime().exec("shutdown -r -t 10");
-            } catch (IOException ex) {
-                throw new RuntimeException(ex);
+            synchronized (Log.getLogInfList()) {
+                try {
+                    Runtime.getRuntime().exec("shutdown -r -t 0");
+                } catch (IOException ex) {
+                    throw new RuntimeException(ex);
+                }
             }
         });
 
@@ -265,11 +269,11 @@ public class ScreenProduct extends JDialog {
         gbc.weighty = 1;
 
 
+        dialog.add(exitButton, gbc);
+        gbc.gridy++;
         dialog.add(shutdownButton, gbc);
         gbc.gridy++;
         dialog.add(restartButton, gbc);
-        gbc.gridy++;
-        dialog.add(exitButton, gbc);
         gbc.gridy++;
         dialog.add(closeButton, gbc);
 

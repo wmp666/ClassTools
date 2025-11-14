@@ -5,8 +5,10 @@ import com.wmp.PublicTools.EasterEgg.EasterEgg;
 import com.wmp.PublicTools.StartupParameters;
 import com.wmp.PublicTools.UITools.CTColor;
 import com.wmp.PublicTools.printLog.Log;
+import com.wmp.classTools.CTComponent.CTOptionPane;
 import com.wmp.classTools.SwingRun;
 
+import javax.swing.*;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -23,12 +25,13 @@ public class Main {
         allArgs.put("StartUpdate:false", StartupParameters.creative("-StartUpdate:false", "/StartUpdate:false"));
         allArgs.put("screenProduct:show", StartupParameters.creative("/s", "-s"));
         allArgs.put("screenProduct:view", StartupParameters.creative("/p", "-p"));
+
+        allArgs.put("log:notSave", StartupParameters.creative("/Log:notSave", "-Log:notSave"));
     }
 
     public static void main(String[] args) throws IOException {
 
-
-        CTInfo.init();
+        new CTInfo();
 
         Log.info.systemPrint("Main", "正在初始化...");
         boolean b = false;

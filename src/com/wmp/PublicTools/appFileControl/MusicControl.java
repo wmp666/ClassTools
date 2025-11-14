@@ -1,7 +1,6 @@
 package com.wmp.PublicTools.appFileControl;
 
 import com.wmp.PublicTools.CTInfo;
-import com.wmp.PublicTools.UITools.CTColor;
 import com.wmp.PublicTools.io.DownloadURLFile;
 import com.wmp.PublicTools.io.GetPath;
 import com.wmp.PublicTools.io.IOForInfo;
@@ -15,9 +14,10 @@ import javazoom.jl.player.Player;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
-import javax.swing.*;
-import java.io.*;
-import java.net.MalformedURLException;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.InputStream;
 import java.net.URL;
 import java.nio.file.Path;
 import java.util.HashMap;
@@ -27,6 +27,7 @@ import java.util.concurrent.atomic.AtomicReference;
 public class MusicControl {
 
     private static final Map<String, Player> PLAYER_MAP = new HashMap<>();
+
     public static void init() {
         try {
             PLAYER_MAP.clear();
@@ -49,14 +50,14 @@ public class MusicControl {
             });
 
         } catch (Exception e) {
-            Log.err.print(MusicControl.class, "音频加载失败", e);
+            Log.warn.message(null, MusicControl.class.getName(), "音频加载失败:\n" + e);
         }
         try {
             //判断磁盘中是否有音频
             getNewMusic();
 
         } catch (Exception e) {
-            Log.err.print(MusicControl.class, "音频数据判断失败", e);
+            Log.warn.message(null, MusicControl.class.getName(), "音频更新失败:\n" + e);
         }
 
         try {
@@ -86,7 +87,7 @@ public class MusicControl {
 
 
         } catch (Exception e) {
-            Log.err.print(MusicControl.class, "本地音频加载失败", e);
+            Log.warn.message(null, MusicControl.class.getName(), "本地音频加载失败:\n" + e);
         }
 
     }

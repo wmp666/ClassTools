@@ -1,16 +1,12 @@
 package com.wmp.PublicTools.videoView;
 
-import com.wmp.PublicTools.CTInfo;
 import com.wmp.PublicTools.appFileControl.MusicControl;
 import com.wmp.PublicTools.printLog.Log;
-import javazoom.jl.decoder.JavaLayerException;
 import javazoom.jl.player.Player;
 
 import java.awt.*;
 import java.io.File;
 import java.io.IOException;
-import java.io.InputStream;
-import java.util.Random;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -76,9 +72,9 @@ public class MediaPlayer {
                     try {
                         player.play();
                     } catch (Exception e) {
-                        Log.err.print(MediaPlayer.class, "播放音频失败", e);
+                        Log.warn.print(MediaPlayer.class.getName(), "播放音频失败:\n" + e);
                     }
-                }else{
+                } else {
                     Log.warn.print(MediaPlayer.class.getName(), "音频不存在:" + key);
                 }
                 timer.cancel();

@@ -30,18 +30,15 @@ public class ClassFormPanel extends CTViewPanel {
         this.setOpaque(false);
         this.setCtSetsPanelList(java.util.List.of(new ClassFormSetsPanel(CTInfo.DATA_PATH)));
 
-        oldNowClassNameList.addAll(List.of(CFInfoControl.getNowClasses()));
-        oldNextClassName = CFInfoControl.getNextClass().className();
-
         this.setIgnoreState(true);
         this.setIndependentRefresh(true, 3 * 1000);
     }
 
     private void showClassForm(String[] nowClassesList, String nextClass) {
 
-        if(!List.of(nowClassesList).contains("无")){
+        if (!List.of(nowClassesList).contains("无")) {
             MediaPlayer.playMusic("课程表", "上课");
-        } else{
+        } else {
             MediaPlayer.playMusic("课程表", "下课");
         }
 

@@ -31,12 +31,12 @@ public class LoadingDialog extends JDialog {
 
     private void resetDialog() {
 
-            this.getContentPane().setBackground(CTColor.backColor);
-            this.revalidate();
-            this.repaint();
-            this.pack();
-            this.setLocationRelativeTo(null);
-            this.setVisible(!PanelList.isEmpty());
+        this.getContentPane().setBackground(CTColor.backColor);
+        this.revalidate();
+        this.repaint();
+        this.pack();
+        this.setLocationRelativeTo(null);
+        this.setVisible(!PanelList.isEmpty());
     }
 
     public void showDialog(String id, String text) {
@@ -88,9 +88,9 @@ public class LoadingDialog extends JDialog {
     /**
      * 更新进度条
      *
-     * @param id      进度条id
-     * @param text    进度条文本
-     * @param value   进度条值(为-1时,更改为不确定模式)
+     * @param id    进度条id
+     * @param text  进度条文本
+     * @param value 进度条值(为-1时,更改为不确定模式)
      */
     public void updateDialog(String id, String text, int value) {
         Log.info.print("LoadingDialog", "更新进度条" + id);
@@ -110,7 +110,7 @@ public class LoadingDialog extends JDialog {
         if (value >= 0) {
             progressBar.setIndeterminate(false);
             progressBar.setValue(value);
-        }else if(value == -1){
+        } else if (value == -1) {
             progressBar.setIndeterminate(true);
         }
 

@@ -30,6 +30,26 @@ public class CTFont {
         return new Font(fontName, fontStyle, (int) (size * CTInfo.dpi));
     }
 
+    public static Font getDefaultFont(int fontStyle, CTFontSizeStyle sizeStyle) {
+        int size = 0;
+        switch (sizeStyle) {
+            case BIG_BIG -> size = BigBigSize;
+            case MORE_BIG -> size = moreBigSize;
+            case BIG -> size = bigSize;
+            case NORMAL -> size = normalSize;
+            case SMALL -> size = smallSize;
+            case MORE_SMALL -> size = moreSmallSize;
+        }//12 14/-15-/16 18/(-19-/)20 -23-/24/25
+        String[] allFontName = getAllFontName();
+        for (int i = 0; i < allFontName.length; i++) {
+            if (allFontName[i].equals("Microsoft YaHei UI"))
+                return new Font("Microsoft YaHei UI", fontStyle, (int) (size * CTInfo.dpi));
+            if (allFontName[i].equals("宋体"))
+                return new Font("宋体", fontStyle, (int) (size * CTInfo.dpi));
+        }
+        return new Font("宋体", fontStyle, (int) (size * CTInfo.dpi));
+    }
+
     public static String[] getAllFontName() {
         //获取所有字体
         GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();//获取本地图形环境

@@ -2,9 +2,13 @@ package com.wmp.classTools.CTComponent;
 
 import com.wmp.PublicTools.CTInfo;
 import com.wmp.PublicTools.EasterEgg.EasterEgg;
-import com.wmp.PublicTools.UITools.*;
+import com.wmp.PublicTools.UITools.CTColor;
+import com.wmp.PublicTools.UITools.CTFont;
+import com.wmp.PublicTools.UITools.CTFontSizeStyle;
+import com.wmp.PublicTools.UITools.GetIcon;
 import com.wmp.PublicTools.appFileControl.IconControl;
 import com.wmp.PublicTools.printLog.Log;
+import com.wmp.classTools.CTComponent.CTButton.CTRoundTextButton;
 import com.wmp.classTools.CTComponent.CTButton.CTTextButton;
 import com.wmp.classTools.CTComponent.Menu.CTPopupMenu;
 
@@ -38,7 +42,8 @@ public class CTOptionPane {
 
     private static final int MESSAGE_TEXT = 0;
     private static final int MESSAGE_INPUT = 1;
-    private static Thread oldThread = null;
+
+    private static final Object i = new Object();
 
     /**
      * 显示消息对话框
@@ -169,53 +174,22 @@ public class CTOptionPane {
      * @return 根据showComponent的类型返回不同的对象
      */
     private static Object[] showDefaultDialog(Component owner, String title, String message, Icon icon, int iconType, int optionType, int messageType, boolean isAlwaysOnTop, String... choices) {
-        JDialog dialog = new JDialog();
-        dialog.setSize((int) (380 * CTInfo.dpi), (int) (200 * CTInfo.dpi));
-        dialog.setLocationRelativeTo(owner);//设置对话框的位置相对于父组件
-        dialog.setModal(true);
-        dialog.setAlwaysOnTop(isAlwaysOnTop);
-        dialog.setTitle(title);
-        dialog.getContentPane().setBackground(CTColor.backColor);
-        dialog.setLayout(new BorderLayout(10, 10));
-        dialog.setDefaultCloseOperation(JDialog.DO_NOTHING_ON_CLOSE);
 
-        JLabel iconLabel = new JLabel();
+        BasicDialog basicDialog =
+                switch (CTInfo.isError ? 1 : 0) {
+                    case 1 -> createDialog(owner, "骇客已入侵", title, icon, iconType, isAlwaysOnTop);
+                    default -> createDialog(owner, title, "", icon, iconType, isAlwaysOnTop);
+                };
+
+        JDialog dialog = basicDialog.dialog;
+        JPanel toolsPanel = basicDialog.toolsPanel;
+
         JTextArea messageArea = new JTextArea();
-
-
-        // 创建图标标签
-        {
-            if (icon == null) {
-                Icon tempIcon = null;
-                switch (iconType) {
-
-                    case ERROR_MESSAGE:
-                        tempIcon = GetIcon.getIcon("错误", IconControl.COLOR_COLORFUL, 50, 50);
-                        break;
-                    case INFORMATION_MESSAGE:
-                        tempIcon = GetIcon.getIcon("提示", IconControl.COLOR_COLORFUL, 50, 50);
-                        break;
-                    case WARNING_MESSAGE:
-                        tempIcon = GetIcon.getIcon("警告", IconControl.COLOR_COLORFUL, 50, 50);
-                        break;
-                }
-                iconLabel = new JLabel(tempIcon);
-                dialog.add(iconLabel, BorderLayout.WEST);//设置图标标签的位置 - 左
-            } else {
-                iconLabel = new JLabel(icon);
-                dialog.add(iconLabel, BorderLayout.WEST);//设置图标标签的位置 - 左
-            }
-        }
-
-
+        CTTextField inputField = new CTTextField();
+        CTComboBox choiceBox = new CTComboBox();
         // 创建消息文本区域
         AtomicReference<String> inputStr = new AtomicReference<>("");
 
-        JPanel toolsPanel = new JPanel(new GridLayout(0, 1, 5, 5));
-        toolsPanel.setOpaque(false);
-
-        CTTextField inputField = new CTTextField();
-        CTComboBox choiceBox = new CTComboBox();
         if (choices != null && choices.length > 0 && !choices[0].isEmpty()) {
             choiceBox.addItems(choices);
         }
@@ -263,7 +237,7 @@ public class CTOptionPane {
                         if (button == MouseEvent.BUTTON3) {
                             CTPopupMenu ETPopupMenu = new CTPopupMenu();
 
-                            CTTextButton edit = new CTTextButton("编辑");
+                            CTRoundTextButton edit = new CTRoundTextButton("编辑");
                             edit.setIcon(GetIcon.getIcon("编辑", 20, 20));
                             edit.addActionListener(event -> {
                                 EasterEgg.errorAction();
@@ -271,7 +245,7 @@ public class CTOptionPane {
 
                             ETPopupMenu.add(edit);
 
-                            CTTextButton copy = new CTTextButton("复制");
+                            CTRoundTextButton copy = new CTRoundTextButton("复制");
                             copy.setIcon(GetIcon.getIcon("编辑", 20, 20));
                             copy.addActionListener(event -> {
 
@@ -291,11 +265,7 @@ public class CTOptionPane {
                 messagePanel.setOpaque(false);
                 messagePanel.getViewport().setOpaque(false);
                 messagePanel.setBorder(null);
-                messagePanel.getViewport().setViewPosition(new Point(0, 0));
-
-                // 添加以下两行代码使滚动条回到顶部
-                messagePanel.getVerticalScrollBar().setValue(0);
-                messagePanel.getHorizontalScrollBar().setValue(0);
+                messageArea.setCaretPosition(0);
 
                 panel.add(messagePanel, BorderLayout.CENTER);
             }
@@ -392,9 +362,6 @@ public class CTOptionPane {
             }
         });
 
-        JLabel finalIconLabel = iconLabel;
-        SwingUtilities.invokeLater(() -> finalIconLabel.repaint());
-
         dialog.setVisible(true);
 
 
@@ -426,61 +393,22 @@ public class CTOptionPane {
      * 时间选择器
      *
      * @param owner         对话框的父组件
-     * @param message       对话框内容
      * @param icon          对话框图标
      * @param iconType      对话框图标类型
      * @param style         时间样式
      * @param isAlwaysOnTop 是否始终置顶
      * @return 时间选择结果
      */
-    public static int[] showTimeChooseDialog(Component owner, String message, Icon icon, int iconType, int style, boolean isAlwaysOnTop) {
-        JDialog dialog = new JDialog();
-        dialog.setSize((int) (380 * CTInfo.dpi), (int) (200 * CTInfo.dpi));
-        dialog.setLocationRelativeTo(owner);//设置对话框的位置相对于父组件
-        dialog.setModal(true);
-        dialog.setAlwaysOnTop(isAlwaysOnTop);
-        dialog.setTitle("时间选择器");
-        dialog.getContentPane().setBackground(CTColor.backColor);
-        dialog.setLayout(new BorderLayout(10, 10));
-        dialog.setDefaultCloseOperation(JDialog.DO_NOTHING_ON_CLOSE);
+    public static int[] showTimeChooseDialog(Component owner, String title, Icon icon, int iconType, int style, boolean isAlwaysOnTop) {
 
-        JLabel iconLabel = new JLabel();
-        JTextArea messageArea = new JTextArea();
+        BasicDialog basicDialog =
+                switch (CTInfo.isError ? 1 : 0) {
+                    case 1 -> createDialog(owner, "骇客已入侵", title, icon, iconType, isAlwaysOnTop);
+                    default -> createDialog(owner, "时间选择器", title, icon, iconType, isAlwaysOnTop);
+                };
 
-
-        // 创建图标标签
-        {
-            if (icon == null) {
-                Icon tempIcon = null;
-                switch (iconType) {
-
-                    case ERROR_MESSAGE:
-                        tempIcon = GetIcon.getIcon("错误", IconControl.COLOR_DEFAULT, 50, 50);
-                        break;
-                    case INFORMATION_MESSAGE:
-                        tempIcon = GetIcon.getIcon("提示", IconControl.COLOR_DEFAULT, 50, 50);
-                        break;
-                    case WARNING_MESSAGE:
-                        tempIcon = GetIcon.getIcon("警告", IconControl.COLOR_DEFAULT, 50, 50);
-                        break;
-                }
-                iconLabel = new JLabel(tempIcon);
-                dialog.add(iconLabel, BorderLayout.WEST);//设置图标标签的位置 - 左
-            } else {
-                iconLabel = new JLabel(icon);
-                dialog.add(iconLabel, BorderLayout.WEST);//设置图标标签的位置 - 左
-            }
-        }
-
-        JLabel messageLabel = new JLabel(message);
-        messageLabel.setFont(new Font("微软雅黑", Font.PLAIN, CTFont.getSize(CTFontSizeStyle.SMALL)));
-        messageLabel.setForeground(CTColor.textColor);
-        dialog.add(messageLabel, BorderLayout.NORTH);
-
-
-        JPanel toolsPanel = new JPanel(new GridLayout(0, 1, 5, 5));
-        toolsPanel.setOpaque(false);
-
+        JDialog dialog = basicDialog.dialog;
+        JPanel toolsPanel = basicDialog.toolsPanel;
 
         JPanel yearPanel = new JPanel(new BorderLayout());
         CTSpinner yearSpinner = new CTSpinner(new SpinnerNumberModel(Calendar.getInstance().get(Calendar.YEAR), Calendar.getInstance().get(Calendar.YEAR), Calendar.getInstance().get(Calendar.YEAR) + 20, 1));
@@ -624,9 +552,6 @@ public class CTOptionPane {
             dialog.add(buttonPanel, BorderLayout.SOUTH);//设置按钮面板的位置 - 下
         }
 
-        JLabel finalIconLabel = iconLabel;
-        SwingUtilities.invokeLater(() -> finalIconLabel.repaint());
-
         dialog.setVisible(true);
 
 
@@ -639,6 +564,56 @@ public class CTOptionPane {
             return arrayInt;
         }
         return new int[0];
+    }
+
+    private static BasicDialog createDialog(Component owner, String title, String northTitle, Icon icon, int iconType, boolean isAlwaysOnTop) {
+        JDialog dialog = new JDialog();
+        dialog.setSize((int) (380 * CTInfo.dpi), (int) (200 * CTInfo.dpi));
+        dialog.setLocationRelativeTo(owner);//设置对话框的位置相对于父组件
+        dialog.setModal(true);
+        dialog.setAlwaysOnTop(isAlwaysOnTop);
+        dialog.setTitle(title);
+        dialog.getContentPane().setBackground(CTColor.backColor);
+        dialog.setLayout(new BorderLayout(10, 10));
+        dialog.setDefaultCloseOperation(JDialog.DO_NOTHING_ON_CLOSE);
+
+        JLabel iconLabel = new JLabel();
+
+        // 创建图标标签
+        {
+            if (icon == null) {
+                Icon tempIcon = null;
+                switch (iconType) {
+
+                    case ERROR_MESSAGE:
+                        tempIcon = GetIcon.getIcon("错误", IconControl.COLOR_COLORFUL, 50, 50);
+                        break;
+                    case INFORMATION_MESSAGE:
+                        tempIcon = GetIcon.getIcon("提示", IconControl.COLOR_COLORFUL, 50, 50);
+                        break;
+                    case WARNING_MESSAGE:
+                        tempIcon = GetIcon.getIcon("警告", IconControl.COLOR_COLORFUL, 50, 50);
+                        break;
+                }
+                iconLabel = new JLabel(tempIcon);
+                dialog.add(iconLabel, BorderLayout.WEST);//设置图标标签的位置 - 左
+            } else {
+                iconLabel = new JLabel(icon);
+                dialog.add(iconLabel, BorderLayout.WEST);//设置图标标签的位置 - 左
+            }
+        }
+
+        if (northTitle != null && northTitle.isEmpty()) {
+            JLabel messageLabel = new JLabel(northTitle);
+            messageLabel.setFont(new Font("微软雅黑", Font.PLAIN, CTFont.getSize(CTFontSizeStyle.SMALL)));
+            messageLabel.setForeground(CTColor.textColor);
+            dialog.add(messageLabel, BorderLayout.NORTH);
+        }
+
+        JPanel toolsPanel = new JPanel(new GridLayout(0, 1, 5, 5));
+        toolsPanel.setOpaque(false);
+
+        return new BasicDialog(dialog, toolsPanel);
     }
 
     public static void showFullScreenMessageDialog(String title, String message) {
@@ -658,103 +633,96 @@ public class CTOptionPane {
      * @param waitTime    等待时间
      */
     public static void showFullScreenMessageDialog(String title, String message, int maxShowTime, int waitTime) {
-        if (oldThread != null) {
-            try {
-                oldThread.join();
-            } catch (InterruptedException e) {
-                Log.err.print(CTOptionPane.class, "等待线程异常", e);
+
+        JDialog messageDialog = new JDialog();
+        messageDialog.setAlwaysOnTop(true);
+        //设置屏幕大小
+        Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+        messageDialog.setSize((int) screenSize.getWidth(), (int) screenSize.getHeight());
+        messageDialog.setLocationRelativeTo(null);
+        messageDialog.setUndecorated(true);
+        messageDialog.getContentPane().setBackground(Color.BLACK);
+        messageDialog.setLayout(new BorderLayout());
+        messageDialog.setModal(true);
+
+        JLabel titleLabel = new JLabel(title);
+        titleLabel.setHorizontalAlignment(JLabel.CENTER);
+        titleLabel.setForeground(Color.WHITE);
+        titleLabel.setOpaque(false);
+
+        titleLabel.setFont(CTFont.getCTFont(Font.PLAIN, CTFontSizeStyle.BIG_BIG));
+        messageDialog.add(titleLabel, BorderLayout.NORTH);
+
+
+        JTextArea textArea = new JTextArea(message);
+        textArea.setBackground(Color.BLACK);
+        textArea.setForeground(Color.WHITE);
+        textArea.setEditable(false);
+        textArea.setLineWrap(true);// 激活自动换行功能
+        textArea.setFont(CTFont.getCTFont(Font.PLAIN, CTFontSizeStyle.MORE_BIG));
+
+        JScrollPane scrollPane = new JScrollPane(textArea);
+        scrollPane.setBorder(null);
+        messageDialog.add(scrollPane, BorderLayout.CENTER);
+
+        JPanel southPanel = new JPanel(new BorderLayout());
+        southPanel.setOpaque(false);
+
+        CTProgressBar progressBar = new CTProgressBar(0, waitTime * 100);
+        southPanel.add(progressBar, BorderLayout.NORTH);
+
+        CTTextButton exitButton = new CTTextButton("关闭(" + waitTime + "s)", false);
+        exitButton.setIcon("关闭", IconControl.COLOR_DEFAULT, 100, 100);
+        exitButton.setFont(CTFont.getCTFont(Font.PLAIN, CTFontSizeStyle.MORE_BIG));
+        exitButton.setEnabled(false);
+        southPanel.add(exitButton, BorderLayout.CENTER);
+
+        messageDialog.add(southPanel, BorderLayout.SOUTH);
+
+        messageDialog.addWindowListener(new WindowAdapter() {
+            @Override
+            public void windowOpened(WindowEvent e) {
+
+                new Thread(() -> {
+                    try {
+                        for (int i = 0; i < waitTime * 100; i++) {
+                            progressBar.setValue(waitTime * 100 - i);
+                            exitButton.setText("关闭(" + (int) (waitTime - i * 0.01 + 1) + "s)");
+                            Thread.sleep(10);
+                        }
+                    } catch (InterruptedException ex) {
+                        Log.err.print(CTOptionPane.class, "发生异常", ex);
+                    }
+
+                    exitButton.setText("关闭");
+                    exitButton.setEnabled(true);
+                    exitButton.addActionListener(ev -> {
+                        messageDialog.dispose();
+
+                    });
+                }).start();
+
+
             }
+        });
+        if (maxShowTime > 0) {
+            Timer t = new Timer(maxShowTime * 1000, e -> {
+
+                if (messageDialog.isVisible())
+                    messageDialog.dispose();
+            });
+            t.setRepeats(false);
+            t.start();
+        }
+        Log.info.print("showFullScreenMessageDialog", "显示全屏弹窗：" + title + ":" + message);
+
+        synchronized (i) {
+            messageDialog.setVisible(true);
         }
 
-        oldThread = new Thread(() -> {
-            JDialog messageDialog = new JDialog();
-            messageDialog.setAlwaysOnTop(true);
-            //设置屏幕大小
-            Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
-            messageDialog.setSize((int) screenSize.getWidth(), (int) screenSize.getHeight());
-            messageDialog.setLocationRelativeTo(null);
-            messageDialog.setUndecorated(true);
-            messageDialog.getContentPane().setBackground(Color.BLACK);
-            messageDialog.setLayout(new BorderLayout());
-            messageDialog.setModal(true);
+    }
 
-            JLabel titleLabel = new JLabel(title);
-            titleLabel.setHorizontalAlignment(JLabel.CENTER);
-            titleLabel.setForeground(Color.WHITE);
-            titleLabel.setOpaque(false);
-
-            titleLabel.setFont(CTFont.getCTFont(Font.PLAIN, CTFontSizeStyle.BIG_BIG));
-            messageDialog.add(titleLabel, BorderLayout.NORTH);
-
-
-            JTextArea textArea = new JTextArea(message);
-            textArea.setBackground(Color.BLACK);
-            textArea.setForeground(Color.WHITE);
-            textArea.setEditable(false);
-            textArea.setLineWrap(true);// 激活自动换行功能
-            textArea.setFont(CTFont.getCTFont(Font.PLAIN, CTFontSizeStyle.MORE_BIG));
-
-            JScrollPane scrollPane = new JScrollPane(textArea);
-            scrollPane.setBorder(null);
-            messageDialog.add(scrollPane, BorderLayout.CENTER);
-
-            JPanel southPanel = new JPanel(new BorderLayout());
-            southPanel.setOpaque(false);
-
-            CTProgressBar progressBar = new CTProgressBar(0, waitTime * 100);
-            southPanel.add(progressBar, BorderLayout.NORTH);
-
-            CTTextButton exitButton = new CTTextButton("关闭(" + waitTime + "s)", false);
-            exitButton.setIcon("关闭", IconControl.COLOR_DEFAULT, 100, 100);
-            exitButton.setFont(CTFont.getCTFont(Font.PLAIN, CTFontSizeStyle.MORE_BIG));
-            exitButton.setEnabled(false);
-            southPanel.add(exitButton, BorderLayout.CENTER);
-
-            messageDialog.add(southPanel, BorderLayout.SOUTH);
-
-            messageDialog.addWindowListener(new WindowAdapter() {
-                @Override
-                public void windowOpened(WindowEvent e) {
-
-                    new Thread(() -> {
-                        try {
-                            for (int i = 0; i < waitTime * 100; i++) {
-                                progressBar.setValue(waitTime * 100 - i);
-                                exitButton.setText("关闭(" + (int) (waitTime - i * 0.01 + 1) + "s)");
-                                Thread.sleep(10);
-                            }
-                        } catch (InterruptedException ex) {
-                            Log.err.print(CTOptionPane.class, "发生异常", ex);
-                        }
-
-                        exitButton.setText("关闭");
-                        exitButton.setEnabled(true);
-                        exitButton.addActionListener(ev -> {
-                            messageDialog.dispose();
-
-                        });
-                    }).start();
-
-
-                }
-            });
-            if (maxShowTime > 0) {
-                Timer t = new Timer(maxShowTime * 1000, e -> {
-
-                    if (messageDialog.isVisible())
-                        messageDialog.dispose();
-                });
-                t.setRepeats(false);
-                t.start();
-            }
-            Log.info.print("showFullScreenMessageDialog", "显示全屏弹窗：" + title + ":" + message);
-
-            messageDialog.setVisible(true);
-
-        });
-        oldThread.start();
-
-
+    private record BasicDialog(JDialog dialog, JPanel toolsPanel) {
     }
 }
 

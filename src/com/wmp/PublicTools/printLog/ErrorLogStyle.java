@@ -9,6 +9,13 @@ public class ErrorLogStyle extends PrintLogStyle {
         super(style);
     }
 
+
+    public void systemPrint(Class<?> owner, Object logInfo, Exception e) {
+
+        Log.systemPrint(LogStyle.ERROR, owner.getName(), logInfo + "\n"
+                + ExceptionStringConverter.convertToString(e, true));
+    }
+
     public void print(Class<?> owner, Object logInfo) {
         super.print(owner.toString(), logInfo);
     }

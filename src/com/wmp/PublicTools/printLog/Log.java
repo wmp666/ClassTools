@@ -2,61 +2,78 @@ package com.wmp.PublicTools.printLog;
 
 import com.wmp.Main;
 import com.wmp.PublicTools.CTInfo;
-import com.wmp.PublicTools.EasterEgg.EasterEgg;
 import com.wmp.PublicTools.OpenInExp;
-import com.wmp.PublicTools.UITools.*;
+import com.wmp.PublicTools.UITools.CTColor;
+import com.wmp.PublicTools.UITools.CTFont;
+import com.wmp.PublicTools.UITools.CTFontSizeStyle;
+import com.wmp.PublicTools.UITools.GetIcon;
 import com.wmp.PublicTools.appFileControl.IconControl;
+import com.wmp.PublicTools.io.GetPath;
+import com.wmp.PublicTools.io.IOForInfo;
 import com.wmp.PublicTools.videoView.MediaPlayer;
+import com.wmp.classTools.CTComponent.CTButton.CTRoundTextButton;
+import com.wmp.classTools.CTComponent.CTButton.CTTextButton;
 import com.wmp.classTools.CTComponent.CTOptionPane;
+import com.wmp.classTools.CTComponent.Menu.CTPopupMenu;
 import com.wmp.classTools.frame.MainWindow;
 import com.wmp.classTools.importPanel.finalPanel.FinalPanel;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.KeyAdapter;
-import java.awt.event.KeyEvent;
+import java.awt.event.*;
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
+import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardOpenOption;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Date;
+import java.util.LinkedList;
 import java.util.Objects;
 import java.util.Random;
 
 public class Log {
     public static final TrayIcon trayIcon = new TrayIcon(GetIcon.getImageIcon(Log.class.getResource("/image/icon/icon.png"), 16, 16).getImage(), "ClassTools");
-    private static final ArrayList<String> logInfList = new ArrayList<>();
+    private static final LinkedList<String> logInfList = new LinkedList<>();
     private static final JTextArea textArea = new JTextArea();
+
     public static InfoLogStyle info = new InfoLogStyle(LogStyle.INFO);
     public static WarnLogStyle warn = new WarnLogStyle(LogStyle.WARN);
     public static ErrorLogStyle err = new ErrorLogStyle(LogStyle.ERROR);
-    private static int index = 0;
+
+    public static String logFilePath;
     private static final Thread thread = new Thread(() -> {
-        while (true) {
-            synchronized (logInfList) { // 恢复同步块
-                int currentSize = logInfList.size();
-                if (index < currentSize) {
-                    //SwingUtilities.invokeLater(() -> {
-                    for (int i = index; i < currentSize; i++) {
-                        textArea.append(logInfList.get(i) + "\n");
-                        //System.out.printf("内容(%s): %s%n", i, logInfList.get(i)); // 添加换行
+        DateFormat dateFormat = new SimpleDateFormat("yyyy_MM_dd_HH_mm_ss");
+        logFilePath = CTInfo.DATA_PATH + "Log\\log_" + dateFormat.format(new Date()) + ".log";
+        try {
+            if (Main.allArgs.get("Log:notSave").contains(Main.argsList)) {
+                BufferedWriter writer = new BufferedWriter(Files.newBufferedWriter(Paths.get(logFilePath), StandardOpenOption.APPEND, StandardOpenOption.CREATE_NEW));
+                while (true) {
+                    synchronized (logInfList) { // 恢复同步块
+                        try {
+                            int currentSize = logInfList.size();
+
+                            for (int i = 0; i < currentSize; i++) {
+                                String logInfo = logInfList.removeFirst();
+                                writer.write(logInfo + "\n");
+                            }
+                            Thread.sleep(1000);  // 刷新间隔
+                        } catch (InterruptedException e) {
+                            Log.warn.message(null, "系统操作", "日志保存异常");
+                        }
                     }
-                    textArea.setCaretPosition(textArea.getDocument().getLength());
-                    //});
-                    index = currentSize; // 在同步块内更新索引
-
-
                 }
             }
-            try {
-                Thread.sleep(1000);  // 缩短刷新间隔
-            } catch (InterruptedException e) {
-                Thread.currentThread().interrupt();
-            }
+
+        } catch (IOException e) {
+            Log.err.print("系统操作", "日志路径获取异常");
+            throw new RuntimeException(e);
         }
+
     });
 
     static {
@@ -75,40 +92,45 @@ public class Log {
     }
 
     public static void initTrayIcon() {
-        PopupMenu popupMenu = new PopupMenu();
-        MenuItem exit = new MenuItem("exit");
+        CTPopupMenu popupMenu = new CTPopupMenu();
+        CTRoundTextButton exit = new CTRoundTextButton("关闭");
+        exit.setIcon(GetIcon.getImageIcon("关闭", IconControl.COLOR_COLORFUL, 20, 20));
+        exit.setFont(CTFont.getCTFont(Font.BOLD, CTFontSizeStyle.NORMAL));
         exit.addActionListener(e -> {
             Log.exit(0);
         });
         popupMenu.add(exit);
 
-        MenuItem refresh = new MenuItem("refresh");
+        CTRoundTextButton refresh = new CTRoundTextButton("刷新");
+        refresh.setIcon(GetIcon.getImageIcon("刷新", IconControl.COLOR_COLORFUL, 20, 20));
+        refresh.setFont(CTFont.getCTFont(Font.BOLD, CTFontSizeStyle.NORMAL));
         refresh.addActionListener(e -> MainWindow.refreshPanel());
         popupMenu.add(refresh);
 
-        MenuItem more = new MenuItem("more");
+        CTRoundTextButton more = new CTRoundTextButton("更多");
+        more.setIcon(GetIcon.getImageIcon("更多", IconControl.COLOR_COLORFUL, 20, 20));
+        more.setFont(CTFont.getCTFont(Font.BOLD, CTFontSizeStyle.NORMAL));
         more.addActionListener(e -> {
-            JDialog moreDialog = new JDialog();
-            moreDialog.setTitle("更多");
-            moreDialog.setLayout(new FlowLayout(FlowLayout.CENTER));
-            moreDialog.setSize((int) (250 * CTInfo.dpi), (int) (300 * CTInfo.dpi));
-
-            moreDialog.setModal(true);
-            moreDialog.getContentPane().setBackground(CTColor.backColor);
-            moreDialog.setIconImage(GetIcon.getImageIcon("更多", IconControl.COLOR_DEFAULT, 32, 32).getImage());
-
+            CTPopupMenu moreMenu = new CTPopupMenu();
             FinalPanel.allButList.forEach(but -> {
-                moreDialog.add(but.toRoundTextButton());
+                moreMenu.add(but.toRoundTextButton());
             });
 
-            moreDialog.pack();
-            moreDialog.setLocationRelativeTo(null);
-            moreDialog.setVisible(true);
+            moreMenu.show(more,0, 0);
         });
 
         popupMenu.add(more);
 
-        trayIcon.setPopupMenu(popupMenu);
+        trayIcon.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+
+                popupMenu.show(null,e.getXOnScreen(),  e.getYOnScreen());
+            }
+        });
+        trayIcon.addActionListener(e -> {
+            popupMenu.show(null,0, 0);
+        });
     }
 
     public static void exit(int status) {
@@ -133,15 +155,17 @@ public class Log {
         window.setVisible(true);
 
 
-        // 改为自动关闭窗口
         new Timer(3000, e -> {
-            window.dispose();
+            thread.interrupt();
+            synchronized (logInfList) {// 改为自动关闭窗口
+                if (!logInfList.isEmpty()) return;
 
-            System.exit(status);
+                window.dispose();
 
+                System.exit(status);
+            }
         }).start();
 
-        saveLog(false);
     }
 
     private static void initBG(Container c, JFrame window, Dimension screenSize) {
@@ -157,14 +181,6 @@ public class Log {
                 "生命从夜中醒来\n却在触碰到光明的瞬间坠入永眠"
         };
         String exitStr = exitStrList[new Random().nextInt(exitStrList.length)];
-        /*String imageStr = switch (exitStr) {
-            case "我们终将重逢" -> "wmzjcf.jpg";
-            case "明天见" -> "mtj.jpg";
-            case "愿此行，终抵群星" -> "ycxzdqx.jpg";
-            case "为了与你重逢愿倾尽所有" -> "wlyncfwyqjsy.jpg";
-            case "生命从夜中醒来\n却在触碰到光明的瞬间坠入永眠" -> "smcyzxl.jpg";
-            default -> "";
-        };*/
         if (exitStr.contains("\n")) {
             exitStr = "<html>" + exitStr.replaceAll("\\n", "<br>") + "</html>";
         }
@@ -205,10 +221,14 @@ public class Log {
         if (SystemTray.isSupported() && Objects.requireNonNull(style) == LogStyle.INFO) {
             trayIcon.displayMessage(owner, logInfo, TrayIcon.MessageType.INFO);
         }
-        Log.print(style, owner, logInfo, null);
+        Log.print(style, owner, logInfo, null, false);
     }
 
     public static void print(LogStyle style, String owner, Object logInfo, Container c) {
+        print(style, owner, logInfo, c, true);
+    }
+
+    public static void print(LogStyle style, String owner, Object logInfo, Container c, boolean showMessageDialog) {
         Date date = new Date();
         DateFormat dateFormat = new SimpleDateFormat("MM.dd HH:mm:ss");
         String dateStr = dateFormat.format(date);
@@ -222,69 +242,47 @@ public class Log {
                         "[" + owner + "]: " +
                         logInfo;
                 System.out.println(info);
-                logInfList.add(info);
+                logInfList.addLast(info);
             }
 
             case WARN -> {
 
                 info = "[" + dateStr + "]" +
-                        "[警告]" +
+                        "[warn]" +
                         "[" + owner + "] :" +
                         logInfo;
                 trayIcon.displayMessage(owner, logInfo.toString(), TrayIcon.MessageType.WARNING);
                 System.err.println(info);
-                logInfList.add(info);
+
+
+                logInfList.addLast(info);
             }
 
             case ERROR -> {
 
                 info = "[" + dateStr + "]" +
-                        "[错误]" +
+                        "[error]" +
                         "[" + owner + "] :" +
                         logInfo;
                 trayIcon.displayMessage(owner, logInfo.toString(), TrayIcon.MessageType.ERROR);
                 System.err.println(info);
+                logInfList.addLast(info);
 
-                {
-                    boolean isPlayer = true;
-                    // 1/10概率播放
-                    {
-                        Random r = new Random();
-                        if (r.nextInt(10) == 0) isPlayer = true;
-                    }
+                MediaPlayer.playMusic("系统", "错误");
 
-                    Random r = new Random();
-
-                    if (isPlayer) {
-                        if (CTInfo.isError) {
-                            MediaPlayer.playMusic("程序", "错误", "银狼");
-                        } else {
-                            int i = r.nextInt(3);
-                            switch (i) {
-                                case 0 -> MediaPlayer.playMusic("程序", "错误", "空");
-                                case 1 -> MediaPlayer.playMusic("程序", "错误", "荧");
-                                case 2 -> MediaPlayer.playMusic("程序", "错误", "欧洛伦");
-
-                            }
-                        }
-                    }
+                if (showMessageDialog) {
+                    String title = "世界拒绝了我";
+                    Icon icon = null;
+                    if (CTInfo.isError) icon = GetIcon.getIcon("图标", IconControl.COLOR_DEFAULT, 100, 100);
+                    CTOptionPane.showMessageDialog(c, title, logInfo.toString(), icon, CTOptionPane.ERROR_MESSAGE, true);
                 }
 
 
-
-                String title;
-                if (CTInfo.isError) title = "骇客已入侵";
-                else title = "世界拒绝了我";
-                Icon icon = null;
-                if (CTInfo.isError) icon = GetIcon.getIcon("图标", IconControl.COLOR_DEFAULT, 100, 100);
-                CTOptionPane.showMessageDialog(c, title, logInfo.toString(), icon, CTOptionPane.ERROR_MESSAGE, true);
-
-                logInfList.add(info);
             }
         }
     }
 
-    public static ArrayList<String> getLogInfList() {
+    public static LinkedList<String> getLogInfList() {
         return logInfList;
     }
 
@@ -293,6 +291,21 @@ public class Log {
     }
 
     public static void showLogDialog(boolean happenSystemErr) {
+        Log.info.loading.showDialog("log", "正在读取日志文件");
+
+        textArea.setText("");
+        try {
+            BufferedReader br = new BufferedReader(Files.newBufferedReader(Path.of(logFilePath), StandardCharsets.UTF_8));
+            while (br.ready()) {
+                textArea.append(br.readLine() + "\n");
+            }
+            br.close();
+        } catch (IOException e) {
+            textArea.setText("日志文件不存在");
+            Log.info.loading.closeDialog("log");
+            Log.err.print(Log.class, "读取日志文件失败", e);
+        }
+
         //dialog.removeAll();
         JDialog dialog = new JDialog((Frame) null, false);
         dialog.setTitle("日志");
@@ -300,23 +313,8 @@ public class Log {
         dialog.setLocationRelativeTo(null);
         dialog.setLayout(new BorderLayout());
 
+        textArea.setFont(CTFont.getDefaultFont(Font.PLAIN, CTFontSizeStyle.SMALL));
         textArea.setEditable(false);
-        textArea.addKeyListener(new KeyAdapter() {
-            @Override
-            public void keyTyped(KeyEvent e) {
-                EasterEgg.errorAction();
-            }
-
-            @Override
-            public void keyPressed(KeyEvent e) {
-                EasterEgg.errorAction();
-            }
-
-            @Override
-            public void keyReleased(KeyEvent e) {
-                EasterEgg.errorAction();
-            }
-        });
 
         JScrollPane scrollPane = new JScrollPane(textArea);
         dialog.add(scrollPane, BorderLayout.CENTER);
@@ -334,7 +332,7 @@ public class Log {
         });
 
 
-        JButton clearButton = new JButton("清空");
+        CTTextButton clearButton = new CTTextButton("清空");
         clearButton.addActionListener(e -> {
             int i = Log.info.showChooseDialog(dialog, "日志-清空", "是否清空并保存?");
             if (i == JOptionPane.YES_OPTION) {
@@ -342,11 +340,10 @@ public class Log {
             }
             textArea.setText("");
             logInfList.clear();
-            index = 0;
 
         });
 
-        JButton openButton = new JButton("打开所在位置");
+        CTTextButton openButton = new CTTextButton("打开所在位置");
         openButton.addActionListener(e -> {
             if (!Files.exists(Paths.get(CTInfo.DATA_PATH + "Log\\"))) {
                 try {
@@ -359,7 +356,7 @@ public class Log {
             OpenInExp.open(CTInfo.DATA_PATH + "Log\\");
         });
 
-        JButton saveButton = new JButton("保存");
+        CTTextButton saveButton = new CTTextButton("保存至");
         saveButton.addActionListener(e -> {
             saveLog();
         });
@@ -376,29 +373,29 @@ public class Log {
     }
 
     private static void saveLog() {
-        saveLog(true);
+        saveLog(GetPath.getDirectoryPath(null, "保存日志"), true);
+    }
+
+    private static void saveLog(String path) {
+        saveLog(path, true);
     }
 
     private static void saveLog(boolean showMessageDialog) {
-        DateFormat dateFormat = new SimpleDateFormat("yyyy_MM_dd_HH_mm_ss");
-        //将logInfList中的内容转化为byte数组
-        StringBuilder sb = new StringBuilder();
-        for (String s : logInfList) {
-            sb.append(s).append("\n");
-        }
-        // 实现日志保存
-        try {
-            if (!Files.exists(Paths.get(CTInfo.DATA_PATH + "Log\\"))) {
-                Files.createDirectories(Paths.get(CTInfo.DATA_PATH + "Log\\"));
+        saveLog(GetPath.getDirectoryPath(null, "保存日志"), showMessageDialog);
+    }
+
+    private static void saveLog(String path, boolean showMessageDialog) {
+
+        synchronized (logInfList) {
+            try {
+                IOForInfo.copyFile(Paths.get(logFilePath), Paths.get(path, "Log.txt"));
+
+                if (showMessageDialog)
+                    Log.info.message(null, "Log", "日志保存成功");
+            } catch (Exception e) {
+                Log.err.print(Log.class, "日志保存失败", e);
+                throw new RuntimeException(e);
             }
-            Files.writeString(Paths.get(CTInfo.DATA_PATH + "Log\\Log_" + dateFormat.format(new Date()) + ".txt"),
-                    sb.toString(),
-                    StandardOpenOption.CREATE,
-                    StandardOpenOption.TRUNCATE_EXISTING);
-            if (showMessageDialog)
-                Log.info.message(null, "Log", "日志保存成功");
-        } catch (IOException e) {
-            Log.err.print(Log.class, "日志保存失败", e);
         }
     }
 }

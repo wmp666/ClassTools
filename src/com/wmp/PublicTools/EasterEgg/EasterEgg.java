@@ -283,7 +283,7 @@ public class EasterEgg {
     public static void errorAction() {
         Log.info.print("EasterEgg", "你没有权限!!!");
 
-        CTOptionPane.showMessageDialog(null, "警告", "你没有权限!!!", GetIcon.getIcon("刻律德菈", IconControl.COLOR_DEFAULT, 100, 100), CTOptionPane.ERROR_MESSAGE, true);
+        CTOptionPane.showMessageDialog(null, "doge", "你没有权限!!!", GetIcon.getIcon("刻律德菈", IconControl.COLOR_DEFAULT, 100, 100), CTOptionPane.ERROR_MESSAGE, true);
     }
 
     public static void showHolidayBlessings(int style) {

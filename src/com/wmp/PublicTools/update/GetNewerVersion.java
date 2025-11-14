@@ -162,7 +162,7 @@ public class GetNewerVersion {
 
                     try {
                         IOForInfo.copyFile(Path.of(CTInfo.TEMP_PATH, "UpdateFile", "ClassTools.jar"), Path.of(GetPath.getAppPath(GetPath.SOURCE_FILE_PATH), "ClassTools.jar"));
-                    } catch (IOException e) {
+                    } catch (Exception e) {
                         Log.err.print(dialog, GetNewerVersion.class, "更新文件失败", e);
                     }
 

@@ -69,14 +69,14 @@ public class IconControl {
                     getColorfulImageMap(DEFAULT_IMAGE_MAP, CTColor.getParticularColor("blue")));
 
         } catch (Exception e) {
-            Log.err.print(IconControl.class, "图片加载失败", e);
+            Log.warn.message(null, IconControl.class.getName(), "图片加载失败:\n" + e);
         }
         try {
             //判断磁盘中是否有图片
             getNewImage();
 
         } catch (Exception e) {
-            Log.err.print(IconControl.class, "图片数据判断失败", e);
+            Log.warn.message(null, IconControl.class.getName(), "图片数据判断失败:\n" + e);
         }
 
         try {
@@ -116,7 +116,7 @@ public class IconControl {
 
 
         } catch (Exception e) {
-            Log.err.print(IconControl.class, "本地图片加载失败", e);
+            Log.warn.message(null, IconControl.class.getName(), "本地图片加载失败:\n" + e);
         }
 
         COLORFUL_IMAGE_MAP.put("light", DEFAULT_IMAGE_MAP);
@@ -168,14 +168,13 @@ public class IconControl {
                 }
             }
         } catch (Exception e) {
-            Log.err.print(IconControl.class, "获取图标版本失败", e);
+            Log.warn.print(IconControl.class.getName(), "获取图标版本失败:\n" + e);
         }
     }
 
     public static boolean downloadFile(AtomicReference<String> downloadURL, AtomicReference<String> version) throws InterruptedException {
         String choose = Log.info.showChooseDialog(null, "IconControl", "图片文件不存在/存在新版,选择获取方式", "下载", "导入压缩包");
         String zipPath = "";
-
 
 
         if (choose.equals("下载")) {

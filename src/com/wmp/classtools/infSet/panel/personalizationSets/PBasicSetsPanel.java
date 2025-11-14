@@ -7,6 +7,7 @@ import com.wmp.PublicTools.UITools.CTFontSizeStyle;
 import com.wmp.PublicTools.io.IOForInfo;
 import com.wmp.PublicTools.printLog.Log;
 import com.wmp.classTools.CTComponent.CTBorderFactory;
+import com.wmp.classTools.CTComponent.CTCheckBox;
 import com.wmp.classTools.CTComponent.CTComboBox;
 import com.wmp.classTools.CTComponent.CTPanel.setsPanel.CTBasicSetsPanel;
 import com.wmp.classTools.CTComponent.CTTextField;
@@ -32,13 +33,13 @@ public class PBasicSetsPanel extends CTBasicSetsPanel {
     //字体 数据
     private final ArrayList<CTTextField> FontSizeList = new ArrayList<>();
     //隐藏按钮 数据
-    private final TreeMap<String, JCheckBox> disposeButton = new TreeMap<>();
+    private final TreeMap<String, CTCheckBox> disposeButton = new TreeMap<>();
     //隐藏面板 数据
-    private final TreeMap<String, JCheckBox> disposePanel = new TreeMap<>();
+    private final TreeMap<String, CTCheckBox> disposePanel = new TreeMap<>();
     //其他数据
-    private final JCheckBox StartUpdate = new JCheckBox("启动检查更新");
-    private final JCheckBox canExit = new JCheckBox("防止被意外关闭");
-    private final JCheckBox startUp = new JCheckBox("开机自启动");
+    private final CTCheckBox StartUpdate = new CTCheckBox("启动检查更新");
+    private final CTCheckBox canExit = new CTCheckBox("防止被意外关闭");
+    private final CTCheckBox startUp = new CTCheckBox("开机自启动");
     //兼容数据
     private final CTTextField dpi = new CTTextField();
 
@@ -192,7 +193,7 @@ public class PBasicSetsPanel extends CTBasicSetsPanel {
         {
 
             FinalPanel.allButList.forEach(button -> {
-                JCheckBox checkBox = new JCheckBox(button.getName());
+                CTCheckBox checkBox = new CTCheckBox(button.getName());
                 checkBox.setFont(CTFont.getCTFont(Font.PLAIN, CTFontSizeStyle.SMALL));
                 checkBox.setBackground(CTColor.backColor);
                 checkBox.setForeground(CTColor.textColor);
@@ -219,7 +220,7 @@ public class PBasicSetsPanel extends CTBasicSetsPanel {
                     return;
                 }
 
-                JCheckBox checkBox = new JCheckBox(panel.getName());
+                CTCheckBox checkBox = new CTCheckBox(panel.getName());
                 checkBox.setFont(CTFont.getCTFont(Font.PLAIN, CTFontSizeStyle.SMALL));
                 checkBox.setBackground(CTColor.backColor);
                 checkBox.setForeground(CTColor.textColor);

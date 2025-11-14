@@ -9,15 +9,6 @@ import java.util.List;
 
 public abstract class CTViewPanel extends CTPanel {
 
-    private List<CTSetsPanel> ctSetsPanelList = new ArrayList<>();
-
-    private boolean isScreenProductViewPanel = false;
-    private boolean independentRefresh = false;
-    /**
-     * 忽略组件状态(是否显示)
-     */
-    private boolean ignoreState = false;
-
     private final Timer refreshTimer = new Timer(2 * 1000, e -> {
         try {
             Refresh();
@@ -25,6 +16,13 @@ public abstract class CTViewPanel extends CTPanel {
             Log.err.print(getClass(), "刷新失败", ex);
         }
     });
+    private List<CTSetsPanel> ctSetsPanelList = new ArrayList<>();
+    private boolean isScreenProductViewPanel = false;
+    private boolean independentRefresh = false;
+    /**
+     * 忽略组件状态(是否显示)
+     */
+    private boolean ignoreState = false;
 
     public CTViewPanel() {
         super();

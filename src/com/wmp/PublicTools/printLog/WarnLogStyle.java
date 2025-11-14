@@ -3,6 +3,7 @@ package com.wmp.PublicTools.printLog;
 import com.wmp.PublicTools.CTInfo;
 import com.wmp.PublicTools.UITools.GetIcon;
 import com.wmp.PublicTools.appFileControl.IconControl;
+import com.wmp.PublicTools.videoView.MediaPlayer;
 import com.wmp.classTools.CTComponent.CTOptionPane;
 import com.wmp.classTools.CTComponent.LoadingDialog;
 
@@ -24,17 +25,29 @@ public class WarnLogStyle extends PrintLogStyle {
         return title;
     }
 
+    @org.jetbrains.annotations.Nullable
     private static Icon getIcon() {
         if (CTInfo.isError) return GetIcon.getIcon("图标", IconControl.COLOR_DEFAULT, 100, 100);
         return null;
     }
 
-    public void systemPrint(String owner, String logInfo) {
-        Log.systemPrint(LogStyle.WARN, owner, logInfo);
+    @Override
+    public void print(String owner, Object logInfo) {
+        Log.systemPrint(getStyle(), owner, logInfo.toString());
+        print(null, owner, logInfo.toString());
+    }
+
+    @Override
+    public void print(Container c, String owner, Object logInfo) {
+        super.print(c, owner, logInfo);
     }
 
     public void message(Container c, String owner, String logInfo) {
         Log.print(getStyle(), owner, "弹窗信息->" + logInfo, c);
+
+
+        MediaPlayer.playMusic("系统", "警告");
+
         String title = getTitle(owner);
         CTOptionPane.showMessageDialog(c, title, logInfo, getIcon(), CTOptionPane.WARNING_MESSAGE, true);
     }

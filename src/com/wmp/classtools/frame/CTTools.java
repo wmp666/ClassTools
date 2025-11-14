@@ -9,16 +9,21 @@ import com.wmp.PublicTools.UITools.CTFontSizeStyle;
 import com.wmp.PublicTools.appFileControl.IconControl;
 import com.wmp.PublicTools.printLog.Log;
 import com.wmp.classTools.CTComponent.CTButton.CTRoundTextButton;
+import com.wmp.classTools.CTComponent.CTPanel.setsPanel.CTListSetsPanel;
+import com.wmp.classTools.CTComponent.CTPanel.setsPanel.CTSetsPanel;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.geom.RoundRectangle2D;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.List;
 
 public class CTTools extends JDialog {
+    public static CTListSetsPanel CTToolsSetsPanel = new CTListSetsPanel(CTInfo.DATA_PATH);
+
     private static final ArrayList<CTTools> oldClass = new ArrayList<>();
-    private static final ArrayList<CTTool> tools = new ArrayList<>();
+    public static final ArrayList<CTTool> tools = new ArrayList<>();
 
     public CTTools() {
         oldClass.forEach(CTTools::dispose);
@@ -36,6 +41,14 @@ public class CTTools extends JDialog {
 
         tools.clear();
         tools.add(new DianMingTool());
+
+        CTToolsSetsPanel.setName("快捷工具设置");
+        CTToolsSetsPanel.clearCTList();
+        tools.forEach(tool -> {
+            for (CTSetsPanel ctSetsPanel : tool.getCtSetsPanelList()) {
+                CTToolsSetsPanel.add(ctSetsPanel);
+            }
+        });
 
         CTRoundTextButton openButton = new CTRoundTextButton(style == 0 ? "<" : ">");
         openButton.setFont(CTFont.getCTFont(Font.BOLD, CTFontSizeStyle.NORMAL));
@@ -75,7 +88,7 @@ public class CTTools extends JDialog {
             dialog.getContentPane().add(button);
         });
 
-        CTRoundTextButton button = new CTRoundTextButton("打开更多工具(快捷工具)");
+        CTRoundTextButton button = new CTRoundTextButton("打开更多工具(快捷启动单元)");
         button.setIcon("快捷工具", IconControl.COLOR_COLORFUL, 24, 24);
         button.setFont(CTFont.getCTFont(Font.BOLD, CTFontSizeStyle.BIG));
         button.addActionListener(ex -> {

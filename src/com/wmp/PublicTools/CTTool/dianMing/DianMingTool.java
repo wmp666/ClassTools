@@ -1,5 +1,6 @@
 package com.wmp.PublicTools.CTTool.dianMing;
 
+import com.wmp.Main;
 import com.wmp.PublicTools.CTInfo;
 import com.wmp.PublicTools.CTTool.CTTool;
 import com.wmp.PublicTools.UITools.CTColor;
@@ -9,10 +10,12 @@ import com.wmp.PublicTools.io.GetPath;
 import com.wmp.PublicTools.printLog.Log;
 import com.wmp.classTools.CTComponent.CTButton.CTTextButton;
 import com.wmp.classTools.CTComponent.CTOptionPane;
+import com.wmp.classTools.infSet.InfSetDialog;
 
 import javax.swing.*;
 import java.awt.*;
 import java.io.IOException;
+import java.util.Arrays;
 import java.util.Random;
 
 public class DianMingTool extends CTTool {
@@ -21,6 +24,8 @@ public class DianMingTool extends CTTool {
 
     public DianMingTool() {
         super("点名器");
+
+        this.setCtSetsPanelList(new DianMingSetsPanel(CTInfo.DATA_PATH));
     }
 
     @Override
@@ -47,43 +52,33 @@ public class DianMingTool extends CTTool {
         CTTextButton setsButton = new CTTextButton("设置");
         setsButton.setFont(CTFont.getCTFont(Font.BOLD, CTFontSizeStyle.BIG));
         setsButton.addActionListener(e -> {
-            JDialog setsDialog = new JDialog();
-            setsDialog.setModal(true);
-            setsDialog.setAlwaysOnTop(true);
-            setsDialog.setLayout(new BorderLayout());
-            setsDialog.setTitle("设置");
-
-            CTTextButton inputButton = new CTTextButton("导入");
-            inputButton.addActionListener(e1 -> {
-                String filePath = GetPath.getFilePath(setsDialog, "请选择文件", ".txt", "点名列表");
-                if (filePath != null) {
-                    try {
-                        DianMingInfoControl.setDianMingInfo(filePath);
-                    } catch (IOException ex) {
-                        Log.err.print(getClass(), "导入文件出错", ex);
-                    }
-                }
-            });
-            setsDialog.add(inputButton, BorderLayout.CENTER);
-
-            setsDialog.pack();
-            setsDialog.setLocationRelativeTo(null);
-            setsDialog.setVisible(true);
+            try {
+                new InfSetDialog("快捷工具设置");
+            } catch (Exception ex) {
+                Log.err.print(getClass(), "设置打开失败", ex);
+                throw new RuntimeException(ex);
+            }
         });
         buttonPanel.add(setsButton);
-        CTTextButton dianMingButton = new CTTextButton("点名");
+        CTTextButton dianMingButton = new CTTextButton("点名(" + DianMingInfoControl.getCount() + "次)");
         dianMingButton.setFont(CTFont.getCTFont(Font.BOLD, CTFontSizeStyle.BIG));
         dianMingButton.addActionListener(e -> {
-            String[] dianMingInfo = null;
+            String[] nameList = null;
             try {
-                dianMingInfo = DianMingInfoControl.getDianMingInfo();
+                nameList = DianMingInfoControl.getDianMingInfo();
             } catch (IOException ex) {
                 Log.err.print(getClass(), "获取点名信息出错", ex);
             }
-            if (dianMingInfo != null || !dianMingInfo[0].equals("err")) {
-                String resultName = dianMingInfo[new Random().nextInt(dianMingInfo.length)];
+            int nameCount = DianMingInfoControl.getCount();
+            String[] resultName = new String[nameCount];
+            for (int i = 0; i < nameCount; i++) {
+                if (nameList != null) {
+                    resultName[i] = nameList[new Random().nextInt(nameList.length)];
+                }
+            }
 
-                String[] finalDianMingInfo = dianMingInfo;
+
+                String[] finalDianMingInfo = nameList;
                 new Thread(() -> {
                     //匀速循环
                     {
@@ -92,7 +87,9 @@ public class DianMingTool extends CTTool {
                         for (int i = 0; i < 50; i++) {
                             int finalCount = count;
                             SwingUtilities.invokeLater(() -> {
-                                nameLabel.setText(finalDianMingInfo[finalCount]);
+                                if (finalDianMingInfo != null) {
+                                    nameLabel.setText(finalDianMingInfo[finalCount]);
+                                }
                                 nameLabel.repaint();
                             });
                             try {
@@ -139,20 +136,20 @@ public class DianMingTool extends CTTool {
                     }
 
                     SwingUtilities.invokeLater(() -> {
-                        nameLabel.setText(resultName);
+                        nameLabel.setText(resultName[0]);
                         nameLabel.repaint();
                     });
 
-                    CTOptionPane.showFullScreenMessageDialog("点名结果", resultName, 0, 1);
+                    CTOptionPane.showFullScreenMessageDialog("点名结果", Arrays.toString(resultName), 0, 1);
 
                 }).start();
-            }
         });
         buttonPanel.add(dianMingButton);
 
         dialog.add(nameLabel, BorderLayout.CENTER);
         dialog.add(buttonPanel, BorderLayout.SOUTH);
 
+        dialog.pack();
 
         return dialog;
     }

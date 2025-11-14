@@ -16,8 +16,8 @@ import java.awt.*;
 
 public class WeatherInfoSetsPanel extends CTSetsPanel {
 
-    private String cityCode = "360000";
     private final CTTextField keyTextField = new CTTextField();
+    private String cityCode = "360000";
 
     public WeatherInfoSetsPanel(String basicDataPath) {
         super(basicDataPath);

@@ -137,44 +137,51 @@ public class IOForInfo {
         return thread;
     }
 
-    public static void copyFile(Path source, Path target) throws IOException {
+    public static void copyFile(Path source, Path target){
 
         int id = new Random().nextInt();
         Log.info.loading.showDialog("更新文件" + id, "正在复制文件...");
 
-        File sourceFile = source.toFile();
-        File targetFile = target.toFile();
+        try {
+            File sourceFile = source.toFile();
+            File targetFile = target.toFile();
 
-        if (!sourceFile.exists()) {
-            Log.info.loading.closeDialog("更新文件" + id);
-            Log.err.print(IOForInfo.class, "源文件不存在");
-            return;
-        }
-
-
-        if (!targetFile.exists()) {
-            targetFile.getParentFile().mkdirs();
-            targetFile.createNewFile();
-        }
+            if (!sourceFile.exists()) {
+                Log.info.loading.closeDialog("更新文件" + id);
+                Log.err.print(IOForInfo.class, "源文件不存在");
+                return;
+            }
 
 
-        FileOutputStream targetOut = new FileOutputStream(targetFile);
-        FileInputStream sourceIn = new FileInputStream(sourceFile);
+            if (!targetFile.exists()) {
+                targetFile.getParentFile().mkdirs();
+                targetFile.createNewFile();
+            }
 
 
-        byte[] temp = new byte[1024 * 10];
-        int total2 = 0;
+            FileOutputStream targetOut = new FileOutputStream(targetFile);
+            FileInputStream sourceIn = new FileInputStream(sourceFile);
 
-        while (true) {
-            int i = sourceIn.read(temp);
-            if (i == -1) break;
-            targetOut.write(temp, 0, i);
-            total2 += i;
 
-            Log.info.print("DownloadURLFile-下载", "拷贝进度: " + ((total2 * 100L) / sourceFile.length()));
-            // 更新进度条
-            int finalTotal = (int) (total2 * 100 / sourceFile.length());
-            Log.info.loading.updateDialog("更新文件" + id, finalTotal);
+            byte[] temp = new byte[1024 * 10];
+            int total2 = 0;
+
+            while (true) {
+                int i = sourceIn.read(temp);
+                if (i == -1) break;
+                targetOut.write(temp, 0, i);
+                total2 += i;
+
+                Log.info.print("DownloadURLFile-下载", "拷贝进度: " + ((total2 * 100L) / sourceFile.length()));
+                // 更新进度条
+                int finalTotal = (int) (total2 * 100 / sourceFile.length());
+                Log.info.loading.updateDialog("更新文件" + id, finalTotal);
+            }
+
+            targetOut.close();
+            sourceIn.close();
+        } catch (IOException e) {
+            Log.err.print(IOForInfo.class, "文件复制失败", e);
         }
 
         Log.info.loading.closeDialog("更新文件" + id);
@@ -217,6 +224,7 @@ public class IOForInfo {
                     content.append(line);
                 }
             }
+            writer.close();
         } catch (IOException e) {
             Log.err.print(IOForInfo.class, file.getPath() + "文件写入失败", e);
         }
@@ -252,6 +260,7 @@ public class IOForInfo {
 
             Log.info.print("IOForInfo-获取数据", "数据内容: " + replace);
             Log.info.print("IOForInfo-获取数据", file.getPath() + "文件读取完成");
+            reader.close();
             return !s.isEmpty() ? s : "err";
         } catch (IOException e) {
             Log.err.print(IOForInfo.class, file.getPath() + "文件读取失败", e);

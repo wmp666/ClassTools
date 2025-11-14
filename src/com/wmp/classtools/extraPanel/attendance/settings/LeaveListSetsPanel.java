@@ -5,6 +5,7 @@ import com.wmp.PublicTools.UITools.CTFont;
 import com.wmp.PublicTools.UITools.CTFontSizeStyle;
 import com.wmp.PublicTools.io.IOForInfo;
 import com.wmp.PublicTools.printLog.Log;
+import com.wmp.classTools.CTComponent.CTCheckBox;
 import com.wmp.classTools.CTComponent.CTPanel.setsPanel.CTSetsPanel;
 
 import javax.swing.*;
@@ -20,7 +21,7 @@ public class LeaveListSetsPanel extends CTSetsPanel {
     private final File leaveListPath;
 
 
-    private final ArrayList<JCheckBox> checkBoxList = new ArrayList<>();
+    private final ArrayList<CTCheckBox> checkBoxList = new ArrayList<>();
 
     public LeaveListSetsPanel(String basicDataPath) throws IOException {
         super(basicDataPath);
@@ -65,7 +66,7 @@ public class LeaveListSetsPanel extends CTSetsPanel {
         Log.info.print("数据设置界面-initATSet", "studentList:" + studentList);
         Log.info.print("数据设置界面-initATSet", "leaveList:" + leaveList);
         for (String student : studentList) {
-            JCheckBox checkBox = new JCheckBox(student);
+            CTCheckBox checkBox = new CTCheckBox(student);
             checkBox.setFont(CTFont.getCTFont(Font.PLAIN, CTFontSizeStyle.SMALL));
             checkBox.setBackground(CTColor.backColor);
             checkBox.setForeground(CTColor.textColor);
@@ -119,7 +120,7 @@ public class LeaveListSetsPanel extends CTSetsPanel {
         //保存数据-请假信息
         {
             StringBuilder sb = new StringBuilder();
-            for (JCheckBox checkBox : checkBoxList) {
+            for (CTCheckBox checkBox : checkBoxList) {
                 if (checkBox.isSelected()) {
                     sb.append(checkBox.getText()).append("\n");
                 }
