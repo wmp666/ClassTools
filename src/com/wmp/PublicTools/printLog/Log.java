@@ -51,7 +51,7 @@ public class Log {
         DateFormat dateFormat = new SimpleDateFormat("yyyy_MM_dd_HH_mm_ss");
         logFilePath = CTInfo.DATA_PATH + "Log\\log_" + dateFormat.format(new Date()) + ".log";
         try {
-            if (Main.allArgs.get("log:notSave").contains(Main.argsList)) {
+            if (!Main.allArgs.get("log:notSave").contains(Main.argsList)) {
                 BufferedWriter writer = new BufferedWriter(Files.newBufferedWriter(Paths.get(logFilePath), StandardOpenOption.APPEND, StandardOpenOption.CREATE_NEW));
                 while (!willExit) {
                     synchronized (logInfList) { // 恢复同步块
@@ -139,8 +139,7 @@ public class Log {
         mouseAdapter = new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
-
-                popupMenu.show(null, e.getXOnScreen(), e.getYOnScreen());
+                popupMenu.show(null, e.getXOnScreen() - popupMenu.getWidth(), e.getYOnScreen() - popupMenu.getHeight());
             }
         };
         actionListener = e -> {
