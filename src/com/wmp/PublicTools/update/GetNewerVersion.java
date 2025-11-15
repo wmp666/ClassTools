@@ -154,7 +154,7 @@ public class GetNewerVersion {
                 int i = isNewerVersion(latestVersion, CTInfo.version);
 
                 Thread updateThread = new Thread(() -> {
-                    Log.info.message(dialog, "更新至 " + latestVersion, "即将开始更新, 无论更新是否完成都将关闭程序, 没有提醒");
+                    Log.warn.message(dialog, "更新至 " + latestVersion, "即将开始更新, 无论更新是否完成都将关闭程序, 没有提醒");
 
                     IOForInfo.deleteDirectoryRecursively(Path.of(CTInfo.TEMP_PATH + "UpdateFile\\"));
 

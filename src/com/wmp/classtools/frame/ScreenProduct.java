@@ -52,6 +52,7 @@ public class ScreenProduct extends JDialog {
 
         if (setsScrInfo.getBGImagesLength() > 1)
             initBackground(new Random().nextInt(setsScrInfo.getBGImagesLength() - 1));
+        else initBackground(0);
         initColor();
 
 

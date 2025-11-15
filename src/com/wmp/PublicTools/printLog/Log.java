@@ -95,13 +95,7 @@ public class Log {
 
     public static void initTrayIcon() {
         CTPopupMenu popupMenu = new CTPopupMenu();
-        CTRoundTextButton exit = new CTRoundTextButton("关闭");
-        exit.setIcon(GetIcon.getImageIcon("关闭", IconControl.COLOR_COLORFUL, 20, 20));
-        exit.setFont(CTFont.getCTFont(Font.BOLD, CTFontSizeStyle.NORMAL));
-        exit.addActionListener(e -> {
-            Log.exit(0);
-        });
-        popupMenu.add(exit);
+
 
         CTRoundTextButton refresh = new CTRoundTextButton("刷新");
         refresh.setIcon(GetIcon.getImageIcon("刷新", IconControl.COLOR_COLORFUL, 20, 20));
@@ -122,6 +116,21 @@ public class Log {
         });
 
         popupMenu.add(more);
+
+        CTRoundTextButton exit = new CTRoundTextButton("关闭");
+        exit.setIcon(GetIcon.getImageIcon("关闭", IconControl.COLOR_COLORFUL, 20, 20));
+        exit.setFont(CTFont.getCTFont(Font.BOLD, CTFontSizeStyle.NORMAL));
+        exit.addActionListener(e -> {
+            Log.exit(0);
+        });
+        popupMenu.add(exit);
+
+        CTRoundTextButton hide = new CTRoundTextButton("隐藏");
+        hide.setIcon(GetIcon.getImageIcon("删除", IconControl.COLOR_COLORFUL, 20, 20));
+        hide.setFont(CTFont.getCTFont(Font.BOLD, CTFontSizeStyle.NORMAL));
+        hide.addActionListener(e -> {
+            popupMenu.setVisible(false);
+        });
 
         trayIcon.addMouseListener(new MouseAdapter() {
             @Override
