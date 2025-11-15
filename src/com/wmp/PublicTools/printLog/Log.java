@@ -316,6 +316,7 @@ public class Log {
             Log.info.loading.closeDialog("log");
             Log.err.print(Log.class, "读取日志文件失败", e);
         }
+        Log.info.loading.closeDialog("log");
 
         //dialog.removeAll();
         JDialog dialog = new JDialog((Frame) null, false);
