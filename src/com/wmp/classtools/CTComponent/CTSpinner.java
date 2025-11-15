@@ -72,8 +72,8 @@ public class CTSpinner extends JPanel {
         }
     }
 
-    public void setText(String text) {
-        textField.setText(text);
+    public void setValue(Object value) {
+        textField.setText(value.toString());
     }
 
     public String getValue() {

@@ -1,4 +1,4 @@
-package com.wmp.classTools.infSet.panel.personalizationSets;
+package com.wmp.classTools.infSet.panel.personalizationSets.basicSets;
 
 import com.wmp.PublicTools.CTInfo;
 import com.wmp.PublicTools.UITools.CTColor;
@@ -13,6 +13,7 @@ import com.wmp.classTools.CTComponent.CTPanel.setsPanel.CTBasicSetsPanel;
 import com.wmp.classTools.CTComponent.CTTextField;
 import com.wmp.classTools.frame.MainWindow;
 import com.wmp.classTools.importPanel.finalPanel.FinalPanel;
+import com.wmp.classTools.infSet.panel.personalizationSets.PersonalizationPanel;
 import com.wmp.classTools.infSet.tools.SetStartUp;
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -25,7 +26,7 @@ import java.util.ArrayList;
 import java.util.Objects;
 import java.util.TreeMap;
 
-public class PBasicSetsPanel extends CTBasicSetsPanel {
+public class PBBasicSetsPanel extends CTBasicSetsPanel {
     //颜色 数据
     private final CTComboBox mainColorComboBox = new CTComboBox();
     private final CTComboBox mainThemeComboBox = new CTComboBox();
@@ -34,19 +35,15 @@ public class PBasicSetsPanel extends CTBasicSetsPanel {
     private final ArrayList<CTTextField> FontSizeList = new ArrayList<>();
     //隐藏按钮 数据
     private final TreeMap<String, CTCheckBox> disposeButton = new TreeMap<>();
-    //隐藏面板 数据
-    private final TreeMap<String, CTCheckBox> disposePanel = new TreeMap<>();
     //其他数据
     private final CTCheckBox StartUpdate = new CTCheckBox("启动检查更新");
     private final CTCheckBox canExit = new CTCheckBox("防止被意外关闭");
     private final CTCheckBox startUp = new CTCheckBox("开机自启动");
-    //兼容数据
-    private final CTTextField dpi = new CTTextField();
 
-    public PBasicSetsPanel(String basicDataPath) {
+    public PBBasicSetsPanel(String basicDataPath) {
         super(basicDataPath);
 
-        setName("基础设置");
+        setName("个性化设置");
 
         initUI();
     }
@@ -205,33 +202,6 @@ public class PBasicSetsPanel extends CTBasicSetsPanel {
             });
         }
 
-        JPanel disPanPanel = new JPanel();
-        disPanPanel.setOpaque(false);
-        disPanPanel.setLayout(new GridLayout(0, 2));
-        //设置组件隐藏
-        disPanPanel.setBorder(CTBorderFactory.createTitledBorder("隐藏部分组件"));
-        {
-
-            MainWindow.allPanelList.forEach(panel -> {
-
-                if (panel.getID().equals("TimeViewPanel") ||
-                        //panel.getID().equals("NewsTextPanel") ||
-                        panel.getID().equals("FinalPanel")) {
-                    return;
-                }
-
-                CTCheckBox checkBox = new CTCheckBox(panel.getName());
-                checkBox.setFont(CTFont.getCTFont(Font.PLAIN, CTFontSizeStyle.SMALL));
-                checkBox.setBackground(CTColor.backColor);
-                checkBox.setForeground(CTColor.textColor);
-                disposePanel.put(panel.getID(), checkBox);
-            });
-
-            disposePanel.forEach((key, value) -> {
-                disPanPanel.add(value);
-            });
-        }
-
         JPanel otherPanel = new JPanel();
         otherPanel.setOpaque(false);
         otherPanel.setLayout(new GridLayout(0, 2));
@@ -259,33 +229,6 @@ public class PBasicSetsPanel extends CTBasicSetsPanel {
 
         }
 
-        JPanel compatiblePanel = new JPanel();
-        compatiblePanel.setOpaque(false);
-        compatiblePanel.setLayout(new GridLayout(0, 2));
-        compatiblePanel.setBorder(CTBorderFactory.createTitledBorder("其他设置"));
-        //其他设置
-        {
-            JPanel dpiPanel = new JPanel();
-            dpiPanel.setOpaque(false);
-            dpiPanel.setLayout(new FlowLayout(FlowLayout.LEFT));
-            {
-                JLabel dpiLabel = new JLabel("组件放大倍率:");
-                dpiLabel.setForeground(CTColor.textColor);
-                dpiLabel.setFont(CTFont.getCTFont(Font.PLAIN, CTFontSizeStyle.SMALL));
-
-                dpi.setFont(CTFont.getCTFont(Font.PLAIN, CTFontSizeStyle.SMALL));
-                dpi.setText(String.valueOf(CTInfo.dpi));
-
-
-                dpiPanel.add(dpiLabel);
-                dpiPanel.add(dpi);
-            }
-
-            compatiblePanel.add(dpiPanel);
-
-
-        }
-
         gbc.fill = GridBagConstraints.HORIZONTAL;
         gbc.weightx = 1.0;
         gbc.gridx = 0;
@@ -296,11 +239,7 @@ public class PBasicSetsPanel extends CTBasicSetsPanel {
         gbc.gridy++;
         SetsPanel.add(disButPanel, gbc);
         gbc.gridy++;
-        SetsPanel.add(disPanPanel, gbc);
-        gbc.gridy++;
         SetsPanel.add(otherPanel, gbc);
-        gbc.gridy++;
-        SetsPanel.add(compatiblePanel, gbc);
 
         this.setLayout(new BorderLayout());
         //this.setBackground(CTColor.backColor);
@@ -346,16 +285,6 @@ public class PBasicSetsPanel extends CTBasicSetsPanel {
                     }
                 }
             }
-            //
-            if (jsonObject.has("disposePanel")) {
-                JSONArray JSONArrdisPanel = jsonObject.getJSONArray("disposePanel");
-                for (int i = 0; i < JSONArrdisPanel.length(); i++) {
-                    String s = JSONArrdisPanel.getString(i);
-                    if (disposePanel.containsKey(s)) {
-                        disposePanel.get(s).setSelected(true);
-                    }
-                }
-            }
             //是否可关闭
             if (jsonObject.has("canExit")) {
                 canExit.setSelected(!jsonObject.getBoolean("canExit"));
@@ -367,96 +296,81 @@ public class PBasicSetsPanel extends CTBasicSetsPanel {
             }
             //是否自动启动
             startUp.setSelected(SetStartUp.isAutoStartEnabled());
-            //放大倍率
-            if (jsonObject.has("dpi"))
-                dpi.setText(String.valueOf(jsonObject.getDouble("dpi")));
 
         }
     }
 
     @Override
     public void save() {
-        //保存数据-个性化
-        {
-            IOForInfo io = new IOForInfo(new File(CTInfo.DATA_PATH + "setUp.json"));
-            JSONObject jsonObject = new JSONObject();
-
-            //设置主题色
-            String tempMainColor = switch (Objects.requireNonNull(mainColorComboBox.getSelectedItem()).toString()) {
-                case "黑色" -> "black";
-                case "白色" -> "white";
-                case "绿色" -> "green";
-                case "红色" -> "red";
-                default -> "blue";
-            };
-            jsonObject.put("mainColor", tempMainColor);
-
-            //设置主题
-            String tempMainThemeColor = switch (Objects.requireNonNull(mainThemeComboBox.getSelectedItem()).toString()) {
-                case "深色" -> "dark";
-                default -> "light";
-            };
-            jsonObject.put("mainTheme", tempMainThemeColor);
-
-            //设置字体
-            String tempFontName = Objects.requireNonNull(FontNameComboBox.getSelectedItem(), "微软雅黑").toString();
-            jsonObject.put("FontName", tempFontName);
-            //设置隐藏按钮
+        try {
+            //保存数据-个性化
             {
-                ArrayList<String> tempList = new ArrayList<>();
-                disposeButton.forEach((key, value) -> {
-                    if (value.isSelected()) {
-                        tempList.add(key);
-                    }
-                });
-                jsonObject.put("disposeButton", tempList);
-            }
-            //设置隐藏面板
-            {
-                ArrayList<String> tempList = new ArrayList<>();
-                disposePanel.forEach((key, value) -> {
-                    if (value.isSelected()) {
-                        tempList.add(key);
-                    }
-                });
-                jsonObject.put("disposePanel", tempList);
-            }
-            //设置是否可退出
-            jsonObject.put("canExit", !canExit.isSelected());
+                IOForInfo io = new IOForInfo(new File(CTInfo.DATA_PATH + "setUp.json"));
+                JSONObject jsonObject = new JSONObject(io.getInfos());
 
-            //设置启动时是否更新
-            jsonObject.put("StartUpdate", StartUpdate.isSelected());
+                //设置主题色
+                String tempMainColor = switch (Objects.requireNonNull(mainColorComboBox.getSelectedItem()).toString()) {
+                    case "黑色" -> "black";
+                    case "白色" -> "white";
+                    case "绿色" -> "green";
+                    case "红色" -> "red";
+                    default -> "blue";
+                };
+                jsonObject.put("mainColor", tempMainColor);
 
-            //设置是否自动启动
-            jsonObject.put("isAutoStart", startUp.isSelected());
-            String Path = SetStartUp.getFilePath();
-            if (!startUp.isSelected()) {
-                SetStartUp.disableAutoStart();// 移除自启动
-            } else {
-                if (Path != null) {
-                    if (Path.endsWith(".jar")) {
-                        SetStartUp.enableAutoStart("javaw -jar " + Path); // 使用javaw避免黑窗口
-                    } else if (Path.endsWith(".exe")) {
-                        SetStartUp.enableAutoStart(Path);
+                //设置主题
+                String tempMainThemeColor = switch (Objects.requireNonNull(mainThemeComboBox.getSelectedItem()).toString()) {
+                    case "深色" -> "dark";
+                    default -> "light";
+                };
+                jsonObject.put("mainTheme", tempMainThemeColor);
+
+                //设置字体
+                String tempFontName = Objects.requireNonNull(FontNameComboBox.getSelectedItem(), "微软雅黑").toString();
+                jsonObject.put("FontName", tempFontName);
+                //设置隐藏按钮
+                {
+                    ArrayList<String> tempList = new ArrayList<>();
+                    disposeButton.forEach((key, value) -> {
+                        if (value.isSelected()) {
+                            tempList.add(key);
+                        }
+                    });
+                    jsonObject.put("disposeButton", tempList);
+                }
+                //设置是否可退出
+                jsonObject.put("canExit", !canExit.isSelected());
+
+                //设置启动时是否更新
+                jsonObject.put("StartUpdate", StartUpdate.isSelected());
+
+                //设置是否自动启动
+                jsonObject.put("isAutoStart", startUp.isSelected());
+                String Path = SetStartUp.getFilePath();
+                if (!startUp.isSelected()) {
+                    SetStartUp.disableAutoStart();// 移除自启动
+                } else {
+                    if (Path != null) {
+                        if (Path.endsWith(".jar")) {
+                            SetStartUp.enableAutoStart("javaw -jar " + Path); // 使用javaw避免黑窗口
+                        } else if (Path.endsWith(".exe")) {
+                            SetStartUp.enableAutoStart(Path);
+                        }
                     }
+
+                }
+
+                Log.info.print("InfSetDialog", "保存数据: " + jsonObject);
+                try {
+                    io.setInfo(jsonObject.toString(2));
+
+                } catch (Exception e) {
+                    Log.err.print(PersonalizationPanel.class, "保存数据失败", e);
                 }
 
             }
-            //设置DPI
-            try {
-                jsonObject.put("DPI", Double.valueOf(dpi.getText()));
-            } catch (NumberFormatException e) {
-                jsonObject.put("DPI", 1.0);
-            }
-
-            Log.info.print("InfSetDialog", "保存数据: " + jsonObject);
-            try {
-                io.setInfo(jsonObject.toString(2));
-
-            } catch (Exception e) {
-                Log.err.print(PersonalizationPanel.class, "保存数据失败", e);
-            }
-
+        } catch (IOException e) {
+            throw new RuntimeException(e);
         }
     }
 

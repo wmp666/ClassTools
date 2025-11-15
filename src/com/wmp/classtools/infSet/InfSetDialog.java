@@ -11,6 +11,7 @@ import com.wmp.PublicTools.io.ZipPack;
 import com.wmp.PublicTools.printLog.Log;
 import com.wmp.classTools.CTComponent.CTButton.CTTextButton;
 import com.wmp.classTools.CTComponent.CTList;
+import com.wmp.classTools.CTComponent.CTOptionPane;
 import com.wmp.classTools.CTComponent.CTPanel.setsPanel.CTSetsPanel;
 import com.wmp.classTools.CTComponent.Menu.CTMenu;
 import com.wmp.classTools.CTComponent.Menu.CTMenuBar;
@@ -22,11 +23,14 @@ import com.wmp.classTools.infSet.panel.personalizationSets.PersonalizationPanel;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.WindowEvent;
+import java.awt.event.WindowListener;
+import java.io.File;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.TreeMap;
 
-public class InfSetDialog extends JFrame {
+public class InfSetDialog extends JFrame implements WindowListener {
 
     private final Container c;
 
@@ -56,7 +60,10 @@ public class InfSetDialog extends JFrame {
         this.setTitle("设置");
         this.setSize(400, 550);
         this.setLocationRelativeTo(null);
+        this.setAlwaysOnTop(true);
         this.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+
+        this.addWindowListener( this);
 
         Log.info.systemPrint("设置", "正在获取设置页面...");
 
@@ -173,9 +180,34 @@ public class InfSetDialog extends JFrame {
         CTMenuItem inputAllInf = new CTMenuItem("导出所有数据(.ctdatas)");
         inputAllInf.setIcon(GetIcon.getIcon("更新", 16, 16));
         inputAllInf.addActionListener(e -> {
+            File file = new File(CTInfo.DATA_PATH);
+            if (!file.exists() || !file.isDirectory()) {
+                Log.err.print(getClass(), "数据文件夹不存在/异常");
+                return;
+            }
+
+
             String path = GetPath.getDirectoryPath(this, "请选择导出目录");
-            //将ClassTools文件夹中的文件打包为.zip
-            ZipPack.createZip(path, CTInfo.DATA_PATH, "ClassTools.ctdatas");
+            String s = Log.info.showChooseDialog(this, "请选择数据", "请选择数据", "全部数据", "部分数据");
+            if (s.equals("全部数据")) {
+                //将ClassTools文件夹中的文件打包为.zip
+                ZipPack.createZip(path, CTInfo.DATA_PATH, "ClassTools.ctdatas");
+            } else if (s.equals("部分数据")) {
+
+                File[] files = file.listFiles();
+
+                if (files != null) {
+                    String[] names = new String[files.length];
+                    for (int i = 0; i < files.length; i++) {
+                        names[i] = files[i].getName();
+                    }
+                    String[] zipFiles = CTOptionPane.showChoicesDialog(this, "请选择数据", "请选择数据", null, CTOptionPane.INFORMATION_MESSAGE, true, names);
+                    ZipPack.createZip(path, CTInfo.DATA_PATH, "ClassTools.ctdatas", zipFiles);
+                }
+
+            }
+
+
         });
 
 
@@ -296,4 +328,40 @@ public class InfSetDialog extends JFrame {
         }
     }
 
+    @Override
+    public void windowOpened(WindowEvent e) {
+
+    }
+
+    @Override
+    public void windowClosing(WindowEvent e) {
+
+    }
+
+    @Override
+    public void windowClosed(WindowEvent e) {
+
+    }
+
+    @Override
+    public void windowIconified(WindowEvent e) {
+        //将窗口从最小化中重新显示
+        this.setExtendedState(JFrame.NORMAL);
+        this.setVisible(true);
+    }
+
+    @Override
+    public void windowDeiconified(WindowEvent e) {
+
+    }
+
+    @Override
+    public void windowActivated(WindowEvent e) {
+
+    }
+
+    @Override
+    public void windowDeactivated(WindowEvent e) {
+
+    }
 }

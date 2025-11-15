@@ -45,6 +45,8 @@ public class Log {
     public static WarnLogStyle warn = new WarnLogStyle(LogStyle.WARN);
     public static ErrorLogStyle err = new ErrorLogStyle(LogStyle.ERROR);
 
+    private static boolean willExit = false;
+
     public static String logFilePath;
     private static final Thread thread = new Thread(() -> {
         DateFormat dateFormat = new SimpleDateFormat("yyyy_MM_dd_HH_mm_ss");
@@ -52,7 +54,7 @@ public class Log {
         try {
             if (Main.allArgs.get("Log:notSave").contains(Main.argsList)) {
                 BufferedWriter writer = new BufferedWriter(Files.newBufferedWriter(Paths.get(logFilePath), StandardOpenOption.APPEND, StandardOpenOption.CREATE_NEW));
-                while (true) {
+                while (!willExit) {
                     synchronized (logInfList) { // 恢复同步块
                         try {
                             int currentSize = logInfList.size();
@@ -61,7 +63,7 @@ public class Log {
                                 String logInfo = logInfList.removeFirst();
                                 writer.write(logInfo + "\n");
                             }
-                            Thread.sleep(1000);  // 刷新间隔
+                            Thread.sleep(100);  // 刷新间隔
                         } catch (InterruptedException e) {
                             Log.warn.message(null, "系统操作", "日志保存异常");
                         }
@@ -156,14 +158,9 @@ public class Log {
 
 
         new Timer(3000, e -> {
-            thread.interrupt();
-            synchronized (logInfList) {// 改为自动关闭窗口
-                if (!logInfList.isEmpty()) return;
-
                 window.dispose();
 
                 System.exit(status);
-            }
         }).start();
 
     }

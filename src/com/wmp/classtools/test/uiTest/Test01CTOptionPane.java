@@ -16,6 +16,9 @@ public class Test01CTOptionPane {
             throw new RuntimeException(e);
         }
 
+        String[] strings = CTOptionPane.showChoicesDialog(null, "测试", "测试文本", null, 1, true, "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15");
+        System.out.println("输入信息->" + Arrays.toString(strings));
+
         CTOptionPane.showMessageDialog(null, "测试", "测试文本——酷酷酷酷酷酷酷酷酷酷酷酷酷酷酷酷酷为如此llllllllllllllllllllllllllllllllll二万人次人文传统测温额外v他认为而维持特认为测", null, CTOptionPane.INFORMATION_MESSAGE, true);
 
         System.out.println("窗口1关闭");
@@ -38,7 +41,7 @@ public class Test01CTOptionPane {
         System.out.println("输入信息->" + Arrays.toString(ss));
         System.out.println("窗口4关闭");
 
-        String s1 = CTOptionPane.showConfirmDialog(null, "测试", "测试文本", null, 1, true, "1", "2", "3");
+        String s1 = CTOptionPane.showChoiceDialog(null, "测试", "测试文本", null, 1, true, "1", "2", "3");
         System.out.println("输入信息->" + s1);
         System.out.println("窗口5关闭");
     }

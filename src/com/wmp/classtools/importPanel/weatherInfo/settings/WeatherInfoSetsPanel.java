@@ -75,6 +75,7 @@ public class WeatherInfoSetsPanel extends CTSetsPanel {
 
             keyTextField.setText(WeatherInfoControl.getKey());
             keyTextField.setFont(CTFont.getCTFont(Font.PLAIN, CTFontSizeStyle.NORMAL));
+            keyTextField.setBackground(CTColor.backColor);
             keyTextField.setForeground(CTColor.textColor);
 
             CTTextButton helpButton = new CTTextButton("?", false);

@@ -2,17 +2,21 @@ package com.wmp.classTools.CTComponent;
 
 import com.wmp.PublicTools.CTInfo;
 import com.wmp.PublicTools.UITools.CTColor;
+import com.wmp.PublicTools.UITools.CTFont;
+import com.wmp.PublicTools.UITools.CTFontSizeStyle;
 import com.wmp.PublicTools.printLog.Log;
 
 import javax.swing.*;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 import java.awt.*;
+import java.awt.event.FocusEvent;
+import java.awt.event.FocusListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.geom.RoundRectangle2D;
 
-public class CTCheckBox extends JCheckBox implements MouseListener, ChangeListener {
+public class CTCheckBox extends JCheckBox implements MouseListener, ChangeListener, FocusListener {
     public CTCheckBox() {
         this("");
     }
@@ -32,9 +36,15 @@ public class CTCheckBox extends JCheckBox implements MouseListener, ChangeListen
             Log.warn.print("CTCheckBox", "图标无法显示");
         }
 
+        this.setBackground(CTColor.backColor);
+        this.setForeground(CTColor.textColor);
+
+        this.setFont(CTFont.getDefaultFont(Font.PLAIN, CTFontSizeStyle.SMALL));
+
         this.setOpaque(false);
         this.addMouseListener(this);
         this.addChangeListener(this);
+        this.addFocusListener(this);
     }
 
     public CTCheckBox(Icon icon, boolean selected) {
@@ -83,21 +93,33 @@ public class CTCheckBox extends JCheckBox implements MouseListener, ChangeListen
 
         int width = getWidth();
         int height = getHeight();
+        float startY = (float) (getHeight() - getFont().getSize()) / 2;
 
         int textX = 0, textY = 0;
 
         // 绘制按钮
         g2.setColor(getBackground());
-        g2.fill(new RoundRectangle2D.Float(0, (getHeight() - getFont().getSize())/2, getFont().getSize()*2, getFont().getSize(), getFont().getSize(), getFont().getSize()));
+
+        g2.fill(new RoundRectangle2D.Float(0, startY, getFont().getSize()*2, getFont().getSize(), getFont().getSize(), getFont().getSize()));
         textX = getFont().getSize()*2 + getIconTextGap();
 
-        int roundX = 0;
+        //绘制边框
+        g2.setColor(getForeground());
+        g2.draw(new RoundRectangle2D.Float(0, startY, getFont().getSize()*2, getFont().getSize(), getFont().getSize(), getFont().getSize()));
+
+
+        float roundX = 0;
+        float interval = 0.2f;
+        float roundSize = getFont().getSize() * (1f - interval);
         if (isSelected()){
             roundX = getFont().getSize();
+        }else{
+            roundX = getFont().getSize() * interval;
         }
 
+
         g2.setColor(getForeground());
-        g2.fill(new RoundRectangle2D.Float(roundX, (getHeight() - getFont().getSize())/2, getFont().getSize(), getFont().getSize(), getFont().getSize(), getFont().getSize()));
+        g2.fill(new RoundRectangle2D.Float(roundX, startY + (getFont().getSize() * interval)/2, roundSize, roundSize, roundSize, roundSize));
 
         // 绘制文本
         if (getText() != null && !getText().isEmpty()) {
@@ -130,5 +152,15 @@ public class CTCheckBox extends JCheckBox implements MouseListener, ChangeListen
         }else{
             this.setForeground(CTColor.textColor);
         }
+    }
+
+    @Override
+    public void focusGained(FocusEvent e) {
+        this.setBackground(new Color(218, 218, 218));
+    }
+
+    @Override
+    public void focusLost(FocusEvent e) {
+        this.setBackground(CTColor.backColor);
     }
 }

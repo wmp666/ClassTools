@@ -43,6 +43,7 @@ public class NewUITest {
         frame.add(checkBox);
 
 
+
         frame.setVisible(true);
     }
 }

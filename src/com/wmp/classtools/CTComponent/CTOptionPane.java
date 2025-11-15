@@ -90,7 +90,7 @@ public class CTOptionPane {
      * @param choices       显示的选项
      * @return 用户选择的选项 , 按取消返回"NULL"
      */
-    public static String showConfirmDialog(Container owner, String title, String message, Icon icon, int iconType, boolean isAlwaysOnTop, String... choices) {
+    public static String showChoiceDialog(Container owner, String title, String message, Icon icon, int iconType, boolean isAlwaysOnTop, String... choices) {
         Object[] o = showDefaultDialog(owner, title, message, icon, iconType, YES_NO_BUTTONS, MESSAGE_TEXT, isAlwaysOnTop, choices);
         if (o != null && o.length > 0 && o[0] != null) {
             return o[0].toString();
@@ -287,66 +287,22 @@ public class CTOptionPane {
         AtomicInteger choose = new AtomicInteger(2);
 
         // 创建按钮面板
-        {
-            if (optionType == YES_NO_BUTTONS) {
-
-                ChooseButton yesButton = new ChooseButton("是") {
-                    @Override
-                    public void actionPerformed(ActionEvent e) {
-                        choose.set(YES_OPTION);
-                        if (messageType == MESSAGE_INPUT) {
-                            inputStr.set(inputField.getText());
-                        }
-                        dialog.dispose();
-                    }
-                };
-
-                dialog.addWindowListener(new WindowAdapter() {
-
-                    @Override
-                    public void windowOpened(WindowEvent e) {
-                        yesButton.requestFocus();
-                    }
-                });
-
-                ChooseButton noButton = new ChooseButton("否") {
-                    @Override
-                    public void actionPerformed(ActionEvent e) {
-                        choose.set(NO_OPTION);
-                        dialog.dispose();
-                    }
-                };
-                JPanel buttonPanel = new JPanel(new GridLayout(1, 2, 10, 10));
-                buttonPanel.setOpaque(false);
-                buttonPanel.add(yesButton);
-                buttonPanel.add(noButton);
-                dialog.add(buttonPanel, BorderLayout.SOUTH);//设置按钮面板的位置 - 下
-
-            } else if (optionType == YES_BUTTONS) {
-                ChooseButton yesButton = new ChooseButton("确定") {
-                    @Override
-                    public void actionPerformed(ActionEvent e) {
-                        choose.set(NO_OPTION);
-                        dialog.dispose();
-                    }
-                };
-
-                dialog.addWindowListener(new WindowAdapter() {
-
-                    @Override
-                    public void windowOpened(WindowEvent e) {
-                        yesButton.requestFocus();
-                    }
-                });
-
-                JPanel buttonPanel = new JPanel(new GridLayout(1, 1, 10, 10));
-                buttonPanel.setOpaque(false);
-                buttonPanel.add(yesButton);
-                dialog.add(buttonPanel, BorderLayout.SOUTH);//设置按钮面板的位置 - 下
-
+        createChoiceButton(dialog, optionType, new ChoiceButtonListener() {
+            @Override
+            public void yesButtonClick() {
+                choose.set(YES_OPTION);
+                if (messageType == MESSAGE_INPUT) {
+                    inputStr.set(inputField.getText());
+                }
+                dialog.dispose();
             }
-        }
 
+            @Override
+            public void noButtonClick() {
+                choose.set(NO_OPTION);
+                dialog.dispose();
+            }
+        });
 
         dialog.addWindowListener(new WindowAdapter() {
             @Override
@@ -395,11 +351,46 @@ public class CTOptionPane {
      * @param owner         对话框的父组件
      * @param icon          对话框图标
      * @param iconType      对话框图标类型
-     * @param style         时间样式
+     * @param timeStyle         时间样式
      * @param isAlwaysOnTop 是否始终置顶
      * @return 时间选择结果
      */
-    public static int[] showTimeChooseDialog(Component owner, String title, Icon icon, int iconType, int style, boolean isAlwaysOnTop) {
+    public static int[] showTimeChooseDialog(Component owner, String title, Icon icon, int iconType, int timeStyle, boolean isAlwaysOnTop) {
+        int[] times = new int[]{0, 0, 0};
+        if (timeStyle == YEAR_MONTH_DAY) {
+            times[0] = Calendar.getInstance().get(Calendar.YEAR);
+            times[1] = Calendar.getInstance().get(Calendar.MONTH) + 1;
+            times[2] = Calendar.getInstance().get(Calendar.DAY_OF_MONTH);
+
+        } else if (timeStyle == MONTH_DAY) {
+
+            times[0] = Calendar.getInstance().get(Calendar.MONTH) + 1;
+            times[1] = Calendar.getInstance().get(Calendar.DAY_OF_MONTH);
+
+        } else if (timeStyle == HOURS_MINUTES) {
+            times[0] = Calendar.getInstance().get(Calendar.HOUR_OF_DAY);
+            times[1] = Calendar.getInstance().get(Calendar.MINUTE);
+
+        } else if (timeStyle == HOURS_MINUTES_SECOND) {
+            times[0] = Calendar.getInstance().get(Calendar.HOUR_OF_DAY);
+            times[1] = Calendar.getInstance().get(Calendar.MINUTE);
+            times[2] = Calendar.getInstance().get(Calendar.SECOND);
+        }
+        return showTimeChooseDialog(owner, title, icon, iconType, timeStyle, true, times);
+    }
+
+    /**
+     * 时间选择器
+     *
+     * @param owner         对话框的父组件
+     * @param icon          对话框图标
+     * @param iconType      对话框图标类型
+     * @param style         时间样式
+     * @param isAlwaysOnTop 是否始终置顶
+     * @param times         时间
+     * @return 时间选择结果
+     */
+    public static int[] showTimeChooseDialog(Component owner, String title, Icon icon, int iconType, int style, boolean isAlwaysOnTop, int[] times) {
 
         BasicDialog basicDialog =
                 switch (CTInfo.isError ? 1 : 0) {
@@ -411,7 +402,7 @@ public class CTOptionPane {
         JPanel toolsPanel = basicDialog.toolsPanel;
 
         JPanel yearPanel = new JPanel(new BorderLayout());
-        CTSpinner yearSpinner = new CTSpinner(new SpinnerNumberModel(Calendar.getInstance().get(Calendar.YEAR), Calendar.getInstance().get(Calendar.YEAR), Calendar.getInstance().get(Calendar.YEAR) + 20, 1));
+        CTSpinner yearSpinner = new CTSpinner(new SpinnerNumberModel(2000, 2000, Calendar.getInstance().get(Calendar.YEAR) + 20, 1));
         {
             yearPanel.setOpaque(false);
 
@@ -424,7 +415,7 @@ public class CTOptionPane {
         }
 
         JPanel monthPanel = new JPanel(new BorderLayout());
-        CTSpinner monthSpinner = new CTSpinner(new SpinnerNumberModel(Calendar.getInstance().get(Calendar.MONTH) + 1, 1, 12, 1));
+        CTSpinner monthSpinner = new CTSpinner(new SpinnerNumberModel(1, 1, 12, 1));
         {
             monthPanel.setOpaque(false);
             monthSpinner.setFont(new Font("微软雅黑", Font.PLAIN, CTFont.getSize(CTFontSizeStyle.SMALL)));
@@ -436,7 +427,7 @@ public class CTOptionPane {
         }
 
         JPanel dayPanel = new JPanel(new BorderLayout());
-        CTSpinner daySpinner = new CTSpinner(new SpinnerNumberModel(Calendar.getInstance().get(Calendar.DAY_OF_MONTH), 1, 31, 1));
+        CTSpinner daySpinner = new CTSpinner(new SpinnerNumberModel(1, 1, 31, 1));
         {
             dayPanel.setOpaque(false);
             daySpinner.setFont(new Font("微软雅黑", Font.PLAIN, CTFont.getSize(CTFontSizeStyle.SMALL)));
@@ -448,7 +439,7 @@ public class CTOptionPane {
         }
 
         JPanel hourPanel = new JPanel(new BorderLayout());
-        CTSpinner hourSpinner = new CTSpinner(new SpinnerNumberModel(Calendar.getInstance().get(Calendar.HOUR_OF_DAY), 0, 23, 1));
+        CTSpinner hourSpinner = new CTSpinner(new SpinnerNumberModel(0, 0, 23, 1));
         {
             hourPanel.setOpaque(false);
             hourSpinner.setFont(new Font("微软雅黑", Font.PLAIN, CTFont.getSize(CTFontSizeStyle.SMALL)));
@@ -460,7 +451,7 @@ public class CTOptionPane {
         }
 
         JPanel minutePanel = new JPanel(new BorderLayout());
-        CTSpinner minuteSpinner = new CTSpinner(new SpinnerNumberModel(Calendar.getInstance().get(Calendar.MINUTE), 0, 59, 1));
+        CTSpinner minuteSpinner = new CTSpinner(new SpinnerNumberModel(0, 0, 59, 1));
         {
             minutePanel.setOpaque(false);
             minuteSpinner.setFont(new Font("微软雅黑", Font.PLAIN, CTFont.getSize(CTFontSizeStyle.SMALL)));
@@ -472,7 +463,7 @@ public class CTOptionPane {
         }
 
         JPanel secondPanel = new JPanel(new BorderLayout());
-        CTSpinner secondSpinner = new CTSpinner(new SpinnerNumberModel(Calendar.getInstance().get(Calendar.SECOND), 0, 59, 1));
+        CTSpinner secondSpinner = new CTSpinner(new SpinnerNumberModel(0, 0, 59, 1));
         {
             secondPanel.setOpaque(false);
             secondSpinner.setFont(new Font("微软雅黑", Font.PLAIN, CTFont.getSize(CTFontSizeStyle.SMALL)));
@@ -483,28 +474,198 @@ public class CTOptionPane {
             secondPanel.add(secondLabel, BorderLayout.WEST);
         }
         if (style == YEAR_MONTH_DAY) {
+            yearSpinner.setValue(times[0]);
+            monthSpinner.setValue(times[1]);
+            daySpinner.setValue(times[2]);
+
             toolsPanel.add(yearPanel);
             toolsPanel.add(monthPanel);
             toolsPanel.add(dayPanel);
         } else if (style == MONTH_DAY) {
+            monthSpinner.setValue(times[0]);
+            daySpinner.setValue(times[1]);
+
             toolsPanel.add(monthPanel);
             toolsPanel.add(dayPanel);
         } else if (style == HOURS_MINUTES) {
+            hourSpinner.setValue(times[0]);
+            minuteSpinner.setValue(times[1]);
+
             toolsPanel.add(hourPanel);
             toolsPanel.add(minutePanel);
         } else if (style == HOURS_MINUTES_SECOND) {
+            hourSpinner.setValue(times[0]);
+            minuteSpinner.setValue(times[1]);
+            secondSpinner.setValue(times[2]);
+
             toolsPanel.add(hourPanel);
             toolsPanel.add(minutePanel);
             toolsPanel.add(secondPanel);
         }
 
-        dialog.add(toolsPanel, BorderLayout.CENTER);
+        AtomicInteger choose = new AtomicInteger(2);
+        ArrayList<Integer> result = new ArrayList<>();
+
+        createChoiceButton(dialog, YES_NO_BUTTONS, new ChoiceButtonListener() {
+            @Override
+            public void yesButtonClick() {
+                choose.set(YES_OPTION);
+
+                if (style == YEAR_MONTH_DAY) {
+                    result.add(Integer.valueOf(yearSpinner.getValue()));
+                    result.add(Integer.valueOf(monthSpinner.getValue()));
+                    result.add(Integer.valueOf(daySpinner.getValue()));
+                } else if (style == MONTH_DAY) {
+                    result.add(Calendar.getInstance().get(Calendar.YEAR));
+                    result.add(Integer.valueOf(monthSpinner.getValue()));
+                    result.add(Integer.valueOf(daySpinner.getValue()));
+                } else if (style == HOURS_MINUTES) {
+                    result.add(Integer.valueOf(hourSpinner.getValue()));
+                    result.add(Integer.valueOf(minuteSpinner.getValue()));
+                } else if (style == HOURS_MINUTES_SECOND) {
+                    result.add(Integer.valueOf(hourSpinner.getValue()));
+                    result.add(Integer.valueOf(minuteSpinner.getValue()));
+                    result.add(Integer.valueOf(secondSpinner.getValue()));
+                }
+                dialog.dispose();
+            }
+
+            @Override
+            public void noButtonClick() {
+                choose.set(NO_OPTION);
+                dialog.dispose();
+            }
+        });
+
+        dialog.setVisible(true);
+
+
+        if (choose.get() == YES_OPTION) {
+            Integer[] array = result.toArray(new Integer[0]);
+            int[] arrayInt = new int[result.size()];
+            for (int i = 0; i < array.length; i++) {
+                arrayInt[i] = array[i];
+            }
+            return arrayInt;
+        }
+        return new int[0];
+    }
+
+    public static String[] showChoicesDialog(Component owner, String title, String message, Icon icon, int iconType, boolean isAlwaysOnTop, String... choices) {
+        BasicDialog basicDialog = createDialog(owner, title, message, icon, iconType, isAlwaysOnTop);
+        JDialog dialog = basicDialog.dialog;
+        JPanel toolsPanel = basicDialog.toolsPanel;
+
+        JPanel choicesPanel = new JPanel(new GridLayout(0, 2, 10, 10));
+        choicesPanel.setOpaque(false);
+
+        CTCheckBox[] checkBoxes = new CTCheckBox[choices.length];
+        for (int i = 0; i < choices.length; i++) {
+            CTCheckBox choice = new CTCheckBox(choices[i]);
+            choice.setFont(CTFont.getDefaultFont(Font.PLAIN, CTFontSizeStyle.NORMAL));
+            checkBoxes[i] = choice;
+            System.err.println(choices[i]);
+        }
+
+        for (int i = 0; i < choices.length; i++) {
+            System.err.println(checkBoxes[i]);
+            choicesPanel.add(checkBoxes[i]);
+        }
+
+        JScrollPane scrollPane = new JScrollPane(choicesPanel);
+        scrollPane.getVerticalScrollBar().setUnitIncrement(16);
+        scrollPane.setOpaque(false);
+        scrollPane.getViewport().setOpaque(false);
+        scrollPane.setBorder(null);
+        toolsPanel.add(scrollPane);
 
         AtomicInteger choose = new AtomicInteger(2);
+        createChoiceButton(dialog, YES_NO_BUTTONS, new ChoiceButtonListener() {
+            @Override
+            public void yesButtonClick() {
+                choose.set(YES_OPTION);
+                dialog.dispose();
+            }
 
-        ArrayList<Integer> result = new ArrayList<>();
-        // 创建按钮面板
+            @Override
+            public void noButtonClick() {
+                choose.set(NO_OPTION);
+                dialog.dispose();
+            }
+        });
+
+        dialog.pack();
+        dialog.setLocationRelativeTo(null);
+        dialog.setVisible(true);
+
+        if (choose.get() == YES_OPTION) {
+            ArrayList<String> result = new ArrayList<>();
+            for (int i = 0; i < choices.length; i++) {
+                System.err.println(checkBoxes[i].getText() + " " + checkBoxes[i].isSelected());
+                if (checkBoxes[i].isSelected()) {
+                    result.add(choices[i]);
+                }
+            }
+            return result.toArray(new String[0]);
+        }
+        return new String[0];
+    }
+
+    private static BasicDialog createDialog(Component owner, String title, String northTitle, Icon icon, int iconType, boolean isAlwaysOnTop) {
+        JDialog dialog = new JDialog();
+        dialog.setSize((int) (380 * CTInfo.dpi), (int) (200 * CTInfo.dpi));
+        dialog.setLocationRelativeTo(owner);//设置对话框的位置相对于父组件
+        dialog.setModal(true);
+        dialog.setAlwaysOnTop(isAlwaysOnTop);
+        dialog.setTitle(title);
+        dialog.getContentPane().setBackground(CTColor.backColor);
+        dialog.setLayout(new BorderLayout(10, 10));
+        dialog.setDefaultCloseOperation(JDialog.DO_NOTHING_ON_CLOSE);
+
+        JLabel iconLabel = new JLabel();
+
+        // 创建图标标签
         {
+            if (icon == null) {
+                Icon tempIcon = null;
+                switch (iconType) {
+
+                    case ERROR_MESSAGE:
+                        tempIcon = GetIcon.getIcon("错误", IconControl.COLOR_COLORFUL, 50, 50);
+                        break;
+                    case INFORMATION_MESSAGE:
+                        tempIcon = GetIcon.getIcon("提示", IconControl.COLOR_COLORFUL, 50, 50);
+                        break;
+                    case WARNING_MESSAGE:
+                        tempIcon = GetIcon.getIcon("警告", IconControl.COLOR_COLORFUL, 50, 50);
+                        break;
+                }
+                iconLabel = new JLabel(tempIcon);
+                dialog.add(iconLabel, BorderLayout.WEST);//设置图标标签的位置 - 左
+            } else {
+                iconLabel = new JLabel(icon);
+                dialog.add(iconLabel, BorderLayout.WEST);//设置图标标签的位置 - 左
+            }
+        }
+
+        if (northTitle != null && !northTitle.isEmpty()) {
+            JLabel messageLabel = new JLabel(northTitle);
+            messageLabel.setFont(new Font("微软雅黑", Font.PLAIN, CTFont.getSize(CTFontSizeStyle.SMALL)));
+            messageLabel.setForeground(CTColor.textColor);
+            dialog.add(messageLabel, BorderLayout.NORTH);
+        }
+
+        JPanel toolsPanel = new JPanel(new GridLayout(0, 1, 5, 5));
+        toolsPanel.setOpaque(false);
+
+        dialog.add(toolsPanel, BorderLayout.CENTER);
+
+        return new BasicDialog(dialog, toolsPanel);
+    }
+
+    private static void createChoiceButton(JDialog dialog, int optionType, ChoiceButtonListener  listener){
+        // 创建按钮面板
+        /*{
             ChooseButton yesButton = new ChooseButton("是") {
                 @Override
                 public void actionPerformed(ActionEvent e) {
@@ -549,73 +710,64 @@ public class CTOptionPane {
             buttonPanel.setOpaque(false);
             buttonPanel.add(yesButton);
             buttonPanel.add(noButton);
-            dialog.add(buttonPanel, BorderLayout.SOUTH);//设置按钮面板的位置 - 下
-        }
+            return buttonPanel;
+        }*/
 
-        dialog.setVisible(true);
-
-
-        if (choose.get() == YES_OPTION) {
-            Integer[] array = result.toArray(new Integer[0]);
-            int[] arrayInt = new int[result.size()];
-            for (int i = 0; i < array.length; i++) {
-                arrayInt[i] = array[i];
-            }
-            return arrayInt;
-        }
-        return new int[0];
-    }
-
-    private static BasicDialog createDialog(Component owner, String title, String northTitle, Icon icon, int iconType, boolean isAlwaysOnTop) {
-        JDialog dialog = new JDialog();
-        dialog.setSize((int) (380 * CTInfo.dpi), (int) (200 * CTInfo.dpi));
-        dialog.setLocationRelativeTo(owner);//设置对话框的位置相对于父组件
-        dialog.setModal(true);
-        dialog.setAlwaysOnTop(isAlwaysOnTop);
-        dialog.setTitle(title);
-        dialog.getContentPane().setBackground(CTColor.backColor);
-        dialog.setLayout(new BorderLayout(10, 10));
-        dialog.setDefaultCloseOperation(JDialog.DO_NOTHING_ON_CLOSE);
-
-        JLabel iconLabel = new JLabel();
-
-        // 创建图标标签
+        // 创建按钮面板
         {
-            if (icon == null) {
-                Icon tempIcon = null;
-                switch (iconType) {
+            if (optionType == YES_NO_BUTTONS) {
 
-                    case ERROR_MESSAGE:
-                        tempIcon = GetIcon.getIcon("错误", IconControl.COLOR_COLORFUL, 50, 50);
-                        break;
-                    case INFORMATION_MESSAGE:
-                        tempIcon = GetIcon.getIcon("提示", IconControl.COLOR_COLORFUL, 50, 50);
-                        break;
-                    case WARNING_MESSAGE:
-                        tempIcon = GetIcon.getIcon("警告", IconControl.COLOR_COLORFUL, 50, 50);
-                        break;
-                }
-                iconLabel = new JLabel(tempIcon);
-                dialog.add(iconLabel, BorderLayout.WEST);//设置图标标签的位置 - 左
-            } else {
-                iconLabel = new JLabel(icon);
-                dialog.add(iconLabel, BorderLayout.WEST);//设置图标标签的位置 - 左
+                ChooseButton yesButton = new ChooseButton("是") {
+                    @Override
+                    public void actionPerformed(ActionEvent e) {
+                        listener.yesButtonClick();
+                    }
+                };
+
+                dialog.addWindowListener(new WindowAdapter() {
+
+                    @Override
+                    public void windowOpened(WindowEvent e) {
+                        yesButton.requestFocus();
+                    }
+                });
+
+                ChooseButton noButton = new ChooseButton("否") {
+                    @Override
+                    public void actionPerformed(ActionEvent e) {
+                        listener.noButtonClick();
+                    }
+                };
+                JPanel buttonPanel = new JPanel(new GridLayout(1, 2, 10, 10));
+                buttonPanel.setOpaque(false);
+                buttonPanel.add(yesButton);
+                buttonPanel.add(noButton);
+                dialog.add(buttonPanel, BorderLayout.SOUTH);//设置按钮面板的位置 - 下
+
+            } else if (optionType == YES_BUTTONS) {
+                ChooseButton yesButton = new ChooseButton("确定") {
+                    @Override
+                    public void actionPerformed(ActionEvent e) {
+                        listener.yesButtonClick();
+                    }
+                };
+
+                dialog.addWindowListener(new WindowAdapter() {
+
+                    @Override
+                    public void windowOpened(WindowEvent e) {
+                        yesButton.requestFocus();
+                    }
+                });
+
+                JPanel buttonPanel = new JPanel(new GridLayout(1, 1, 10, 10));
+                buttonPanel.setOpaque(false);
+                buttonPanel.add(yesButton);
+                dialog.add(buttonPanel, BorderLayout.SOUTH);//设置按钮面板的位置 - 下
+
             }
         }
-
-        if (northTitle != null && northTitle.isEmpty()) {
-            JLabel messageLabel = new JLabel(northTitle);
-            messageLabel.setFont(new Font("微软雅黑", Font.PLAIN, CTFont.getSize(CTFontSizeStyle.SMALL)));
-            messageLabel.setForeground(CTColor.textColor);
-            dialog.add(messageLabel, BorderLayout.NORTH);
-        }
-
-        JPanel toolsPanel = new JPanel(new GridLayout(0, 1, 5, 5));
-        toolsPanel.setOpaque(false);
-
-        return new BasicDialog(dialog, toolsPanel);
     }
-
     public static void showFullScreenMessageDialog(String title, String message) {
         showFullScreenMessageDialog(title, message, 0, 10);
     }

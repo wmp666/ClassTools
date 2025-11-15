@@ -90,7 +90,7 @@ public class WeatherInfoPanel extends CTViewPanel {
             Log.info.adaptedMessage(nowWeather.getString("city") + " 天气数据", sb.toString(), 60, 5);
         } catch (Exception ex) {
             Log.warn.print(getClass().toString(), "天气数据获取出错" + ex);
-            throw new RuntimeException(ex);
+            ex.printStackTrace();
         }
         weather.repaint();
     }

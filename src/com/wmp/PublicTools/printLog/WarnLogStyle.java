@@ -72,7 +72,7 @@ public class WarnLogStyle extends PrintLogStyle {
     public String showChooseDialog(Container c, String owner, String logInfo, String... choices) {
         Log.print(getStyle(), owner, "弹窗信息->" + logInfo, c);
         String title = getTitle(owner);
-        String s = CTOptionPane.showConfirmDialog(c, title, logInfo, getIcon(), CTOptionPane.WARNING_MESSAGE, true, choices);
+        String s = CTOptionPane.showChoiceDialog(c, title, logInfo, getIcon(), CTOptionPane.WARNING_MESSAGE, true, choices);
 
         Log.print(getStyle(), owner, "输入信息->" + s, c);
         return s;
