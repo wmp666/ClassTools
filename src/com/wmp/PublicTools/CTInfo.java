@@ -68,6 +68,9 @@ public class CTInfo {
         Log.info.loading.updateDialog("init", "正在刷新音频...");
         MusicControl.init();
 
+        Log.info.loading.updateDialog("init", "正在刷新系统托盘...");
+        Log.initTrayIcon();
+
         Log.info.loading.updateDialog("init", "正在更新个性化数据...");
         boolean exists = new File(CTInfo.DATA_PATH + "setUp.json").exists();
         if (exists) {

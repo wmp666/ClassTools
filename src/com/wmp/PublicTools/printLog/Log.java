@@ -3,7 +3,6 @@ package com.wmp.PublicTools.printLog;
 import com.wmp.Main;
 import com.wmp.PublicTools.CTInfo;
 import com.wmp.PublicTools.OpenInExp;
-import com.wmp.PublicTools.UITools.CTColor;
 import com.wmp.PublicTools.UITools.CTFont;
 import com.wmp.PublicTools.UITools.CTFontSizeStyle;
 import com.wmp.PublicTools.UITools.GetIcon;
@@ -93,9 +92,10 @@ public class Log {
     public Log() {
     }
 
+    private static MouseAdapter mouseAdapter;
+    private static ActionListener actionListener;
     public static void initTrayIcon() {
         CTPopupMenu popupMenu = new CTPopupMenu();
-
 
         CTRoundTextButton refresh = new CTRoundTextButton("刷新");
         refresh.setIcon(GetIcon.getImageIcon("刷新", IconControl.COLOR_COLORFUL, 20, 20));
@@ -112,7 +112,7 @@ public class Log {
                 moreMenu.add(but.toRoundTextButton());
             });
 
-            moreMenu.show(more,0, 0);
+            moreMenu.show(more,more.getWidth(), 0);
         });
 
         popupMenu.add(more);
@@ -131,17 +131,23 @@ public class Log {
         hide.addActionListener(e -> {
             popupMenu.setVisible(false);
         });
+        popupMenu.add(hide);
 
-        trayIcon.addMouseListener(new MouseAdapter() {
+        trayIcon.removeMouseListener(mouseAdapter);
+        trayIcon.removeActionListener(actionListener);
+
+        mouseAdapter = new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
 
-                popupMenu.show(null,e.getXOnScreen(),  e.getYOnScreen());
+                popupMenu.show(null, e.getXOnScreen(), e.getYOnScreen());
             }
-        });
-        trayIcon.addActionListener(e -> {
-            popupMenu.show(null,0, 0);
-        });
+        };
+        actionListener = e -> {
+            popupMenu.show(null, 0, 0);
+        };
+        trayIcon.addMouseListener(mouseAdapter);
+        trayIcon.addActionListener(actionListener);
     }
 
     public static void exit(int status) {

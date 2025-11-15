@@ -38,8 +38,6 @@ public class FinalPanel extends CTViewPanel {
         initPanel();
 
         initButton();
-
-        Log.initTrayIcon();
     }
 
     private void initPanel() {
