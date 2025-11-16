@@ -868,9 +868,7 @@ public class CTOptionPane {
         }
         Log.info.print("showFullScreenMessageDialog", "显示全屏弹窗：" + title + ":" + message);
 
-        synchronized (i) {
-            messageDialog.setVisible(true);
-        }
+        messageDialog.setVisible(true);
 
     }
 
