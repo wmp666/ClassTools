@@ -7,11 +7,11 @@ import java.util.Random;
 
 public class GetWebInf {
 
-    public static String getWebInf(String apiUrl) throws Exception {
+    public static String getWebInf(String apiUrl){
         return getWebInf(apiUrl, true);
     }
 
-    public static String getWebInf(String apiUrl, boolean showDialog) throws Exception {
+    public static String getWebInf(String apiUrl, boolean showDialog){
         int id = new Random().nextInt();
         SslUtils.ignoreSsl();
         if (showDialog) {
@@ -33,7 +33,7 @@ public class GetWebInf {
             }
             return webInf;
         } catch (Exception e) {
-            Log.warn.print("GetWebInf", "获取Web信息失败\n" + e);
+            Log.err.systemPrint(GetWebInf.class, "获取Web信息失败", e);
         }
         if (showDialog) {
             Log.info.loading.closeDialog("网络信息获取" + id);

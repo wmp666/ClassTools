@@ -2,7 +2,7 @@ package com.wmp.classTools.frame;
 
 import com.wmp.PublicTools.CTInfo;
 import com.wmp.PublicTools.CTTool.CTTool;
-import com.wmp.PublicTools.CTTool.dianMing.DianMingTool;
+import com.wmp.PublicTools.CTTool.callRoll.CallRollTool;
 import com.wmp.PublicTools.UITools.CTColor;
 import com.wmp.PublicTools.UITools.CTFont;
 import com.wmp.PublicTools.UITools.CTFontSizeStyle;
@@ -17,7 +17,6 @@ import java.awt.*;
 import java.awt.geom.RoundRectangle2D;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.List;
 
 public class CTTools extends JDialog {
     public static CTListSetsPanel CTToolsSetsPanel = new CTListSetsPanel(CTInfo.DATA_PATH);
@@ -40,7 +39,7 @@ public class CTTools extends JDialog {
 
 
         tools.clear();
-        tools.add(new DianMingTool());
+        tools.add(new CallRollTool());
 
         CTToolsSetsPanel.setName("快捷工具设置");
         CTToolsSetsPanel.clearCTList();

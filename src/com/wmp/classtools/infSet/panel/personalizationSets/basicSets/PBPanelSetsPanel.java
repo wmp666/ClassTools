@@ -16,6 +16,7 @@ import com.wmp.classTools.importPanel.finalPanel.FinalPanel;
 import com.wmp.classTools.infSet.panel.personalizationSets.PersonalizationPanel;
 import com.wmp.classTools.infSet.tools.SetStartUp;
 import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import javax.swing.*;
@@ -154,13 +155,17 @@ public class PBPanelSetsPanel extends CTBasicSetsPanel {
 
     @Override
     public void save() {
-        try {
+
         //保存数据-个性化
         {
             IOForInfo io = new IOForInfo(new File(CTInfo.DATA_PATH + "setUp.json"));
             JSONObject jsonObject = null;
 
+            try {
                 jsonObject = new JSONObject(io.getInfos());
+            } catch (Exception e) {
+                jsonObject = new JSONObject();
+            }
 
 
             //设置隐藏面板
@@ -188,9 +193,6 @@ public class PBPanelSetsPanel extends CTBasicSetsPanel {
                 Log.err.print(PersonalizationPanel.class, "保存数据失败", e);
             }
 
-        }
-        } catch (IOException e) {
-            throw new RuntimeException(e);
         }
     }
 

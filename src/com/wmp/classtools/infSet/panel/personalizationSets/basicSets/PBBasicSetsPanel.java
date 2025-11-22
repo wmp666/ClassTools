@@ -39,6 +39,7 @@ public class PBBasicSetsPanel extends CTBasicSetsPanel {
     private final CTCheckBox StartUpdate = new CTCheckBox("启动检查更新");
     private final CTCheckBox canExit = new CTCheckBox("防止被意外关闭");
     private final CTCheckBox startUp = new CTCheckBox("开机自启动");
+    private final CTCheckBox isSaveLog = new CTCheckBox("是否保存日志");
 
     public PBBasicSetsPanel(String basicDataPath) {
         super(basicDataPath);
@@ -222,9 +223,15 @@ public class PBBasicSetsPanel extends CTBasicSetsPanel {
             StartUpdate.setFont(CTFont.getCTFont(Font.PLAIN, CTFontSizeStyle.SMALL));
             StartUpdate.setSelected(true);
 
+            isSaveLog.setBackground(CTColor.backColor);
+            isSaveLog.setForeground(CTColor.textColor);
+            isSaveLog.setFont(CTFont.getCTFont(Font.PLAIN, CTFontSizeStyle.SMALL));
+            isSaveLog.setSelected(true);
+
             otherPanel.add(startUp);
             otherPanel.add(canExit);
             otherPanel.add(StartUpdate);
+            otherPanel.add(isSaveLog);
 
 
         }
@@ -245,8 +252,12 @@ public class PBBasicSetsPanel extends CTBasicSetsPanel {
         //this.setBackground(CTColor.backColor);
         this.add(mainPanelScroll, BorderLayout.CENTER);
 
+        initData();
+    }
+
+    private void initData() {
         //显示数据
-        {
+
             IOForInfo io = new IOForInfo(new File(CTInfo.DATA_PATH + "setUp.json"));
             JSONObject jsonObject;
             try {
@@ -296,17 +307,25 @@ public class PBBasicSetsPanel extends CTBasicSetsPanel {
             }
             //是否自动启动
             startUp.setSelected(SetStartUp.isAutoStartEnabled());
-
+        //是否保存日志
+        if (jsonObject.has("isSaveLog")) {
+            isSaveLog.setSelected(jsonObject.getBoolean("isSaveLog"));
         }
+
     }
 
     @Override
     public void save() {
-        try {
+
             //保存数据-个性化
-            {
+
                 IOForInfo io = new IOForInfo(new File(CTInfo.DATA_PATH + "setUp.json"));
-                JSONObject jsonObject = new JSONObject(io.getInfos());
+                JSONObject jsonObject;
+                try {
+                    jsonObject = new JSONObject(io.getInfos());
+                } catch (Exception e) {
+                    jsonObject = new JSONObject();
+                }
 
                 //设置主题色
                 String tempMainColor = switch (Objects.requireNonNull(mainColorComboBox.getSelectedItem()).toString()) {
@@ -344,6 +363,9 @@ public class PBBasicSetsPanel extends CTBasicSetsPanel {
                 //设置启动时是否更新
                 jsonObject.put("StartUpdate", StartUpdate.isSelected());
 
+        //设置启动时是否更新
+        jsonObject.put("isSaveLog", isSaveLog.isSelected());
+
                 //设置是否自动启动
                 jsonObject.put("isAutoStart", startUp.isSelected());
                 String Path = SetStartUp.getFilePath();
@@ -367,11 +389,6 @@ public class PBBasicSetsPanel extends CTBasicSetsPanel {
                 } catch (Exception e) {
                     Log.err.print(PersonalizationPanel.class, "保存数据失败", e);
                 }
-
-            }
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
     }
 
     @Override

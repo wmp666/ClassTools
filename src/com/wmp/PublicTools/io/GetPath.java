@@ -55,7 +55,7 @@ public class GetPath {
         JFileChooser chooser = new JFileChooser();
         chooser.setDialogTitle(title);
 
-        //将文件过滤器设置为只显示.xlsx 或 文件夹
+        //将文件过滤器设置为只显示.fileType 或 文件夹
         chooser.setFileFilter(new FileFilter() {
             @Override
             public boolean accept(File f) {
@@ -104,6 +104,7 @@ public class GetPath {
     public static String getDirectoryPath(Component c, String title) {
         JFileChooser chooser = new JFileChooser();
         chooser.setDialogTitle(title);
+        chooser.setFileHidingEnabled(false);
         chooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
         //返回文件路径
         if (chooser.showOpenDialog(c) == JFileChooser.APPROVE_OPTION) {// 如果点击了"确定"按钮

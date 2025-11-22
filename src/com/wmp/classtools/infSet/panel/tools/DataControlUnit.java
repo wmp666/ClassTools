@@ -99,8 +99,6 @@ public class DataControlUnit extends JPanel {
                     dialog.setTitle("子目录管理");
                     dialog.setModal(true);
                     dialog.setLayout(new BorderLayout());
-                    dialog.setAlwaysOnTop(true);
-
 
                     JPanel panel = new JPanel(new GridLayout(0, 1));
 

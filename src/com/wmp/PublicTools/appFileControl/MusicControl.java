@@ -57,7 +57,7 @@ public class MusicControl {
             getNewMusic();
 
         } catch (Exception e) {
-            Log.warn.message(null, MusicControl.class.getName(), "音频更新失败:\n" + e);
+            Log.warn.print(null, MusicControl.class.getName(), "音频更新失败:\n" + e);
         }
 
         try {
@@ -96,8 +96,8 @@ public class MusicControl {
         return PLAYER_MAP.get(key);
     }
 
-    private static void getNewMusic() {
-        try {
+    private static void getNewMusic() throws InterruptedException {
+
             boolean needDownload = false;
             JSONObject jsonObject = new JSONObject(
                     GetWebInf.getWebInf("https://api.github.com/repos/wmp666/ClassTools_Music/releases/latest", false));
@@ -133,12 +133,10 @@ public class MusicControl {
                 needDownload = true;
             }
             if (needDownload) {
-                if (downloadFile(downloadURL, version)) {
+                if (!downloadFile(downloadURL, version)) {
+                    Log.err.print("MusicControl", "音频更新失败");
                 }
             }
-        } catch (Exception e) {
-            Log.err.print(MusicControl.class, "获取图标版本失败", e);
-        }
     }
 
     public static boolean downloadFile(AtomicReference<String> downloadURL, AtomicReference<String> version) throws InterruptedException {
@@ -149,7 +147,7 @@ public class MusicControl {
         if (choose.equals("下载")) {
             //下载文件
             boolean b = DownloadURLFile.downloadWebFile(null, null, downloadURL.get(), CTInfo.TEMP_PATH + "appInfo");
-            if (!b) return true;
+            if (!b) return false;
             zipPath = CTInfo.TEMP_PATH + "appInfo\\music.zip";
 
         } else if (choose.equals("导入压缩包")) {
@@ -158,7 +156,7 @@ public class MusicControl {
             zipPath = GetPath.getFilePath(null, "导入音频", ".zip", "音频压缩包");
         } else {
             Log.warn.message(null, "MusicControl", "若不下载/导入音频,可能造成程序异常");
-            return true;
+            return false;
         }
         //清空文件
         Thread thread1 = IOForInfo.deleteDirectoryRecursively(Path.of(CTInfo.APP_INFO_PATH + "music"));
@@ -176,7 +174,7 @@ public class MusicControl {
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
-        return false;
+        return true;
     }
 
     private static Player getPlayer(InputStream inputStream) {

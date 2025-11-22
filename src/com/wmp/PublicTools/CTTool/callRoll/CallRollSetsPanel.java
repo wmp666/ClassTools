@@ -1,4 +1,4 @@
-package com.wmp.PublicTools.CTTool.dianMing;
+package com.wmp.PublicTools.CTTool.callRoll;
 
 import com.wmp.PublicTools.UITools.CTColor;
 import com.wmp.PublicTools.UITools.CTFont;
@@ -13,11 +13,11 @@ import javax.swing.*;
 import java.awt.*;
 import java.io.IOException;
 
-public class DianMingSetsPanel extends CTBasicSetsPanel {
+public class CallRollSetsPanel extends CTBasicSetsPanel {
 
     CTTextField countTextField = new CTTextField();
 
-    public DianMingSetsPanel(String basicDataPath) {
+    public CallRollSetsPanel(String basicDataPath) {
         super(basicDataPath);
 
         setName("点名设置");
@@ -25,7 +25,7 @@ public class DianMingSetsPanel extends CTBasicSetsPanel {
 
     @Override
     public void save() throws Exception {
-        DianMingInfoControl.setCount(Integer.parseInt(countTextField.getText()));
+        CallRollInfoControl.setCount(Integer.parseInt(countTextField.getText()));
     }
 
     @Override
@@ -38,7 +38,7 @@ public class DianMingSetsPanel extends CTBasicSetsPanel {
             String filePath = GetPath.getFilePath(this, "请选择文件", ".txt", "点名列表");
             if (filePath != null) {
                 try {
-                    DianMingInfoControl.setDianMingNameList(filePath);
+                    CallRollInfoControl.setDianMingNameList(filePath);
                 } catch (IOException ex) {
                     Log.err.print(getClass(), "导入文件出错", ex);
                 }
@@ -55,7 +55,7 @@ public class DianMingSetsPanel extends CTBasicSetsPanel {
         jLabel.setForeground(CTColor.textColor);
         countSetsPanel.add(jLabel);
 
-        countTextField.setText(DianMingInfoControl.getCount() + "");
+        countTextField.setText(CallRollInfoControl.getCount() + "");
         countTextField.setFont(CTFont.getCTFont(Font.PLAIN, CTFontSizeStyle.SMALL));
         countTextField.setForeground(CTColor.textColor);
         countTextField.setBackground(CTColor.backColor);

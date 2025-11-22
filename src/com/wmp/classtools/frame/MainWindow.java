@@ -105,14 +105,7 @@ public class MainWindow extends CTWindow {
 
             if (allArgs.get("screenProduct:show").contains(argsList)) {
                 CTColor.setScreenProductColor();
-                allPanelList.forEach(ctPanel -> {
-                    try {
-                        ctPanel.toScreenProductViewPanel();
-                        ctPanel.refresh();
-                    } catch (Exception e) {
-                        Log.err.print(ctPanel.getClass(), "刷新失败", e);
-                    }
-                });
+                allPanelList.forEach(CTViewPanel::toScreenProductViewPanel);
 
                 new ScreenProduct();
             } else {

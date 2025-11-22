@@ -10,6 +10,9 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.io.File;
+import java.io.IOException;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
 import java.util.ArrayList;
 
 public class CTInfo {
@@ -35,7 +38,7 @@ public class CTInfo {
      * d:只修复的问题,问题较少
      * e:测试版本号
      */
-    public static String version = "1.43.1.2";
+    public static String version = "1.44.0.1";
     private static JSONObject jsonObject;
 
     static {
@@ -53,6 +56,16 @@ public class CTInfo {
 
         //加载基础目录
         String path = System.getenv("LOCALAPPDATA");
+        if (path != null && !path.isEmpty()){
+            File file = new File(path, "\\ClassTools\\basicDataPath.txt");
+            if (file.exists() && file.isFile()) {
+                try {
+                    path = new File(Files.readString(file.toPath(), StandardCharsets.UTF_8)).getAbsolutePath();
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
+                }
+            }
+        }
 
         APP_INFO_PATH = path + "\\ClassToolsAppFile\\";
         DATA_PATH = path + "\\ClassTools\\";
@@ -129,6 +142,11 @@ public class CTInfo {
             //设置DPI
             if (jsonObject.has("DPI")) {
                 dpi = jsonObject.getDouble("DPI");
+            }
+            //设置日志
+            if (jsonObject.has("isSaveLog")) {
+                boolean b = jsonObject.getBoolean("isSaveLog");
+                Log.isSaveLog(b);
             }
         }
 

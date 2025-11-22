@@ -26,7 +26,6 @@ public class Main {
         allArgs.put("screenProduct:show", StartupParameters.creative("/s", "-s"));
         allArgs.put("screenProduct:view", StartupParameters.creative("/p", "-p"));
 
-        allArgs.put("log:notSave", StartupParameters.creative("/Log:notSave", "-Log:notSave"));
     }
 
     public static void main(String[] args) throws IOException {

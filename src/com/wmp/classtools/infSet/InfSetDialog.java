@@ -30,7 +30,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.TreeMap;
 
-public class InfSetDialog extends JFrame implements WindowListener {
+public class InfSetDialog extends JDialog implements WindowListener {
 
     private final Container c;
 
@@ -52,18 +52,9 @@ public class InfSetDialog extends JFrame implements WindowListener {
         Log.info.loading.showDialog("设置", "正在初始化设置...");
 
         this.openedPanel = showPanel;
-
         this.c = this.getContentPane();
 
-        c.setBackground(CTColor.backColor);
-        this.setIconImage(GetIcon.getImageIcon("设置", IconControl.COLOR_DEFAULT, 32, 32).getImage());
-        this.setTitle("设置");
-        this.setSize(400, 550);
-        this.setLocationRelativeTo(null);
-        this.setAlwaysOnTop(true);
-        this.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-
-        this.addWindowListener( this);
+        initDialog();
 
         Log.info.systemPrint("设置", "正在获取设置页面...");
 
@@ -99,6 +90,19 @@ public class InfSetDialog extends JFrame implements WindowListener {
 
         Log.info.loading.closeDialog("设置");
         this.setVisible(true);
+    }
+
+    private void initDialog() {
+        c.setBackground(CTColor.backColor);
+        this.setIconImage(GetIcon.getImageIcon("设置", IconControl.COLOR_DEFAULT, 32, 32).getImage());
+        this.setTitle("设置");
+        this.setSize(400, 550);
+        this.setLocationRelativeTo(null);
+        this.setType(Type.NORMAL);
+        this.setModal(true);
+        this.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
+
+        this.addWindowListener( this);
     }
 
     private JScrollPane initSetsPanelSwitchBar() {
@@ -346,7 +350,6 @@ public class InfSetDialog extends JFrame implements WindowListener {
     @Override
     public void windowIconified(WindowEvent e) {
         //将窗口从最小化中重新显示
-        this.setExtendedState(JFrame.NORMAL);
         this.setVisible(true);
     }
 

@@ -1,4 +1,4 @@
-package com.wmp.PublicTools.CTTool.dianMing;
+package com.wmp.PublicTools.CTTool.callRoll;
 
 import com.wmp.PublicTools.CTInfo;
 import com.wmp.PublicTools.io.IOForInfo;
@@ -6,7 +6,7 @@ import com.wmp.PublicTools.io.IOForInfo;
 import java.io.IOException;
 import java.nio.file.Path;
 
-public class DianMingInfoControl {
+public class CallRollInfoControl {
     private static final String path = CTInfo.DATA_PATH + "CTTools\\DianMing\\";
 
     public static String[] getDianMingInfo() throws IOException {
@@ -27,7 +27,7 @@ public class DianMingInfoControl {
     }
 
     public static void setDianMingNameList(String path) throws IOException {
-        IOForInfo.copyFile(Path.of(path), Path.of(DianMingInfoControl.path));
+        IOForInfo.copyFile(Path.of(path), Path.of(CallRollInfoControl.path));
     }
 
     public static void setCount(int count) throws IOException {

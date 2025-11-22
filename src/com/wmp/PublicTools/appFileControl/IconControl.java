@@ -76,7 +76,7 @@ public class IconControl {
             getNewImage();
 
         } catch (Exception e) {
-            Log.warn.message(null, IconControl.class.getName(), "图片数据判断失败:\n" + e);
+            Log.warn.print(null, IconControl.class.getName(), "图片数据判断失败:\n" + e);
         }
 
         try {
@@ -127,8 +127,8 @@ public class IconControl {
 
     }
 
-    private static void getNewImage() {
-        try {
+    private static void getNewImage() throws InterruptedException {
+
             boolean needDownload = false;
             JSONObject jsonObject = new JSONObject(
                     GetWebInf.getWebInf("https://api.github.com/repos/wmp666/ClassTools_Image/releases/latest", false));
@@ -164,12 +164,10 @@ public class IconControl {
                 needDownload = true;
             }
             if (needDownload) {
-                if (downloadFile(downloadURL, version)) {
+                if (!downloadFile(downloadURL, version)) {
+                    Log.err.print("IconControl", "图片更新失败");
                 }
             }
-        } catch (Exception e) {
-            Log.warn.print(IconControl.class.getName(), "获取图标版本失败:\n" + e);
-        }
     }
 
     public static boolean downloadFile(AtomicReference<String> downloadURL, AtomicReference<String> version) throws InterruptedException {
@@ -180,7 +178,7 @@ public class IconControl {
         if (choose.equals("下载")) {
             //下载文件
             boolean b = DownloadURLFile.downloadWebFile(null, null, downloadURL.get(), CTInfo.TEMP_PATH + "appInfo");
-            if (!b) return true;
+            if (!b) return false;
             zipPath = CTInfo.TEMP_PATH + "appInfo\\image.zip";
 
         } else if (choose.equals("导入压缩包")) {
@@ -189,7 +187,7 @@ public class IconControl {
             zipPath = GetPath.getFilePath(null, "导入图片", ".zip", "图片压缩包");
         } else {
             Log.warn.message(null, "IconControl", "若不下载/导入图片,可能造成程序异常");
-            return true;
+            return false;
         }
         //清空文件
         Thread thread1 = IOForInfo.deleteDirectoryRecursively(Path.of(CTInfo.APP_INFO_PATH + "image"));
@@ -206,7 +204,7 @@ public class IconControl {
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
-        return false;
+        return true;
     }
 
     private static Map<String, ImageIcon> getColorfulImageMap(Map<String, ImageIcon> map, Color color) {
@@ -247,7 +245,9 @@ public class IconControl {
 
     public static ImageIcon getIcon(String name, int colorStyle) {
         ImageIcon imageIcon = colorStyle == COLOR_DEFAULT ? getDefaultIcon(name) : getColorfulIcon(name);
-        if (imageIcon == null) return new ImageIcon();
+        if (imageIcon == null) {
+            return new ImageIcon(IconControl.class.getResource("/image/default.png"));
+        }
         return imageIcon;
     }
 }

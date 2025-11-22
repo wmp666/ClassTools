@@ -1,8 +1,10 @@
 package com.wmp.PublicTools.printLog;
 
+import com.sun.jdi.IncompatibleThreadStateException;
 import com.wmp.Main;
 import com.wmp.PublicTools.CTInfo;
 import com.wmp.PublicTools.OpenInExp;
+import com.wmp.PublicTools.UITools.CTColor;
 import com.wmp.PublicTools.UITools.CTFont;
 import com.wmp.PublicTools.UITools.CTFontSizeStyle;
 import com.wmp.PublicTools.UITools.GetIcon;
@@ -22,6 +24,7 @@ import java.awt.*;
 import java.awt.event.*;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
+import java.io.File;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
@@ -44,16 +47,21 @@ public class Log {
     public static WarnLogStyle warn = new WarnLogStyle(LogStyle.WARN);
     public static ErrorLogStyle err = new ErrorLogStyle(LogStyle.ERROR);
 
-    private static boolean willExit = false;
+    private static boolean isSaveLog = true;
 
     public static String logFilePath;
     private static final Thread thread = new Thread(() -> {
         DateFormat dateFormat = new SimpleDateFormat("yyyy_MM_dd_HH_mm_ss");
         logFilePath = CTInfo.DATA_PATH + "Log\\log_" + dateFormat.format(new Date()) + ".log";
+        File logFile = new File(logFilePath);
+        if (!logFile.exists()) {
+            logFile.getParentFile().mkdirs();
+        }
         try {
-            if (!Main.allArgs.get("log:notSave").contains(Main.argsList)) {
+
                 BufferedWriter writer = new BufferedWriter(Files.newBufferedWriter(Paths.get(logFilePath), StandardOpenOption.APPEND, StandardOpenOption.CREATE_NEW));
-                while (!willExit) {
+                while (true) {
+                    if (!isSaveLog) continue;
                     synchronized (logInfList) { // 恢复同步块
                         try {
                             int currentSize = logInfList.size();
@@ -62,14 +70,12 @@ public class Log {
                                 String logInfo = logInfList.removeFirst();
                                 writer.write(logInfo + "\n");
                             }
-                            Thread.sleep(100);  // 刷新间隔
+                            Thread.sleep(34);  // 刷新间隔
                         } catch (InterruptedException e) {
-                            Log.warn.message(null, "系统操作", "日志保存异常");
+                            Log.err.systemPrint(Log.class, "日志保存异常", e);
                         }
                     }
                 }
-            }
-
         } catch (IOException e) {
             Log.err.print("系统操作", "日志路径获取异常");
             throw new RuntimeException(e);
@@ -189,7 +195,8 @@ public class Log {
                 "我们终将重逢",
                 "明天见",
                 "为了与你重逢愿倾尽所有",
-                "生命从夜中醒来\n却在触碰到光明的瞬间坠入永眠"
+                "生命从夜中醒来\n却在触碰到光明的瞬间坠入永眠",
+                "一起走向明天，我们不曾分离"
         };
         String exitStr = exitStrList[new Random().nextInt(exitStrList.length)];
         if (exitStr.contains("\n")) {
@@ -282,10 +289,9 @@ public class Log {
                 MediaPlayer.playMusic("系统", "错误");
 
                 if (showMessageDialog) {
-                    String title = "世界拒绝了我";
                     Icon icon = null;
                     if (CTInfo.isError) icon = GetIcon.getIcon("图标", IconControl.COLOR_DEFAULT, 100, 100);
-                    CTOptionPane.showMessageDialog(c, title, logInfo.toString(), icon, CTOptionPane.ERROR_MESSAGE, true);
+                    CTOptionPane.showMessageDialog(c, owner, logInfo.toString(), icon, CTOptionPane.ERROR_MESSAGE, true);
                 }
 
 
@@ -324,15 +330,20 @@ public class Log {
         dialog.setSize(500, 600);
         dialog.setLocationRelativeTo(null);
         dialog.setLayout(new BorderLayout());
+        dialog.getContentPane().setBackground(CTColor.backColor);
 
         textArea.setFont(CTFont.getDefaultFont(Font.PLAIN, CTFontSizeStyle.SMALL));
         textArea.setEditable(false);
 
         JScrollPane scrollPane = new JScrollPane(textArea);
+        scrollPane.setOpaque(false);
+        scrollPane.getViewport().setOpaque(false);
         dialog.add(scrollPane, BorderLayout.CENTER);
 
         JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT));
-        JButton closeButton = new JButton("关闭");
+        buttonPanel.setOpaque(false);
+
+        CTTextButton closeButton = new CTTextButton("关闭");
         closeButton.addActionListener(e -> {
             dialog.dispose();
 
@@ -380,6 +391,7 @@ public class Log {
 
         dialog.add(buttonPanel, BorderLayout.SOUTH);
 
+        dialog.setAlwaysOnTop(true);
         dialog.setVisible(true);
 
     }
@@ -409,6 +421,10 @@ public class Log {
                 throw new RuntimeException(e);
             }
         }
+    }
+
+    public static void isSaveLog(boolean b) {
+        isSaveLog = b;
     }
 }
 
