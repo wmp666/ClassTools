@@ -32,7 +32,7 @@ public class Main {
 
         new CTInfo();
 
-        Log.info.systemPrint("Main", "正在初始化...");
+        Log.info.loading.showDialog("程序加载", "正在启动数据...");
         boolean b = false;
         boolean startUpdate = true;
         try {
@@ -52,9 +52,9 @@ public class Main {
                 Log.info.print("Main", "使用的启动参数:" + Arrays.toString(args));
             }
         } catch (Exception e) {
+            Log.info.loading.closeDialog("程序加载");
             Log.err.print(Main.class, "初始化失败", e);
             Log.showLogDialog(true);
-
         }
 
         CTInfo.isError = EasterEgg.getEasterEggItem(EasterEgg.STYLE_ERROR);
@@ -75,6 +75,7 @@ public class Main {
         boolean finalStartUpdate = startUpdate;
         boolean finalB = b;
 
+        Log.info.loading.closeDialog("程序加载");
         try {
             SwingRun.show(finalB, finalStartUpdate);
         } catch (Exception e) {

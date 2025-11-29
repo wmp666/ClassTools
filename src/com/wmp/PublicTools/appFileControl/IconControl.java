@@ -36,6 +36,15 @@ public class IconControl {
 
     private static final Map<String, String> ICON_STYLE_MAP = new HashMap<>();
 
+    static{
+        DEFAULT_IMAGE_MAP.put("图标", new ImageIcon(IconControl.class.getResource(CTInfo.iconPath)));
+        COLORFUL_IMAGE_MAP.put("light", DEFAULT_IMAGE_MAP);
+        COLORFUL_IMAGE_MAP.put("dark",
+                getColorfulImageMap(DEFAULT_IMAGE_MAP, CTColor.getParticularColor("white")));
+        COLORFUL_IMAGE_MAP.put("err",
+                getColorfulImageMap(DEFAULT_IMAGE_MAP, CTColor.getParticularColor("blue")));
+    }
+
     public static void init() {
         try {
             DEFAULT_IMAGE_MAP.clear();

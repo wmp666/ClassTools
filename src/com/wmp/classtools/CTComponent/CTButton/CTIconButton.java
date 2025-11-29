@@ -54,6 +54,7 @@ public class CTIconButton extends CTButton implements ActionListener {
         }
 
 
+        this.setBorderPainted(false);
         this.setContentAreaFilled(false);
         this.setFocusPainted(false);
         this.setOpaque(false);

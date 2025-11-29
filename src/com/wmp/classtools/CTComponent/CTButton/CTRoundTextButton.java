@@ -35,6 +35,7 @@ public class CTRoundTextButton extends CTButton {
         }
 
 
+        this.setBorderPainted(false);
         this.setContentAreaFilled(false);
         this.setFocusPainted(false);
         this.setOpaque(false);

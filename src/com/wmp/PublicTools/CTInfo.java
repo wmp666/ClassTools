@@ -38,7 +38,7 @@ public class CTInfo {
      * d:只修复的问题,问题较少
      * e:测试版本号
      */
-    public static String version = "1.44.0.1";
+    public static String version = "1.45.0";
     private static JSONObject jsonObject;
 
     static {
@@ -47,12 +47,8 @@ public class CTInfo {
 
     public static void init() {
 
-        Log.info.loading.showDialog("init", "正在刷新...");
-
         disButList.clear();
         disPanelList.clear();
-
-        Log.info.loading.updateDialog("init", "正在更新路径...");
 
         //加载基础目录
         String path = System.getenv("LOCALAPPDATA");
@@ -76,15 +72,10 @@ public class CTInfo {
             else iconPath = "/image/icon/icon_bate.png";
         } else iconPath = "/image/err/icon.png";
 
-        Log.info.loading.updateDialog("init", "正在刷新图标...");
         IconControl.init();
-        Log.info.loading.updateDialog("init", "正在刷新音频...");
         MusicControl.init();
-
-        Log.info.loading.updateDialog("init", "正在刷新系统托盘...");
         Log.initTrayIcon();
 
-        Log.info.loading.updateDialog("init", "正在更新个性化数据...");
         boolean exists = new File(CTInfo.DATA_PATH + "setUp.json").exists();
         if (exists) {
             IOForInfo sets = new IOForInfo(new File(CTInfo.DATA_PATH + "setUp.json"));
@@ -150,7 +141,5 @@ public class CTInfo {
             }
         }
 
-
-        Log.info.loading.closeDialog("init");
     }
 }

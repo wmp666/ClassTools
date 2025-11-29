@@ -3,15 +3,21 @@ package com.wmp.classTools;
 import com.wmp.Main;
 import com.wmp.PublicTools.CTInfo;
 import com.wmp.PublicTools.EasterEgg.EasterEgg;
+import com.wmp.PublicTools.UITools.CTFont;
+import com.wmp.PublicTools.UITools.CTFontSizeStyle;
 import com.wmp.PublicTools.printLog.Log;
 import com.wmp.PublicTools.update.GetNewerVersion;
+import com.wmp.classTools.CTComponent.CTGradientRoundProgressBarUI;
 import com.wmp.classTools.frame.LoadingWindow;
 import com.wmp.classTools.frame.MainWindow;
 
 import javax.swing.*;
+import javax.swing.plaf.FontUIResource;
+import javax.swing.plaf.ProgressBarUI;
 import java.awt.*;
 import java.io.IOException;
 import java.net.URISyntaxException;
+import java.util.Enumeration;
 import java.util.concurrent.atomic.AtomicReference;
 
 public class SwingRun {
@@ -19,11 +25,20 @@ public class SwingRun {
     //, TreeMap<String, StartupParameters> allArgs, ArrayList<String> list
     public static void show(boolean b, boolean StartUpdate) throws URISyntaxException, IOException {
 
-        Log.info.systemPrint("SwingRun", "开始初始化UI...");
+        Log.info.loading.showDialog("窗口加载", "正在将UI更改为系统样式...");
 
         try {
             //使用系统UI
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+
+            //设置默认字体
+            FontUIResource fontRes = new FontUIResource(CTFont.getDefaultFont(Font.PLAIN, CTFontSizeStyle.SMALL));
+            for(Enumeration<Object> keys = UIManager.getDefaults().keys(); keys.hasMoreElements();){
+                Object key = keys.nextElement();
+                Object value = UIManager.get(key);
+                if(value instanceof FontUIResource)
+                    UIManager.put(key, fontRes);
+            }
             UIManager.put("PopupMenu.borderInsets", new Insets(5, 10, 5, 10));
 
         } catch (UnsupportedLookAndFeelException | ClassNotFoundException | InstantiationException |
@@ -31,23 +46,16 @@ public class SwingRun {
             throw new RuntimeException(e);
         }
 
-        //LoadingWindow loadingWindow;
+        Log.info.loading.updateDialog("窗口加载", "正在显示加载界面...");
         AtomicReference<LoadingWindow> loadingWindowRef = new AtomicReference<>();
-        //SwingUtilities.invokeLater(() -> {
 
         if (b) {
             loadingWindowRef.set(new LoadingWindow(200, 200, "EasterEgg", true, 2300));
-            //loadingWindow = new LoadingWindow(200, 200, "EasterEgg", true, 2300);
 
         } else {
             loadingWindowRef.set(new LoadingWindow());
-            //loadingWindow = new LoadingWindow();
         }
-        //});
-        //System.out.println(sb);
-
-
-        //loadingWindow.setVisible(true);
+        Log.info.loading.closeDialog("窗口加载");
 
 
         new MainWindow(CTInfo.DATA_PATH);
