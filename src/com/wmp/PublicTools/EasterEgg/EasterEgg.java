@@ -19,9 +19,7 @@ import javax.swing.*;
 import java.io.IOException;
 import java.time.LocalDate;
 import java.time.ZoneId;
-import java.util.HashMap;
-import java.util.Objects;
-import java.util.Random;
+import java.util.*;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicReference;
 
@@ -276,7 +274,17 @@ public class EasterEgg {
                 "骇客已入侵:\\n这次能让我玩得开心点么？"
         };
 
-        return IOForInfo.getInfo(EasterEgg.class.getResource("EasterEgg.txt"));
+        List<String> list = new ArrayList<>();
+        String[] info = IOForInfo.getInfo(EasterEgg.class.getResource("EasterEgg.txt"));
+        for (String s : info) {
+            if (s.endsWith("Tim")) {
+                list.add(s);
+                list.add(s);
+                list.add(s);
+            }
+            list.add(s);
+        }
+        return list.toArray(new String[0]);
 
     }
 

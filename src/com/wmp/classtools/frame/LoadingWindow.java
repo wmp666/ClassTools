@@ -21,7 +21,7 @@ public class LoadingWindow extends CTWindow {
     public static final int STYLE_SCREEN = 1;
 
     public LoadingWindow() {
-        this(180, 180, "useLoadingText", false, 0, 0);
+        this(180, 180, "useLoadingText", true, 5000, 0);
     }
 
     public LoadingWindow(String text) {
