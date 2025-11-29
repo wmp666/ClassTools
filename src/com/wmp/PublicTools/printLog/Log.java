@@ -39,7 +39,7 @@ import java.util.Objects;
 import java.util.Random;
 
 public class Log {
-    public static final TrayIcon trayIcon = new TrayIcon(GetIcon.getImageIcon(Log.class.getResource("/image/icon/icon.png"), 16, 16).getImage(), "ClassTools");
+    public static final TrayIcon trayIcon = new TrayIcon(GetIcon.getImageIcon(Log.class.getResource("/image/icon/icon.png"), 16, 16, false).getImage(), "ClassTools");
     private static final LinkedList<String> logInfList = new LinkedList<>();
     private static final JTextArea textArea = new JTextArea();
 

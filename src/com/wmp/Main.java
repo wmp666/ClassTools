@@ -4,11 +4,14 @@ import com.wmp.PublicTools.CTInfo;
 import com.wmp.PublicTools.EasterEgg.EasterEgg;
 import com.wmp.PublicTools.StartupParameters;
 import com.wmp.PublicTools.UITools.CTColor;
+import com.wmp.PublicTools.UITools.CTFont;
+import com.wmp.PublicTools.UITools.CTFontSizeStyle;
 import com.wmp.PublicTools.printLog.Log;
 import com.wmp.classTools.CTComponent.CTOptionPane;
 import com.wmp.classTools.SwingRun;
 
 import javax.swing.*;
+import java.awt.*;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -29,10 +32,24 @@ public class Main {
     }
 
     public static void main(String[] args) throws IOException {
+        JDialog wait = new JDialog();
+        wait.setUndecorated(true);
+        wait.setAlwaysOnTop(true);
+
+        JLabel label = new JLabel("<html><body><font color='#29A5E3'>ClassTools Data is being preloaded...</font></body></html>");
+        label.setFont(new Font(null, Font.PLAIN, 40));
+        wait.add(label);
+
+        wait.pack();
+        wait.setLocationRelativeTo(null);
+        wait.setVisible(true);
+
+        Log.info.loading.showDialog("程序加载", "正在启动数据...");
+        wait.setVisible(false);
 
         new CTInfo();
 
-        Log.info.loading.showDialog("程序加载", "正在启动数据...");
+
         boolean b = false;
         boolean startUpdate = true;
         try {
