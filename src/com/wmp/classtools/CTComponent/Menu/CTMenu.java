@@ -12,15 +12,6 @@ public class CTMenu extends JMenu {
 
     public CTMenu(String text) {
         super(text);
-        // 延迟初始化：在真正需要时才创建CTPopupMenu
-        this.setOpaque(true);
-        this.setBackground(CTColor.backColor);
-        this.setForeground(CTColor.textColor);
-/*
-        for (Component menuComponent : this.getMenuComponents()) {
-            menuComponent.setBackground(CTColor.backColor);
-            menuComponent.setForeground(CTColor.textColor);
-        }*/
     }
 
 }

@@ -32,8 +32,24 @@ public class Main {
     }
 
     public static void main(String[] args) throws IOException {
+        JDialog wait = new JDialog();
+        wait.setUndecorated(true);
+        wait.setAlwaysOnTop(true);
 
-        Log.info.loading.showDialog("程序加载", "正在启动数据...");
+        JLabel label = new JLabel("<html><body><font color='#29A5E3'>ClassTools Data is being preloaded</font></body></html>");
+        label.setFont(new Font(null, Font.PLAIN, 40));
+        wait.add(label);
+
+        wait.pack();
+        wait.setLocationRelativeTo(null);
+        wait.setVisible(true);
+
+        try {
+            Log.info.loading.showDialog("程序加载", "正在启动数据...");
+        } catch (Exception ignored) {
+
+        }
+        wait.setVisible(false);
 
         new CTInfo();
 

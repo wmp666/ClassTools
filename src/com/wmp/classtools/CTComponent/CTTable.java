@@ -17,8 +17,6 @@ public class CTTable extends JTable {
         super(data, columnNames);
         this.getTableHeader().setReorderingAllowed(false);// 列不允许拖动
         this.setFont(CTFont.getCTFont(Font.PLAIN, CTFontSizeStyle.SMALL));
-        this.setForeground(CTColor.textColor);
-        this.setBackground(CTColor.backColor);
         this.setRowHeight(CTFont.getSize(CTFontSizeStyle.SMALL));
         this.getTableHeader().setFont(CTFont.getCTFont(Font.PLAIN, CTFontSizeStyle.SMALL));
 

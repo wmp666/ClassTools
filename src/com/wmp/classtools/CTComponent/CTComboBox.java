@@ -15,35 +15,6 @@ public class CTComboBox extends JComboBox<String> {
         super();
 
 
-        this.setUI(new BasicComboBoxUI() {
-            @Override
-            protected JButton createArrowButton() {//创建按钮 - 箭头按钮
-
-                CTTextButton button = new CTTextButton("v");
-                button.setBorderPainted(false);
-
-                return button;
-            }
-
-        });
-
-
-        this.setBorder(CTBorderFactory.BASIC_LINE_BORDER);//设置按钮的边框 - 5px 实线
-        this.setBackground(CTColor.backColor);
-        this.setForeground(CTColor.textColor);
-        this.setFont(new Font("Microsoft YaHei UI", Font.PLAIN, (int) (15 * CTInfo.dpi)));
-        JComboBox<String> comboBox = this;
-        this.addFocusListener(new FocusListener() {
-            @Override
-            public void focusGained(FocusEvent e) {
-                comboBox.setBorder(CTBorderFactory.FOCUS_GAINTED_BORDER);
-            }
-
-            @Override
-            public void focusLost(FocusEvent e) {
-                comboBox.setBorder(CTBorderFactory.BASIC_LINE_BORDER);
-            }
-        });
     }
 
     public void addItems(String... items) {

@@ -1,5 +1,6 @@
 package com.wmp.classTools;
 
+import com.formdev.flatlaf.FlatLightLaf;
 import com.wmp.Main;
 import com.wmp.PublicTools.CTInfo;
 import com.wmp.PublicTools.EasterEgg.EasterEgg;
@@ -28,8 +29,11 @@ public class SwingRun {
         Log.info.loading.showDialog("窗口加载", "正在将UI更改为系统样式...");
 
         try {
+
+            FlatLightLaf.install();
+
             //使用系统UI
-            UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+            //UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
 
             //设置默认字体
             FontUIResource fontRes = new FontUIResource(CTFont.getDefaultFont(Font.PLAIN, CTFontSizeStyle.SMALL));
@@ -41,8 +45,7 @@ public class SwingRun {
             }
             UIManager.put("PopupMenu.borderInsets", new Insets(5, 10, 5, 10));
 
-        } catch (UnsupportedLookAndFeelException | ClassNotFoundException | InstantiationException |
-                 IllegalAccessException e) {
+        } catch (Exception e) {
             throw new RuntimeException(e);
         }
 

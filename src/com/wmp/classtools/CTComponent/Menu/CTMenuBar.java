@@ -10,10 +10,5 @@ import java.awt.*;
 public class CTMenuBar extends JMenuBar {
     public CTMenuBar() {
         super();
-
-        this.setOpaque(true);
-        this.setFont(CTFont.getCTFont(Font.PLAIN, CTFontSizeStyle.SMALL));
-        this.setBackground(CTColor.backColor);
-        this.setForeground(CTColor.textColor);
     }
 }

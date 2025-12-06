@@ -20,9 +20,5 @@ public class CTMenuItem extends JMenuItem {
     public CTMenuItem(String text, Icon icon) {
         super(text, icon);
 
-        this.setOpaque(true);
-        this.setFont(CTFont.getCTFont(Font.PLAIN, CTFontSizeStyle.SMALL));
-        this.setBackground(CTColor.backColor);
-        this.setForeground(CTColor.textColor);
     }
 }

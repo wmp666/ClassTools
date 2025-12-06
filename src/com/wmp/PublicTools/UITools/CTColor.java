@@ -1,5 +1,6 @@
 package com.wmp.PublicTools.UITools;
 
+import com.formdev.flatlaf.*;
 import com.wmp.PublicTools.printLog.Log;
 import com.wmp.classTools.frame.tools.screenProduct.SetsScrInfo;
 
@@ -99,10 +100,12 @@ public class CTColor {
             case STYLE_DARK -> {
                 textColor = Color.WHITE;
                 backColor = Color.BLACK;
+                FlatDarculaLaf.install();
             }
             case STYLE_LIGHT -> {
                 textColor = Color.BLACK;
                 backColor = new Color(0xFFFFFF);
+                FlatIntelliJLaf.install();
             }
         }
         Log.info.print("CTColor", "style:" + tempStyle);
