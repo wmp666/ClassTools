@@ -74,8 +74,6 @@ public class MediaPlayer {
                     } catch (Exception e) {
                         Log.warn.print(MediaPlayer.class.getName(), "播放音频失败:\n" + e);
                     }
-                } else {
-                    Log.warn.print(MediaPlayer.class.getName(), "音频不存在:" + key);
                 }
                 timer.cancel();
             }

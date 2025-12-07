@@ -44,6 +44,36 @@ public class LoadingWindow extends CTWindow {
 
         this.setLayout(new BorderLayout());
 
+        time = initUI(width, height, text, time);
+
+        this.setTitle("正在加载班级工具");
+        this.setIconImage(GetIcon.getImageIcon("进度", IconControl.COLOR_COLORFUL, 48, 48).getImage());
+        this.getContentPane().setBackground(CTColor.backColor);
+        this.setAlwaysOnTop(true);
+        this.setSize(this.getPreferredSize());
+        this.setLocationRelativeTo(null);
+
+        Taskbar taskbar = Taskbar.getTaskbar();
+        if (taskbar.isSupported(Taskbar.Feature.PROGRESS_STATE_WINDOW)) {
+            taskbar.setWindowProgressState(this, Taskbar.State.INDETERMINATE);
+        }
+
+        this.setVisible(true);
+        try {
+            if (mustWait) {
+                Thread.sleep(time);
+            } else if (text.equals("useLoadingText")) {
+                Thread.sleep(time);
+            }
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        }
+
+        Log.info.print("LoadingWindow-窗口", "加载窗口初始化完毕");
+
+    }
+
+    private long initUI(int width, int height, String text, long time) {
         String showText = text;
         if (showText.equals("useLoadingText") || showText.equals("EasterEgg")) {
             showText = getLoadingText();
@@ -70,26 +100,7 @@ public class LoadingWindow extends CTWindow {
         loadingText.setForeground(CTColor.textColor);
         loadingText.setFont(CTFont.getCTFont(Font.BOLD, CTFontSizeStyle.NORMAL));
         this.add(loadingText, BorderLayout.NORTH);
-
-        this.getContentPane().setBackground(CTColor.backColor);
-        this.setAlwaysOnTop(true);
-        this.setSize(this.getPreferredSize());
-        this.setLocationRelativeTo(null);
-
-
-        this.setVisible(true);
-        try {
-            if (mustWait) {
-                Thread.sleep(time);
-            } else if (text.equals("useLoadingText")) {
-                Thread.sleep(time);
-            }
-        } catch (InterruptedException e) {
-            throw new RuntimeException(e);
-        }
-
-        Log.info.print("LoadingWindow-窗口", "加载窗口初始化完毕");
-
+        return time;
     }
 
     private String getLoadingText() {

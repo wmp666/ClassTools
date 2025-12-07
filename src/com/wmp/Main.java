@@ -44,6 +44,8 @@ public class Main {
         wait.setLocationRelativeTo(null);
         wait.setVisible(true);
 
+        new CTInfo();
+
         try {
             Log.info.loading.showDialog("程序加载", "正在启动数据...");
         } catch (Exception ignored) {
@@ -51,7 +53,7 @@ public class Main {
         }
         wait.setVisible(false);
 
-        new CTInfo();
+
 
 
         boolean b = false;

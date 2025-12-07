@@ -26,7 +26,7 @@ public class CTInfo {
     public static String appName = "班级工具";
     public static String author = "无名牌";
     public static String iconPath = "/image/icon/icon.png";
-    public static double dpi = 1;
+    public static double dpi = 1.0;
     public static boolean isError = false;
     public static boolean canExit = true;
     public static boolean StartUpdate = true;
@@ -38,7 +38,7 @@ public class CTInfo {
      * d:只修复的问题,问题较少
      * e:测试版本号
      */
-    public static String version = "1.46.2";
+    public static String version = "1.46.3";
     private static JSONObject jsonObject;
 
     static {
@@ -72,6 +72,7 @@ public class CTInfo {
             else iconPath = "/image/icon/icon_bate.png";
         } else iconPath = "/image/err/icon.png";
 
+        dpi = 1.0;
         IconControl.init();
         MusicControl.init();
         Log.initTrayIcon();

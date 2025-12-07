@@ -639,11 +639,16 @@ public class CTOptionPane {
                     case WARNING_MESSAGE:
                         tempIcon = GetIcon.getIcon("警告", IconControl.COLOR_COLORFUL, 50, 50);
                         break;
+                    default:
+                        tempIcon = GetIcon.getIcon("提示", IconControl.COLOR_COLORFUL, 50, 50);
+                        break;
                 }
                 iconLabel = new JLabel(tempIcon);
+                dialog.setIconImage(((ImageIcon)tempIcon).getImage());
                 dialog.add(iconLabel, BorderLayout.WEST);//设置图标标签的位置 - 左
             } else {
                 iconLabel = new JLabel(icon);
+                dialog.setIconImage(((ImageIcon)icon).getImage());
                 dialog.add(iconLabel, BorderLayout.WEST);//设置图标标签的位置 - 左
             }
         }
@@ -827,7 +832,7 @@ public class CTOptionPane {
     }
 }
 
-abstract class ChooseButton extends CTTextButton implements ActionListener {
+abstract class ChooseButton extends CTRoundTextButton implements ActionListener {
     public ChooseButton(String text) {
         super(text);
         this.addActionListener(this);

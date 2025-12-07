@@ -38,7 +38,7 @@ public class MainWindow extends CTWindow {
     //public static final ArrayList<CTViewPanel> showPanelList = new ArrayList<>();
     public static final TreeMap<String, CTViewPanel[]> panelMap = new TreeMap<>();
     private static final TreeMap<String, String[]> panelLocationMap = new TreeMap<>();
-    private static JDialog mainWindow = new JDialog();
+    private static JFrame mainWindow = new JFrame();
 
     public MainWindow(String path) throws IOException {
 
@@ -269,7 +269,7 @@ public class MainWindow extends CTWindow {
 
     private void initFrame() {
         this.setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
-        this.setTitle(CTInfo.appName + "-V" + CTInfo.version);
+        this.setTitle(CTInfo.appName);
 
         this.setLayout(new BorderLayout());
         //设置屏幕大小

@@ -3,6 +3,8 @@ package com.wmp.classTools.CTComponent;
 import com.wmp.PublicTools.UITools.CTColor;
 import com.wmp.PublicTools.UITools.CTFont;
 import com.wmp.PublicTools.UITools.CTFontSizeStyle;
+import com.wmp.PublicTools.UITools.GetIcon;
+import com.wmp.PublicTools.appFileControl.IconControl;
 import com.wmp.PublicTools.printLog.Log;
 
 import javax.swing.*;
@@ -22,6 +24,7 @@ public class LoadingDialog extends JFrame {
     public LoadingDialog() {
         //生成弹窗
         this.setTitle("进度显示");
+        this.setIconImage(GetIcon.getImageIcon("进度", IconControl.COLOR_COLORFUL, 48, 48).getImage());
         this.setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
         //this.setModal(true);
         this.setLocationRelativeTo(null);
@@ -32,6 +35,18 @@ public class LoadingDialog extends JFrame {
     }
 
     private void resetDialog() {
+        updateTaskBar();
+
+        this.setIconImage(GetIcon.getImageIcon("进度", IconControl.COLOR_COLORFUL, 48, 48).getImage());
+        this.getContentPane().setBackground(CTColor.backColor);
+        this.revalidate();
+        this.repaint();
+        this.pack();
+        this.setLocationRelativeTo(null);
+        this.setVisible(!PanelList.isEmpty());
+    }
+
+    private void updateTaskBar() {
         AtomicBoolean isIndeterminate = new AtomicBoolean(false);
         AtomicInteger value = new AtomicInteger(0);
         progressBarPanelList.values().forEach(progressBar -> {
@@ -42,19 +57,16 @@ public class LoadingDialog extends JFrame {
             }
         });
         Taskbar taskbar = Taskbar.getTaskbar();
-        if (isIndeterminate.get()) {
-            taskbar.setWindowProgressState(this, Taskbar.State.INDETERMINATE);
-        }else{
-            taskbar.setWindowProgressState(this, Taskbar.State.NORMAL);
-            taskbar.setWindowProgressValue(this, !progressBarPanelList.isEmpty() ?value.get()/progressBarPanelList.size():0);
-        }
 
-        this.getContentPane().setBackground(CTColor.backColor);
-        this.revalidate();
-        this.repaint();
-        this.pack();
-        this.setLocationRelativeTo(null);
-        this.setVisible(!PanelList.isEmpty());
+        if (taskbar.isSupported(Taskbar.Feature.PROGRESS_STATE_WINDOW) &&
+        taskbar.isSupported(Taskbar.Feature.PROGRESS_VALUE_WINDOW)) {
+            if (isIndeterminate.get()) {
+                taskbar.setWindowProgressState(this, Taskbar.State.INDETERMINATE);
+            }else{
+                taskbar.setWindowProgressState(this, Taskbar.State.NORMAL);
+                taskbar.setWindowProgressValue(this, !progressBarPanelList.isEmpty() ?value.get()/progressBarPanelList.size():1);
+            }
+        }
     }
 
     public void showDialog(String id, String text) {
