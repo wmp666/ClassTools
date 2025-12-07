@@ -12,6 +12,7 @@ import com.wmp.PublicTools.printLog.Log;
 import com.wmp.classTools.CTComponent.CTButton.CTTextButton;
 import com.wmp.classTools.CTComponent.CTList;
 import com.wmp.classTools.CTComponent.CTOptionPane;
+import com.wmp.classTools.CTComponent.CTPanel.setsPanel.CTListSetsPanel;
 import com.wmp.classTools.CTComponent.CTPanel.setsPanel.CTSetsPanel;
 import com.wmp.classTools.CTComponent.Menu.CTMenu;
 import com.wmp.classTools.CTComponent.Menu.CTMenuBar;
@@ -27,7 +28,6 @@ import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
 import java.io.File;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.TreeMap;
 
 public class InfSetDialog extends JDialog implements WindowListener {
@@ -87,6 +87,7 @@ public class InfSetDialog extends JDialog implements WindowListener {
         c.add(initSetsPanelSwitchBar(), BorderLayout.WEST);
 
         this.pack();
+        this.setLocationRelativeTo(null);
 
         Log.info.loading.closeDialog("设置");
         this.setVisible(true);
@@ -246,15 +247,11 @@ public class InfSetDialog extends JDialog implements WindowListener {
         setMenu.setIcon(GetIcon.getIcon("设置", 16, 16));
 
         ctSetsPanelList.forEach(ctSetsPanel -> {
-            CTMenuItem tempMenuItem = new CTMenuItem(ctSetsPanel.getName());
-            tempMenuItem.addActionListener(e -> {
-                try {
-                    repaintSetsPanel(ctSetsPanel);
-                } catch (Exception ex) {
-                    Log.err.print(getClass(), "刷新设置页面失败", ex);
-                }
-            });
-            setMenu.add(tempMenuItem);
+            if (ctSetsPanel instanceof CTListSetsPanel) {
+                initListSetsMenu(ctSetsPanel, setMenu);
+            } else {
+                initBasicSetsMenu(ctSetsPanel, setMenu);
+            }
         });
 
         CTMenuItem saveMenuItem = new CTMenuItem("保存");
@@ -271,6 +268,35 @@ public class InfSetDialog extends JDialog implements WindowListener {
         menuBar.add(editMenu);
 
 
+    }
+
+    private void initListSetsMenu(CTSetsPanel ctSetsPanel, CTMenu setMenu) {
+        if (ctSetsPanel instanceof CTListSetsPanel ctListSetsPanel) {
+            CTMenu tempMenu = new CTMenu(ctSetsPanel.getName());
+            ctListSetsPanel.getCtSetsPanelList().forEach(ctSetsPanel2 -> {
+                if (ctSetsPanel2 instanceof CTListSetsPanel){
+                    initListSetsMenu(ctSetsPanel2, tempMenu);
+                }else{
+                    initBasicSetsMenu(ctSetsPanel2, tempMenu);
+                }
+
+            });
+            setMenu.add(tempMenu);
+        }
+    }
+
+    private void initBasicSetsMenu(CTSetsPanel ctSetsPanel, CTMenu setMenu) {
+
+            CTMenuItem tempMenuItem = new CTMenuItem(ctSetsPanel.getName());
+            tempMenuItem.addActionListener(e -> {
+                try {
+                    repaintSetsPanel(ctSetsPanel);
+                } catch (Exception ex) {
+                    Log.err.print(getClass(), "刷新设置页面失败", ex);
+                }
+            });
+            setMenu.add(tempMenuItem);
+            return;
     }
 
     private void initSaveButton() {

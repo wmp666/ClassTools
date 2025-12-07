@@ -665,55 +665,6 @@ public class CTOptionPane {
 
     private static void createChoiceButton(JDialog dialog, int optionType, ChoiceButtonListener  listener){
         // 创建按钮面板
-        /*{
-            ChooseButton yesButton = new ChooseButton("是") {
-                @Override
-                public void actionPerformed(ActionEvent e) {
-                    choose.set(YES_OPTION);
-
-                    if (style == YEAR_MONTH_DAY) {
-                        result.add(Integer.valueOf(yearSpinner.getValue()));
-                        result.add(Integer.valueOf(monthSpinner.getValue()));
-                        result.add(Integer.valueOf(daySpinner.getValue()));
-                    } else if (style == MONTH_DAY) {
-                        result.add(Calendar.getInstance().get(Calendar.YEAR));
-                        result.add(Integer.valueOf(monthSpinner.getValue()));
-                        result.add(Integer.valueOf(daySpinner.getValue()));
-                    } else if (style == HOURS_MINUTES) {
-                        result.add(Integer.valueOf(hourSpinner.getValue()));
-                        result.add(Integer.valueOf(minuteSpinner.getValue()));
-                    } else if (style == HOURS_MINUTES_SECOND) {
-                        result.add(Integer.valueOf(hourSpinner.getValue()));
-                        result.add(Integer.valueOf(minuteSpinner.getValue()));
-                        result.add(Integer.valueOf(secondSpinner.getValue()));
-                    }
-                    dialog.dispose();
-                }
-            };
-
-            dialog.addWindowListener(new WindowAdapter() {
-
-                @Override
-                public void windowOpened(WindowEvent e) {
-                    yesButton.requestFocus();
-                }
-            });
-
-            ChooseButton noButton = new ChooseButton("否") {
-                @Override
-                public void actionPerformed(ActionEvent e) {
-                    choose.set(NO_OPTION);
-                    dialog.dispose();
-                }
-            };
-            JPanel buttonPanel = new JPanel(new GridLayout(1, 2, 10, 10));
-            buttonPanel.setOpaque(false);
-            buttonPanel.add(yesButton);
-            buttonPanel.add(noButton);
-            return buttonPanel;
-        }*/
-
-        // 创建按钮面板
         {
             if (optionType == YES_NO_BUTTONS) {
 

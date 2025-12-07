@@ -149,7 +149,8 @@ public class Log {
             }
         };
         actionListener = e -> {
-            popupMenu.show(null, 0, 0);
+            Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+            popupMenu.show(null, (screenSize.width - popupMenu.getWidth())/2, (screenSize.height - popupMenu.getHeight())/2);
         };
         trayIcon.addMouseListener(mouseAdapter);
         trayIcon.addActionListener(actionListener);
