@@ -8,8 +8,10 @@ import com.wmp.PublicTools.printLog.Log;
 import javax.swing.*;
 import java.awt.*;
 import java.util.TreeMap;
+import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.concurrent.atomic.AtomicInteger;
 
-public class LoadingDialog extends JDialog {
+public class LoadingDialog extends JFrame {
 
     private final TreeMap<String, JPanel> PanelList = new TreeMap<>();
 
@@ -30,6 +32,22 @@ public class LoadingDialog extends JDialog {
     }
 
     private void resetDialog() {
+        AtomicBoolean isIndeterminate = new AtomicBoolean(false);
+        AtomicInteger value = new AtomicInteger(0);
+        progressBarPanelList.values().forEach(progressBar -> {
+            if (progressBar.isIndeterminate()) {
+                isIndeterminate.set(true);
+            }else{
+                value.addAndGet(progressBar.getValue());
+            }
+        });
+        Taskbar taskbar = Taskbar.getTaskbar();
+        if (isIndeterminate.get()) {
+            taskbar.setWindowProgressState(this, Taskbar.State.INDETERMINATE);
+        }else{
+            taskbar.setWindowProgressState(this, Taskbar.State.NORMAL);
+            taskbar.setWindowProgressValue(this, !progressBarPanelList.isEmpty() ?value.get()/progressBarPanelList.size():0);
+        }
 
         this.getContentPane().setBackground(CTColor.backColor);
         this.revalidate();
