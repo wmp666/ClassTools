@@ -28,6 +28,7 @@ public class CTColor {
      * 主色 黑色
      */
     public static final String MAIN_COLOR_BLACK = "black";
+
     /**
      * 主题 灰色
      */
@@ -36,6 +37,9 @@ public class CTColor {
      * 主题 亮色
      */
     public static final String STYLE_LIGHT = "light";
+
+    public static final String STYLE_SYSTEM = "system";
+
     public static String style = STYLE_LIGHT;
     public static Color mainColor = new Color(0x29A8E3);
     public static Color textColor = Color.BLACK;
@@ -107,6 +111,19 @@ public class CTColor {
                 backColor = new Color(0xFFFFFF);
                 FlatIntelliJLaf.install();
             }
+            case STYLE_SYSTEM -> {
+                if (SystemColor.checkDarkMode()) {
+                    style = STYLE_DARK;
+                    textColor = Color.WHITE;
+                    backColor = Color.BLACK;
+                    FlatDarculaLaf.install();
+                }else{
+                    style = STYLE_LIGHT;
+                    textColor = Color.BLACK;
+                    backColor = new Color(0xFFFFFF);
+                    FlatIntelliJLaf.install();
+                }
+            }
         }
         Log.info.print("CTColor", "style:" + tempStyle);
     }
@@ -131,7 +148,8 @@ public class CTColor {
             case MAIN_COLOR_GREEN -> new Color(0x00FF00);
             case MAIN_COLOR_RED -> new Color(0xFF0000);
             case MAIN_COLOR_BLACK -> Color.BLACK;
-            default -> Color.DARK_GRAY;
+            case STYLE_SYSTEM -> SystemColor.getAccentColor();
+            default -> new Color(0x29A8E3);
         };
 
     }

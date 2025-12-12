@@ -36,7 +36,7 @@ public class Main {
         wait.setUndecorated(true);
         wait.setAlwaysOnTop(true);
 
-        JLabel label = new JLabel("<html><body><font color='#29A5E3'>ClassTools Data is being preloaded</font></body></html>");
+        JLabel label = new JLabel("<html><body><font color='#29A5E3'>正在加载<br>班级工具运行所需的基础数据</font></body></html>");
         label.setFont(new Font(null, Font.PLAIN, 40));
         wait.add(label);
 

@@ -38,7 +38,7 @@ public class MainWindow extends CTWindow {
     //public static final ArrayList<CTViewPanel> showPanelList = new ArrayList<>();
     public static final TreeMap<String, CTViewPanel[]> panelMap = new TreeMap<>();
     private static final TreeMap<String, String[]> panelLocationMap = new TreeMap<>();
-    private static JFrame mainWindow = new JFrame();
+    public static JFrame mainWindow = new JFrame();
 
     public MainWindow(String path) throws IOException {
 

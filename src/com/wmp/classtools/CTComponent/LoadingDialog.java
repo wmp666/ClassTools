@@ -49,20 +49,21 @@ public class LoadingDialog extends JFrame {
     private void updateTaskBar() {
         AtomicBoolean isIndeterminate = new AtomicBoolean(false);
         AtomicInteger value = new AtomicInteger(0);
+
         progressBarPanelList.values().forEach(progressBar -> {
             if (progressBar.isIndeterminate()) {
                 isIndeterminate.set(true);
-            }else{
-                value.addAndGet(progressBar.getValue());
-            }
+
+            }else value.addAndGet(progressBar.getValue());
         });
         Taskbar taskbar = Taskbar.getTaskbar();
 
         if (taskbar.isSupported(Taskbar.Feature.PROGRESS_STATE_WINDOW) &&
         taskbar.isSupported(Taskbar.Feature.PROGRESS_VALUE_WINDOW)) {
-            if (isIndeterminate.get()) {
-                taskbar.setWindowProgressState(this, Taskbar.State.INDETERMINATE);
-            }else{
+
+            taskbar.setWindowProgressState(this, Taskbar.State.INDETERMINATE);
+
+            if (!isIndeterminate.get()) {
                 taskbar.setWindowProgressState(this, Taskbar.State.NORMAL);
                 taskbar.setWindowProgressValue(this, !progressBarPanelList.isEmpty() ?value.get()/progressBarPanelList.size():1);
             }

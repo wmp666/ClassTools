@@ -6,9 +6,11 @@ import com.wmp.PublicTools.appFileControl.IconControl;
 import com.wmp.PublicTools.appFileControl.MusicControl;
 import com.wmp.PublicTools.io.IOForInfo;
 import com.wmp.PublicTools.printLog.Log;
+import com.wmp.classTools.frame.MainWindow;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import java.awt.*;
 import java.io.File;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
@@ -38,7 +40,7 @@ public class CTInfo {
      * d:只修复的问题,问题较少
      * e:测试版本号
      */
-    public static String version = "1.46.3";
+    public static String version = "1.47.0";
     private static JSONObject jsonObject;
 
     static {
@@ -46,6 +48,18 @@ public class CTInfo {
     }
 
     public static void init() {
+
+        if (MainWindow.mainWindow != null){
+            Taskbar taskbar = Taskbar.getTaskbar();
+
+            if (taskbar.isSupported(Taskbar.Feature.USER_ATTENTION_WINDOW)) {
+                taskbar.requestWindowUserAttention(MainWindow.mainWindow);
+            }
+
+            if (taskbar.isSupported(Taskbar.Feature.PROGRESS_STATE_WINDOW)) {
+                taskbar.setWindowProgressState(MainWindow.mainWindow, Taskbar.State.INDETERMINATE);
+            }
+        }
 
         disButList.clear();
         disPanelList.clear();
@@ -90,21 +104,11 @@ public class CTInfo {
 
             //设置颜色
             if (jsonObject.has("mainColor")) {
-                switch (jsonObject.getString("mainColor")) {
-                    case "black" -> CTColor.setMainColor(CTColor.MAIN_COLOR_BLACK);
-                    case "white" -> CTColor.setMainColor(CTColor.MAIN_COLOR_WHITE);
-                    case "green" -> CTColor.setMainColor(CTColor.MAIN_COLOR_GREEN);
-                    case "red" -> CTColor.setMainColor(CTColor.MAIN_COLOR_RED);
-                    default -> CTColor.setMainColor(CTColor.MAIN_COLOR_BLUE);
-                }
+                CTColor.setMainColor(jsonObject.getString("mainColor"));
             }
             //设置主题
             if (jsonObject.has("mainTheme")) {
-                if (jsonObject.getString("mainTheme").equals("dark")) {
-                    CTColor.setMainTheme(CTColor.STYLE_DARK);
-                } else {
-                    CTColor.setMainTheme(CTColor.STYLE_LIGHT);
-                }
+                CTColor.setMainTheme(jsonObject.getString("mainTheme"));
             }
             //设置字体
             if (jsonObject.has("FontName")) {
@@ -139,6 +143,14 @@ public class CTInfo {
             if (jsonObject.has("isSaveLog")) {
                 boolean b = jsonObject.getBoolean("isSaveLog");
                 Log.isSaveLog(b);
+            }
+        }
+
+        if (MainWindow.mainWindow != null){
+            Taskbar taskbar = Taskbar.getTaskbar();
+
+            if (taskbar.isSupported(Taskbar.Feature.PROGRESS_STATE_WINDOW)) {
+                taskbar.setWindowProgressState(MainWindow.mainWindow, Taskbar.State.OFF);
             }
         }
 

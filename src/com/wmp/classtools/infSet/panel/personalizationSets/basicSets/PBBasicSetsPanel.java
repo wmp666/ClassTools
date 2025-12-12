@@ -88,7 +88,7 @@ public class PBBasicSetsPanel extends CTBasicSetsPanel {
 
                 //添加颜色项目
                 mainColorComboBox.removeAllItems();
-                mainColorComboBox.addItems("蓝色", "红色", "绿色", "白色", "黑色");
+                mainColorComboBox.addItems("蓝色", "红色", "绿色", "白色", "黑色", "跟随系统(仅Windows)");
 
                 MainColorSets.add(mainColorLabel);
                 MainColorSets.add(mainColorComboBox);
@@ -109,7 +109,7 @@ public class PBBasicSetsPanel extends CTBasicSetsPanel {
 
                 //添加主题项目
                 mainThemeComboBox.removeAllItems();
-                mainThemeComboBox.addItems("浅色", "深色");
+                mainThemeComboBox.addItems("浅色", "深色", "跟随系统(仅Windows)");
 
                 MainThemeSets.add(mainThemeLabel);
                 MainThemeSets.add(mainThemeComboBox);
@@ -274,6 +274,7 @@ public class PBBasicSetsPanel extends CTBasicSetsPanel {
                     case "white" -> mainColorComboBox.setSelectedItem("白色");
                     case "green" -> mainColorComboBox.setSelectedItem("绿色");
                     case "red" -> mainColorComboBox.setSelectedItem("红色");
+                    case "system" -> mainColorComboBox.setSelectedItem("跟随系统(仅Windows)");
                     default -> mainColorComboBox.setSelectedItem("蓝色");
                 }
             }
@@ -281,6 +282,7 @@ public class PBBasicSetsPanel extends CTBasicSetsPanel {
             if (jsonObject.has("mainTheme")) {
                 switch (jsonObject.getString("mainTheme")) {
                     case "dark" -> mainThemeComboBox.setSelectedItem("深色");
+                    case "system" -> mainThemeComboBox.setSelectedItem("跟随系统(仅Windows)");
                     default -> mainThemeComboBox.setSelectedItem("浅色");
                 }
             }
@@ -333,6 +335,7 @@ public class PBBasicSetsPanel extends CTBasicSetsPanel {
                     case "白色" -> "white";
                     case "绿色" -> "green";
                     case "红色" -> "red";
+                    case "跟随系统(仅Windows)" -> "system";
                     default -> "blue";
                 };
                 jsonObject.put("mainColor", tempMainColor);
@@ -340,6 +343,7 @@ public class PBBasicSetsPanel extends CTBasicSetsPanel {
                 //设置主题
                 String tempMainThemeColor = switch (Objects.requireNonNull(mainThemeComboBox.getSelectedItem()).toString()) {
                     case "深色" -> "dark";
+                    case "跟随系统(仅Windows)" -> "system";
                     default -> "light";
                 };
                 jsonObject.put("mainTheme", tempMainThemeColor);
