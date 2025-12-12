@@ -31,7 +31,7 @@ public class ClassFormPanel extends CTViewPanel {
         this.setCtSetsPanelList(java.util.List.of(new ClassFormSetsPanel(CTInfo.DATA_PATH)));
 
         this.setIgnoreState(true);
-        this.setIndependentRefresh(true, 3 * 1000);
+        this.setIndependentRefresh(true, 1000);
     }
 
     private void showClassForm(String[] nowClassesList, String nextClass) {

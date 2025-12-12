@@ -33,14 +33,14 @@ public class CTInfo {
     public static boolean canExit = true;
     public static boolean StartUpdate = true;
     /**
-     * a.b.c.d.e
-     * a:主版本号
-     * b:功能更新版本号
-     * c:修订版本号/小功能更新
-     * d:只修复的问题,问题较少
+     * a.b.c.d.e 例:1.5.3.1.1<br>
+     * a:主版本号<br>
+     * b:功能更新版本号<br>
+     * c:修订版本号/小功能更新<br>
+     * d:只修复的问题,问题较少<br>
      * e:测试版本号
      */
-    public static String version = "1.47.0";
+    public static String version = "1.47.0.1";
     private static JSONObject jsonObject;
 
     static {
