@@ -4,6 +4,7 @@ import com.wmp.PublicTools.CTInfo;
 import com.wmp.PublicTools.UITools.CTFont;
 import com.wmp.PublicTools.UITools.CTFontSizeStyle;
 import com.wmp.classTools.CTComponent.CTCheckBox;
+import com.wmp.classTools.CTComponent.CTOptionPane;
 import com.wmp.classTools.CTComponent.CTProgressBar;
 
 import javax.imageio.spi.ImageInputStreamSpi;
@@ -15,6 +16,11 @@ public class NewUITest {
         UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
 
         new CTInfo();
+
+        CTOptionPane.showSystemStyleMessageDialog(TrayIcon.MessageType.ERROR, "New UI Test", "New UI Test");
+        CTOptionPane.showSystemStyleMessageDialog(TrayIcon.MessageType.INFO, "信息", "New UI Test");
+        CTOptionPane.showSystemStyleMessageDialog(TrayIcon.MessageType.WARNING, "New UI Test", "警告");
+
 
         JFrame frame = new JFrame("New UI Test");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);

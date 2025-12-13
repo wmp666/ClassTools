@@ -236,9 +236,8 @@ public class Log {
     }
 
     public static void systemPrint(LogStyle style, String owner, String logInfo) {
-
-        if (SystemTray.isSupported() && Objects.requireNonNull(style) == LogStyle.INFO) {
-            trayIcon.displayMessage(owner, logInfo, TrayIcon.MessageType.INFO);
+        if (Objects.requireNonNull(style) == LogStyle.INFO) {
+            CTOptionPane.showSystemStyleMessageDialog(TrayIcon.MessageType.INFO, owner, logInfo);
         }
         Log.print(style, owner, logInfo, null, false);
     }
@@ -270,7 +269,7 @@ public class Log {
                         "[warn]" +
                         "[" + owner + "] :" +
                         logInfo;
-                trayIcon.displayMessage(owner, logInfo.toString(), TrayIcon.MessageType.WARNING);
+                CTOptionPane.showSystemStyleMessageDialog(TrayIcon.MessageType.WARNING, owner, logInfo.toString());
                 System.err.println(info);
 
 
@@ -283,7 +282,7 @@ public class Log {
                         "[error]" +
                         "[" + owner + "] :" +
                         logInfo;
-                trayIcon.displayMessage(owner, logInfo.toString(), TrayIcon.MessageType.ERROR);
+                CTOptionPane.showSystemStyleMessageDialog(TrayIcon.MessageType.ERROR, owner, logInfo.toString());
                 System.err.println(info);
                 logInfList.addLast(info);
 
