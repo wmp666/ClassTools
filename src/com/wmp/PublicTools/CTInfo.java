@@ -18,17 +18,23 @@ import java.nio.file.Files;
 import java.util.ArrayList;
 
 public class CTInfo {
+    //禁用的组件和按钮
     public static final ArrayList<String> disPanelList = new ArrayList<>();
     public static final ArrayList<String> disButList = new ArrayList<>();
+    //控件数据
     public static final int arch = 15;
     public static final int arcw = 15;
+    public static double dpi = 1.0;
+    public static boolean isButtonUseMainColor = false;
+    //数据位置
     public static String DATA_PATH;
     public static String TEMP_PATH;
     public static String APP_INFO_PATH;
+    //基础数据
     public static String appName = "班级工具";
     public static String author = "无名牌";
     public static String iconPath = "/image/icon/icon.png";
-    public static double dpi = 1.0;
+    //其他
     public static boolean isError = false;
     public static boolean canExit = true;
     public static boolean StartUpdate = true;
@@ -40,7 +46,7 @@ public class CTInfo {
      * d:只修复的问题,问题较少<br>
      * e:测试版本号
      */
-    public static String version = "1.47.0.1";
+    public static String version = "1.47.1";
     private static JSONObject jsonObject;
 
     static {
@@ -61,6 +67,7 @@ public class CTInfo {
             }
         }
 
+        dpi = 1.0;
         disButList.clear();
         disPanelList.clear();
 
@@ -86,11 +93,29 @@ public class CTInfo {
             else iconPath = "/image/icon/icon_bate.png";
         } else iconPath = "/image/err/icon.png";
 
-        dpi = 1.0;
+        initCTInfo();
+
+        initCTBasicInfo();
+
+
+
+        if (MainWindow.mainWindow != null){
+            Taskbar taskbar = Taskbar.getTaskbar();
+
+            if (taskbar.isSupported(Taskbar.Feature.PROGRESS_STATE_WINDOW)) {
+                taskbar.setWindowProgressState(MainWindow.mainWindow, Taskbar.State.OFF);
+            }
+        }
+
+    }
+
+    private static void initCTBasicInfo() {
         IconControl.init();
         MusicControl.init();
         Log.initTrayIcon();
+    }
 
+    private static void initCTInfo() {
         boolean exists = new File(CTInfo.DATA_PATH + "setUp.json").exists();
         if (exists) {
             IOForInfo sets = new IOForInfo(new File(CTInfo.DATA_PATH + "setUp.json"));
@@ -109,6 +134,10 @@ public class CTInfo {
             //设置主题
             if (jsonObject.has("mainTheme")) {
                 CTColor.setMainTheme(jsonObject.getString("mainTheme"));
+            }
+            //设置按钮颜色
+            if (jsonObject.has("buttonColor")) {
+                isButtonUseMainColor = jsonObject.getBoolean("buttonColor");
             }
             //设置字体
             if (jsonObject.has("FontName")) {
@@ -145,14 +174,5 @@ public class CTInfo {
                 Log.isSaveLog(b);
             }
         }
-
-        if (MainWindow.mainWindow != null){
-            Taskbar taskbar = Taskbar.getTaskbar();
-
-            if (taskbar.isSupported(Taskbar.Feature.PROGRESS_STATE_WINDOW)) {
-                taskbar.setWindowProgressState(MainWindow.mainWindow, Taskbar.State.OFF);
-            }
-        }
-
     }
 }

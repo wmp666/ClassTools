@@ -12,8 +12,8 @@ import java.awt.*;
 
 public class CTBorderFactory {
 
-    public static Border BASIC_LINE_BORDER = BorderFactory.createLineBorder(new Color(200, 200, 200), (int) (2 * CTInfo.dpi));
-    public static Border FOCUS_GAINTED_BORDER = BorderFactory.createLineBorder(new Color(112, 112, 112), (int) (2 * CTInfo.dpi));
+    public static Border BASIC_LINE_BORDER = BorderFactory.createLineBorder(new Color(200, 200, 200), (int) (2 * CTInfo.dpi), true);
+    public static Border FOCUS_GAINTED_BORDER = BorderFactory.createLineBorder(new Color(112, 112, 112), (int) (2 * CTInfo.dpi), true);
 
     public static Border createTitledBorder(String title) {
         return createTitledBorder(title, TitledBorder.LEFT, TitledBorder.TOP);

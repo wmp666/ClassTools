@@ -83,7 +83,6 @@ public class CTColor {
 
     private static void setMainColor(String mainColorStr, boolean mustRemove) {
 
-
         if (!mustRemove && !canRemove) return;
 
         mainColor = getParticularColor(mainColorStr);

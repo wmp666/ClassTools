@@ -71,11 +71,7 @@ public class IconControl {
                 }
                 ICON_STYLE_MAP.put(jsonObject.getString("name"), jsonObject.getString("style"));
             });
-            COLORFUL_IMAGE_MAP.put("light", DEFAULT_IMAGE_MAP);
-            COLORFUL_IMAGE_MAP.put("dark",
-                    getColorfulImageMap(DEFAULT_IMAGE_MAP, CTColor.getParticularColor("white")));
-            COLORFUL_IMAGE_MAP.put("err",
-                    getColorfulImageMap(DEFAULT_IMAGE_MAP, CTColor.getParticularColor("blue")));
+
 
         } catch (Exception e) {
             Log.warn.message(null, IconControl.class.getName(), "图片加载失败:\n" + e);
@@ -119,21 +115,23 @@ public class IconControl {
                         DEFAULT_IMAGE_MAP.put(jsonObject.getString("name"),
                                 new ImageIcon(IconControl.class.getResource("/image/default.png")));
                 }
-
-
             });
-
 
         } catch (Exception e) {
             Log.warn.message(null, IconControl.class.getName(), "本地图片加载失败:\n" + e);
         }
 
-        COLORFUL_IMAGE_MAP.put("light", DEFAULT_IMAGE_MAP);
-        COLORFUL_IMAGE_MAP.put("dark",
-                getColorfulImageMap(DEFAULT_IMAGE_MAP, CTColor.getParticularColor("white")));
-        COLORFUL_IMAGE_MAP.put("err",
-                getColorfulImageMap(DEFAULT_IMAGE_MAP, CTColor.getParticularColor("blue")));
-
+        if (!CTInfo.isButtonUseMainColor) {
+            COLORFUL_IMAGE_MAP.put("light", DEFAULT_IMAGE_MAP);
+            COLORFUL_IMAGE_MAP.put("dark",
+                    getColorfulImageMap(DEFAULT_IMAGE_MAP, CTColor.getParticularColor("white")));
+            COLORFUL_IMAGE_MAP.put("err",
+                    getColorfulImageMap(DEFAULT_IMAGE_MAP, CTColor.getParticularColor("blue")));
+        }else{
+            Map<String, ImageIcon> colorfulImageMap = getColorfulImageMap(DEFAULT_IMAGE_MAP, CTColor.mainColor);
+            COLORFUL_IMAGE_MAP.put("light", colorfulImageMap);
+            COLORFUL_IMAGE_MAP.put("dark", colorfulImageMap);
+        }
     }
 
     private static void getNewImage() throws InterruptedException {
@@ -216,6 +214,12 @@ public class IconControl {
         return true;
     }
 
+    /**
+     * 获取彩色图标
+     * @param map 原数据
+     * @param color 需要更新的颜色
+     * @return 修改为目标颜色后的数据
+     */
     private static Map<String, ImageIcon> getColorfulImageMap(Map<String, ImageIcon> map, Color color) {
         Map<String, ImageIcon> colorfulImageMap = new HashMap<>();
         map.forEach((name, imageIcon) -> {

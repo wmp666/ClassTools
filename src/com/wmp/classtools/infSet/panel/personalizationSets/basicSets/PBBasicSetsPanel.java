@@ -30,6 +30,7 @@ public class PBBasicSetsPanel extends CTBasicSetsPanel {
     //颜色 数据
     private final CTComboBox mainColorComboBox = new CTComboBox();
     private final CTComboBox mainThemeComboBox = new CTComboBox();
+    private final CTCheckBox buttonColorCheckBox = new CTCheckBox("按钮颜色跟随主题");
     private final CTComboBox FontNameComboBox = new CTComboBox();
     //字体 数据
     private final ArrayList<CTTextField> FontSizeList = new ArrayList<>();
@@ -68,7 +69,7 @@ public class PBBasicSetsPanel extends CTBasicSetsPanel {
 
         JPanel ColorPanel = new JPanel();
         ColorPanel.setOpaque(false);
-        ColorPanel.setLayout(new GridLayout(1, 2));
+        ColorPanel.setLayout(new GridLayout(0, 2));
         ColorPanel.setBorder(CTBorderFactory.createTitledBorder("颜色设置"));
         //颜色设置
         {
@@ -115,8 +116,11 @@ public class PBBasicSetsPanel extends CTBasicSetsPanel {
                 MainThemeSets.add(mainThemeComboBox);
             }
 
+            buttonColorCheckBox.setFont(CTFont.getCTFont(Font.PLAIN, CTFontSizeStyle.SMALL));
+
             ColorPanel.add(MainColorSets);
             ColorPanel.add(MainThemeSets);
+            ColorPanel.add(buttonColorCheckBox);
 
         }
 
@@ -258,57 +262,61 @@ public class PBBasicSetsPanel extends CTBasicSetsPanel {
     private void initData() {
         //显示数据
 
-            IOForInfo io = new IOForInfo(new File(CTInfo.DATA_PATH + "setUp.json"));
-            JSONObject jsonObject;
-            try {
-                jsonObject = new JSONObject(io.getInfos());
-            } catch (Exception e) {
-                Log.err.print(getClass(), "读取设置文件失败: " + e.getMessage());
-                jsonObject = new JSONObject();
-            }
+        IOForInfo io = new IOForInfo(new File(CTInfo.DATA_PATH + "setUp.json"));
+        JSONObject jsonObject;
+        try {
+            jsonObject = new JSONObject(io.getInfos());
+        } catch (Exception e) {
+            Log.err.print(getClass(), "读取设置文件失败: " + e.getMessage());
+            jsonObject = new JSONObject();
+        }
 
-            //主题色设置
-            if (jsonObject.has("mainColor")) {
-                switch (jsonObject.getString("mainColor")) {
-                    case "black" -> mainColorComboBox.setSelectedItem("黑色");
-                    case "white" -> mainColorComboBox.setSelectedItem("白色");
-                    case "green" -> mainColorComboBox.setSelectedItem("绿色");
-                    case "red" -> mainColorComboBox.setSelectedItem("红色");
-                    case "system" -> mainColorComboBox.setSelectedItem("跟随系统(仅Windows)");
-                    default -> mainColorComboBox.setSelectedItem("蓝色");
+        //主题色设置
+        if (jsonObject.has("mainColor")) {
+            switch (jsonObject.getString("mainColor")) {
+                case "black" -> mainColorComboBox.setSelectedItem("黑色");
+                case "white" -> mainColorComboBox.setSelectedItem("白色");
+                case "green" -> mainColorComboBox.setSelectedItem("绿色");
+                case "red" -> mainColorComboBox.setSelectedItem("红色");
+                case "system" -> mainColorComboBox.setSelectedItem("跟随系统(仅Windows)");
+                default -> mainColorComboBox.setSelectedItem("蓝色");
+            }
+        }
+        //主题设置
+        if (jsonObject.has("mainTheme")) {
+            switch (jsonObject.getString("mainTheme")) {
+                case "dark" -> mainThemeComboBox.setSelectedItem("深色");
+                case "system" -> mainThemeComboBox.setSelectedItem("跟随系统(仅Windows)");
+                default -> mainThemeComboBox.setSelectedItem("浅色");
+            }
+        }
+        // 按钮颜色行为
+        if (jsonObject.has("buttonColor")) {
+            buttonColorCheckBox.setSelected(jsonObject.getBoolean("buttonColor"));
+        }
+        //字体设置
+        FontNameComboBox.setSelectedItem(CTFont.getFontName());
+        //
+        if (jsonObject.has("disposeButton")) {
+            JSONArray JSONArrdisButton = jsonObject.getJSONArray("disposeButton");
+            for (int i = 0; i < JSONArrdisButton.length(); i++) {
+                String s = JSONArrdisButton.getString(i);
+                if (disposeButton.containsKey(s)) {
+                    disposeButton.get(s).setSelected(true);
                 }
             }
-            //主题设置
-            if (jsonObject.has("mainTheme")) {
-                switch (jsonObject.getString("mainTheme")) {
-                    case "dark" -> mainThemeComboBox.setSelectedItem("深色");
-                    case "system" -> mainThemeComboBox.setSelectedItem("跟随系统(仅Windows)");
-                    default -> mainThemeComboBox.setSelectedItem("浅色");
-                }
-            }
-            //字体设置
-            FontNameComboBox.setSelectedItem(CTFont.getFontName());
-            //
-            if (jsonObject.has("disposeButton")) {
-                JSONArray JSONArrdisButton = jsonObject.getJSONArray("disposeButton");
-                for (int i = 0; i < JSONArrdisButton.length(); i++) {
-                    String s = JSONArrdisButton.getString(i);
-                    if (disposeButton.containsKey(s)) {
-                        disposeButton.get(s).setSelected(true);
-                    }
-                }
-            }
-            //是否可关闭
-            if (jsonObject.has("canExit")) {
-                canExit.setSelected(!jsonObject.getBoolean("canExit"));
+        }
+        //是否可关闭
+        if (jsonObject.has("canExit")) {
+            canExit.setSelected(!jsonObject.getBoolean("canExit"));
 
-            }
-            //是否自动更新
-            if (jsonObject.has("StartUpdate")) {
-                StartUpdate.setSelected(jsonObject.getBoolean("StartUpdate"));
-            }
-            //是否自动启动
-            startUp.setSelected(SetStartUp.isAutoStartEnabled());
+        }
+        //是否自动更新
+        if (jsonObject.has("StartUpdate")) {
+            StartUpdate.setSelected(jsonObject.getBoolean("StartUpdate"));
+        }
+        //是否自动启动
+        startUp.setSelected(SetStartUp.isAutoStartEnabled());
         //是否保存日志
         if (jsonObject.has("isSaveLog")) {
             isSaveLog.setSelected(jsonObject.getBoolean("isSaveLog"));
@@ -319,80 +327,83 @@ public class PBBasicSetsPanel extends CTBasicSetsPanel {
     @Override
     public void save() {
 
-            //保存数据-个性化
+        //保存数据-个性化
 
-                IOForInfo io = new IOForInfo(new File(CTInfo.DATA_PATH + "setUp.json"));
-                JSONObject jsonObject;
-                try {
-                    jsonObject = new JSONObject(io.getInfos());
-                } catch (Exception e) {
-                    jsonObject = new JSONObject();
+        IOForInfo io = new IOForInfo(new File(CTInfo.DATA_PATH + "setUp.json"));
+        JSONObject jsonObject;
+        try {
+            jsonObject = new JSONObject(io.getInfos());
+        } catch (Exception e) {
+            jsonObject = new JSONObject();
+        }
+
+        //设置主题色
+        String tempMainColor = switch (Objects.requireNonNull(mainColorComboBox.getSelectedItem()).toString()) {
+            case "黑色" -> "black";
+            case "白色" -> "white";
+            case "绿色" -> "green";
+            case "红色" -> "red";
+            case "跟随系统(仅Windows)" -> "system";
+            default -> "blue";
+        };
+        jsonObject.put("mainColor", tempMainColor);
+
+        //设置主题
+        String tempMainThemeColor = switch (Objects.requireNonNull(mainThemeComboBox.getSelectedItem()).toString()) {
+            case "深色" -> "dark";
+            case "跟随系统(仅Windows)" -> "system";
+            default -> "light";
+        };
+        jsonObject.put("mainTheme", tempMainThemeColor);
+
+        //按钮颜色
+        jsonObject.put("buttonColor", buttonColorCheckBox.isSelected());
+
+        //设置字体
+        String tempFontName = Objects.requireNonNull(FontNameComboBox.getSelectedItem(), "微软雅黑").toString();
+        jsonObject.put("FontName", tempFontName);
+        //设置隐藏按钮
+        {
+            ArrayList<String> tempList = new ArrayList<>();
+            disposeButton.forEach((key, value) -> {
+                if (value.isSelected()) {
+                    tempList.add(key);
                 }
+            });
+            jsonObject.put("disposeButton", tempList);
+        }
+        //设置是否可退出
+        jsonObject.put("canExit", !canExit.isSelected());
 
-                //设置主题色
-                String tempMainColor = switch (Objects.requireNonNull(mainColorComboBox.getSelectedItem()).toString()) {
-                    case "黑色" -> "black";
-                    case "白色" -> "white";
-                    case "绿色" -> "green";
-                    case "红色" -> "red";
-                    case "跟随系统(仅Windows)" -> "system";
-                    default -> "blue";
-                };
-                jsonObject.put("mainColor", tempMainColor);
-
-                //设置主题
-                String tempMainThemeColor = switch (Objects.requireNonNull(mainThemeComboBox.getSelectedItem()).toString()) {
-                    case "深色" -> "dark";
-                    case "跟随系统(仅Windows)" -> "system";
-                    default -> "light";
-                };
-                jsonObject.put("mainTheme", tempMainThemeColor);
-
-                //设置字体
-                String tempFontName = Objects.requireNonNull(FontNameComboBox.getSelectedItem(), "微软雅黑").toString();
-                jsonObject.put("FontName", tempFontName);
-                //设置隐藏按钮
-                {
-                    ArrayList<String> tempList = new ArrayList<>();
-                    disposeButton.forEach((key, value) -> {
-                        if (value.isSelected()) {
-                            tempList.add(key);
-                        }
-                    });
-                    jsonObject.put("disposeButton", tempList);
-                }
-                //设置是否可退出
-                jsonObject.put("canExit", !canExit.isSelected());
-
-                //设置启动时是否更新
-                jsonObject.put("StartUpdate", StartUpdate.isSelected());
+        //设置启动时是否更新
+        jsonObject.put("StartUpdate", StartUpdate.isSelected());
 
         //设置启动时是否更新
         jsonObject.put("isSaveLog", isSaveLog.isSelected());
 
-                //设置是否自动启动
-                jsonObject.put("isAutoStart", startUp.isSelected());
-                String Path = SetStartUp.getFilePath();
-                if (!startUp.isSelected()) {
-                    SetStartUp.disableAutoStart();// 移除自启动
-                } else {
-                    if (Path != null) {
-                        if (Path.endsWith(".jar")) {
-                            SetStartUp.enableAutoStart("javaw -jar " + Path); // 使用javaw避免黑窗口
-                        } else if (Path.endsWith(".exe")) {
-                            SetStartUp.enableAutoStart(Path);
-                        }
-                    }
-
+        //设置是否自动启动
+        jsonObject.put("isAutoStart", startUp.isSelected());
+        String Path = SetStartUp.getFilePath();
+        if (!startUp.isSelected()) {
+            SetStartUp.disableAutoStart();// 移除自启动
+        } else {
+            if (Path != null) {
+                if (Path.endsWith(".jar")) {
+                    SetStartUp.enableAutoStart("javaw -jar " + Path); // 使用javaw避免黑窗口
+                } else if (Path.endsWith(".exe")) {
+                    SetStartUp.enableAutoStart(Path);
                 }
+            }
 
-                Log.info.print("InfSetDialog", "保存数据: " + jsonObject);
-                try {
-                    io.setInfo(jsonObject.toString(2));
+        }
 
-                } catch (Exception e) {
-                    Log.err.print(PersonalizationPanel.class, "保存数据失败", e);
-                }
+        Log.info.print("InfSetDialog", "保存数据: " + jsonObject);
+        try {
+            io.setInfo(jsonObject.toString(2));
+
+        } catch (Exception e) {
+            Log.err.print(PersonalizationPanel.class, "保存数据失败", e);
+        }
     }
 
     @Override
