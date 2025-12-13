@@ -253,7 +253,7 @@ public class CTOptionPane {
 
                                 //将字符串复制到剪切板。
                                 Clipboard clip = Toolkit.getDefaultToolkit().getSystemClipboard();
-                                Transferable tText = new StringSelection(messageArea.getSelectedText());
+                                Transferable tText = new StringSelection(messageArea.getText());
                                 clip.setContents(tText, null);
                             });
                             ETPopupMenu.add(copy);
@@ -837,138 +837,206 @@ public class CTOptionPane {
     public static void showSystemStyleMessageDialog(TrayIcon.MessageType iconType, String owner, String logInfo){
 
         new Thread(() ->{
-        synchronized (SSMDialogs){
-            while (!SSMDialogs.isEmpty()) {
-                try {
-                    Thread.sleep(1000);
-                } catch (InterruptedException e) {
-                    throw new RuntimeException(e);
+            synchronized (SSMDialogs){
+                while (!SSMDialogs.isEmpty()) {
+                    try {
+                        Thread.sleep(1000);
+                    } catch (InterruptedException e) {
+                        throw new RuntimeException(e);
+                    }
                 }
-            }
 
-            CTWindow dialog = new CTWindow();
-            dialog.setTitle(owner);
-            dialog.setAlwaysOnTop(true);
-            dialog.setLayout(new BorderLayout());
-            dialog.getContentPane().setBackground(CTColor.backColor);
+                CTWindow dialog = new CTWindow();
+                dialog.setTitle(owner);
+                dialog.setAlwaysOnTop(true);
+                dialog.setLayout(new BorderLayout());
+                dialog.getContentPane().setBackground(CTColor.backColor);
 
-            Timer t = new Timer(5000, ex -> {
-                if (dialog.isVisible()) {
+                Timer t = new Timer(5000, ex -> {
+                    if (dialog.isVisible()) {
+                        SSMDialogs.remove(dialog);
+                        dialog.dispose();
+                    }
+                });
+
+                JLabel iconLabel = new JLabel();
+                switch (iconType) {
+                    case ERROR -> iconLabel.setIcon(GetIcon.getIcon("错误", IconControl.COLOR_COLORFUL, 70, 70));
+                    case WARNING -> iconLabel.setIcon(GetIcon.getIcon("警告", IconControl.COLOR_COLORFUL, 70, 70));
+                    case INFO -> iconLabel.setIcon(GetIcon.getIcon("提示", IconControl.COLOR_COLORFUL, 70, 70));
+                }
+                iconLabel.addMouseListener(new MouseAdapter() {
+                    @Override
+                    public void mouseEntered(MouseEvent e) {
+                        t.stop();
+                    }
+
+                    @Override
+                    public void mouseExited(MouseEvent e) {
+                        t.start();
+                    }
+                });
+                try {
+                    dialog.setIconImage(((ImageIcon)iconLabel.getIcon()).getImage());
+                } catch (Exception ignored) {
+
+                }
+                dialog.add(iconLabel, BorderLayout.WEST);
+
+                JTextArea title = new JTextArea(owner);
+                title.setOpaque(false);
+                title.setForeground(CTColor.textColor);
+                title.setEditable(false);
+                title.setLineWrap(true);
+                title.setFont(CTFont.getCTFont(Font.BOLD, CTFontSizeStyle.NORMAL));
+                title.addMouseListener(new MouseAdapter() {
+                    @Override
+                    public void mouseEntered(MouseEvent e) {
+                        t.stop();
+                    }
+
+                    @Override
+                    public void mouseExited(MouseEvent e) {
+                        t.start();
+                    }
+                });
+                dialog.add(title, BorderLayout.NORTH);
+
+                JTextArea message = new JTextArea(logInfo);
+                message.setOpaque(false);
+                message.setEditable(false);
+                message.setLineWrap(true);
+                message.setForeground(CTColor.textColor);
+                message.setFont(CTFont.getCTFont(Font.PLAIN, CTFontSizeStyle.NORMAL));
+                message.addMouseListener(new MouseAdapter() {
+                    @Override
+                    public void mouseEntered(MouseEvent e) {
+                        t.stop();
+                    }
+
+                    @Override
+                    public void mouseExited(MouseEvent e) {
+                        t.start();
+                    }
+
+                    @Override//鼠标点击
+                    public void mouseClicked(MouseEvent e) {
+                        int button = e.getButton();
+                        if (button == MouseEvent.BUTTON3) {
+                            CTPopupMenu ETPopupMenu = new CTPopupMenu();
+
+                            CTRoundTextButton edit = new CTRoundTextButton("编辑");
+                            edit.setIcon(GetIcon.getIcon("编辑", 20, 20));
+                            edit.addActionListener(event -> {
+                                EasterEgg.errorAction();
+                            });
+
+                            ETPopupMenu.add(edit);
+
+                            CTRoundTextButton copy = new CTRoundTextButton("复制");
+                            copy.setIcon(GetIcon.getIcon("编辑", 20, 20));
+                            copy.addActionListener(event -> {
+
+                                //将字符串复制到剪切板。
+                                Clipboard clip = Toolkit.getDefaultToolkit().getSystemClipboard();
+                                Transferable tText = new StringSelection(message.getText());
+                                clip.setContents(tText, null);
+                            });
+                            ETPopupMenu.add(copy);
+
+                            ETPopupMenu.show(message, e.getX(), e.getY());
+                        }
+                    }
+                });
+                JScrollPane scrollPane = new JScrollPane(message);
+                scrollPane.setBorder(null);
+                scrollPane.setOpaque(false);
+                scrollPane.getViewport().setOpaque(false);
+                dialog.add(scrollPane, BorderLayout.CENTER);
+
+                CTRoundTextButton closeButton = new CTRoundTextButton("关闭");
+                closeButton.addActionListener(ev -> {
                     SSMDialogs.remove(dialog);
                     dialog.dispose();
-                }
-            });
+                });
+                closeButton.addMouseListener(new MouseAdapter() {
+                    @Override
+                    public void mouseEntered(MouseEvent e) {
+                        t.stop();
+                    }
 
-            JLabel iconLabel = new JLabel();
-            switch (iconType) {
-                case ERROR -> iconLabel.setIcon(GetIcon.getIcon("错误", IconControl.COLOR_COLORFUL, 70, 70));
-                case WARNING -> iconLabel.setIcon(GetIcon.getIcon("警告", IconControl.COLOR_COLORFUL, 70, 70));
-                case INFO -> iconLabel.setIcon(GetIcon.getIcon("提示", IconControl.COLOR_COLORFUL, 70, 70));
+                    @Override
+                    public void mouseExited(MouseEvent e) {
+                        t.start();
+                    }
+                });
+                dialog.add(closeButton, BorderLayout.SOUTH);
+
+                dialog.setSize((int) (380 * CTInfo.dpi), (int) (200 * CTInfo.dpi));
+
+                // 获取目标位置
+                Point targetLocation = getBottomRightCornerLocation(dialog.getSize());
+                // 设置初始位置（在屏幕右侧外）
+                Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+                dialog.setLocation(screenSize.width, targetLocation.y);
+
+                dialog.addWindowListener(new WindowAdapter() {
+                    @Override
+                    public void windowOpened(WindowEvent e) {
+                        // 添加滑入动画
+                        animateSlideIn(dialog, targetLocation);
+                        t.start();
+                    }
+
+                    @Override
+                    public void windowGainedFocus(WindowEvent e) {
+                        t.stop();
+                    }
+
+                    @Override
+                    public void windowLostFocus(WindowEvent e) {
+                        t.start();
+                    }
+                });
+                SSMDialogs.add(dialog);
+                dialog.setVisible(true);
             }
-            iconLabel.addMouseListener(new MouseAdapter() {
-                @Override
-                public void mouseEntered(MouseEvent e) {
-                    t.stop();
-                }
-
-                @Override
-                public void mouseExited(MouseEvent e) {
-                    t.start();
-                }
-            });
-            try {
-                dialog.setIconImage(((ImageIcon)iconLabel.getIcon()).getImage());
-            } catch (Exception ignored) {
-
-            }
-            dialog.add(iconLabel, BorderLayout.WEST);
-
-            JTextArea title = new JTextArea(owner);
-            title.setOpaque(false);
-            title.setForeground(CTColor.textColor);
-            title.setEditable(false);
-            title.setLineWrap(true);
-            title.setFont(CTFont.getCTFont(Font.BOLD, CTFontSizeStyle.NORMAL));
-            title.addMouseListener(new MouseAdapter() {
-                @Override
-                public void mouseEntered(MouseEvent e) {
-                    t.stop();
-                }
-
-                @Override
-                public void mouseExited(MouseEvent e) {
-                    t.start();
-                }
-            });
-            dialog.add(title, BorderLayout.NORTH);
-
-            JTextArea message = new JTextArea(logInfo);
-            message.setOpaque(false);
-            message.setEditable(false);
-            message.setLineWrap(true);
-            message.setForeground(CTColor.textColor);
-            message.setFont(CTFont.getCTFont(Font.PLAIN, CTFontSizeStyle.MORE_SMALL));
-            message.addMouseListener(new MouseAdapter() {
-                @Override
-                public void mouseEntered(MouseEvent e) {
-                    t.stop();
-                }
-
-                @Override
-                public void mouseExited(MouseEvent e) {
-                    t.start();
-                }
-            });
-            JScrollPane scrollPane = new JScrollPane(message);
-            scrollPane.setBorder(null);
-            scrollPane.setOpaque(false);
-            scrollPane.getViewport().setOpaque(false);
-            dialog.add(scrollPane, BorderLayout.CENTER);
-
-            CTRoundTextButton closeButton = new CTRoundTextButton("关闭");
-            closeButton.addActionListener(ev -> {
-                SSMDialogs.remove(dialog);
-                dialog.dispose();
-            });
-            closeButton.addMouseListener(new MouseAdapter() {
-                @Override
-                public void mouseEntered(MouseEvent e) {
-                    t.stop();
-                }
-
-                @Override
-                public void mouseExited(MouseEvent e) {
-                    t.start();
-                }
-            });
-            dialog.add(closeButton, BorderLayout.SOUTH);
-
-
-            dialog.setSize((int) (380 * CTInfo.dpi), (int) (200 * CTInfo.dpi));
-            dialog.setLocation(getBottomRightCornerLocation(dialog.getSize()));
-            dialog.addWindowListener(new WindowAdapter() {
-                @Override
-                public void windowOpened(WindowEvent e) {
-
-                    t.start();
-                }
-
-                @Override
-                public void windowGainedFocus(WindowEvent e) {
-                    t.stop();
-                }
-
-                @Override
-                public void windowLostFocus(WindowEvent e) {
-                    t.start();
-                }
-            });
-            SSMDialogs.add(dialog);
-            dialog.setVisible(true);
-        }
         }).start();
-
     }
+
+    /**
+     * 实现从右向左的滑入动画
+     *
+     * @param dialog         要执行动画的对话框
+     * @param targetLocation 目标位置
+     */
+    private static void animateSlideIn(CTWindow dialog, Point targetLocation) {
+        new Thread(() -> {
+            int startX = dialog.getX();
+            int startY = dialog.getY();
+            int targetX = targetLocation.x;
+
+            // 动画持续时间和步数
+            int duration = 150; // 毫秒
+            int steps = 30;
+            int delay = duration / steps;
+
+            // 计算每步移动的距离
+            int deltaX = (targetX - startX) / steps;
+
+            try {
+                for (int i = 0; i < steps; i++) {
+                    int newX = startX + deltaX * (i + 1);
+                    /*SwingUtilities.invokeLater(() -> */dialog.setLocation(newX, startY);
+                    Thread.sleep(delay);
+                }
+                // 确保最终位置准确
+                /*SwingUtilities.invokeLater(() -> */dialog.setLocation(targetX, startY);
+            } catch (InterruptedException ignored) {}
+        }).start();
+    }
+
+
     private static Point getBottomRightCornerLocation(Dimension d) {
         return getBottomRightCornerLocation(d.width, d.height);
     }
