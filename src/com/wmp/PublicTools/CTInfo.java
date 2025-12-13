@@ -46,7 +46,7 @@ public class CTInfo {
      * d:只修复的问题,问题较少<br>
      * e:测试版本号
      */
-    public static String version = "1.47.1";
+    public static String version = "1.47.1.1";
     private static JSONObject jsonObject;
 
     static {
