@@ -29,6 +29,7 @@ public class Main {
         allArgs.put("screenProduct:show", StartupParameters.creative("/s", "-s"));
         allArgs.put("screenProduct:view", StartupParameters.creative("/p", "-p"));
 
+        allArgs.put("CTInfo:isError", StartupParameters.creative("/CTInfo:error", "-CTInfo:error"));
     }
 
     public static void main(String[] args) throws IOException {
@@ -38,6 +39,7 @@ public class Main {
 
         JLabel label = new JLabel("<html><body><font color='#29A5E3'>正在加载<br>班级工具运行所需的基础数据</font></body></html>");
         label.setFont(new Font(null, Font.PLAIN, 40));
+        label.setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
         wait.add(label);
 
         wait.pack();
@@ -81,7 +83,6 @@ public class Main {
         }
 
         CTInfo.isError = EasterEgg.getEasterEggItem(EasterEgg.STYLE_ERROR);
-        //Log.info.print("[Main]", "是否被骇客入侵:" + isError);
         if (CTInfo.isError) {
 
             CTInfo.version = "999.999.999";//错误版本号(无法更新)
@@ -90,8 +91,6 @@ public class Main {
             CTInfo.iconPath = "/image/err/icon.png";
             b = false;
             CTColor.setErrorColor();//修改颜色
-
-            Log.info.message(null, "Main", "这次能让我玩得开心点吗？");
         }
 
 

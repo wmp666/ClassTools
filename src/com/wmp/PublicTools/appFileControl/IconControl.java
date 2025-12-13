@@ -125,13 +125,14 @@ public class IconControl {
             COLORFUL_IMAGE_MAP.put("light", DEFAULT_IMAGE_MAP);
             COLORFUL_IMAGE_MAP.put("dark",
                     getColorfulImageMap(DEFAULT_IMAGE_MAP, CTColor.getParticularColor("white")));
-            COLORFUL_IMAGE_MAP.put("err",
-                    getColorfulImageMap(DEFAULT_IMAGE_MAP, CTColor.getParticularColor("blue")));
+
         }else{
             Map<String, ImageIcon> colorfulImageMap = getColorfulImageMap(DEFAULT_IMAGE_MAP, CTColor.mainColor);
             COLORFUL_IMAGE_MAP.put("light", colorfulImageMap);
             COLORFUL_IMAGE_MAP.put("dark", colorfulImageMap);
         }
+        COLORFUL_IMAGE_MAP.put("err",
+                getColorfulImageMap(DEFAULT_IMAGE_MAP, CTColor.getParticularColor("blue")));
     }
 
     private static void getNewImage() throws InterruptedException {

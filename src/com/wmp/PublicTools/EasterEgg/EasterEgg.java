@@ -36,6 +36,8 @@ public class EasterEgg {
 
         if (Main.allArgs.get("screenProduct:show").contains(Main.argsList)) return false;
 
+        if (Main.allArgs.get("CTInfo:isError").contains(Main.argsList)) return true;
+
         switch (style) {
             case STYLE_IMPORT_DAY -> {
                 //加载颜色(CTColor)数据

@@ -861,9 +861,9 @@ public class CTOptionPane {
 
             JLabel iconLabel = new JLabel();
             switch (iconType) {
-                case ERROR -> iconLabel.setIcon(GetIcon.getIcon("错误", IconControl.COLOR_COLORFUL, 50, 50));
-                case WARNING -> iconLabel.setIcon(GetIcon.getIcon("警告", IconControl.COLOR_COLORFUL, 50, 50));
-                case INFO -> iconLabel.setIcon(GetIcon.getIcon("提示", IconControl.COLOR_COLORFUL, 50, 50));
+                case ERROR -> iconLabel.setIcon(GetIcon.getIcon("错误", IconControl.COLOR_COLORFUL, 70, 70));
+                case WARNING -> iconLabel.setIcon(GetIcon.getIcon("警告", IconControl.COLOR_COLORFUL, 70, 70));
+                case INFO -> iconLabel.setIcon(GetIcon.getIcon("提示", IconControl.COLOR_COLORFUL, 70, 70));
             }
             iconLabel.addMouseListener(new MouseAdapter() {
                 @Override
@@ -888,7 +888,7 @@ public class CTOptionPane {
             title.setForeground(CTColor.textColor);
             title.setEditable(false);
             title.setLineWrap(true);
-            title.setFont(CTFont.getCTFont(Font.PLAIN, CTFontSizeStyle.NORMAL));
+            title.setFont(CTFont.getCTFont(Font.BOLD, CTFontSizeStyle.NORMAL));
             title.addMouseListener(new MouseAdapter() {
                 @Override
                 public void mouseEntered(MouseEvent e) {
