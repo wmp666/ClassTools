@@ -847,6 +847,7 @@ public class CTOptionPane {
             }
 
             CTWindow dialog = new CTWindow();
+            dialog.setTitle(owner);
             dialog.setAlwaysOnTop(true);
             dialog.setLayout(new BorderLayout());
             dialog.getContentPane().setBackground(CTColor.backColor);
@@ -875,6 +876,11 @@ public class CTOptionPane {
                     t.start();
                 }
             });
+            try {
+                dialog.setIconImage(((ImageIcon)iconLabel.getIcon()).getImage());
+            } catch (Exception ignored) {
+
+            }
             dialog.add(iconLabel, BorderLayout.WEST);
 
             JTextArea title = new JTextArea(owner);
